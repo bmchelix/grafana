@@ -779,7 +779,7 @@ const UnthemedLogs: React.FunctionComponent<Props> = (props: Props) => {
     [logsQueries]
   );
 
-  const onChangeLogsOption = useCallback(
+  const onLogOptionsChange = useCallback(
     (option: keyof LogListControlOptions, value: string | string[] | boolean) => {
       if (option === 'sortOrder' && (value === LogsSortOrder.Ascending || value === LogsSortOrder.Descending)) {
         sortOrderChanged(value);
@@ -1062,7 +1062,7 @@ const UnthemedLogs: React.FunctionComponent<Props> = (props: Props) => {
                   loadMore={loadMoreLogs}
                   logs={dedupedRows}
                   logSupportsContext={showContextToggle}
-                  onChangeLogsOption={onChangeLogsOption}
+                  onLogOptionsChange={onLogOptionsChange}
                   onOpenContext={onOpenContext}
                   onPermalinkClick={onPermalinkClick}
                   onPinLine={onPinToContentOutlineClick}
