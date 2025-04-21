@@ -62,6 +62,8 @@ export interface QueryRunnerOptions<
   queryCachingTTL?: number | null;
   transformations?: DataTransformerConfig[];
   app?: CoreApp;
+  isFirstLoad?: boolean;
+  openEmptyPanel?: boolean;
 }
 
 let counter = 100;
@@ -268,12 +270,27 @@ export class PanelQueryRunner {
       scopedVars,
       minInterval,
       app,
+      isFirstLoad,
+      openEmptyPanel,
     } = options;
 
     if (isSharedDashboardQuery(datasource)) {
       this.pipeToSubject(runSharedRequest(options, queries[0]), panelId, true);
       return;
     }
+
+    // BMC code changes
+    if (isFirstLoad === true && openEmptyPanel === true) {
+      this.pipeToSubject(
+        of({
+          state: LoadingState.RefreshToLoad,
+          series: [],
+          timeRange: timeRange,
+        }),
+        panelId
+      );
+    }
+    // BMC code changes end
 
     //check if datasource is a variable datasource and if that variable has multiple values
     const addErroDSVariable = this.shouldAddErrorWhenDatasourceVariableIsMultiple(datasource, scopedVars);
@@ -296,6 +313,8 @@ export class PanelQueryRunner {
       queryCachingTTL,
       startTime: Date.now(),
       rangeRaw: timeRange.raw,
+      isFirstLoad,
+      openEmptyPanel,
     };
 
     try {

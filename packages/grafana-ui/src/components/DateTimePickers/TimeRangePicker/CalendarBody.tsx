@@ -4,6 +4,8 @@ import Calendar from 'react-calendar';
 import { CalendarType } from 'react-calendar/dist/cjs/shared/types';
 
 import { GrafanaTheme2, dateTimeParse, DateTime, TimeZone } from '@grafana/data';
+// eslint-disable-next-line no-restricted-imports
+import { config } from '@grafana/runtime';
 
 import { useStyles2 } from '../../../themes';
 import { t } from '../../../utils/i18n';
@@ -37,7 +39,8 @@ export function Body({ onChange, from, to, timeZone, weekStart = 'monday' }: Tim
       prevLabel={<Icon name="angle-left" />}
       prevAriaLabel={t('time-picker.calendar.previous-month', 'Previous month')}
       onChange={onCalendarChange}
-      locale="en"
+      // BMC Change: Next line
+      locale={config.bootData.user.language ?? 'en'}
       calendarType={weekStartMap[weekStart]}
     />
   );

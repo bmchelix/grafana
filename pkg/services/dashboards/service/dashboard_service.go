@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend/gtime"
+	"github.com/grafana/grafana/pkg/services/msp"
 	"github.com/prometheus/client_golang/prometheus"
 	"golang.org/x/exp/slices"
 
@@ -496,13 +497,22 @@ func (dr *DashboardServiceImpl) setDefaultPermissions(ctx context.Context, dto *
 			permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
 				UserID: userID, Permission: dashboardaccess.PERMISSION_ADMIN.String(),
 			})
+			// BMC code - changes for MSP: provide default permissions to org0 team
+			if dto.User.GetHasExternalOrg() {
+				permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
+					TeamID: msp.GetUnrestrictedTeamID(dto.User.GetOrgID()), Permission: dashboardaccess.PERMISSION_EDIT.String(),
+				})
+			}
+			// BMC code ends
 		}
 	}
 
 	if !inFolder {
 		permissions = append(permissions, []accesscontrol.SetResourcePermissionCommand{
-			{BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
-			{BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// BMC code Start - Fix for DRJ71-4418 - Changes related to folder and Dashboard permission in 9.x
+			//{BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
+			//{BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// End
 		}...)
 	}
 
@@ -558,6 +568,13 @@ func (dr *DashboardServiceImpl) GetDashboardUIDByID(ctx context.Context, query *
 func (dr *DashboardServiceImpl) GetDashboards(ctx context.Context, query *dashboards.GetDashboardsQuery) ([]*dashboards.Dashboard, error) {
 	return dr.dashboardStore.GetDashboards(ctx, query)
 }
+
+// BMC CODE STARTS
+func (dr *DashboardServiceImpl) GetDashboardsByFolderUID(ctx context.Context, query *dashboards.GetDashboardsByFolderUIDQuery) ([]*dashboards.Dashboard, error) {
+	return dr.dashboardStore.GetDashboardsByFolderUID(ctx, query)
+}
+
+//BMC CODE ENDS
 
 func (dr *DashboardServiceImpl) GetDashboardsSharedWithUser(ctx context.Context, user identity.Requester) ([]*dashboards.Dashboard, error) {
 	return dr.getDashboardsSharedWithUser(ctx, user)

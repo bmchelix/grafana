@@ -510,7 +510,7 @@ export class BackendSrv implements BackendService {
 
   /** @deprecated */
   search(query: Parameters<typeof this.get>[1]): Promise<DashboardSearchItem[]> {
-    return this.get('/api/search', query);
+    return this.get('/api/search', { ...query, lang: config.bootData.user.language ?? '' });
   }
 
   /** @deprecated */

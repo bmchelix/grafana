@@ -21,9 +21,9 @@ export const FieldValidationMessage = ({
   const cssName = cx(horizontal ? styles.horizontal : styles.vertical, className);
 
   return (
+    //BMC Accessibility Change : Added the arai-label in the icon.
     <div role="alert" className={cssName}>
-      <Icon className={styles.fieldValidationMessageIcon} name="exclamation-triangle" />
-      {children}
+      <Icon className={styles.fieldValidationMessageIcon} name="exclamation-triangle" aria-label="Warning" /> {children}
     </div>
   );
 };

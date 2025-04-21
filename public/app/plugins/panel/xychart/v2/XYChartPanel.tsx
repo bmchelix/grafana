@@ -1,7 +1,7 @@
 import { css } from '@emotion/css';
 import { useMemo } from 'react';
 
-import { FALLBACK_COLOR, PanelProps } from '@grafana/data';
+import { FALLBACK_COLOR, LoadingState, PanelProps } from '@grafana/data';
 import { alpha } from '@grafana/data/src/themes/colorManipulator';
 import { config } from '@grafana/runtime';
 import {
@@ -50,9 +50,15 @@ export const XYChartPanel2 = (props: Props2) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [series]
   );
-
   // todo: handle errors
-  let error = builder == null || data.length === 0 ? 'Err' : '';
+  let error =
+    builder == null || data.length === 0
+      ? // bmc code changes for load blank dashboard
+        props.data.state === LoadingState.RefreshToLoad
+        ? 'Refresh panels to fetch data'
+        : // bmc code changes end
+          'Err'
+      : '';
 
   // TODO: React.memo()
   const renderLegend = () => {

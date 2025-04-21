@@ -68,6 +68,9 @@ export interface GetFieldDisplayValuesOptions {
   percentChange?: boolean; // Calculate percent change
   theme: GrafanaTheme2;
   timeZone?: TimeZone;
+  // BMC code changes start
+  refreshToLoad?: boolean;
+  // BMC code changes end
 }
 
 export const DEFAULT_FIELD_DISPLAY_VALUES_LIMIT = 25;
@@ -350,7 +353,9 @@ export function getDisplayValueAlignmentFactors(values: FieldDisplay[]): Display
 }
 
 function createNoValuesFieldDisplay(options: GetFieldDisplayValuesOptions): FieldDisplay {
-  const displayName = 'No data';
+  // BMC code changes start
+  const displayName = options.refreshToLoad ? 'Refresh panels to fetch data' : 'No data';
+  // BMC code changes start
   const { fieldConfig, timeZone } = options;
   const { defaults } = fieldConfig;
 

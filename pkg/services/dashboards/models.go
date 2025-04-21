@@ -276,6 +276,14 @@ type GetDashboardsQuery struct {
 	OrgID         int64
 }
 
+// BMC CODE START
+type GetDashboardsByFolderUIDQuery struct {
+	FolderUID string
+	OrgID     int64
+}
+
+//BMC CODE END
+
 type GetDashboardsByPluginIDQuery struct {
 	OrgID    int64
 	PluginID string
@@ -423,4 +431,7 @@ type FindPersistedDashboardsQuery struct {
 	IsDeleted  bool
 
 	Filters []any
+
+	// BMC Change: Next line
+	Lang string
 }

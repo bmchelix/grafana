@@ -202,10 +202,10 @@ func (r *protoClient) MutateAdmission(ctx context.Context, in *pluginv2.Admissio
 	return c.AdmissionClient.MutateAdmission(ctx, in, opts...)
 }
 
-func (r *protoClient) ConvertObject(ctx context.Context, in *pluginv2.ConversionRequest, opts ...grpc.CallOption) (*pluginv2.ConversionResponse, error) {
+func (r *protoClient) ConvertObjects(ctx context.Context, in *pluginv2.ConversionRequest, opts ...grpc.CallOption) (*pluginv2.ConversionResponse, error) {
 	c, exists := r.client(ctx)
 	if !exists {
 		return nil, errClientNotStarted
 	}
-	return c.AdmissionClient.ConvertObject(ctx, in, opts...)
+	return c.ConversionClient.ConvertObjects(ctx, in, opts...)
 }

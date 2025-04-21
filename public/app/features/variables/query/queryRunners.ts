@@ -83,12 +83,65 @@ class LegacyQueryRunner implements QueryRunner {
     throw new Error("Couldn't create a target with supplied arguments.");
   }
 
+  // BMC code changes
+  getDefaultValuesSeriesForHelixDatasource(
+    variable: QueryVariableModel
+  ): Array<{ text: string | string[]; type: string | string[]; value: string | string[] }> {
+    let defaultVariableValues = [];
+
+    let defaultText = variable.current?.text;
+    let defaultValue = variable.current?.value;
+    const defaultType = 'string';
+
+    if (defaultText) {
+      // defaultText is an array of strings, push each one to default values
+      if (Array.isArray(defaultText)) {
+        defaultText.map((text, index) => {
+          defaultVariableValues.push({
+            text: text,
+            type: defaultType,
+            value: defaultValue[index],
+          });
+        });
+      } else {
+        defaultVariableValues.push({
+          text: defaultText,
+          type: defaultType,
+          value: defaultValue,
+        });
+      }
+    }
+
+    return defaultVariableValues;
+  }
+  // BMC code changes end
+
   runRequest({ datasource, variable, searchFilter, timeSrv }: RunnerArgs, request: DataQueryRequest) {
     if (!hasLegacyVariableSupport(datasource)) {
       return getEmptyMetricFindValueObservable();
     }
 
     const queryOptions: any = getLegacyQueryOptions(variable, searchFilter, timeSrv, request.scopedVars);
+
+    // BMC code changes start
+    // Default variables are currently only enabled for "BMC Helix" datasource to prevent breaking changes for customers using 3rd party datasources.
+    // Some datasources expect response/series in a different format, be careful when changing it to support more datasources.
+    if (
+      variable.useDefaultValues &&
+      variable.datasource?.type === 'bmchelix-ade-datasource' &&
+      variable.current.value
+    ) {
+      const series = this.getDefaultValuesSeriesForHelixDatasource(variable);
+      if (series.length > 0 && series[0].value !== '$__all') {
+        // Can assume defaults are saved since length > 0
+        return of({
+          series,
+          state: LoadingState.Done,
+          timeRange: queryOptions.range,
+        });
+      }
+    }
+    // BMC code changes end
 
     return from(datasource.metricFindQuery(variable.query, queryOptions)).pipe(
       mergeMap((values) => {

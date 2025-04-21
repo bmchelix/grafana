@@ -30,6 +30,8 @@ export interface Dashboard extends Omit<raw.Dashboard, 'templating' | 'annotatio
   templating?: {
     list?: VariableModel[];
   };
+  // BMC Change
+  locales?: any;
 }
 
 export interface AnnotationQuery<TQuery extends DataQuery = DataQuery>

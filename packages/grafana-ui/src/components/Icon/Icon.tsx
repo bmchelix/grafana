@@ -85,6 +85,7 @@ export const Icon = React.forwardRef<SVGElement, IconProps>(
         title={title}
         className={composedClassName}
         style={style}
+        aria-label={iconName}
         {...rest}
       />
     );

@@ -15,7 +15,9 @@ import { getKioskMode } from 'app/core/navigation/kiosk';
 import { GrafanaRouteComponentProps } from 'app/core/navigation/types';
 import { ID_PREFIX } from 'app/core/reducers/navBarTree';
 import { getNavModel } from 'app/core/selectors/navModel';
+import { dashboardLoadTime } from 'app/core/services/dashboardLoadTime_srv';
 import { PanelModel } from 'app/features/dashboard/state';
+import { KeySelectorProvider } from 'app/features/keySelector/KeySelector';
 import { dashboardWatcher } from 'app/features/live/dashboard/dashboardWatcher';
 import { AngularDeprecationNotice } from 'app/features/plugins/angularDeprecation/AngularDeprecationNotice';
 import { AngularMigrationNotice } from 'app/features/plugins/angularDeprecation/AngularMigrationNotice';
@@ -113,6 +115,11 @@ export class UnthemedDashboardPage extends PureComponent<Props, State> {
 
   initDashboard() {
     const { dashboard, match, queryParams } = this.props;
+
+    // BMC code starts
+    // Start dashboard load time
+    dashboardLoadTime.reset();
+    // BMC Code ends
 
     if (dashboard) {
       this.closeDashboard();
@@ -447,13 +454,15 @@ export class UnthemedDashboardPage extends PureComponent<Props, State> {
           {queryParams.shareView && <ShareModal dashboard={dashboard} onDismiss={this.onCloseShareModal} />}
         </Page>
         {editPanel && (
-          <PanelEditor
-            dashboard={dashboard}
-            sourcePanel={editPanel}
-            tab={this.props.queryParams.tab}
-            sectionNav={sectionNav}
-            pageNav={pageNav}
-          />
+          <KeySelectorProvider keys={dashboard.getDashCurrentLocales()} resourceUid={dashboard.uid}>
+            <PanelEditor
+              dashboard={dashboard}
+              sourcePanel={editPanel}
+              tab={this.props.queryParams.tab}
+              sectionNav={sectionNav}
+              pageNav={pageNav}
+            />
+          </KeySelectorProvider>
         )}
         {queryParams.editview && (
           <DashboardSettings

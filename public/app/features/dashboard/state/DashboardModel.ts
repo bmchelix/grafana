@@ -1,4 +1,4 @@
-import { cloneDeep, defaults as _defaults, filter, indexOf, isEqual, map, maxBy, pull } from 'lodash';
+import { defaults as _defaults, cloneDeep, filter, indexOf, isEqual, map, maxBy, pull } from 'lodash';
 import { Subscription } from 'rxjs';
 
 import {
@@ -18,12 +18,13 @@ import {
   UrlQueryValue,
 } from '@grafana/data';
 import { PromQuery } from '@grafana/prometheus';
-import { RefreshEvent, TimeRangeUpdatedEvent, config } from '@grafana/runtime';
+import { config, RefreshEvent, TimeRangeUpdatedEvent } from '@grafana/runtime';
 import { Dashboard, DashboardLink, VariableModel } from '@grafana/schema';
 import { DEFAULT_ANNOTATION_COLOR } from '@grafana/ui';
 import { GRID_CELL_HEIGHT, GRID_CELL_VMARGIN, GRID_COLUMN_COUNT, REPEAT_DIR_VERTICAL } from 'app/core/constants';
 import { contextSrv } from 'app/core/services/context_srv';
 import { sortedDeepCloneWithoutNulls } from 'app/core/utils/object';
+import { DashboardLocale, initializeDashboardLocale } from 'app/features/bmc-content-localization/types';
 import { isAngularDatasourcePluginAndNotHidden } from 'app/features/plugins/angularDeprecation/utils';
 import { variableAdapters } from 'app/features/variables/adapters';
 import { onTimeRangeUpdated } from 'app/features/variables/state/actions';
@@ -41,6 +42,7 @@ import {
 } from '../../variables/types';
 import { isAllVariable } from '../../variables/utils';
 import { getTimeSrv } from '../services/TimeSrv';
+import { FEATURE_CONST, getFeatureStatus } from '../services/featureFlagSrv';
 import { mergePanels, PanelMergeInfo } from '../utils/panelMerge';
 
 import { DashboardMigrator } from './DashboardMigrator';
@@ -93,6 +95,14 @@ export class DashboardModel implements TimeModel {
   private timeRangeUpdatedDuringEditOrView = false;
   private originalDashboard: Dashboard | null = null;
 
+  // BMC Change
+  locales?: DashboardLocale;
+  private currentLocales: DashboardLocale = initializeDashboardLocale();
+  // BMC code starts - DRJ71-14389
+  private useDefaultVariableValues: boolean;
+  private openEmptyPanels: boolean;
+  // BMC code ends
+
   // ------------------
   // not persisted
   // ------------------
@@ -119,6 +129,14 @@ export class DashboardModel implements TimeModel {
     lastRefresh: true,
     timeRangeUpdatedDuringEditOrView: true,
     originalDashboard: true,
+    // BMC code changes start
+    getCurrentLocales: true,
+    currentLocales: true,
+    useDefaultVariableValues: true,
+    getUseDefaultVariableValues: true,
+    openEmptyPanels: true,
+    getOpenEmptyPanels: true,
+    // BMC code changes end
   };
 
   constructor(
@@ -154,7 +172,16 @@ export class DashboardModel implements TimeModel {
     this.version = data.version ?? 0;
     this.links = data.links ?? [];
     this.gnetId = data.gnetId || null;
-    this.panels = map(data.panels ?? [], (panelData) => new PanelModel(panelData));
+    // BMC Change: Start
+    this.locales = getFeatureStatus('bhd-localization')
+      ? (cloneDeep(data.locales as DashboardLocale) ?? initializeDashboardLocale())
+      : undefined;
+    this.updateCurrentLocales();
+    this.panels = map(
+      data.panels ?? [],
+      (panelData) => new PanelModel({ ...panelData, locales: this.getCurrentLocales })
+    );
+    // BMC Change: End
     // Deep clone original dashboard to avoid mutations by object reference
     this.originalDashboard = cloneDeep(data);
     this.originalTemplating = cloneDeep(this.templating);
@@ -168,6 +195,20 @@ export class DashboardModel implements TimeModel {
 
     this.addBuiltInAnnotationQuery();
     this.sortPanelsByGridPos();
+
+    // BMC code starts - DRJ71-14389
+    // Both must default to false. We check from tenant set feature flag
+    // Pupeteer check (for renderer/scheduler also takes place here)
+    this.useDefaultVariableValues =
+      (!!getFeatureStatus(FEATURE_CONST.BHD_GF_USE_DEFAULT_VARS) && navigator.webdriver !== true) || false;
+    this.openEmptyPanels =
+      (!!getFeatureStatus(FEATURE_CONST.BHD_GF_OPEN_EMPTY_PANELS) && navigator.webdriver !== true) || false;
+    // Update property for each panel
+    this.panels.forEach((panel) => {
+      panel.openEmptyPanel = this.openEmptyPanels;
+    });
+    // BMC code Ends
+
     this.panelsAffectedByVariableChange = null;
     this.appEventsSubscription = new Subscription();
     this.lastRefresh = Date.now();
@@ -383,6 +424,16 @@ export class DashboardModel implements TimeModel {
       this.panelInEdit.refresh();
       return;
     }
+    // BMC code changes
+    // If blank dashboard is enabled, only the panels in view are reloaded when clicking refresh button.
+    // Unset property for each panel that already exist. Since panels are recreated from scratch, for good measure, unset property at dashboard level too.
+    if (this?.getOpenEmptyPanels()) {
+      this.panels.forEach((panel) => {
+        panel.openEmptyPanel = false;
+      });
+      this.openEmptyPanels = false;
+    }
+    // BMC changes end
 
     const panelsToRefresh = this.panels.filter(
       (panel) => !this.otherPanelInFullscreen(panel) && (event.refreshAll || event.panelIds.includes(panel.id))
@@ -556,7 +607,8 @@ export class DashboardModel implements TimeModel {
   addPanel(panelData: any) {
     panelData.id = this.getNextPanelId();
 
-    this.panels.unshift(new PanelModel(panelData));
+    // BMC Change: Next inline
+    this.panels.unshift(new PanelModel({ ...panelData, locales: this.getCurrentLocales }));
 
     this.sortPanelsByGridPos();
 
@@ -683,7 +735,9 @@ export class DashboardModel implements TimeModel {
 
     const m = sourcePanel.getSaveModel();
     m.id = this.getNextPanelId();
-    const clone = new PanelModel(m);
+
+    // BMC Change: Next inline
+    const clone = new PanelModel({ ...m, locales: this.getCurrentLocales });
 
     // insert after source panel + value index
     this.panels.splice(sourcePanelIndex + valueIndex, 0, clone);
@@ -710,7 +764,8 @@ export class DashboardModel implements TimeModel {
       return sourceRowPanel;
     }
 
-    const clone = new PanelModel(sourceRowPanel.getSaveModel());
+    // BMC Change: Next inline
+    const clone = new PanelModel({ ...sourceRowPanel.getSaveModel(), locales: this.getCurrentLocales });
     // for row clones we need to figure out panels under row to clone and where to insert clone
     let rowPanels: PanelModel[], insertPos: number;
     if (sourceRowPanel.collapsed) {
@@ -825,7 +880,8 @@ export class DashboardModel implements TimeModel {
           setScopedVars(panelInRow, variable, curOption);
 
           if (optionIndex > 0) {
-            const panelInRowClone = new PanelModel(panelInRow);
+            // BMC Change: Next inline
+            const panelInRowClone = new PanelModel({ ...panelInRow, locales: this.getCurrentLocales });
             this.updateRepeatedPanelIds(panelInRowClone, true);
 
             // For exposed row, set correct grid y-position and add it to dashboard panels
@@ -1027,7 +1083,8 @@ export class DashboardModel implements TimeModel {
         // make sure y is adjusted (in case row moved while collapsed)
         panel.gridPos.y -= yDiff;
         // insert after row
-        this.panels.splice(insertPos, 0, new PanelModel(panel));
+        // BMC Change: Next inline
+        this.panels.splice(insertPos, 0, new PanelModel({ ...panel, locales: this.getCurrentLocales }));
         // update insert post and y max
         insertPos += 1;
         yMax = Math.max(yMax, panel.gridPos.y + panel.gridPos.h);
@@ -1256,6 +1313,14 @@ export class DashboardModel implements TimeModel {
     return this.originalTime;
   }
 
+  getOpenEmptyPanels() {
+    return this.openEmptyPanels;
+  }
+
+  getUseDefaultVariableValues() {
+    return this.useDefaultVariableValues;
+  }
+
   private getPanelRepeatVariable(panel: PanelModel) {
     return this.getVariablesFromState(this.uid).find((variable) => variable.name === panel.repeat);
   }
@@ -1311,6 +1376,58 @@ export class DashboardModel implements TimeModel {
   getOriginalDashboard() {
     return this.originalDashboard;
   }
+
+  // BMC Change Starts: Locale functions
+  getDashLocales() {
+    return cloneDeep(this.locales);
+  }
+
+  getCurrentLocales = () => {
+    return this.currentLocales;
+  };
+
+  getDashCurrentLocales() {
+    if (!!this.locales) {
+      const userLang = config.bootData.user.language ?? 'default';
+      const selectLocales = this.locales[userLang as keyof DashboardLocale];
+      const reducedLocaleObj = Object.keys(selectLocales).reduce((acc: any, cur: string) => {
+        if (selectLocales[cur]) {
+          acc[cur] = selectLocales[cur];
+        }
+        return acc;
+      }, {});
+      return { ...this.locales['default'], ...reducedLocaleObj };
+    }
+    return {};
+  }
+
+  updateLocalesChanges(locales: DashboardLocale) {
+    this.locales = locales;
+    this.updateCurrentLocales();
+  }
+
+  updateCurrentLocales() {
+    if (!!this.locales) {
+      const userLang = config.bootData.user.language ?? 'default';
+      const selectLocales = this.locales[userLang as keyof DashboardLocale];
+      const reducedLocaleObj = Object.keys(selectLocales).reduce((acc: any, cur: string) => {
+        if (selectLocales[cur]) {
+          acc[cur] = selectLocales[cur];
+        }
+        return acc;
+      }, {});
+      let globalLocales = {};
+      try {
+        const gL = localStorage.getItem('globalLocales');
+        if (gL) {
+          globalLocales = JSON.parse(gL);
+        }
+      } catch (e) {}
+      this.currentLocales = { ...globalLocales, ...this.locales['default'], ...reducedLocaleObj };
+    }
+    return this.currentLocales;
+  }
+  // BMC Change Ends: Locale functions
 
   hasAngularPlugins(): boolean {
     return this.panels.some((panel) => {

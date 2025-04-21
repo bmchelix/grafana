@@ -11,6 +11,7 @@ import {
   DisplayProcessor,
   DisplayValue,
   VizOrientation,
+  LoadingState,
 } from '@grafana/data';
 import { BarGaugeSizing } from '@grafana/schema';
 import { BarGauge, DataLinksContextMenu, VizRepeater, VizRepeaterRenderValueProps } from '@grafana/ui';
@@ -83,6 +84,9 @@ export class BarGaugePanel extends PureComponent<BarGaugePanelProps> {
       theme: config.theme2,
       data: data.series,
       timeZone,
+      // BMC code changes start
+      refreshToLoad: data.state === LoadingState.RefreshToLoad,
+      // BMC code changes end
     });
   };
 

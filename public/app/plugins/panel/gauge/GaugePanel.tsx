@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 
-import { FieldDisplay, getDisplayProcessor, getFieldDisplayValues, PanelProps } from '@grafana/data';
+import { FieldDisplay, getDisplayProcessor, getFieldDisplayValues, LoadingState, PanelProps } from '@grafana/data';
 import { BarGaugeSizing, VizOrientation } from '@grafana/schema';
 import { DataLinksContextMenu, Gauge, VizRepeater, VizRepeaterRenderValueProps } from '@grafana/ui';
 import { DataLinksContextMenuApi } from '@grafana/ui/src/components/DataLinks/DataLinksContextMenu';
@@ -76,6 +76,9 @@ export class GaugePanel extends PureComponent<PanelProps<Options>> {
       theme: config.theme2,
       data: data.series,
       timeZone,
+      // BMC code changes start
+      refreshToLoad: data.state === LoadingState.RefreshToLoad,
+      // BMC code changes end
     });
   };
 
