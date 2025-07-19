@@ -2,6 +2,8 @@ import { css } from '@emotion/css';
 import { useState } from 'react';
 import * as React from 'react';
 
+// BMC Code : Accessibility Change Next line
+import { useEffect, useRef } from 'react';
 import { SelectableValue, GrafanaTheme2 } from '@grafana/data';
 
 import { IconButton } from '../../components/IconButton/IconButton';
@@ -36,6 +38,21 @@ export function TabbedContainer({ tabs, defaultTab, closeIconTooltip, onClose, t
 
   const autoHeight = `calc(100% - (${theme.components.menuTabs.height}px + ${theme.spacing(1)}))`;
 
+  // BMC Code : Accessibility Change starts here.
+  const focusRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (activeTab && focusRef.current) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (focusRef.current) {
+            focusRef.current?.focus();
+          }
+        });
+      });
+    }
+  }, [activeTab]);
+  // BMC Code : Accessibility Change ends here.
   return (
     <div className={styles.container} data-testid={testId}>
       <TabsBar className={styles.tabs}>
@@ -46,6 +63,8 @@ export function TabbedContainer({ tabs, defaultTab, closeIconTooltip, onClose, t
             active={t.value === activeTab}
             onChangeTab={() => onSelectTab(t)}
             icon={t.icon}
+            // BMC Code : Accessibility Change Next line
+            ref={focusRef}
           />
         ))}
         <IconButton className={styles.close} onClick={onClose} name="times" tooltip={closeIconTooltip ?? 'Close'} />

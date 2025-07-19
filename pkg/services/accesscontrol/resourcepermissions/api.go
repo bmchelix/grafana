@@ -8,6 +8,7 @@ import (
 	"github.com/grafana/grafana/pkg/api/dtos"
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/api/routing"
+	"github.com/grafana/grafana/pkg/bmc/audit"
 	"github.com/grafana/grafana/pkg/services/accesscontrol"
 	contextmodel "github.com/grafana/grafana/pkg/services/contexthandler/model"
 	"github.com/grafana/grafana/pkg/services/org"
@@ -240,9 +241,15 @@ func (a *api) setUserPermission(c *contextmodel.ReqContext) response.Response {
 
 	_, err = a.service.SetUserPermission(c.Req.Context(), c.SignedInUser.GetOrgID(), accesscontrol.User{ID: userID}, resourceID, cmd.Permission)
 	if err != nil {
+		//BMC CODE STARTS
+		go audit.SetUserPermissionAudit(c, a.service.sqlStore, a.service.userService, cmd.Permission, a.service.options.Resource, resourceID, userID, err)
+		//BMC CODE ENDS
 		return response.Err(err)
 	}
 
+	//BMC CODE STARTS
+	go audit.SetUserPermissionAudit(c, a.service.sqlStore, a.service.userService, cmd.Permission, a.service.options.Resource, resourceID, userID, nil)
+	//BMC CODE ENDS
 	return permissionSetResponse(cmd)
 }
 
@@ -293,9 +300,15 @@ func (a *api) setTeamPermission(c *contextmodel.ReqContext) response.Response {
 
 	_, err = a.service.SetTeamPermission(c.Req.Context(), c.SignedInUser.GetOrgID(), teamID, resourceID, cmd.Permission)
 	if err != nil {
+		//BMC CODE STARTS
+		go audit.SetTeamPermissionAudit(c, a.service.sqlStore, a.service.teamService, cmd.Permission, a.service.options.Resource, resourceID, teamID, err)
+		//BMC CODE ENDS
 		return response.Err(err)
 	}
 
+	//BMC CODE STARTS
+	go audit.SetTeamPermissionAudit(c, a.service.sqlStore, a.service.teamService, cmd.Permission, a.service.options.Resource, resourceID, teamID, nil)
+	//BMC CODE ENDS
 	return permissionSetResponse(cmd)
 }
 
@@ -343,9 +356,15 @@ func (a *api) setBuiltinRolePermission(c *contextmodel.ReqContext) response.Resp
 
 	_, err := a.service.SetBuiltInRolePermission(c.Req.Context(), c.SignedInUser.GetOrgID(), builtInRole, resourceID, cmd.Permission)
 	if err != nil {
+		//BMC CODE STARTS
+		go audit.SetRolePermissionAudit(c, a.service.sqlStore, builtInRole, cmd.Permission, a.service.options.Resource, resourceID, err)
+		//BMC CODE ENDS
 		return response.Err(err)
 	}
 
+	//BMC CODE STARTS
+	go audit.SetRolePermissionAudit(c, a.service.sqlStore, builtInRole, cmd.Permission, a.service.options.Resource, resourceID, nil)
+	//BMC CODE ENDS
 	return permissionSetResponse(cmd)
 }
 
