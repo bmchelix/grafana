@@ -8,6 +8,7 @@ import { TimePickerWithHistory } from 'app/core/components/TimePicker/TimePicker
 import { appEvents } from 'app/core/core';
 import { t } from 'app/core/internationalization';
 import { AutoRefreshInterval } from 'app/core/services/context_srv';
+import { dashboardLoadTime } from 'app/core/services/dashboardLoadTime_srv';
 import { getTimeSrv } from 'app/features/dashboard/services/TimeSrv';
 
 import { ShiftTimeEvent, ShiftTimeEventDirection, ZoomOutEvent } from '../../../../types/events';
@@ -85,6 +86,7 @@ export class DashNavTimeControls extends Component<Props> {
   };
 
   onRefreshClick = () => {
+    dashboardLoadTime.dashboardRefreshStarted();
     if (this.props.onToolbarRefreshClick) {
       this.props.onToolbarRefreshClick();
     }
@@ -109,20 +111,22 @@ export class DashNavTimeControls extends Component<Props> {
 
     return (
       <>
-        <TimePickerWithHistory
-          value={timePickerValue}
-          onChange={this.onChangeTimePicker}
-          timeZone={timeZone}
-          fiscalYearStartMonth={fiscalYearStartMonth}
-          onMoveBackward={this.onMoveBack}
-          onMoveForward={this.onMoveForward}
-          onZoom={this.onZoom}
-          onChangeTimeZone={this.onChangeTimeZone}
-          onChangeFiscalYearStartMonth={this.onChangeFiscalYearStartMonth}
-          isOnCanvas={isOnCanvas}
-          onToolbarTimePickerClick={this.props.onToolbarTimePickerClick}
-          weekStart={weekStart}
-        />
+        {!dashboard.timepicker.hidden && (
+          <TimePickerWithHistory
+            value={timePickerValue}
+            onChange={this.onChangeTimePicker}
+            timeZone={timeZone}
+            fiscalYearStartMonth={fiscalYearStartMonth}
+            onMoveBackward={this.onMoveBack}
+            onMoveForward={this.onMoveForward}
+            onZoom={this.onZoom}
+            onChangeTimeZone={this.onChangeTimeZone}
+            onChangeFiscalYearStartMonth={this.onChangeFiscalYearStartMonth}
+            isOnCanvas={isOnCanvas}
+            onToolbarTimePickerClick={this.props.onToolbarTimePickerClick}
+            weekStart={weekStart}
+          />
+        )}
         <RefreshPicker
           onIntervalChanged={this.onChangeRefreshInterval}
           onRefresh={this.onRefreshClick}

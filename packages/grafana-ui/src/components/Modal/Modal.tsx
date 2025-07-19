@@ -51,6 +51,14 @@ export function Modal(props: PropsWithChildren<Props>) {
 
   const ref = useRef<HTMLDivElement>(null);
 
+  //BMC Accesssibility Change : Next 6 lines.
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    if (isOpen) {
+      closeButtonRef.current?.focus();
+    }
+  }, [isOpen]);
+
   // Handle interacting outside the dialog and pressing
   // the Escape key to close the modal.
   const { overlayProps, underlayProps } = useOverlay(
@@ -86,6 +94,7 @@ export function Modal(props: PropsWithChildren<Props>) {
             }
             <div className={styles.modalHeaderClose}>
               <IconButton
+                ref={closeButtonRef}
                 name="times"
                 size="xl"
                 onClick={onDismiss}

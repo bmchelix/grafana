@@ -47,7 +47,7 @@ export const UsersTable = ({
       {
         id: 'avatarUrl',
         header: '',
-        cell: ({ cell: { value } }: Cell<'avatarUrl'>) => value && <Avatar src={value} alt={'User avatar'} />,
+        cell: ({ cell: { value } }: Cell<'avatarUrl'>) => value && <Avatar src={value} alt={''} />,
       },
       {
         id: 'login',
@@ -142,13 +142,14 @@ export const UsersTable = ({
         header: '',
         cell: ({ row: { original } }: Cell) => {
           return (
+            // BMC Change: Change edit button to view button
             <LinkButton
               variant="secondary"
               size="sm"
-              icon="pen"
+              icon="eye"
               href={`admin/users/edit/${original.id}`}
               aria-label={`Edit user ${original.name}`}
-              tooltip={'Edit user'}
+              tooltip={'View user'}
             />
           );
         },
