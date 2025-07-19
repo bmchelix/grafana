@@ -34,6 +34,9 @@ type DashboardService interface {
 	RestoreDashboard(ctx context.Context, dashboard *Dashboard, user identity.Requester, optionalFolderUID string) error
 	CleanUpDeletedDashboards(ctx context.Context) (int64, error)
 	GetSoftDeletedDashboard(ctx context.Context, orgID int64, uid string) (*Dashboard, error)
+	//BMC CODE STARTS
+	GetDashboardsByFolderUID(ctx context.Context, query *GetDashboardsByFolderUIDQuery) ([]*Dashboard, error)
+	//BMC CODE ENDS
 }
 
 // PluginService is a service for operating on plugin dashboards.
@@ -89,4 +92,7 @@ type Store interface {
 	SoftDeleteDashboardsInFolders(ctx context.Context, orgID int64, folderUids []string) error
 	RestoreDashboard(ctx context.Context, orgID int64, dashboardUid string, folder *folder.Folder) error
 	GetSoftDeletedDashboard(ctx context.Context, orgID int64, uid string) (*Dashboard, error)
+	//BMC CODE STARTS
+	GetDashboardsByFolderUID(ctx context.Context, query *GetDashboardsByFolderUIDQuery) ([]*Dashboard, error)
+	//BMC CODE ENDS
 }

@@ -50,7 +50,6 @@ export const XYChartPanel2 = (props: Props2) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [series]
   );
-
   // todo: handle errors
   let error = builder == null || data.length === 0 ? 'Err' : '';
 

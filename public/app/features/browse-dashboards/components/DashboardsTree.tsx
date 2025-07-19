@@ -217,6 +217,17 @@ function VirtualListRow({ index, style, data }: VirtualListRowProps) {
   const dashboardItem = row.original.item;
   const { key, ...rowProps } = row.getRowProps({ style });
 
+  // BMC Code : Accessibility Change starts here.
+  const onRowClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (onItemSelectionChange && isSelected && dashboardItem.kind !== 'ui') {
+      onItemSelectionChange(dashboardItem, !isSelected(dashboardItem));
+    }
+  };
+  // BMC Code : Accessibility Change ends here.
+
   if (dashboardItem.kind === 'ui' && dashboardItem.uiKind === 'divider') {
     return (
       <div key={key} {...rowProps}>
@@ -234,6 +245,8 @@ function VirtualListRow({ index, style, data }: VirtualListRowProps) {
       data-testid={selectors.pages.BrowseDashboards.table.row(
         'title' in dashboardItem ? dashboardItem.title : dashboardItem.uid
       )}
+      // BMC Code : Accessibility Change (Next 1 line)
+      onClick={(event) => onRowClick(event)}
     >
       {row.cells.map((cell) => {
         const { key, ...cellProps } = cell.getCellProps();
