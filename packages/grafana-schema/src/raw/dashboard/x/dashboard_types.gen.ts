@@ -228,11 +228,18 @@ export interface VariableOption {
  * `0`: Never refresh the variable
  * `1`: Queries the data source every time the dashboard loads.
  * `2`: Queries the data source when the dashboard time range changes.
+ * `3`: BMC config to handle DRJ71-14389 load on demand behavior
  */
 export enum VariableRefresh {
   never = 0,
   onDashboardLoad = 1,
   onTimeRangeChanged = 2,
+  // BMC code change- DRJ71-14389
+  /**
+   * Not shown on UI, added to support logic for handling internally. We have added this but functionality is similar to onTimeRangeChanged, so that variable gets loaded when user clicks the dashbaord reload button
+   */
+  onRefreshButtonClick = 3
+  // BMC code ends
 }
 
 /**
@@ -1202,5 +1209,6 @@ export const defaultDashboard: Partial<Dashboard> = {
   panels: [],
   schemaVersion: 41,
   tags: [],
-  timezone: 'browser',
+  // BMC Change below: To honor user / org selected timezone
+  timezone: '',
 };

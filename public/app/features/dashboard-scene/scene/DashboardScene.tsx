@@ -34,6 +34,7 @@ import { sortedDeepCloneWithoutNulls } from 'app/core/utils/object';
 import { DashboardWithAccessInfo } from 'app/features/dashboard/api/types';
 import { SaveDashboardAsOptions } from 'app/features/dashboard/components/SaveDashboard/types';
 import { getDashboardSrv } from 'app/features/dashboard/services/DashboardSrv';
+import { getTimeSrv } from 'app/features/dashboard/services/TimeSrv';
 import { DashboardModel, ScopeMeta } from 'app/features/dashboard/state/DashboardModel';
 import { PanelModel } from 'app/features/dashboard/state/PanelModel';
 import { dashboardWatcher } from 'app/features/live/dashboard/dashboardWatcher';
@@ -233,6 +234,9 @@ export class DashboardScene extends SceneObjectBase<DashboardSceneState> impleme
 
     // @ts-expect-error
     getDashboardSrv().setCurrent(oldDashboardWrapper);
+
+    // @ts-expect-error
+    getTimeSrv().init(oldDashboardWrapper);
 
     // Deactivation logic
     return () => {

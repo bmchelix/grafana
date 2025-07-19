@@ -251,7 +251,8 @@ func (hs *HTTPServer) GetPluginSettingByID(c *contextmodel.ReqContext) response.
 func (hs *HTTPServer) UpdatePluginSetting(c *contextmodel.ReqContext) response.Response {
 	cmd := pluginsettings.UpdatePluginSettingCmd{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while updating plugin setting", err)
 	}
 	pluginID := web.Params(c.Req)[":pluginId"]
 
@@ -460,7 +461,8 @@ func (hs *HTTPServer) GetPluginErrorsList(c *contextmodel.ReqContext) response.R
 func (hs *HTTPServer) InstallPlugin(c *contextmodel.ReqContext) response.Response {
 	dto := dtos.InstallPluginCommand{}
 	if err := web.Bind(c.Req, &dto); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code changes
+		return response.Error(http.StatusBadRequest, "bad request data while installing plugin", err)
 	}
 	pluginID := web.Params(c.Req)[":pluginId"]
 

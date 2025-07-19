@@ -28,6 +28,7 @@ import { TokenRevokedModal } from 'app/features/users/TokenRevokedModal';
 import { DashboardDTO, FolderDTO } from 'app/types';
 
 import { ShowModalReactEvent } from '../../types/events';
+import { t } from '../internationalization';
 import { isContentTypeJson, parseInitFromOptions, parseResponseBody, parseUrlFromOptions } from '../utils/fetch';
 import { isDataQuery, isLocalUrl } from '../utils/query';
 
@@ -148,11 +149,19 @@ export class BackendSrv implements BackendService {
     const requestId = options.requestId ?? `chunked-${this.chunkRequestId++}`;
     const controller = new AbortController();
     const url = parseUrlFromOptions(options);
+    // BMC code starts 
+    if (!!this.deviceID && options.headers) {
+      options.headers['X-Grafana-Device-Id'] = `${this.deviceID}`;
+    }
+    options = this.parseRequestOptions(options);
+    // BMC code end
     const init = parseInitFromOptions({
       ...options,
       requestId,
       abortSignal: controller.signal,
     });
+    
+    
 
     return new Observable((observer) => {
       let done = false;
@@ -339,10 +348,16 @@ export class BackendSrv implements BackendService {
       return;
     }
 
-    const data: { message: string } = response.data as any;
+    //BMC code changes
+    const data: { bhdCode: string; message: string } = response.data as any;
 
     if (data?.message) {
-      this.dependencies.appEvents.emit(AppEvents.alertSuccess, [data.message]);
+      if (data?.bhdCode) {
+        let localizedMsg = translatedSuccessMessage(data.bhdCode, data.message);
+        this.dependencies.appEvents.emit(AppEvents.alertSuccess, [localizedMsg]);
+      } else {
+        this.dependencies.appEvents.emit(AppEvents.alertSuccess, [data.message]);
+      }
     }
   }
 
@@ -369,6 +384,12 @@ export class BackendSrv implements BackendService {
     let description = '';
     let message = err.data.message;
 
+    //BMC code
+    if (err.data.bhdCode) {
+      message = translatedErrorMessage(err.data.bhdCode, message);
+      console.error(`[BHDCode: ${err.data.bhdCode}] ${err.statusText} - ${err.data.message}`);
+    }
+
     // Sometimes we have a better error message on err.message
     if (message === 'Unexpected error' && err.message) {
       message = err.message;
@@ -376,13 +397,13 @@ export class BackendSrv implements BackendService {
 
     if (message.length > 80) {
       description = message;
-      message = 'Error';
+      message = t('bmc.notifications.error.error-text', 'Error');
     }
 
     // Validation
     if (err.status === 422) {
       description = err.data.message;
-      message = 'Validation failed';
+      message = t('bmc.notifications.error.failed-validation', 'Validation failed');
     }
 
     this.dependencies.appEvents.emit(err.status < 500 ? AppEvents.alertWarning : AppEvents.alertError, [
@@ -594,7 +615,7 @@ export class BackendSrv implements BackendService {
 
   /** @deprecated */
   search(query: Parameters<typeof this.get>[1]): Promise<DashboardSearchItem[]> {
-    return this.get('/api/search', query);
+    return this.get('/api/search', { ...query, lang: config.bootData.user.language ?? '' });
   }
 
   /** @deprecated */
@@ -638,4 +659,21 @@ export const getBackendSrv = (): BackendSrv => backendSrv;
 interface ValidateDashboardResponse {
   isValid: boolean;
   message?: string;
+}
+
+//BMC code
+function translatedSuccessMessage(bhdCode: string, msg: string): string {
+  if (bhdCode) {
+    const translationKey = `bmc.notification.success.${bhdCode}`;
+    return t(translationKey, msg);
+  }
+  return t('bmc.notifications.success.success-text', 'Success');
+}
+
+export function translatedErrorMessage(bhdCode: string, msg: string): string {
+  if (bhdCode) {
+    const translationKey = `bmc.notification.error.${bhdCode}`;
+    return t(translationKey, msg);
+  }
+  return t('bmc.notifications.error.unknown-error', 'Error unknown');
 }

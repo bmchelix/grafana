@@ -167,17 +167,17 @@ func (ss *sqlStore) Update(ctx context.Context, cmd *org.UpdateOrgCommand) error
 }
 
 func isOrgNameTaken(name string, existingId int64, sess *db.Session) (bool, error) {
-	// check if org name is taken
-	var org org.Org
-	exists, err := sess.Where("name=?", name).Get(&org)
-
-	if err != nil {
-		return false, nil
-	}
-
-	if exists && existingId != org.ID {
-		return true, nil
-	}
+	// BMC inline change: Ignore name check on org
+	// var org org.Org
+	// exists, err := sess.Where("name=?", name).Get(&org)
+	//
+	// if err != nil {
+	// 	return false, nil
+	// }
+	//
+	// if exists && existingId != org.ID {
+	// 	return true, nil
+	// }
 
 	return false, nil
 }
@@ -220,6 +220,12 @@ func (ss *sqlStore) Delete(ctx context.Context, cmd *org.DeleteOrgCommand) error
 		}
 
 		deletes := []string{
+			// BMC Change: Starts
+			"DELETE FROM user_bhd_role where org_id = ?",
+			"DELETE FROM team_bhd_role where org_id = ?",
+			"DELETE FROM bhd_role_permission where org_id = ?",
+			"DELETE FROM bhd_role where org_id = ?",
+			// BMC Change: Ends
 			"DELETE FROM star WHERE org_id = ?",
 			"DELETE FROM playlist_item WHERE playlist_id IN (SELECT id FROM playlist WHERE org_id = ?)",
 			"DELETE FROM playlist WHERE org_id = ?",
@@ -320,6 +326,9 @@ func (ss *sqlStore) Search(ctx context.Context, query *org.SearchOrgsQuery) ([]*
 // CreateWithMember creates an organization with a certain name and a certain user as member.
 func (ss *sqlStore) CreateWithMember(ctx context.Context, cmd *org.CreateOrgCommand) (*org.Org, error) {
 	orga := org.Org{
+		// BMC code - next line
+		// Abhishek_04292021, changes to support tenantid as org id with 7.5.4 upgrade.
+		ID:      cmd.ID,
 		Name:    cmd.Name,
 		Created: time.Now(),
 		Updated: time.Now(),

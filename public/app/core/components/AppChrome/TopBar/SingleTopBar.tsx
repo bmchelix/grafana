@@ -1,6 +1,7 @@
 import { css } from '@emotion/css';
 import { cloneDeep } from 'lodash';
 import { memo } from 'react';
+import { connect } from 'react-redux';
 
 import { GrafanaTheme2, NavModelItem } from '@grafana/data';
 import { Dropdown, Icon, Stack, ToolbarButton, useStyles2 } from '@grafana/ui';
@@ -9,7 +10,8 @@ import { useGrafana } from 'app/core/context/GrafanaContext';
 import { contextSrv } from 'app/core/core';
 import { t } from 'app/core/internationalization';
 import { HOME_NAV_ID } from 'app/core/reducers/navModel';
-import { useSelector } from 'app/types';
+import { CustomConfiguration } from 'app/features/org/state/configuration';
+import { useSelector, StoreState } from 'app/types';
 
 import { Branding } from '../../Branding/Branding';
 import { Breadcrumbs } from '../../Breadcrumbs/Breadcrumbs';
@@ -34,12 +36,24 @@ interface Props {
   onToggleKioskMode(): void;
 }
 
-export const SingleTopBar = memo(function SingleTopBar({
+// BMC Change: Connect to redux
+type ReduxProps = {
+  configuredLinks?: CustomConfiguration;
+};
+
+// BMC Change: Connect to redux
+const mapStateToProps = (state: StoreState): ReduxProps => ({
+  configuredLinks: state.dashboard.configurableLinks,
+});
+
+// You can use the connected component if needed elsewhere
+export const UnconnectedSingleTopBar = memo(function SingleTopBar({
   onToggleMegaMenu,
   onToggleKioskMode,
   pageNav,
   sectionNav,
-}: Props) {
+  configuredLinks,
+}: Props & ReduxProps) {
   const { chrome } = useGrafana();
   const state = chrome.useState();
   const menuDockedAndOpen = !state.chromeless && state.megaMenuDocked && state.megaMenuOpen;
@@ -47,7 +61,8 @@ export const SingleTopBar = memo(function SingleTopBar({
   const navIndex = useSelector((state) => state.navIndex);
 
   const helpNode = cloneDeep(navIndex['help']);
-  const enrichedHelpNode = helpNode ? enrichHelpItem(helpNode) : undefined;
+  // // BMC Change: Next line to enriched configurable links
+  const enrichedHelpNode = helpNode ? enrichHelpItem(helpNode, configuredLinks) : undefined;
   const profileNode = navIndex['profile'];
   const homeNav = useSelector((state) => state.navIndex)[HOME_NAV_ID];
   const breadcrumbs = buildBreadcrumbs(sectionNav, pageNav, homeNav);
@@ -94,6 +109,8 @@ export const SingleTopBar = memo(function SingleTopBar({
     </div>
   );
 });
+
+export const SingleTopBar = connect(mapStateToProps)(UnconnectedSingleTopBar);
 
 const getStyles = (theme: GrafanaTheme2, menuDockedAndOpen: boolean) => ({
   layout: css({

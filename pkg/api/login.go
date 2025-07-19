@@ -12,6 +12,7 @@ import (
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/apimachinery/errutil"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
+	"github.com/grafana/grafana/pkg/bhdcodes"
 	"github.com/grafana/grafana/pkg/infra/metrics"
 	"github.com/grafana/grafana/pkg/infra/network"
 	"github.com/grafana/grafana/pkg/middleware"
@@ -132,8 +133,7 @@ func (hs *HTTPServer) LoginView(c *contextmodel.ReqContext) {
 			hs.Cfg.AuthProxy.EnableLoginToken &&
 			c.SignedInUser.IsAuthenticatedBy(loginservice.AuthProxyAuthModule, loginservice.LDAPAuthModule) {
 			user := &user.User{ID: c.SignedInUser.UserID, Email: c.SignedInUser.Email, Login: c.SignedInUser.Login}
-			err := hs.loginUserWithUser(user, c)
-			if err != nil {
+			if err := hs.loginUserWithUser(user, c); err != nil {
 				c.Handle(hs.Cfg, http.StatusInternalServerError, "Failed to sign in user", err)
 				return
 			}
@@ -222,7 +222,8 @@ func (hs *HTTPServer) getRedirectToForAutoLogin(c *contextmodel.ReqContext) stri
 
 func (hs *HTTPServer) LoginAPIPing(c *contextmodel.ReqContext) response.Response {
 	if c.IsSignedIn || c.IsAnonymous {
-		return response.JSON(http.StatusOK, util.DynMap{"message": "Logged in"})
+		//BMC code change
+		return response.JSON(http.StatusOK, util.DynMap{"message": "Logged in", "bhdCode": bhdcodes.LoggedIn})
 	}
 
 	return response.Error(http.StatusUnauthorized, "Unauthorized", nil)
@@ -292,11 +293,19 @@ func (hs *HTTPServer) Logout(c *contextmodel.ReqContext) {
 	if hs.samlSingleLogoutEnabled() {
 		if c.SignedInUser.GetAuthenticatedBy() == loginservice.SAMLAuthModule {
 			c.Redirect(hs.Cfg.AppSubURL + "/logout/saml")
+			//BMC Code - start
+			//Remove helix_jwt_token cookie on logout operation
+			cookies.DeleteCookie(c.Resp, "helix_jwt_token", hs.CookieOptionsFromCfg)
+			//BMC Code - end
 			return
 		}
 	}
 
 	redirect, err := hs.authnService.Logout(c.Req.Context(), c.SignedInUser, c.UserToken)
+	//BMC Code - start
+	//Remove helix_jwt_token cookie on logout operation
+	cookies.DeleteCookie(c.Resp, "helix_jwt_token", hs.CookieOptionsFromCfg)
+	//BMC Code - end
 	authn.DeleteSessionCookie(c.Resp, hs.Cfg)
 
 	if err != nil {

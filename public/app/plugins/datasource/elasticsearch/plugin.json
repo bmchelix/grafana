@@ -28,5 +28,7 @@
   "backend": true,
   "queryOptions": {
     "minInterval": true
-  }
+  },
+
+  "state": "alpha"
 }
