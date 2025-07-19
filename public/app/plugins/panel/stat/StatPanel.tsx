@@ -7,6 +7,7 @@ import {
   FieldType,
   getDisplayValueAlignmentFactors,
   getFieldDisplayValues,
+  LoadingState,
   NumericRange,
   PanelProps,
 } from '@grafana/data';
@@ -115,12 +116,14 @@ export class StatPanel extends PureComponent<PanelProps<Options>> {
       sparkline: options.graphMode !== BigValueGraphMode.None,
       percentChange: options.showPercentChange,
       timeZone,
+      // BMC code changes start
+      refreshToLoad: data.state === LoadingState.RefreshToLoad,
+      // BMC code changes end
     });
   };
 
   render() {
     const { height, options, width, data, renderCounter } = this.props;
-
     return (
       <VizRepeater
         getValues={this.getValues}

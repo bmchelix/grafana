@@ -109,20 +109,22 @@ export class DashNavTimeControls extends Component<Props> {
 
     return (
       <>
-        <TimePickerWithHistory
-          value={timePickerValue}
-          onChange={this.onChangeTimePicker}
-          timeZone={timeZone}
-          fiscalYearStartMonth={fiscalYearStartMonth}
-          onMoveBackward={this.onMoveBack}
-          onMoveForward={this.onMoveForward}
-          onZoom={this.onZoom}
-          onChangeTimeZone={this.onChangeTimeZone}
-          onChangeFiscalYearStartMonth={this.onChangeFiscalYearStartMonth}
-          isOnCanvas={isOnCanvas}
-          onToolbarTimePickerClick={this.props.onToolbarTimePickerClick}
-          weekStart={weekStart}
-        />
+        {!dashboard.timepicker.hidden && (
+          <TimePickerWithHistory
+            value={timePickerValue}
+            onChange={this.onChangeTimePicker}
+            timeZone={timeZone}
+            fiscalYearStartMonth={fiscalYearStartMonth}
+            onMoveBackward={this.onMoveBack}
+            onMoveForward={this.onMoveForward}
+            onZoom={this.onZoom}
+            onChangeTimeZone={this.onChangeTimeZone}
+            onChangeFiscalYearStartMonth={this.onChangeFiscalYearStartMonth}
+            isOnCanvas={isOnCanvas}
+            onToolbarTimePickerClick={this.props.onToolbarTimePickerClick}
+            weekStart={weekStart}
+          />
+        )}
         <RefreshPicker
           onIntervalChanged={this.onChangeRefreshInterval}
           onRefresh={this.onRefreshClick}

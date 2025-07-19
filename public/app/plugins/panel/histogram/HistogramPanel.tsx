@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { PanelProps, buildHistogram, getHistogramFields } from '@grafana/data';
+import { LoadingState, PanelProps, buildHistogram, getHistogramFields } from '@grafana/data';
 import { histogramFieldsToFrame } from '@grafana/data/src/transformations/transformers/histogram';
 import { TooltipDisplayMode, TooltipPlugin2, useTheme2 } from '@grafana/ui';
 import { TooltipHoverMode } from '@grafana/ui/src/components/uPlot/plugins/TooltipPlugin2';
@@ -45,6 +45,15 @@ export const HistogramPanel = ({ data, options, width, height }: Props) => {
 
     return histogramFieldsToFrame(hist, theme);
   }, [data.series, options, theme]);
+  // BMC changes
+  if (data?.state === LoadingState.RefreshToLoad) {
+    return (
+      <div className="panel-empty">
+        <p>Refresh panels to fetch data</p>
+      </div>
+    );
+  }
+  // BMC changes end
 
   if (!histogram || !histogram.fields.length) {
     return (

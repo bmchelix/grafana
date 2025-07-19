@@ -2,7 +2,7 @@ import { css } from '@emotion/css';
 import { useMemo, createRef } from 'react';
 import { useAsync } from 'react-use';
 
-import { Field, LinkModel, PanelProps } from '@grafana/data';
+import { Field, LinkModel, LoadingState, PanelProps } from '@grafana/data';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { TraceView } from 'app/features/explore/TraceView/TraceView';
 import { SpanLinkFunc } from 'app/features/explore/TraceView/components';
@@ -27,7 +27,15 @@ export const TracesPanel = ({ data, options }: PanelProps<TracesPanelOptions>) =
   const dataSource = useAsync(async () => {
     return await getDataSourceSrv().get(data.request?.targets[0].datasource?.uid);
   });
-
+  // BMC changes
+  if (data?.state === LoadingState.RefreshToLoad) {
+    return (
+      <div className="panel-empty">
+        <p>Refresh panels to fetch data</p>
+      </div>
+    );
+  }
+  // BMC changes end
   if (!data || !data.series.length || !traceProp) {
     return (
       <div className="panel-empty">

@@ -6,6 +6,7 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { selectors as e2eSelectors } from '@grafana/e2e-selectors/src';
 import { LinkButton, RadioButtonGroup, useStyles2, FilterInput, EmptyState } from '@grafana/ui';
 import { Page } from 'app/core/components/Page/Page';
+import config from 'app/core/config';
 import { contextSrv } from 'app/core/core';
 import { t } from 'app/core/internationalization';
 
@@ -74,8 +75,18 @@ const UserListAdminPageUnConnected = ({
     <Page.Contents>
       <div className={styles.actionBar} data-testid={selectors.container}>
         <div className={styles.row}>
+          {
+            //BMC Code : Accessibility Change (Next line, Added a label for FilterInput)
+          }
+          <label htmlFor="user-serach-filter-input" className={styles.hiddenLabel}>
+            Search user by login, email, or name{' '}
+          </label>
+          {
+            //BMC Code : Accessibility Change | Added id attribute to bind it to label element
+          }
           <FilterInput
             placeholder="Search user by login, email, or name."
+            id="user-serach-filter-input"
             autoFocus={true}
             value={query}
             onChange={changeQuery}
@@ -92,7 +103,8 @@ const UserListAdminPageUnConnected = ({
           {extraFilters.map((FilterComponent, index) => (
             <FilterComponent key={index} filters={filters} onChange={changeFilter} className={styles.filter} />
           ))}
-          {contextSrv.hasPermission(AccessControlAction.UsersCreate) && (
+          {/* BMC Code */}
+          {contextSrv.hasPermission(AccessControlAction.UsersCreate) && config.buildInfo.env === 'development' && (
             <LinkButton href="admin/users/create" variant="primary">
               New user
             </LinkButton>
@@ -155,6 +167,18 @@ const getStyles = (theme: GrafanaTheme2) => {
         width: '100%',
       },
     }),
+    // BMC Code : Accessibility Change starts here.
+    hiddenLabel: css({
+      border: '0',
+      clip: 'rect(0 0 0 0)',
+      height: '1px',
+      margin: '-1px',
+      overflow: 'hidden',
+      padding: '0',
+      position: 'absolute',
+      width: '1px',
+    }),
+    // BMC Code : Accessibility Change ends here.
   };
 };
 

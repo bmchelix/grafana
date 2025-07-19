@@ -44,9 +44,10 @@ const Toolbar = ({ dashboard }: { dashboard: DashboardModel }) => {
       pageIcon={!conf.headerLogoHide ? 'grafana' : undefined}
       buttonOverflowAlignment="right"
     >
-      {!dashboard.timepicker.hidden && (
-        <DashNavTimeControls dashboard={dashboard} onChangeTimeZone={onChangeTimeZone} />
-      )}
+      {/* BMC code changes, always show refresh button so removing boolean check below */}
+      {/* {!dashboard.timepicker.hidden && ( */}
+      <DashNavTimeControls dashboard={dashboard} onChangeTimeZone={onChangeTimeZone} />
+      {/* )} */}
     </PageToolbar>
   );
 };

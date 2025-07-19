@@ -5,6 +5,7 @@ import * as React from 'react';
 import { DataQuery, DataSourceInstanceSettings, GrafanaTheme2 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Icon, Input, FieldValidationMessage, useStyles2 } from '@grafana/ui';
+import { t } from 'app/core/internationalization';
 import { DataSourcePicker } from 'app/features/datasources/components/picker/DataSourcePicker';
 
 export interface Props<TQuery extends DataQuery = DataQuery> {
@@ -50,15 +51,22 @@ export const QueryEditorRowHeader = <TQuery extends DataQuery>(props: Props<TQue
 
   const onInputChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
     const newName = event.currentTarget.value.trim();
-
     if (newName.length === 0) {
-      setValidationError('An empty query name is not allowed');
+      // BMC Change: To enable localization for below text
+      setValidationError(
+        t('bmcgrafana.dashboards.edit-panel.query.empty-query-edit-warning', 'An empty query name is not allowed')
+      );
+      // BMC Change ends
       return;
     }
 
     for (const otherQuery of queries) {
       if (otherQuery !== query && newName === otherQuery.refId) {
-        setValidationError('Query name already exists');
+        // BMC Change: To enable localization for below text
+        setValidationError(
+          t('bmcgrafana.dashboards.edit-panel.query.query-already-exist-warning', 'Query name already exists')
+        );
+        // BMC Change ends
         return;
       }
     }
@@ -86,22 +94,36 @@ export const QueryEditorRowHeader = <TQuery extends DataQuery>(props: Props<TQue
     <>
       <div className={styles.wrapper}>
         {!isEditing && (
-          <button
-            className={styles.queryNameWrapper}
-            aria-label={selectors.components.QueryEditorRow.title(query.refId)}
-            title="Edit query name"
-            onClick={onEditQuery}
-            data-testid="query-name-div"
-            type="button"
-          >
-            <span className={styles.queryName}>{query.refId}</span>
-            <Icon name="pen" className={styles.queryEditIcon} size="sm" />
-          </button>
+          //BMC Change next 2 line (label element)
+          <>
+            <label className={styles.label} htmlFor={`query-name-button-${query.refId}`}>
+              Query name :
+            </label>
+            <button
+              id={`query-name-button-${query.refId}`}
+              className={styles.queryNameWrapper}
+              aria-label={selectors.components.QueryEditorRow.title(query.refId)}
+              // BMC Change: To enable localization for below text
+              title={t('bmcgrafana.dashboards.edit-panel.query.edit-query-name-title', 'Edit query name')}
+              // BMC Change ends
+              onClick={onEditQuery}
+              data-testid="query-name-div"
+              type="button"
+            >
+              <span className={styles.queryName}>{query.refId}</span>
+              <Icon name="pen" className={styles.queryEditIcon} size="sm" />
+            </button>
+          </>
         )}
 
         {isEditing && (
+          //BMC Change next line (label element)
           <>
+            <label htmlFor={`query-name-button-${query.refId}`} className={styles.label}>
+              Query name :
+            </label>
             <Input
+              id={`query-name-button-${query.refId}`}
               type="text"
               defaultValue={query.refId}
               onBlur={onEditQueryBlur}
@@ -145,6 +167,22 @@ const renderDataSource = <TQuery extends DataQuery>(
 
 const getStyles = (theme: GrafanaTheme2) => {
   return {
+    //BMC Change :To add css to label element
+    label: css`
+      display: flex;
+      align-items: start;
+      font-weight: 500;
+      font-size: 12px;
+      background-color: rgb(244, 245, 245);
+      height: 20px;
+      line-height: 20px;
+      margin-right: 8px;
+      border: none;
+      width: auto;
+      color: rgb(36, 41, 46);
+      margin: 0 8px;
+    `,
+    // BMC Change ends here.
     wrapper: css`
       label: Wrapper;
       display: flex;
@@ -162,16 +200,13 @@ const getStyles = (theme: GrafanaTheme2) => {
       margin: 0;
       background: transparent;
       overflow: hidden;
-
       &:hover {
         background: ${theme.colors.action.hover};
         border: 1px dashed ${theme.colors.border.strong};
       }
-
       &:focus {
         border: 2px solid ${theme.colors.primary.border};
       }
-
       &:hover,
       &:focus {
         .query-name-edit-icon {

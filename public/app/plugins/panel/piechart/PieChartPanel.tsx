@@ -8,6 +8,7 @@ import {
   FieldDisplay,
   formattedValueToString,
   getFieldDisplayValues,
+  LoadingState,
   PanelProps,
 } from '@grafana/data';
 import { PanelDataErrorView } from '@grafana/runtime';
@@ -50,6 +51,9 @@ export function PieChartPanel(props: Props) {
     theme: theme,
     replaceVariables,
     timeZone,
+    // BMC code changes start
+    refreshToLoad: data.state === LoadingState.RefreshToLoad,
+    // BMC code changes end
   });
 
   if (!hasFrames(fieldDisplayValues)) {
