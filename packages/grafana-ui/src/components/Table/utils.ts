@@ -717,7 +717,7 @@ export function guessLongestField(fieldConfig: any, data: DataFrame) {
   if (
     fieldConfig !== undefined &&
     fieldConfig.defaults.custom !== undefined &&
-    fieldConfig.defaults.custom.cellOptions.wrapText
+    fieldConfig.defaults.custom.cellOptions?.wrapText
   ) {
     const stringFields = data.fields.filter((field: Field) => field.type === FieldType.string);
 

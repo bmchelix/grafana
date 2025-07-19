@@ -24,6 +24,7 @@ import { config, locationService } from '@grafana/runtime';
 import { notifyApp } from 'app/core/actions';
 import { contextSrv } from 'app/core/services/context_srv';
 import { getTimeSrv } from 'app/features/dashboard/services/TimeSrv';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { DashboardModel } from 'app/features/dashboard/state';
 import { store } from 'app/store/store';
 
@@ -121,6 +122,29 @@ export const initDashboardTemplating = (key: string, dashboard: DashboardModel):
       if (!variableAdapters.getIfExists(model.type)) {
         continue;
       }
+
+      // BMC code starts - DRJ71-14389 - load-blank-dashboard
+      // Check if property is set + not an automated dashboards loads like those by scheduler+renderer.
+      if (dashboard.getUseDefaultVariableValues() === true && !isPuppeteer()) {
+        // setting for only query type variables now. Need to check if needs to be set for other types like daterange, etc.
+        if (model.type === 'query') {
+          (model as QueryVariableModel).useDefaultValues = true;
+
+          // Functionality is similar to onTimeRangeChanged i.e variable should gets "reloaded" when user clicks the dashbaord reload button.
+          // If user clicked dashboard reload and refresh = onDashboardLoad, then the variable wasn't getting reloaded so changing it to onTimeRangeChanged.
+          // Unfortunately also means that the variables will get reloaded when time range is changed
+          (model as QueryVariableModel).refresh = VariableRefresh.onRefreshButtonClick;
+        }
+      } else if (dashboard.getUseDefaultVariableValues() === false) {
+        // Set back to default values if user has not enabled the feature (or disabled the feature)
+        if (model.type === 'query') {
+          (model as QueryVariableModel).useDefaultValues = false;
+          if ((model as QueryVariableModel).refresh === VariableRefresh.onRefreshButtonClick) {
+            (model as QueryVariableModel).refresh = VariableRefresh.onDashboardLoad;
+          }
+        }
+      }
+      // BMC code ends
 
       dispatch(
         toKeyedAction(key, addVariable(toVariablePayload(model, { global: false, index: orderIndex++, model })))
@@ -365,7 +389,8 @@ export const processVariable = (
       const refreshableVariable = variable as QueryVariableModel;
       if (
         refreshableVariable.refresh === VariableRefresh.onDashboardLoad ||
-        refreshableVariable.refresh === VariableRefresh.onTimeRangeChanged
+        refreshableVariable.refresh === VariableRefresh.onTimeRangeChanged ||
+        refreshableVariable.refresh === VariableRefresh.onRefreshButtonClick
       ) {
         await dispatch(updateOptions(toKeyedVariableIdentifier(refreshableVariable)));
         return;
@@ -503,8 +528,9 @@ export const validateVariableSelectionState = (
     if (Array.isArray(current.value)) {
       const selected = selectOptionsForCurrentValue(variableInState);
 
+      // BMC change starts: feature flag code
       // if none pick first
-      if (selected.length === 0) {
+      if (!getFeatureStatus('bhd_disable_default_variable_selection') && selected.length === 0) {
         const option = variableInState.options[0];
         return setValue(variableInState, {
           value: typeof option.value === 'string' ? [option.value] : option.value,
@@ -636,7 +662,9 @@ export const variableUpdated = (
 
     return Promise.all(promises).then(() => {
       if (emitChangeEvents) {
-        events.publish(new VariablesChanged(event));
+        if (state.dashboard.getModel()?.getOpenEmptyPanels() === false) {
+          events.publish(new VariablesChanged(event));
+        }
         locationService.partial(getQueryWithVariables(rootStateKey, getState));
       }
     });
@@ -664,7 +692,10 @@ const dfs = (
       // when a variable is refreshed on time range change, we need to add that variable to be refreshed and mark its children as visited
       if (
         childVariable &&
-        childVariable.refresh === VariableRefresh.onTimeRangeChanged &&
+        (childVariable.refresh === VariableRefresh.onTimeRangeChanged ||
+          // BMC code changes - DRJ71-14389
+          childVariable.refresh === VariableRefresh.onRefreshButtonClick) &&
+        // BMC code changes end - DRJ71-14389
         variablesRefreshTimeRange.indexOf(childVariable) === -1
       ) {
         variablesRefreshTimeRange.push(childVariable);
@@ -765,7 +796,10 @@ const getVariablesThatNeedRefreshOld = (key: string, state: StoreState): Variabl
   const variablesThatNeedRefresh = allVariables.filter((variable) => {
     if ('refresh' in variable && 'options' in variable) {
       const variableWithRefresh = variable;
-      return variableWithRefresh.refresh === VariableRefresh.onTimeRangeChanged;
+      return (
+        variableWithRefresh.refresh === VariableRefresh.onTimeRangeChanged ||
+        variableWithRefresh.refresh === VariableRefresh.onRefreshButtonClick
+      );
     }
     return false;
   }) as VariableWithOptions[];
@@ -853,8 +887,9 @@ export const templateVarsChangedInUrl =
       if (vars[key].removed) {
         // for some reason (panel|data link without variable) the variable url value (var-xyz) has been removed from the url
         // so we need to revert the value to the value stored in dashboard json
+        // BMC Code, If condition inline
         const variableInModel = dashboard?.templating.list.find((v) => v.name === variable.name);
-        if (variableInModel && hasCurrent(variableInModel)) {
+        if (variableInModel && hasCurrent(variableInModel) && !getFeatureStatus('bhd_disable_default_variable_selection')) {
           value = variableInModel.current.value; // revert value to the value stored in dashboard json
         }
 
@@ -950,6 +985,10 @@ export const initVariablesTransaction =
       dispatch(migrateVariablesDatasourceNameToRef(uid));
       // Process all variable updates
       await dispatch(processVariables(uid));
+      // BMC code changes start
+      // Unset useDefaultValues property of variables
+      dispatch(unsetUseDefaultValues(uid));
+      // BMC code changes end
       // Set transaction as complete
       dispatch(toKeyedAction(uid, variablesCompleteTransaction({ uid })));
     } catch (err) {
@@ -1113,3 +1152,23 @@ export function upgradeLegacyQueries(
 function isDataQueryType(query: unknown): query is DataQuery {
   return isObject(query) && 'refId' in query && typeof query.refId === 'string';
 }
+
+// BMC code starts - DRJ71-14389 - load-blank-dashboard - vishaln
+function unsetUseDefaultValues(uid: string): ThunkResult<void> {
+  return (dispatch, getState) => {
+    const variables = getVariablesByKey(uid, getState());
+    for (const variable of variables) {
+      if (variable.type === 'query' && variable.useDefaultValues) {
+        dispatch(
+          toKeyedAction(
+            uid,
+            changeVariableProp(toVariablePayload(variable, { propName: 'useDefaultValues', propValue: false }))
+          )
+        );
+      }
+    }
+  };
+}
+
+const isPuppeteer = () => navigator.webdriver === true;
+// BMC code ends

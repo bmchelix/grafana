@@ -605,6 +605,9 @@ func (d *dashboardStore) deleteDashboard(cmd *dashboards.DeleteDashboardCommand,
 	}
 
 	sqlStatements := []statement{
+		// BMC Change: Delete localized names
+		{SQL: "Delete from bhd_localization where resource_uid in (select d.uid from dashboard d where id = ?)", args: []any{dashboard.ID}},
+		// End
 		{SQL: "DELETE FROM dashboard_tag WHERE dashboard_id = ? ", args: []any{dashboard.ID}},
 		{SQL: "DELETE FROM star WHERE dashboard_id = ? ", args: []any{dashboard.ID}},
 		{SQL: "DELETE FROM dashboard WHERE id = ?", args: []any{dashboard.ID}},
@@ -612,6 +615,10 @@ func (d *dashboardStore) deleteDashboard(cmd *dashboards.DeleteDashboardCommand,
 		{SQL: "DELETE FROM dashboard_version WHERE dashboard_id = ?", args: []any{dashboard.ID}},
 		{SQL: "DELETE FROM dashboard_provisioning WHERE dashboard_id = ?", args: []any{dashboard.ID}},
 		{SQL: "DELETE FROM dashboard_acl WHERE dashboard_id = ?", args: []any{dashboard.ID}},
+		// BMC code
+		{SQL: "DELETE from report_scheduler where id = (select report_scheduler_id from report_data where dashboard_id = ?)", args: []any{dashboard.ID}},
+		{SQL: "DELETE FROM report_data WHERE dashboard_id = ?", args: []any{dashboard.ID}},
+		// End
 	}
 
 	if dashboard.IsFolder {
@@ -687,13 +694,27 @@ func (d *dashboardStore) deleteChildrenDashboardAssociations(sess *db.Session, d
 	}
 
 	if len(dashIds) > 0 {
+		// BMC Change: Next line
+		localizationResources := ""
+
 		for _, dash := range dashIds {
 			// remove all access control permission with child dashboard scopes
 			if err := d.deleteResourcePermissions(sess, dashboard.OrgID, ac.GetResourceScopeUID("dashboards", dash.Uid)); err != nil {
 				return err
 			}
+
+			// BMC Change: Below block
+			if localizationResources != "" {
+				localizationResources += ", "
+			}
+			localizationResources += fmt.Sprintf(`'%s'`, dash.Uid)
 		}
 
+		// BMC Change: Below sql run
+		_, err := sess.Exec(fmt.Sprintf(`DELETE FROM bhd_localization where org_id = %v and resource_uid in (%s)`, dashboard.OrgID, localizationResources))
+		if err != nil {
+			return err
+		}
 		childrenDeletes := []string{
 			"DELETE FROM dashboard_tag WHERE dashboard_id IN (SELECT id FROM dashboard WHERE org_id = ? AND folder_id = ?)",
 			"DELETE FROM star WHERE dashboard_id IN (SELECT id FROM dashboard WHERE org_id = ? AND folder_id = ?)",
@@ -795,6 +816,26 @@ func (d *dashboardStore) GetDashboardUIDByID(ctx context.Context, query *dashboa
 	return us, nil
 }
 
+// BMC CODE STARTS
+func (d *dashboardStore) GetDashboardsByFolderUID(ctx context.Context, query *dashboards.GetDashboardsByFolderUIDQuery) ([]*dashboards.Dashboard, error) {
+	var dashboards = make([]*dashboards.Dashboard, 0)
+	err := d.store.ReadReplica().WithDbSession(ctx, func(sess *db.Session) error {
+		if len(query.FolderUID) == 0 {
+			return errors.New("folderuid is null")
+		}
+
+		// remove soft deleted dashboards from the response
+		err := sess.Where("deleted IS NULL AND folder_uid = ? AND org_id = ?", query.FolderUID, query.OrgID).Find(&dashboards)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return dashboards, nil
+}
+
+//BMC CODE ENDS
+
 func (d *dashboardStore) GetDashboards(ctx context.Context, query *dashboards.GetDashboardsQuery) ([]*dashboards.Dashboard, error) {
 	var dashboards = make([]*dashboards.Dashboard, 0)
 	err := d.store.ReadReplica().WithDbSession(ctx, func(sess *db.Session) error {
@@ -857,12 +898,13 @@ func (d *dashboardStore) FindDashboards(ctx context.Context, query *dashboards.F
 	}
 
 	if len(query.Title) > 0 {
-		filters = append(filters, searchstore.TitleFilter{Dialect: d.store.ReadReplica().GetDialect(), Title: query.Title})
+		filters = append(filters, searchstore.TitleFilter{Dialect: d.store.ReadReplica().GetDialect(), Title: query.Title, Localized: query.Lang != ""})
 	}
 
 	if len(query.Type) > 0 {
 		filters = append(filters, searchstore.TypeFilter{Dialect: d.store.ReadReplica().GetDialect(), Type: query.Type})
 	}
+
 	metrics.MFolderIDsServiceCount.WithLabelValues(metrics.Dashboard).Inc()
 	// nolint:staticcheck
 	if len(query.FolderIds) > 0 {
@@ -888,7 +930,7 @@ func (d *dashboardStore) FindDashboards(ctx context.Context, query *dashboards.F
 	filters = append(filters, searchstore.DeletedFilter{Deleted: query.IsDeleted})
 
 	var res []dashboards.DashboardSearchProjection
-	sb := &searchstore.Builder{Dialect: d.store.ReadReplica().GetDialect(), Filters: filters, Features: d.features}
+	sb := &searchstore.Builder{Dialect: d.store.ReadReplica().GetDialect(), Filters: filters, Features: d.features, Lang: query.Lang}
 
 	limit := query.Limit
 	if limit < 1 {

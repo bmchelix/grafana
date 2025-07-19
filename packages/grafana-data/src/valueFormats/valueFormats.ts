@@ -180,6 +180,21 @@ export function locale(value: number, decimals: DecimalCount): FormattedValue {
   };
 }
 
+/* BMC Code starts here */
+export function europeanFormat(value: number, decimals?: DecimalCount): FormattedValue {
+  if (value == null) {
+    return { text: '' };
+  }
+  return {
+    text: value.toLocaleString('es-ES', {
+      minimumFractionDigits: decimals ?? undefined,
+      maximumFractionDigits: decimals ?? undefined,
+      useGrouping: true,
+    }),
+  };
+}
+/* BMC Code ends here */
+
 export function simpleCountUnit(symbol: string): ValueFormatter {
   const units = ['', 'K', 'M', 'B', 'T'];
   const scaler = scaledUnits(1000, units);
