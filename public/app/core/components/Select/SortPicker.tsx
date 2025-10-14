@@ -44,6 +44,9 @@ export function SortPicker({ onChange, value, placeholder, filter, getSortOption
       placeholder={placeholder ?? `Sort (Default ${DEFAULT_SORT.label})`}
       prefix={<Icon name={isDesc ? 'sort-amount-down' : 'sort-amount-up'} />}
       isClearable={isClearable}
+      //BMC Accessibility Change: Added Autofocus to immediately restore focus to the combobox
+      autoFocus
+      //BMC Accessibility Change End
     />
   );
 }
