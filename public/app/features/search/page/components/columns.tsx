@@ -184,7 +184,8 @@ export const generateColumns = (
         const parts = (access.location?.values[p.row.index] ?? '').split('/');
         const { key, ...cellProps } = p.cellProps;
         return (
-          <div key={key} {...cellProps} className={styles.cell}>
+          // BMC Code : Accessibility Change ( next 1 line)
+          <div key={key} {...cellProps} className={styles.cell} tabIndex={0}>
             {!response.isItemLoaded(p.row.index) ? (
               <Skeleton width={150} />
             ) : (
@@ -215,13 +216,18 @@ export const generateColumns = (
                     }
 
                     return (
-                      <div key={p} className={styles.locationItem}>
+                      // BMC Code : Accessibility Change ( next 1 line)
+                      <div key={p} tabIndex={0} className={styles.locationItem}>
                         {content}
                       </div>
                     );
                   }
-
-                  return <span key={p}>{p}</span>;
+                  // BMC Code : Accessibility Change ( next 1 line)
+                  return (
+                    <span key={p} tabIndex={0}>
+                      {p}
+                    </span>
+                  );
                 })}
               </div>
             )}
@@ -464,7 +470,8 @@ function makeTypeColumn(
       }
       const { key, ...cellProps } = p.cellProps;
       return (
-        <div key={key} {...cellProps} className={cx(styles.cell, styles.typeCell)}>
+        // BMC Code : Accessibility Change ( next 1 line)
+        <div key={key} {...cellProps} className={cx(styles.cell, styles.typeCell)} tabIndex={0}>
           {!response.isItemLoaded(p.row.index) ? (
             <Skeleton width={100} />
           ) : (

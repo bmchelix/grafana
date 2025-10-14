@@ -6,6 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/grafana/grafana/pkg/bhdcodes"
+	"github.com/grafana/grafana/pkg/bmc/audit"
+	"github.com/grafana/grafana/pkg/services/msp"
+
 	claims "github.com/grafana/authlib/types"
 	"github.com/grafana/grafana/pkg/api/apierrors"
 	"github.com/grafana/grafana/pkg/api/dtos"
@@ -21,7 +25,6 @@ import (
 	"github.com/grafana/grafana/pkg/services/folder"
 	"github.com/grafana/grafana/pkg/services/guardian"
 	"github.com/grafana/grafana/pkg/services/libraryelements/model"
-	"github.com/grafana/grafana/pkg/services/org"
 	"github.com/grafana/grafana/pkg/services/search"
 	"github.com/grafana/grafana/pkg/util"
 	"github.com/grafana/grafana/pkg/web"
@@ -189,13 +192,17 @@ func (hs *HTTPServer) GetFolderByID(c *contextmodel.ReqContext) response.Respons
 func (hs *HTTPServer) CreateFolder(c *contextmodel.ReqContext) response.Response {
 	cmd := folder.CreateFolderCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while creating folder", err)
 	}
 	cmd.OrgID = c.SignedInUser.GetOrgID()
 	cmd.SignedInUser = c.SignedInUser
 
 	folder, err := hs.folderService.Create(c.Req.Context(), &cmd)
 	if err != nil {
+		// BMC CODE START
+		go audit.FolderCreateAudit(c, cmd.Title, err)
+		// BMC CODE END
 		return apierrors.ToFolderErrorResponse(err)
 	}
 
@@ -212,6 +219,9 @@ func (hs *HTTPServer) CreateFolder(c *contextmodel.ReqContext) response.Response
 		return response.Err(err)
 	}
 
+	// BMC CODE START
+	go audit.FolderCreateAudit(c, cmd.Title, nil)
+	// BMC CODE END
 	// TODO set ParentUID if nested folders are enabled
 	return response.JSON(http.StatusOK, folderDTO)
 }
@@ -232,13 +242,24 @@ func (hs *HTTPServer) setDefaultFolderPermissions(ctx context.Context, orgID int
 		permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
 			UserID: userID, Permission: dashboardaccess.PERMISSION_ADMIN.String(),
 		})
+
+		// BMC code - changes for MSP: provide default permissions to org0 team
+		// ToDo: Check for user object, it is changed to identity.Requester
+		if user.GetHasExternalOrg() {
+			permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
+				TeamID: msp.GetUnrestrictedTeamID(user.GetOrgID()), Permission: dashboardaccess.PERMISSION_EDIT.String(),
+			})
+		}
+		// BMC code ends
 	}
 
 	isNested := folder.ParentUID != ""
 	if !isNested || !hs.Features.IsEnabled(ctx, featuremgmt.FlagNestedFolders) {
 		permissions = append(permissions, []accesscontrol.SetResourcePermissionCommand{
-			{BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
-			{BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// BMC code Start - Fix for DRJ71-4418 - Changes related to folder and Dashboard permission in 9.x
+			// {BuiltinRole: string(org.RoleEditor), Permission: dashboards.PERMISSION_EDIT.String()},
+			// {BuiltinRole: string(org.RoleViewer), Permission: dashboards.PERMISSION_VIEW.String()},
+			// End
 		}...)
 	}
 
@@ -260,7 +281,8 @@ func (hs *HTTPServer) MoveFolder(c *contextmodel.ReqContext) response.Response {
 	if hs.Features.IsEnabled(c.Req.Context(), featuremgmt.FlagNestedFolders) {
 		cmd := folder.MoveFolderCommand{}
 		if err := web.Bind(c.Req, &cmd); err != nil {
-			return response.Error(http.StatusBadRequest, "bad request data", err)
+			//BMC code change
+			return response.Error(http.StatusBadRequest, "bad request data when moving folder", err)
 		}
 		var err error
 
@@ -278,8 +300,10 @@ func (hs *HTTPServer) MoveFolder(c *contextmodel.ReqContext) response.Response {
 		}
 		return response.JSON(http.StatusOK, folderDTO)
 	}
+	//BMC code change
 	result := map[string]string{}
 	result["message"] = "To use this service, you need to activate nested folder feature."
+	result["bhdCode"] = bhdcodes.NestedFolderFeatureRequired
 	return response.JSON(http.StatusNotFound, result)
 }
 
@@ -298,7 +322,8 @@ func (hs *HTTPServer) MoveFolder(c *contextmodel.ReqContext) response.Response {
 func (hs *HTTPServer) UpdateFolder(c *contextmodel.ReqContext) response.Response {
 	cmd := folder.UpdateFolderCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while updating folder", err)
 	}
 
 	cmd.OrgID = c.SignedInUser.GetOrgID()
@@ -306,6 +331,9 @@ func (hs *HTTPServer) UpdateFolder(c *contextmodel.ReqContext) response.Response
 	cmd.SignedInUser = c.SignedInUser
 	result, err := hs.folderService.Update(c.Req.Context(), &cmd)
 	if err != nil {
+		// BMC CODE START
+		go audit.FolderUpdateAudit(c, *cmd.NewTitle, err)
+		// BMC COD END
 		return apierrors.ToFolderErrorResponse(err)
 	}
 	folderDTO, err := hs.newToFolderDto(c, result)
@@ -313,6 +341,9 @@ func (hs *HTTPServer) UpdateFolder(c *contextmodel.ReqContext) response.Response
 		return response.Err(err)
 	}
 
+	// BMC CODE START
+	go audit.FolderUpdateAudit(c, *cmd.NewTitle, nil)
+	// BMC COD END
 	return response.JSON(http.StatusOK, folderDTO)
 }
 
@@ -346,13 +377,46 @@ func (hs *HTTPServer) DeleteFolder(c *contextmodel.ReqContext) response.Response
 	*/
 
 	uid := web.Params(c.Req)[":uid"]
+
+	//BMC CODE STARTS
+	dashboards, getDashErr := hs.DashboardService.GetDashboardsByFolderUID(c.Req.Context(), &dashboards.GetDashboardsByFolderUIDQuery{FolderUID: uid, OrgID: c.OrgID})
+	if getDashErr != nil {
+		hs.log.Error("Error while getting dashboards data for audit")
+	}
+	folderDetail, getFolderErr := hs.folderService.Get(c.Req.Context(), &folder.GetFolderQuery{UID: &uid, OrgID: c.OrgID, SignedInUser: c.SignedInUser})
+	if getFolderErr != nil {
+		hs.log.Error("Error while getting Folder data for audit")
+	}
+	//BMC CODE ENDS
 	err = hs.folderService.Delete(c.Req.Context(), &folder.DeleteFolderCommand{UID: uid, OrgID: c.SignedInUser.GetOrgID(), ForceDeleteRules: c.QueryBool("forceDeleteRules"), SignedInUser: c.SignedInUser})
 	if err != nil {
+		//BMC CODE STARTS
+		go audit.FolderDeleteAudit(c, folderDetail.Title, err)
+		if dashboards != nil {
+			if hs.Features.IsEnabledGlobally(featuremgmt.FlagDashboardRestore) {
+				go audit.DashboardSoftDeleteAudit(c, err, dashboards...)
+			} else {
+				go audit.DashboardDeleteAudit(c, err, dashboards...)
+			}
+		}
+		//BMC CODE ENDS
 		return apierrors.ToFolderErrorResponse(err)
 	}
 
+	//BMC CODE STARTS
+	go audit.FolderDeleteAudit(c, folderDetail.Title, nil)
+	if dashboards != nil {
+		if hs.Features.IsEnabledGlobally(featuremgmt.FlagDashboardRestore) {
+			go audit.DashboardSoftDeleteAudit(c, nil, dashboards...)
+		} else {
+			go audit.DashboardDeleteAudit(c, nil, dashboards...)
+		}
+	}
+	//BMC CODE ENDS
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message": "Folder deleted",
+		//BMC code change
+		"bhdCode": bhdcodes.FolderDeleted,
 	})
 }
 
