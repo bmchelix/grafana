@@ -561,6 +561,13 @@ export function preProcessPanelData(data: PanelData, lastResult?: PanelData): Pa
     if (!lastResult) {
       lastResult = data;
     }
+    // BMC code changes
+    // prevent "No data flicker" when transitioning from RefreshToLoad to Loading/Done
+    // Flickering was occuring since we set series as [] which was considered empty series/No data.
+    if (lastResult.state === LoadingState.RefreshToLoad) {
+      lastResult.state = LoadingState.Loading;
+    }
+    // BMC code changes end
 
     return {
       ...lastResult,
