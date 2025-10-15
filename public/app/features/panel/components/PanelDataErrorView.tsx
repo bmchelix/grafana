@@ -6,6 +6,7 @@ import {
   PanelDataSummary,
   VisualizationSuggestionsBuilder,
   VisualizationSuggestion,
+  LoadingState,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { PanelDataErrorViewProps, locationService } from '@grafana/runtime';
@@ -101,6 +102,11 @@ function getMessageFor(
   }
 
   if (!data.series || data.series.length === 0 || data.series.every((frame) => frame.length === 0)) {
+    // BMC changes start
+    if (data.state === LoadingState.RefreshToLoad) {
+      return 'Refresh panels to fetch data';
+    }
+    // BMC changes end
     return fieldConfig?.defaults.noValue ?? 'No data';
   }
 
