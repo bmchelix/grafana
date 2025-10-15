@@ -21,7 +21,7 @@ export function basicMatcherEditor<T = any>(
         setInvalid(!validator(value));
         onChange({
           ...options,
-          value: value,
+          value,
         });
       },
       [setInvalid, validator, onChange, options]
