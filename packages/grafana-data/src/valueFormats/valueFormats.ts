@@ -176,9 +176,57 @@ export function locale(value: number, decimals: DecimalCount): FormattedValue {
     return { text: '' };
   }
   return {
-    text: value.toLocaleString(undefined, { maximumFractionDigits: decimals ?? undefined }),
+    text: value.toLocaleString(undefined, {
+      //BMC Code starts here
+      minimumFractionDigits: decimals ?? undefined,
+      maximumFractionDigits: decimals ?? undefined,
+      useGrouping: true,
+      //BMC Code ends here
+    }),
   };
 }
+
+/* BMC Code Starts here */
+/**
+ * Convert number in string format to european format
+ * @param {string} value Number in string format
+ * @param {DecimalCount} decimals Number of decimals to add
+ * @returns {FormattedValue} FormattedValue object containing string form of number in european format
+ */
+export function convertTextToEuropeanFormat(value: string, decimals?: DecimalCount): FormattedValue {
+  if (value == null) {
+    return { text: '' };
+  }
+  let valueNumber = Number(value);
+
+  if (isNaN(valueNumber)) {
+    return { text: value };
+  }
+
+  return {
+    text: valueNumber.toLocaleString('es-ES', {
+      minimumFractionDigits: decimals ?? undefined,
+      maximumFractionDigits: decimals ?? undefined,
+      useGrouping: true,
+    }),
+  };
+}
+// BMC Code ends here
+
+/* BMC Code starts here */
+export function europeanFormat(value: number, decimals?: DecimalCount): FormattedValue {
+  if (value == null) {
+    return { text: '' };
+  }
+  return {
+    text: value.toLocaleString('es-ES', {
+      minimumFractionDigits: decimals ?? undefined,
+      maximumFractionDigits: decimals ?? undefined,
+      useGrouping: true,
+    }),
+  };
+}
+/* BMC Code ends here */
 
 export function simpleCountUnit(symbol: string): ValueFormatter {
   const units = ['', 'K', 'M', 'B', 'T'];

@@ -172,7 +172,16 @@ export const FilterList = ({
 
   return (
     <Stack direction="column" gap={0.25}>
-      {!showOperators && <FilterInput placeholder="Filter values" onChange={setSearchFilter} value={searchFilter} />}
+      {/* BMC Accessibility change next 1 line :  Added aria-label*/}
+      {!showOperators && (
+        <FilterInput
+          placeholder="Filter values"
+          onChange={setSearchFilter}
+          value={searchFilter}
+          aria-label="Filter values"
+        />
+      )}
+      {/* BMC Accessibility change end*/}
       {showOperators && (
         <Stack direction="row" gap={0}>
           <ButtonSelect

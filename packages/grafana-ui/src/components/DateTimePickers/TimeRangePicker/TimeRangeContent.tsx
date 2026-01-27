@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import { FormEvent, useCallback, useEffect, useId, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useId, useLayoutEffect, useState } from 'react';
 import * as React from 'react';
 
 import {
@@ -67,6 +67,22 @@ export const TimeRangeContent = (props: Props) => {
   const [from, setFrom] = useState<InputState>(fromValue);
   const [to, setTo] = useState<InputState>(toValue);
   const [isOpen, setOpen] = useState(false);
+  //BMC Accessibility Change Start : Restore focus to calendarbutton on close
+  const openCalendarButtonRef = React.useRef<HTMLButtonElement>(null);
+  const [focusCalendar, setFocusCalendar] = useState(false);
+
+  useLayoutEffect(() => {
+    if (focusCalendar) {
+      openCalendarButtonRef.current?.focus({ preventScroll: true });
+      setFocusCalendar(false);
+    }
+  }, [focusCalendar]);
+
+  const handleCalendarClose = () => {
+    setOpen(false);
+    setFocusCalendar(true);
+  };
+  // BMC Accessibility Change End
 
   const fromFieldId = useId();
   const toFieldId = useId();
@@ -158,6 +174,9 @@ export const TimeRangeContent = (props: Props) => {
       variant="secondary"
       type="button"
       onClick={onOpen}
+      //BMC Accessibility Change next 1 line : Keep reference to restore focus on close
+      ref={openCalendarButtonRef}
+      //BMC Accessibility Change End
     />
   );
 
@@ -223,7 +242,9 @@ export const TimeRangeContent = (props: Props) => {
         from={dateTimeParse(from.value, { timeZone })}
         to={dateTimeParse(to.value, { timeZone })}
         onApply={onApply}
-        onClose={() => setOpen(false)}
+        //BMC Accessibility Change: Restore focus on close
+        onClose={handleCalendarClose}
+        //BMC Accessibility Change End
         onChange={onChange}
         timeZone={timeZone}
         isReversed={isReversed}
