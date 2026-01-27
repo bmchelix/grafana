@@ -36,7 +36,7 @@ export const StoredNotificationItem = ({
       <Card.Heading>{title}</Card.Heading>
       <Card.Description>{children}</Card.Description>
       <Card.Figure>
-        <Checkbox onChange={onClick} tabIndex={-1} value={isSelected} />
+        <Checkbox onChange={onClick} tabIndex={-1} value={isSelected} aria-label={`Select Notification ${title}`} />
       </Card.Figure>
       <Card.Tags className={styles.trace}>
         {traceId && <span>{`Trace ID: ${traceId}`}</span>}
