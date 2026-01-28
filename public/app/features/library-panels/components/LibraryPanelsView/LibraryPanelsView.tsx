@@ -101,7 +101,17 @@ export const LibraryPanelsView = ({
           <LibraryPanelCard.Skeleton showSecondaryActions={showSecondaryActions} />
         </>
       ) : libraryPanels.length < 1 ? (
-        <EmptyState variant="not-found" message={t('library-panels.empty-state.message', 'No library panels found')} />
+        <>
+          {/* BMC Accessibility Change: Added aria-live region for screen readers to announce empty results */}
+          <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
+            {t('library-panels.empty-state.message', 'No library panels found')}
+          </div>
+          {/*BMC Accessibility Change End*/}
+          <EmptyState
+            variant="not-found"
+            message={t('library-panels.empty-state.message', 'No library panels found')}
+          />
+        </>
       ) : (
         libraryPanels?.map((item, i) => (
           <LibraryPanelCard

@@ -1,5 +1,5 @@
 import debounce from 'debounce-promise';
-import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { SelectableValue, urlUtil } from '@grafana/data';
 import { locationService } from '@grafana/runtime';
@@ -19,6 +19,25 @@ export function OpenLibraryPanelModal({ libraryPanel, onDismiss }: OpenLibraryPa
   const [loading, setLoading] = useState(false);
   const [connected, setConnected] = useState(0);
   const [option, setOption] = useState<SelectableValue<DashboardSearchItem> | undefined>(undefined);
+
+  // BMC Accessibility Change Start: Restore focus after Library Panel Modal closes
+  const libraryPanelTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    lastFocusedRef.current = document.activeElement as HTMLElement | null;
+
+    return () => {
+      lastFocusedRef.current?.focus?.();
+    };
+  }, []);
+
+  const handleDismiss = useCallback(() => {
+    libraryPanelTriggerRef.current?.focus?.();
+    onDismiss();
+  }, [onDismiss]);
+  // BMC Accessibility Change End
+
   useEffect(() => {
     const getConnected = async () => {
       const connectedDashboards = await getLibraryPanelConnectedDashboards(libraryPanel.uid);
@@ -31,6 +50,7 @@ export function OpenLibraryPanelModal({ libraryPanel, onDismiss }: OpenLibraryPa
     [libraryPanel.uid]
   );
   const debouncedLoadOptions = useMemo(() => debounce(loadOptions, 300, { leading: true }), [loadOptions]);
+
   const onViewPanel = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     locationService.push(urlUtil.renderUrl(`/d/${option?.value?.uid}`, {}));
@@ -39,8 +59,9 @@ export function OpenLibraryPanelModal({ libraryPanel, onDismiss }: OpenLibraryPa
   return (
     <Modal
       title={t('library-panels.modal.title', 'View panel in dashboard')}
-      onDismiss={onDismiss}
-      onClickBackdrop={onDismiss}
+      //BMC Code change: Replaced onDismiss with handleDismiss
+      onDismiss={handleDismiss}
+      onClickBackdrop={handleDismiss}
       isOpen
     >
       <div>
@@ -66,6 +87,12 @@ export function OpenLibraryPanelModal({ libraryPanel, onDismiss }: OpenLibraryPa
               loadOptions={debouncedLoadOptions}
               onChange={setOption}
               placeholder={t('library-panels.modal.select-placeholder', 'Start typing to search for dashboard')}
+              //BMC Accessibility Change next 1 line : Added the aria-label
+              aria-label={t(
+                'bmcgrafana.library-panels.modal.select-aria-label',
+                'Start typing to search for dashboard'
+              )}
+              //BMC Accessibility Change End
               noOptionsMessage={t('library-panels.modal.select-no-options-message', 'No dashboards found')}
             />
           </>

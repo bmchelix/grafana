@@ -2,21 +2,22 @@ import { isArray, isEqual } from 'lodash';
 
 import {
   LegacyMetricFindQueryOptions,
+  QueryVariableModel,
   ScopedVars,
+  TypedVariableModel,
   UrlQueryMap,
   UrlQueryValue,
-  VariableType,
   VariableRefresh,
+  VariableType,
   VariableWithOptions,
-  QueryVariableModel,
 } from '@grafana/data';
-import { getTemplateSrv, locationService } from '@grafana/runtime';
+import { getBackendSrv, getTemplateSrv, locationService } from '@grafana/runtime';
 import { safeStringifyValue } from 'app/core/utils/explore';
 
+import { firstValueFrom } from 'rxjs';
 import { getState } from '../../store/store';
 import { StoreState } from '../../types';
 import { TimeSrv } from '../dashboard/services/TimeSrv';
-
 import { variableAdapters } from './adapters';
 import { ALL_VARIABLE_TEXT, ALL_VARIABLE_VALUE, VARIABLE_PREFIX } from './constants';
 import { getVariablesState } from './state/selectors';
@@ -263,6 +264,17 @@ export function ensureStringValues(value: unknown | unknown[]): string | string[
   return '';
 }
 
+// BMC code
+export function dateRangeExtract(str: string) {
+  const parts = str.split(/From: | - To: /);
+  if (parts.length === 3) {
+    // Create an array with the "from" and "to" values
+    return [parts[1], parts[2]];
+  }
+  // Return null if the input format is unexpected
+  return [];
+}
+// End
 export function hasOngoingTransaction(key: string, state: StoreState = getState()): boolean {
   return getVariablesState(key, state).transaction.status !== TransactionStatus.NotStarted;
 }
@@ -306,3 +318,69 @@ export function getVariablesFromUrl() {
       return obj;
     }, {});
 }
+
+// BMC code starts
+// Returns true if the variable query given matches the variable regex (whether it has any dependencies)
+export const containsDependencies = (variableQuery: string): boolean => {
+  const variableQueryString = typeof variableQuery === 'string' ? variableQuery : safeStringifyValue(variableQuery);
+  const matches = variableQueryString.match(variableRegex);
+  return !!matches?.length;
+};
+
+// Returns true if the query is of service management query type
+export const isServiceManagementQuery = (variableQuery: string | object): boolean => {
+  if (typeof variableQuery === 'string') {
+    return variableQuery.startsWith('remedy,');
+  } else if (typeof variableQuery === 'object') {
+    return (variableQuery as any)?.sourceType === 'remedy';
+  }
+  return false;
+};
+
+// Performs checks like isServiceManagementQuery, bmcCache enabled and deletes the variable cache
+export const deleteVariableCache = async (
+  variable: TypedVariableModel | undefined,
+  dashboardUID: string,
+  deleteVariableCacheForAllUsers: boolean
+): Promise<boolean> => {
+  if (!variable || variable.type !== 'query') {
+    return false;
+  }
+  variable as QueryVariableModel;
+
+  if (!isServiceManagementQuery(variable?.query || '')) {
+    console.log('can only delete cache for service management queries');
+    return false;
+  }
+
+  if (!!!variable.name || !!!dashboardUID) {
+    console.error('Variable name or dashboardUID is invalid for deletion');
+    return false;
+  }
+
+  if (variable?.bmcVarCache !== true){
+    return false;
+  }
+
+  try {
+    const response = getBackendSrv().fetch({
+      url: `/api/bmc/dashboard/${dashboardUID}/variable/cache`,
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-bhd-variable-name': variable.name,
+        'x-bhd-variable-changed': deleteVariableCacheForAllUsers,
+      },
+    });
+    const cacheDeleteResponse = await firstValueFrom(response);
+    if (!cacheDeleteResponse.ok) {
+      console.error(`Redis cache deletion failed with status: ${cacheDeleteResponse.status}`);
+    }
+
+    return true;
+  } catch (deleteErr) {
+    console.error('Error during Redis cache deletion:', deleteErr);
+  }
+  return false;
+};
+// BMC code ends
