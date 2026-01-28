@@ -198,6 +198,17 @@ export function FileDropzone({ options, children, readAs, onLoad, fileListRender
                     <Trans i18nKey="grafana-ui.file-dropzone.file-too-large">File is larger than {{ size }}</Trans>
                   </div>
                 );
+              // BMC code: next case
+              case ErrorCode.TooManyFiles:
+                const maxFiles = options?.maxFiles ?? 10;
+                return (
+                  <div key={error.message + error.code}>
+                    <Trans i18nKey="bmcgrafana.grafana-ui.file-dropzone.bulk-limit-error">
+                      Select upto {{ maxFiles }} dashboards only
+                    </Trans>
+                  </div>
+                );
+              // BMC code: end
               default:
                 return <div key={error.message + error.code}>{error.message}</div>;
             }
