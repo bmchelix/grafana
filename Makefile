@@ -8,7 +8,7 @@ WIRE_TAGS = "oss"
 include .bingo/Variables.mk
 
 GO = go
-GO_VERSION = 1.24.2
+GO_VERSION = 1.24.13
 GO_LINT_FILES ?= $(shell ./scripts/go-workspace/golangci-lint-includes.sh)
 GO_TEST_FILES ?= $(shell ./scripts/go-workspace/test-includes.sh)
 SH_FILES ?= $(shell find ./scripts -name *.sh)
@@ -348,13 +348,16 @@ build-docker-full: ## Build Docker image for development.
 	@echo "build docker container"
 	tar -ch . | \
 	docker buildx build - \
+	--builder default \
+	--load \
 	--platform $(PLATFORM) \
 	--build-arg BINGO=false \
 	--build-arg GO_BUILD_TAGS=$(GO_BUILD_TAGS) \
 	--build-arg WIRE_TAGS=$(WIRE_TAGS) \
 	--build-arg COMMIT_SHA=$$(git rev-parse HEAD) \
 	--build-arg BUILD_BRANCH=$$(git rev-parse --abbrev-ref HEAD) \
-	--tag grafana/grafana$(TAG_SUFFIX):dev \
+	--build-arg ADEREPORTING_GITHUB_TOKEN=$(ADEREPORTING_GITHUB_TOKEN) \
+	--tag $(GRAFANA_BASE) \
 	$(DOCKER_BUILD_ARGS)
 
 .PHONY: build-docker-full-ubuntu
