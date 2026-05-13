@@ -33,11 +33,14 @@ export const StoredNotificationItem = ({
 
   return (
     <Card noMargin className={className} onClick={onClick}>
-      <Card.Heading>{title}</Card.Heading>
-      <Card.Description>{children}</Card.Description>
+      {/* BMC Accessibility Change Start: Reordered DOM elements for logical screen reader reading order.
+          Card.Figure moved before Card.Heading to ensure checkbox is announced first.
+          Visual layout remains unchanged due to CSS Grid positioning. */}
       <Card.Figure>
         <Checkbox onChange={onClick} tabIndex={-1} value={isSelected} />
       </Card.Figure>
+      <Card.Heading>{title}</Card.Heading>
+      <Card.Description>{children}</Card.Description>
       <Card.Tags className={styles.trace}>
         {traceId && <span>{`Trace ID: ${traceId}`}</span>}
         {timestamp && formatDistanceToNow(timestamp, { addSuffix: true })}

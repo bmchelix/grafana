@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/grafana/grafana/pkg/util/xorm"
-
 	"github.com/grafana/grafana/pkg/services/sqlstore"
+	"github.com/grafana/grafana/pkg/util/xorm"
 )
 
 func getEngine(config *sqlstore.DatabaseConfig) (*xorm.Engine, error) {

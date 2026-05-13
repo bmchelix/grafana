@@ -53,6 +53,11 @@ func ProvideService(cfg *setting.Cfg,
 		ss.log.Error("Failed to get SSO settings", "error", err)
 	}
 
+	// BMC code change below line
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		ss.log.Info("FIPS mode enabled, skipping loading of OAuth providers")
+		return ss
+	}
 	for _, ssoSetting := range allSettings {
 		// ignore non-oauth2 providers
 		if !slices.Contains(ssosettings.AllOAuthProviders, ssoSetting.Provider) {
@@ -83,6 +88,12 @@ func ProvideService(cfg *setting.Cfg,
 func (ss *SocialService) GetOAuthProviders() map[string]bool {
 	result := map[string]bool{}
 
+	// BMC code change below line
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		ss.log.Info("FIPS mode enabled, skipping loading of OAuth providers")
+		return result
+	}
+
 	for name, conn := range ss.socialMap {
 		result[name] = conn.GetOAuthInfo().Enabled
 	}
@@ -104,10 +115,16 @@ func (ss *SocialService) GetOAuthHttpClient(name string) (*http.Client, error) {
 	}
 
 	// handle call back
+	// bmc code change: FIPS 140-3: enforce TLS certificate verification when FIPS mode is active
+	tlsSkipVerify := info.TlsSkipVerify
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		tlsSkipVerify = false
+	}
+
 	tr := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: info.TlsSkipVerify,
+			InsecureSkipVerify: tlsSkipVerify,
 		},
 		DialContext: (&net.Dialer{
 			Timeout:   time.Second * 10,

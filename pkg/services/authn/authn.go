@@ -3,6 +3,7 @@ package authn
 import (
 	"context"
 	"fmt"
+	"github.bmc.com/DSOM-ADE/authz-go"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -224,6 +225,9 @@ type Request struct {
 	HTTPRequest *http.Request
 	// metadata is additional information about the auth request
 	metadata map[string]string
+
+	// BMC Code: Adding decodedToken on authn request, to ease access in different hooks
+	DecodedToken *authz.UserInfo
 }
 
 func (r *Request) SetMeta(k, v string) {
@@ -257,7 +261,7 @@ func ClientWithPrefix(name string) string {
 	return fmt.Sprintf("auth.client.%s", name)
 }
 
-type RedirectValidator func(url string) (string, error)
+type RedirectValidator func(url string) error
 
 // HandleLoginResponse is a utility function to perform common operations after a successful login and returns response.NormalResponse
 func HandleLoginResponse(r *http.Request, w http.ResponseWriter, cfg *setting.Cfg, identity *Identity, validator RedirectValidator, features featuremgmt.FeatureToggles) *response.NormalResponse {
@@ -283,30 +287,22 @@ func handleLogin(r *http.Request, w http.ResponseWriter, cfg *setting.Cfg, ident
 	redirectURL := cfg.AppSubURL + "/"
 	//nolint:staticcheck // not yet migrated to OpenFeature
 	if features.IsEnabledGlobally(featuremgmt.FlagUseSessionStorageForRedirection) {
-		if redirectToCookieName == "" {
-			return redirectURL
-		}
-
-		scopedRedirectToCookie, err := r.Cookie(redirectToCookieName)
-		if err != nil {
-			return redirectURL
-		}
-		cookies.DeleteCookie(w, redirectToCookieName, cookieOptions(cfg))
-
-		// We never want to redirect to an external URL. We always redirect to a relative URL within the application.
-		redirectTo, _ := url.QueryUnescape(scopedRedirectToCookie.Value)
-		if redirectTo == "" {
-			return redirectURL
-		}
-
-		if redirectTo, err = validator(cfg.AppSubURL + redirectTo); err == nil {
-			return redirectTo
+		if redirectToCookieName != "" {
+			scopedRedirectToCookie, err := r.Cookie(redirectToCookieName)
+			if err == nil {
+				redirectTo, _ := url.QueryUnescape(scopedRedirectToCookie.Value)
+				if redirectTo != "" && validator(cfg.AppSubURL+redirectTo) == nil {
+					redirectURL = cfg.AppSubURL + redirectTo
+				}
+				cookies.DeleteCookie(w, redirectToCookieName, cookieOptions(cfg))
+			}
 		}
 		return redirectURL
 	}
 
+	redirectURL = cfg.AppSubURL + "/"
 	if redirectTo := getRedirectURL(r); len(redirectTo) > 0 {
-		if redirectTo, err := validator(redirectTo); err == nil {
+		if validator(redirectTo) == nil {
 			redirectURL = redirectTo
 		}
 		cookies.DeleteCookie(w, defaultRedirectToCookieKey, cookieOptions(cfg))

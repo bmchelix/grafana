@@ -4,16 +4,18 @@ import { useLocation } from 'react-router-dom-v5-compat';
 
 import { locationUtil, NavModel, NavModelItem } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { locationService } from '@grafana/runtime';
 import { Button, Stack, Text, ToolbarButtonRow } from '@grafana/ui';
 import { AppChromeUpdate } from 'app/core/components/AppChrome/AppChromeUpdate';
 import { Page } from 'app/core/components/Page/Page';
 import { contextSrv } from 'app/core/services/context_srv';
+import LocaleSettings from 'app/features/bmc-content-localization/LocaleSettings';
 import { AccessControlAction } from 'app/types/accessControl';
 import { DashboardMetaChangedEvent } from 'app/types/events';
 
 import { VariableEditorContainer } from '../../../variables/editor/VariableEditorContainer';
+import { getFeatureStatus } from '../../services/featureFlagSrv';
 import { DashboardModel } from '../../state/DashboardModel';
 import { AccessControlDashboardPermissions } from '../DashboardPermissions/AccessControlDashboardPermissions';
 import { SaveDashboardAsButton, SaveDashboardButton } from '../SaveDashboard/SaveDashboardButton';
@@ -162,6 +164,16 @@ function getSettingsPages(dashboard: DashboardModel) {
     icon: 'arrow',
     component: JsonEditorSettings,
   });
+  //BMC Change: Starts.
+  if (dashboard.uid && getFeatureStatus('bhd-localization') && (contextSrv.isEditor || contextSrv.hasRole('Admin'))) {
+    pages.push({
+      title: t('bmc.manage-locales.localization-title', 'Localization'),
+      id: 'localization',
+      icon: 'globe', // For the time , we will decide another icon later.
+      component: LocaleSettings,
+    });
+  }
+  //BMC Change: Ends.
 
   return pages;
 }

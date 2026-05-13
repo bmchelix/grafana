@@ -13,6 +13,7 @@ import { IntervalVariableEditor } from './IntervalVariableEditor';
 import { updateAutoValue, updateIntervalVariableOptions } from './actions';
 import { initialIntervalVariableModelState, intervalVariableReducer } from './reducer';
 
+// BMC Change: To enable localization for below text
 export const createIntervalVariableAdapter = (): VariableAdapter<IntervalVariableModel> => {
   return {
     id: 'interval',
@@ -21,7 +22,7 @@ export const createIntervalVariableAdapter = (): VariableAdapter<IntervalVariabl
       'Define a timespan interval (for example: {{timeIntervals}})',
       { timeIntervals: '1m, 1h, 1d' }
     ),
-    name: 'Interval',
+    name: t('bmcgrafana.dashboards.settings.variables.editor.select-variable-type.interval.name', 'Interval'),
     initialState: initialIntervalVariableModelState,
     reducer: intervalVariableReducer,
     picker: optionPickerFactory<IntervalVariableModel>(),

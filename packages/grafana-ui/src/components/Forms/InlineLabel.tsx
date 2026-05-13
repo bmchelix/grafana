@@ -2,6 +2,7 @@ import { css, cx } from '@emotion/css';
 import * as React from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
+import { t } from '@grafana/i18n';
 
 import { useStyles2 } from '../../themes/ThemeContext';
 import { Icon } from '../Icon/Icon';
@@ -47,7 +48,14 @@ export const InlineLabel = ({
       {children}
       {tooltip && (
         <Tooltip interactive={interactive} placement="top" content={tooltip} theme="info">
-          <Icon tabIndex={0} name="info-circle" size="sm" className={styles.icon} />
+          <Icon
+            tabIndex={0}
+            name="info-circle"
+            size="sm"
+            className={styles.icon}
+            // BMC Code : Accessibility Change ( Next line )
+            aria-label={t('bmcgrafana.grafana-ui.inlineLabel.info', 'Info')}
+          />
         </Tooltip>
       )}
     </Component>

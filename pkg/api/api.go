@@ -32,6 +32,10 @@ package api
 import (
 	"errors"
 	"net/http"
+	"os"
+
+	"github.com/grafana/grafana/pkg/api/bmc"
+	rbac "github.com/grafana/grafana/pkg/api/bmc/bhd_rbac"
 
 	"go.opentelemetry.io/otel"
 
@@ -48,6 +52,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/dashboards"
 	"github.com/grafana/grafana/pkg/services/datasources"
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
+	"github.com/grafana/grafana/pkg/services/msp"
 	"github.com/grafana/grafana/pkg/services/org"
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginaccesscontrol"
 	publicdashboardsapi "github.com/grafana/grafana/pkg/services/publicdashboards/api"
@@ -73,9 +78,34 @@ func (hs *HTTPServer) registerRoutes() {
 	authorize := ac.Middleware(hs.AccessControl)
 	authorizeInOrg := ac.AuthorizeInOrgMiddleware(hs.AccessControl, hs.authnService)
 	quota := middleware.Quota(hs.QuotaService)
+	// BMC code - start
+	isFeatureEnabled := middleware.IsFeatureEnabled(*hs.sqlStore, "Snapshot")
+
+	requireFeatureWhenPathContains := func(featureName string, pathSubstring string) web.Handler {
+		return middleware.IsFeatureEnabledWhenPathContains(*hs.sqlStore, featureName, pathSubstring)
+	}
+	insightFinderEnabled := requireFeatureWhenPathContains("Enable Insight Finder", "rx/application/chat/helixgpt")
+
+	mspSvc := msp.NewService(hs.sqlStore, hs.TeamService, *hs.Cfg, hs.AccessControl)
+	// BMC code - end
 	userUIDResolver := middlewareUserUIDResolver(hs.userService, ":id")
 
 	r := hs.RouteRegister
+	// BMC code
+	//author(ateli) - Custom API to refresh expired JWT token from IMS
+	r.Post("/ims/refresh-jwt", routing.Wrap(hs.RefreshJWTToken))
+	//author(ateli) - End
+
+	//author(kmejdi) - Start
+	//Fetch user info from IMS
+	r.Get("/ims/userinfo", reqSignedIn, routing.Wrap(GetImsUserInfo))
+	//Update user preferences
+	r.Post("/ims/users/preferences", reqSignedIn, routing.Wrap(SetImsUserInfo))
+	//author(kmejdi) - End
+
+	//Added two API for getting feature flags
+	r.Get("/tenantfeatures", routing.Wrap(hs.GetTenantFeatures))
+	// End
 
 	// not logged in views
 	r.Get("/logout", hs.Logout)
@@ -102,6 +132,20 @@ func (hs *HTTPServer) registerRoutes() {
 	r.Get("/datasources/correlations", authorize(correlations.ConfigurationPageAccess), hs.Index)
 	r.Get("/org/users", authorize(ac.EvalPermission(ac.ActionOrgUsersRead)), hs.Index)
 	r.Get("/org/users/new", reqOrgAdmin, hs.Index)
+	// BMC code - next line for RBAC
+	// TODO: replace with correct handler and permission
+	r.Get("/org/roles",
+		reqOrgAdmin,
+		hs.Index)
+	r.Get("/org/roles/new",
+		reqOrgAdmin,
+		hs.Index)
+	r.Get("/org/roles/edit/:id",
+		reqOrgAdmin,
+		hs.Index)
+	// BMC code - rbac end
+	// BMC code - for localization global keys
+	r.Get("/global-locales", middleware.ReqEditorRole, hs.Index)
 	r.Get("/org/users/invite", authorize(ac.EvalPermission(ac.ActionOrgUsersAdd)), hs.Index)
 	r.Get("/org/teams", authorize(ac.TeamsAccessEvaluator), hs.Index)
 	r.Get("/org/teams/edit/*", authorize(ac.TeamsEditAccessEvaluator), hs.Index)
@@ -234,7 +278,8 @@ func (hs *HTTPServer) registerRoutes() {
 
 	// dashboard snapshots
 	r.Get("/dashboard/snapshot/*", reqNoAuth, hs.Index)
-	r.Get("/dashboard/snapshots/", reqSignedIn, hs.Index)
+	// BMC code - inline change
+	r.Get("/dashboard/snapshots/", reqSignedIn, isFeatureEnabled, hs.Index)
 
 	// api renew session based on cookie
 	r.Get("/api/login/ping", quota(string(auth.QuotaTargetSrv)), routing.Wrap(hs.LoginAPIPing))
@@ -272,6 +317,7 @@ func (hs *HTTPServer) registerRoutes() {
 			userRoute.Post("/using/:id", routing.Wrap(hs.UserSetUsingOrg))
 			userRoute.Get("/orgs", routing.Wrap(hs.GetSignedInUserOrgList))
 			userRoute.Get("/teams", routing.Wrap(hs.GetSignedInUserTeamList))
+			userRoute.Get("/msp/teams", routing.Wrap(mspSvc.GetSignedInUserMSPTeamList))
 
 			userRoute.Get("/stars", routing.Wrap(hs.starApi.GetStars))
 			userRoute.Post("/stars/dashboard/uid/:uid", routing.Wrap(hs.starApi.StarDashboardByUID))
@@ -295,6 +341,9 @@ func (hs *HTTPServer) registerRoutes() {
 			userIDScope := ac.Scope("global.users", "id", ac.Parameter(":id"))
 			usersRoute.Get("/", authorize(ac.EvalPermission(ac.ActionUsersRead)), routing.Wrap(hs.searchUsersService.SearchUsers))
 			usersRoute.Get("/search", authorize(ac.EvalPermission(ac.ActionUsersRead)), routing.Wrap(hs.searchUsersService.SearchUsersWithPaging))
+			// BMC code - start
+			usersRoute.Post("/search", authorize(ac.EvalPermission(ac.ActionUsersRead)), routing.Wrap(hs.searchUsersService.SearchUsersByIds))
+			// BMC code - end
 			usersRoute.Get("/:id", userUIDResolver, authorize(ac.EvalPermission(ac.ActionUsersRead, userIDScope)), routing.Wrap(hs.GetUserByID))
 			usersRoute.Get("/:id/teams", userUIDResolver, authorize(ac.EvalPermission(ac.ActionUsersRead, userIDScope)), routing.Wrap(hs.GetUserTeams))
 			usersRoute.Get("/:id/orgs", userUIDResolver, authorize(ac.EvalPermission(ac.ActionUsersRead, userIDScope)), routing.Wrap(hs.GetUserOrgList))
@@ -311,7 +360,8 @@ func (hs *HTTPServer) registerRoutes() {
 		})
 
 		//nolint:staticcheck // not yet migrated to OpenFeature
-		if hs.Features.IsEnabledGlobally(featuremgmt.FlagStorage) {
+		// BMC code changes - disable storage routes when FIPS is enabled
+		if hs.Features.IsEnabledGlobally(featuremgmt.FlagStorage) && os.Getenv("FIPS_ENABLED") != "true" {
 			// Will eventually be replaced with the 'object' route
 			apiRoute.Group("/storage", hs.StorageService.RegisterHTTPRoutes)
 		}
@@ -338,6 +388,13 @@ func (hs *HTTPServer) registerRoutes() {
 			orgRoute.Patch("/invites/:code/revoke", authorize(ac.EvalPermission(ac.ActionOrgUsersAdd)), routing.Wrap(hs.RevokeInvite))
 
 			// prefs
+
+			// BMC code
+			orgRoute.Put("/configuration", reqOrgAdmin, routing.Wrap(hs.AddCustomConfiguration))
+			orgRoute.Delete("/configuration", reqOrgAdmin, routing.Wrap(hs.RefreshCustomConfiguration))
+			// Feature status update service
+			orgRoute.Put("/featurestatus", reqOrgAdmin, routing.Wrap(hs.AddFeatureStatus))
+			// End
 			orgRoute.Get("/preferences", authorize(ac.EvalPermission(ac.ActionOrgsPreferencesRead)), routing.Wrap(hs.GetOrgPreferences))
 			orgRoute.Put("/preferences", authorize(ac.EvalPermission(ac.ActionOrgsPreferencesWrite)), routing.Wrap(hs.UpdateOrgPreferences))
 			orgRoute.Patch("/preferences", authorize(ac.EvalPermission(ac.ActionOrgsPreferencesWrite)), routing.Wrap(hs.PatchOrgPreferences))
@@ -357,7 +414,21 @@ func (hs *HTTPServer) registerRoutes() {
 					ac.EvalPermission(dashboards.ActionDashboardsPermissionsWrite),
 				)
 			}
-			orgRoute.Get("/users/lookup", authorize(lookupEvaluator()), routing.Wrap(hs.GetOrgUsersForCurrentOrgLookup))
+			// BMC Code - Start - Added MSP Wrapper
+			orgRoute.Get("/users/lookup", authorize(lookupEvaluator()), routing.WrapWithMspCheck(mspSvc.GetOrgUsersForCurrentOrgLookup, hs.GetOrgUsersForCurrentOrgLookup))
+			orgRoute.Get("/configuration", routing.Wrap(hs.GetCustomConfiguration))
+			// Service Management Calculated Field API's
+			// Deprecated: Use /calculatedfield instead.
+			orgRoute.Get("/calculatedfieldootb", routing.Wrap(hs.GetCalculatedField))
+
+			orgRoute.Get("/calculatedfield", rbac.CanReadCalculatedFields, routing.Wrap(hs.GetAllCalcFields))
+			orgRoute.Post("/calculatedfield", rbac.CanCreateCalculatedFields, routing.Wrap(hs.CreateNewCalcFields))
+			orgRoute.Delete("/calculatedfield", rbac.CanCreateCalculatedFields, routing.Wrap(hs.DeleteCalcFieldsById))
+			orgRoute.Put("/calculatedfield", rbac.CanCreateCalculatedFields, routing.Wrap(hs.ModifyCalcFieldsById))
+
+			// BMC code: Feature status get service
+			orgRoute.Get("/featurestatus", routing.Wrap(hs.GetFeatureStatus))
+			// End
 		})
 
 		// create new org
@@ -437,7 +508,7 @@ func (hs *HTTPServer) registerRoutes() {
 		apiRoute.Get("/frontend/assets", hs.GetFrontendAssets)
 
 		apiRoute.Any("/datasources/proxy/:id/*", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), authorize(ac.EvalPermission(datasources.ActionQuery)), hs.ProxyDataSourceRequest)
-		apiRoute.Any("/datasources/proxy/uid/:uid/*", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), authorize(ac.EvalPermission(datasources.ActionQuery)), hs.ProxyDataSourceRequestWithUID)
+		apiRoute.Any("/datasources/proxy/uid/:uid/*", insightFinderEnabled, requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), authorize(ac.EvalPermission(datasources.ActionQuery)), hs.ProxyDataSourceRequestWithUID)
 		apiRoute.Any("/datasources/proxy/:id", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), authorize(ac.EvalPermission(datasources.ActionQuery)), hs.ProxyDataSourceRequest)
 		apiRoute.Any("/datasources/proxy/uid/:uid", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), authorize(ac.EvalPermission(datasources.ActionQuery)), hs.ProxyDataSourceRequestWithUID)
 		// Deprecated: use /datasources/uid/:uid/resources API instead.
@@ -496,7 +567,8 @@ func (hs *HTTPServer) registerRoutes() {
 
 		// Dashboard snapshots
 		apiRoute.Group("/dashboard/snapshots", func(dashboardRoute routing.RouteRegister) {
-			dashboardRoute.Get("/", authorize(ac.EvalPermission(dashboards.ActionSnapshotsRead)), routing.Wrap(hs.SearchDashboardSnapshots))
+			// BMC code - inline change
+			dashboardRoute.Get("/", isFeatureEnabled, authorize(ac.EvalPermission(dashboards.ActionSnapshotsRead)), routing.Wrap(hs.SearchDashboardSnapshots))
 		})
 
 		// Playlist
@@ -581,8 +653,23 @@ func (hs *HTTPServer) registerRoutes() {
 		adminUserRoute.Post("/:id/revoke-auth-token", userUIDResolver, authorizeInOrg(ac.UseGlobalOrg, ac.EvalPermission(ac.ActionUsersAuthTokenUpdate, userIDScope)), routing.Wrap(hs.AdminRevokeUserAuthToken))
 	}, reqSignedIn)
 
+	// BMC code
+
+	// rebranding
+	r.Get("/rebranding/custom_dashboard.css", reqSignedIn, routing.Wrap(GetTenantReBranding))
+	r.Post("/render/pdf", reqSignedIn, hs.CustomRenderToPdf)
+	r.Post("/render/agent/panel", hs.CustomRenderAgentPanel)
+	r.Get("/render/csv", reqSignedIn, hs.CustomRenderToCsv)
+	r.Get("/render/xls", reqSignedIn, hs.CustomRenderToXls)
+	//Repeated Panels usecase API
+	r.Get("/render/panels", reqSignedIn, hs.CustomGetPanelIds)
+	r.Get("/render/*", reqSignedIn, hs.CustomRenderToPng)
+	// End
+
+	// BMC code
 	// rendering
-	r.Get("/render/*", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), reqSignedIn, hs.RenderHandler)
+	// r.Get("/render/*", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), reqSignedIn, hs.RenderHandler)
+	// End
 
 	// grafana.net proxy
 	r.Any("/api/gnet/*", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), reqSignedIn, hs.ProxyGnetRequest)
@@ -591,14 +678,26 @@ func (hs *HTTPServer) registerRoutes() {
 	r.Get("/avatar/:hash", requestmeta.SetSLOGroup(requestmeta.SLOGroupHighSlow), reqSignedIn, hs.AvatarCacheServer.Handler)
 
 	// Snapshots
-	r.Get("/api/snapshot/shared-options/", reqSignedIn, hs.GetSharingOptions)
+	// BMC code - inline changes
+	r.Get("/api/snapshot/shared-options/", reqSignedIn, isFeatureEnabled, hs.GetSharingOptions)
 
-	r.Post("/api/snapshots/", reqSnapshotPublicModeOrCreate, hs.getCreatedSnapshotHandler())
-	r.Get("/api/snapshots/:key", routing.Wrap(hs.GetDashboardSnapshot))
-	r.Delete("/api/snapshots/:key", authorize(ac.EvalPermission(dashboards.ActionSnapshotsDelete)), routing.Wrap(hs.DeleteDashboardSnapshot))
+	r.Post("/api/snapshots/", reqSnapshotPublicModeOrCreate, isFeatureEnabled, hs.getCreatedSnapshotHandler())
+	r.Get("/api/snapshots/:key", isFeatureEnabled, routing.Wrap(hs.GetDashboardSnapshot))
+	r.Delete("/api/snapshots/:key", authorize(ac.EvalPermission(dashboards.ActionSnapshotsDelete)), isFeatureEnabled, routing.Wrap(hs.DeleteDashboardSnapshot))
 
 	// Snapshots delete for public mode or using the deleteKey
-	r.Get("/api/snapshots-delete/:deleteKey", reqSnapshotPublicModeOrDelete, routing.Wrap(hs.DeleteDashboardSnapshotByDeleteKey))
+	r.Get("/api/snapshots-delete/:deleteKey", reqSnapshotPublicModeOrDelete, isFeatureEnabled, routing.Wrap(hs.DeleteDashboardSnapshotByDeleteKey))
+
+	bmcApi := bmc.NewPluginsAPI(r, *hs.sqlStore, hs.accesscontrolService, hs.DashboardService, hs.LibraryElementService)
+	bmcApi.RegisterImportExportBackendPlugin()
+	bmcApi.RegisterCustomPersonalizationBackendPlugin()
+	bmcApi.RegisterMiscellaneousRoutes()
+	bmcApi.ExternalDashboardsApi()
+	bmcApi.RegisterCustomRBACBackendPlugin()
+	bmcApi.RegisterLocalizationAPI()
+	bmcApi.RegisterRequestElevationAPI()
+	// End
+
 }
 
 func middlewareUserUIDResolver(userService user.Service, paramName string) web.Handler {

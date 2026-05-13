@@ -19,6 +19,7 @@ import (
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/api/routing"
 	"github.com/grafana/grafana/pkg/apimachinery/utils"
+	"github.com/grafana/grafana/pkg/bhdcodes"
 	"github.com/grafana/grafana/pkg/infra/metrics"
 	ac "github.com/grafana/grafana/pkg/services/accesscontrol"
 	grafanaapiserver "github.com/grafana/grafana/pkg/services/apiserver"
@@ -66,7 +67,8 @@ func (l *LibraryElementService) registerAPIEndpoints() {
 func (l *LibraryElementService) createHandler(c *contextmodel.ReqContext) response.Response {
 	cmd := model.CreateLibraryElementCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while creating new library element", err)
 	}
 
 	if cmd.FolderUID != nil {
@@ -129,9 +131,11 @@ func (l *LibraryElementService) deleteHandler(c *contextmodel.ReqContext) respon
 		return l.toLibraryElementError(err, "Failed to delete library element")
 	}
 
+	//BMC code change
 	return response.JSON(http.StatusOK, model.DeleteLibraryElementResponse{
 		Message: "Library element deleted",
 		ID:      id,
+		BhdCode: bhdcodes.LibraryElementDeleted,
 	})
 }
 
@@ -232,7 +236,8 @@ func (l *LibraryElementService) getAllHandler(c *contextmodel.ReqContext) respon
 func (l *LibraryElementService) patchHandler(c *contextmodel.ReqContext) response.Response {
 	cmd := model.PatchLibraryElementCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while updating existing library element", err)
 	}
 
 	if cmd.FolderUID != nil {

@@ -4,20 +4,20 @@ import { DataSourceRef, PanelPluginMeta, VariableOption, VariableRefresh } from 
 import { getDataSourceSrv } from '@grafana/runtime';
 import { Panel } from '@grafana/schema';
 import {
+  AnnotationQueryKind,
   Spec as DashboardV2Spec,
+  LibraryPanelKind,
+  LibraryPanelRef,
   PanelKind,
   PanelQueryKind,
-  AnnotationQueryKind,
   QueryVariableKind,
-  LibraryPanelRef,
-  LibraryPanelKind,
 } from '@grafana/schema/dist/esm/schema/dashboard/v2';
 import { notifyApp } from 'app/core/actions';
 import config from 'app/core/config';
 import { createErrorNotification } from 'app/core/copy/appNotification';
 import { buildPanelKind } from 'app/features/dashboard/api/ResponseTransformers';
 import { DashboardModel } from 'app/features/dashboard/state/DashboardModel';
-import { PanelModel, GridPos } from 'app/features/dashboard/state/PanelModel';
+import { GridPos, PanelModel } from 'app/features/dashboard/state/PanelModel';
 import { getLibraryPanel } from 'app/features/library-panels/state/api';
 import { variableRegexExec } from 'app/features/variables/utils';
 import { dispatch } from 'app/store/store';
@@ -129,10 +129,12 @@ export async function makeExportableV1(dashboard: DashboardModel) {
       varName = match[1] || match[2] || match[4];
       datasourceVariable = variableLookup[varName];
 
+      // BMC code: cherry picked from GF 12.3.4
       // if datasource variable is already templated, skip it
       if (datasourceVariableRefNameMap[varName]) {
         return;
       }
+      // BMC code: end
 
       if (datasourceVariable && datasourceVariable.current) {
         datasource = datasourceVariable.current.value;

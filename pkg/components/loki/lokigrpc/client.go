@@ -75,7 +75,8 @@ func (c *Client) grpcTLSOption() grpc.DialOption {
 		return grpc.WithTransportCredentials(insecure.NewCredentials())
 	}
 
-	config := &tls.Config{InsecureSkipVerify: false}
+	// BMC code changes - FIPS - Set min TLS version
+	config := &tls.Config{InsecureSkipVerify: false, MinVersion: tls.VersionTLS12}
 	return grpc.WithTransportCredentials(credentials.NewTLS(config))
 }
 

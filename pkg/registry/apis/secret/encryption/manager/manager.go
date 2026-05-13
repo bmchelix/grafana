@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"os"
 	"strconv"
 	"sync"
 
@@ -245,6 +246,9 @@ func (s *EncryptionManager) newDataKey(ctx context.Context, namespace string, la
 
 func newRandomDataKey() ([]byte, error) {
 	rawDataKey := make([]byte, 16)
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		rawDataKey = make([]byte, 32)
+	}
 	_, err := rand.Read(rawDataKey)
 	if err != nil {
 		return nil, err

@@ -5,12 +5,17 @@ import { GrafanaTheme2 } from '@grafana/data';
 
 import { useStyles2 } from '../../themes/ThemeContext';
 
+// BMC Code : Accessibility Change ( Next 1 line )
+export type OrientationStateType = 'vertical' | 'horizontal' | undefined;
+
 export interface Props {
   /** Children should be a single <Tab /> or an array of <Tab /> */
   children: ReactNode;
   className?: string;
   /** For hiding the bottom border (on PageHeader for example) */
   hideBorder?: boolean;
+  // BMC Code : Accessibility Change ( Next 1 line )
+  orientationState?: OrientationStateType;
 }
 
 /**
@@ -18,17 +23,23 @@ export interface Props {
  *
  * https://developers.grafana.com/ui/latest/index.html?path=/docs/navigation-tabs--docs
  */
-export const TabsBar = forwardRef<HTMLDivElement, Props>(({ children, className, hideBorder = false }, ref) => {
-  const styles = useStyles2(getStyles);
+// BMC Code : Accessibility Change added orientationState ( Next 1 line )
+export const TabsBar = forwardRef<HTMLDivElement, Props>(
+  ({ children, className, hideBorder = false, orientationState }, ref) => {
+    const styles = useStyles2(getStyles);
 
-  return (
-    <div className={cx(styles.tabsWrapper, hideBorder && styles.noBorder, className)} ref={ref}>
-      <div className={styles.tabs} role="tablist">
-        {children}
+    return (
+      <div className={cx(styles.tabsWrapper, hideBorder && styles.noBorder, className)} ref={ref}>
+        {
+          // BMC Code : Accessibility Change ( Next 1 line )
+        }
+        <div className={styles.tabs} role="tablist" aria-orientation={orientationState}>
+          {children}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 const getStyles = (theme: GrafanaTheme2) => ({
   tabsWrapper: css({

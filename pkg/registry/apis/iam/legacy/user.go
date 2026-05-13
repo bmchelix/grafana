@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"text/template"
 	"time"
 
@@ -382,10 +383,21 @@ func (s *legacySQLStore) CreateUser(ctx context.Context, ns claims.NamespaceInfo
 	cmd.OrgID = ns.OrgID
 
 	salt, err := util.GetRandomString(10)
+	// BMC code changes - change salt length for FIPS
+	fipsEnabled := os.Getenv("FIPS_ENABLED") == "true"
+	if fipsEnabled {
+		salt, err = util.GetRandomString(30)
+	}
+	// BMC code changes end
 	if err != nil {
 		return nil, err
 	}
 	rands, err := util.GetRandomString(10)
+	// BMC code changes - change rands length for FIPS
+	if fipsEnabled {
+		rands, err = util.GetRandomString(30)
+	}
+	// BMC code changes end
 	if err != nil {
 		return nil, err
 	}

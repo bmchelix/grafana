@@ -105,6 +105,9 @@ export function setupExplore(options?: SetupOptions): {
     post: jest.fn(),
     put: jest.fn().mockRejectedValue(undefined),
     request: jest.fn().mockRejectedValue(undefined),
+    // BMC code start
+    streamRequest: jest.fn().mockRejectedValue(undefined),
+    // BMC code ends
   });
 
   setPluginLinksHook(() => ({ links: [], isLoading: false }));
@@ -334,7 +337,8 @@ export const withinQueryHistory = () => {
 };
 
 export const withinQueryLibrary = () => {
-  const container = screen.getByRole('dialog', { name: /Query library/ });
+  const container = screen.getByRole('dialog', { name: /Drawer title/ });
+  within(container).getByText('Query library');
   return within(container);
 };
 

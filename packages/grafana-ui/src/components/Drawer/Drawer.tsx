@@ -3,7 +3,7 @@ import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { useOverlay } from '@react-aria/overlays';
 import RcDrawer from 'rc-drawer';
-import { ReactNode, useCallback, useEffect, useId, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
@@ -84,10 +84,8 @@ export function Drawer({
   const wrapperStyles = useStyles2(getWrapperStyles, size);
   const dragStyles = useStyles2(getDragStyles);
 
-  const titleId = useId();
   const overlayRef = React.useRef(null);
-  const { dialogProps } = useDialog({}, overlayRef);
-  const { role: _dialogRole, 'aria-labelledby': _ariaLabelledBy, ...restDialogProps } = dialogProps;
+  const { dialogProps, titleProps } = useDialog({}, overlayRef);
   const { overlayProps } = useOverlay(
     {
       isDismissable: false,
@@ -132,11 +130,19 @@ export function Drawer({
         motionAppear: true,
         motionName: styles.maskMotion,
       }}
-      aria-label={typeof title === 'string' ? selectors.components.Drawer.General.title(title) : undefined}
-      aria-labelledby={title ? titleId : undefined}
     >
       <FocusScope restoreFocus contain autoFocus>
-        <div className={styles.container} {...overlayProps} {...restDialogProps} ref={overlayRef}>
+        <div
+          aria-label={
+            typeof title === 'string'
+              ? selectors.components.Drawer.General.title(title)
+              : selectors.components.Drawer.General.title('no title')
+          }
+          className={styles.container}
+          {...overlayProps}
+          {...dialogProps}
+          ref={overlayRef}
+        >
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
             className={cx(dragStyles.dragHandleVertical, styles.resizer)}
@@ -155,7 +161,7 @@ export function Drawer({
             </div>
             {typeof title === 'string' ? (
               <Stack direction="column">
-                <Text element="h3" id={titleId} truncate>
+                <Text element="h3" truncate {...titleProps}>
                   {title}
                 </Text>
                 {subtitle && (
@@ -165,7 +171,7 @@ export function Drawer({
                 )}
               </Stack>
             ) : (
-              <div id={titleId}>{title}</div>
+              title
             )}
             {tabs && <div className={styles.tabsWrapper}>{tabs}</div>}
           </div>

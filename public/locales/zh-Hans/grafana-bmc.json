@@ -1,0 +1,2000 @@
+{
+  "_comment": "请勿手动编辑此文件，或在 Crowdin 中更新这些源短语。英文字符串的真实来源在代码源中。",
+  "bmc": {
+    "admin": {
+      "users": {
+        "search-label": "按登录名、电子邮件或姓名搜索用户"
+      }
+    },
+    "browse-dashboards": {
+      "action": {
+        "move-folder-tooltip": "文件夹无法移动"
+      }
+    },
+    "bulk-operations": {
+      "cancel": "取消",
+      "datsource-not-found": "未找到类型为 {{pluginName}} 的数据源",
+      "import": {
+        "import-all-failed": "所有仪表板导入失败",
+        "no-import": "未导入任何仪表板"
+      },
+      "import-all": "全部导入",
+      "import-failed": "以下仪表板导入失败",
+      "import-success": "所有仪表板均已成功导入",
+      "options": "选项",
+      "select-datasource": "选择一个 {{pluginName}} 数据源",
+      "set-parameters": "为所选仪表板设置所需参数",
+      "specify-constant": "指定字符串常量"
+    },
+    "calc-fields": {
+      "a-z": "A-Z",
+      "aggregated": "聚合的",
+      "all": "全部",
+      "clone": "克隆",
+      "confirm-delete": "您确定要删除所选的计算字段吗？",
+      "connection-error": "未配置与 BMC Helix ITSM 的连接。",
+      "custom": "自定义",
+      "delete": "删除",
+      "details": "计算字段详情",
+      "edit": "编辑",
+      "edit-field": "编辑计算字段",
+      "eg": "例如",
+      "failed": "获取计算字段失败",
+      "failure": "失败",
+      "filter-by-type": "按类型筛选（默认全部）",
+      "form-name": "表单名称",
+      "is-aggregate": "是否聚合",
+      "is-aggregate-description": "如果您的查询包含聚合函数，请启用此选项。",
+      "module": "模块",
+      "module-name": "模块名称",
+      "name": "名称",
+      "name-placeholder": "输入计算字段的名称",
+      "new-field": "新建计算字段",
+      "no-calc-fields": "您尚未创建任何计算字段。",
+      "not-found": "未找到与您的查询匹配的计算字段。",
+      "ootb": "开箱即用",
+      "query-info": "查询必须是单列查询",
+      "query-not-validated": "查询未验证",
+      "save": "保存",
+      "search-by-name": "按名称搜索计算字段",
+      "search-items": "搜索项目",
+      "select-form": "选择表单",
+      "select-module": "选择模块",
+      "sort-asc": "按字母顺序（A-Z）",
+      "sort-asc-descripton": "按字母升序对结果进行排序",
+      "sort-dsc": "按字母顺序（Z-A）",
+      "sort-dsc-descripton": "按字母降序对结果进行排序",
+      "sort-options": "排序选项",
+      "sort-placeholder": "排序（默认 {{label}}）",
+      "sql-label": "SQL",
+      "sql-query": "SQL 查询",
+      "subtitle": "为 ITSM 服务创建和管理计算字段",
+      "title": "计算字段",
+      "unknown-failure": "未知故障",
+      "update": "更新",
+      "validate": "验证",
+      "validation-success": "查询验证成功"
+    },
+    "common": {
+      "cancel": "取消",
+      "dashboards": "仪表板",
+      "delete": "删除",
+      "download": "下载",
+      "edit": "编辑",
+      "loading": "正在加载...",
+      "name": "名称",
+      "save": "保存",
+      "type": "类型"
+    },
+    "content-localization": "无效的语言代码：{{langCode}}",
+    "dashboard": {
+      "toolbar": {
+        "manage-reports": "管理计划报告",
+        "reset-filters": "重置筛选器",
+        "reset-filters-failure": "重置筛选器值失败。",
+        "save-filters": "保存筛选器",
+        "save-filters-failure": "保存筛选器值失败。",
+        "save-filters-success": "已成功保存筛选器值。"
+      }
+    },
+    "dashboard-import": {
+      "import-text": "导入",
+      "overwrite": "覆盖",
+      "panel-import": "面板导入",
+      "panel-import-alert": "此导入包含一个 {{vqb}} 面板。请从所需环境重新导出，否则视图选择将需要手动干预。",
+      "sub-title": "从文件或通过仪表板 JSON 导入仪表板"
+    },
+    "dashboard-settings": {
+      "general": {
+        "multilingual-pdf": "多语言 PDF",
+        "multilingual-pdf-description": "为简单布局的 PDF 报告启用多语言 PDF 生成"
+      }
+    },
+    "date-picker": {
+      "description": "定义一个日期范围变量，用户可以在其中选择任何日期范围",
+      "name": "日期范围"
+    },
+    "error-page": {
+      "bmc-support": "BMC 支持",
+      "description": "此页面可能已被删除、名称已更改或暂时不可用。",
+      "go-back": "返回",
+      "home-page": "主页",
+      "or-contact": "或联系",
+      "title": "糟糕...我们无法加载该页面。"
+    },
+    "explore": {
+      "total-result-count-aria-live_one": "{{ count }} 条查询已加载",
+      "total-result-count-aria-live_other": "{{ count }} 条查询已加载"
+    },
+    "export": {
+      "csvdelimiter": "分隔符",
+      "fail": "导出失败：",
+      "failed-dashboards": "失败的仪表板",
+      "field-enclosure": "字段包围符",
+      "generation-failed": "未能生成报告，请稍后重试",
+      "grid": "网格",
+      "hide-header": "隐藏页眉",
+      "landscape": "横向",
+      "layout": "布局",
+      "newline": "换行符格式",
+      "orientation": "方向",
+      "portrait": "纵向",
+      "reduce-selection": "请减少 {{variableQuery}} 的所选变量值，并稍后重试",
+      "save-as": "将 {{target}} 保存为 {{type}}",
+      "select-report-type-aria": "选择报告类型",
+      "select-report-type-placeholder": "选择报告类型",
+      "simple": "简单",
+      "success": "报告生成成功",
+      "successful": "导出成功：",
+      "tableScaling": "表格缩放",
+      "type": "类型",
+      "view": "视图"
+    },
+    "features-list": {
+      "date-function-resolution-for-service-management": "服务管理的日期函数解析",
+      "enable-insight-finder": "启用洞察查找器",
+      "enable-ootb-views-for-visual-query-builder": "启用可视化查询构建器的现成视图",
+      "export-complete-table-in-pdf": "以 PDF 格式导出完整表格",
+      "skip-ootb-dashboards-during-upgrade": "升级期间跳过现成仪表板",
+      "skip-ootb-dashboards-during-upgrade-confirm-dialog": {
+        "confirm-button": "启用",
+        "desc": "在启用此功能之前，请删除不需要的开箱即用仪表板文件夹",
+        "title": "切换功能"
+      },
+      "snapshot": "快照"
+    },
+    "inspector": {
+      "stats": {
+        "statistics": "统计信息",
+        "value": "值"
+      }
+    },
+    "key-selector": {
+      "no-results": "未找到匹配的键"
+    },
+    "load-blank-dashoard": {
+      "loading-label": "正在加载...",
+      "no-data": "无数据",
+      "refresh-label": "刷新仪表板以获取数据"
+    },
+    "manage-dashboards": {
+      "drop-click": "拖放至此处或单击以浏览",
+      "import-failed": "导入失败",
+      "serialization-failed": "JSON -> JS 序列化失败",
+      "upload-json": "上传仪表板 JSON 文件"
+    },
+    "manage-locales": {
+      "cancel": "取消",
+      "dashboards": {
+        "add": "添加",
+        "add-key": "添加新键",
+        "dashboard-name": "仪表板名称",
+        "enter-key": "输入键",
+        "enter-value": "输入值",
+        "key-text": "键",
+        "key-validation": "只允许使用字母数字字符",
+        "no-empty-key": "键不能为空",
+        "validation": {
+          "default-value-required": "需要默认值",
+          "key-required": "键为必填项"
+        },
+        "value-text": "值"
+      },
+      "export": "导出",
+      "folders": {
+        "folder-title": "文件夹标题"
+      },
+      "global": {
+        "subtitle": "创建和管理用于本地化的全局键",
+        "title": "本地化管理"
+      },
+      "global-keys-text": "全局键",
+      "import": "导入",
+      "local-keys-text": "本地键",
+      "localization-title": "本地化",
+      "new-key": "新建键",
+      "save": "保存",
+      "search-keys": "搜索键...",
+      "title": "管理区域设置"
+    },
+    "nav": {
+      "apps": {
+        "insight-finder": {
+          "configure-views-subtitle": "查看和管理您的视图",
+          "configure-views-title": "Insight Finder 配置视图",
+          "home": "洞察查找器",
+          "settings-title": "洞察查找器设置"
+        },
+        "reports": {
+          "history": "历史记录",
+          "manage-ownership": "管理所有权",
+          "settings": "设置"
+        }
+      },
+      "reports-scheduler": "报告调度器",
+      "rms": {
+        "subtitle": "用于创建和修改可视化查询构建器视图的应用程序",
+        "title": "报告元数据工作室"
+      },
+      "roles": {
+        "subtitle": "管理整个组织的角色",
+        "title": "角色"
+      }
+    },
+    "notification": {
+      "error": {
+        "bhd-00004": "获取计算字段失败",
+        "bhd-00005": "创建计算字段失败",
+        "bhd-00006": "删除计算字段失败",
+        "bhd-00007": "修改计算字段失败",
+        "bhd-00008": "更新仪表板失败",
+        "bhd-00009": "从仪表板中删除字段失败",
+        "bhd-00010": "创建计算字段时请求负载无效",
+        "bhd-00011": "删除计算字段时请求负载无效",
+        "bhd-00012": "修改计算字段时请求负载无效",
+        "bhd-00013": "计算字段名称已被占用。请提供一个不同的名称。",
+        "bhd-00102": "设置 IMS 用户信息时请求数据无效",
+        "bhd-00103": "更新用户偏好设置时请求数据无效",
+        "bhd-00104": "更新组织偏好设置时请求数据无效",
+        "bhd-00105": "解析正文失败",
+        "bhd-00106": "更新偏好设置时主题无效",
+        "bhd-00107": "未找到仪表板",
+        "bhd-00108": "内部服务器错误",
+        "bhd-00109": "获取偏好设置失败",
+        "bhd-00110": "保存偏好设置失败",
+        "bhd-00111": "更新用户偏好设置失败",
+        "bhd-00201": "ID 无效",
+        "bhd-00202": "创建文件夹时请求数据无效",
+        "bhd-00203": "更新文件夹时请求数据无效",
+        "bhd-00204": "移动文件夹时请求数据无效",
+        "bhd-00205": "更新文件夹权限时请求数据无效",
+        "bhd-00206": "团队和用户权限不能具有关联角色",
+        "bhd-00207": "权限不能同时包含用户和团队",
+        "bhd-00208": "文件夹标题不能为空",
+        "bhd-00209": "仪表板无法更改为文件夹",
+        "bhd-00210": "UID 包含非法字符",
+        "bhd-00211": "UID 过长，最多 40 个字符",
+        "bhd-00212": "文件夹无法删除，因为它包含正在使用的库元素",
+        "bhd-00213": "访问被拒绝",
+        "bhd-00214": "要使用此服务，您需要激活嵌套文件夹功能。",
+        "bhd-00215": "未找到文件夹",
+        "bhd-00216": "当前位置已存在同名文件夹",
+        "bhd-00217": "已存在具有相同 UID 的文件夹/仪表板",
+        "bhd-00218": "该文件夹已被他人更改",
+        "bhd-00219": "移动文件夹失败",
+        "bhd-00220": "文件夹 API 错误",
+        "bhd-00221": "获取文件夹权限失败",
+        "bhd-00222": "检查文件夹权限时出错",
+        "bhd-00223": "创建权限失败",
+        "bhd-00301": "请使用文件夹端点删除文件夹。",
+        "bhd-00302": "仪表板 ID 无效",
+        "bhd-00303": "恢复仪表板版本时请求数据不正确",
+        "bhd-00304": "恢复已删除仪表板时请求数据不正确",
+        "bhd-00305": "计算仪表板差异时请求数据不正确",
+        "bhd-00306": "创建或更新仪表板时请求数据不正确",
+        "bhd-00307": "请使用文件夹端点保存文件夹。",
+        "bhd-00308": "已配置的仪表板无法删除",
+        "bhd-00309": "配额已达上限",
+        "bhd-00310": "此仪表板的访问被拒绝",
+        "bhd-00311": "未找到仪表板",
+        "bhd-00312": "未找到文件夹",
+        "bhd-00313": "未找到仪表板版本",
+        "bhd-00314": "检索公共仪表板时出错",
+        "bhd-00315": "加载仪表板时出错，仪表板数据无效",
+        "bhd-00316": "检查仪表板是否已被用户加星标时出错",
+        "bhd-00317": "无法读取仪表板文件夹",
+        "bhd-00318": "检查仪表板是否已配置时出错",
+        "bhd-00319": "删除仪表板失败",
+        "bhd-00320": "获取配额失败",
+        "bhd-00321": "无法计算差异",
+        "bhd-00322": "连接库面板时出错",
+        "bhd-00323": "更新权限失败",
+        "bhd-00324": "检查仪表板权限时出错",
+        "bhd-00325": "获取仪表板权限失败",
+        "bhd-00326": "获取首选项失败",
+        "bhd-00327": "加载主页仪表板失败",
+        "bhd-00328": "仪表板无法恢复",
+        "bhd-00331": "更新仪表板权限时请求数据无效",
+        "bhd-00401": "创建新库元素时请求数据无效",
+        "bhd-00402": "更新现有库元素时请求数据无效",
+        "bhd-00403": "获取库面板权限不足",
+        "bhd-00404": "获取文件夹失败",
+        "bhd-00405": "创建库元素失败",
+        "bhd-00406": "删除库元素失败",
+        "bhd-00407": "评估权限失败",
+        "bhd-00408": "获取库元素失败",
+        "bhd-00409": "获取库元素失败",
+        "bhd-00410": "无法评估库面板权限",
+        "bhd-00411": "获取连接失败",
+        "bhd-00412": "更新库元素失败",
+        "bhd-00414": "具有该名称或UID的库元素已存在",
+        "bhd-00415": "无法找到库元素",
+        "bhd-00416": "无法找到库元素连接",
+        "bhd-00417": "未找到文件夹",
+        "bhd-00418": "该库元素已被他人更改",
+        "bhd-00419": "文件夹访问被拒绝",
+        "bhd-00420": "该库元素存在连接",
+        "bhd-00421": "UID包含非法字符",
+        "bhd-00422": "UID过长，最长40个字符",
+        "bhd-00501": "OrgID不匹配",
+        "bhd-00502": "访问此快照被拒绝",
+        "bhd-00503": "快照密钥为空",
+        "bhd-00504": "未找到仪表板快照",
+        "bhd-00505": "未找到快照",
+        "bhd-00506": "获取仪表板快照失败",
+        "bhd-00507": "删除仪表板快照失败",
+        "bhd-00508": "删除外部仪表板失败",
+        "bhd-00509": "检查快照权限时出错",
+        "bhd-00510": "搜索失败",
+        "bhd-00601": "未找到",
+        "bhd-00602": "内部服务器错误",
+        "bhd-00604": "未经授权 - 旧令牌为空",
+        "bhd-00605": "身份验证失败",
+        "bhd-00606": "未经授权",
+        "bhd-00701": "用户ID无效",
+        "bhd-00702": "组织名称已被占用",
+        "bhd-00703": "请求数据无效",
+        "bhd-00704": "更新当前组织时请求数据无效",
+        "bhd-00705": "更新当前组织地址时请求数据无效",
+        "bhd-00706": "向当前组织添加新用户时请求数据无效",
+        "bhd-00707": "更新组织中的用户时请求数据无效",
+        "bhd-00708": "更新组织时请求数据无效",
+        "bhd-00709": "更新组织地址时请求数据无效",
+        "bhd-00710": "创建组织时请求数据无效",
+        "bhd-00711": "更新指定用户时请求数据无效",
+        "bhd-00712": "添加组织邀请时请求数据无效",
+        "bhd-00713": "添加自定义配置时请求数据无效",
+        "bhd-00714": "指定的角色无效",
+        "bhd-00715": "组织ID无效",
+        "bhd-00716": "无法更改角色，否则将没有组织管理员",
+        "bhd-00717": "无法移除最后一位组织管理员",
+        "bhd-00718": "无法删除当前用户所属的组织",
+        "bhd-00719": "登录已禁用时无法邀请外部用户",
+        "bhd-00720": "URL无效",
+        "bhd-00721": "无法分配高于用户当前角色的角色",
+        "bhd-00722": "只有用户才能创建组织",
+        "bhd-00723": "权限被拒绝：不允许将现有用户添加到此组织",
+        "bhd-00724": "未找到组织",
+        "bhd-00725": "未找到用户",
+        "bhd-00726": "删除组织失败。ID未找到",
+        "bhd-00727": "用户已是此组织的成员",
+        "bhd-00728": "获取组织失败",
+        "bhd-00729": "获取配额失败",
+        "bhd-00730": "更新组织失败",
+        "bhd-00731": "更新组织地址失败",
+        "bhd-00732": "获取当前组织的用户失败",
+        "bhd-00733": "无法将用户添加到组织",
+        "bhd-00734": "获取组织的用户失败",
+        "bhd-00735": "获取用户身份验证信息失败",
+        "bhd-00736": "更新组织用户失败",
+        "bhd-00737": "将用户从组织中移除失败",
+        "bhd-00738": "更新组织配额失败",
+        "bhd-00739": "搜索组织失败",
+        "bhd-00740": "解析用户ID失败",
+        "bhd-00741": "从数据库获取邀请失败",
+        "bhd-00742": "查询数据库以检查现有用户失败",
+        "bhd-00743": "评估权限失败",
+        "bhd-00744": "无法生成随机字符串",
+        "bhd-00745": "邀请保存到数据库失败",
+        "bhd-00746": "发送邮件邀请失败",
+        "bhd-00747": "更新邀请的邮件发送信息失败",
+        "bhd-00748": "更新邀请状态失败",
+        "bhd-00761": "尝试创建组织用户时出错",
+        "bhd-00762": "发送“已邀请到组织”邮件失败",
+        "bhd-00763": "SMTP 未配置，请检查 grafana.ini 配置文件的 [smtp] 部分",
+        "bhd-00764": "创建组织失败",
+        "bhd-00765": "向当前组织添加新用户时请求数据无效",
+        "bhd-00801": "'action' 和 'actionPrefix' 互斥",
+        "bhd-00802": "必须提供至少一个搜索选项",
+        "bhd-00803": "无效的 namespacedId",
+        "bhd-00804": "无法获取组织用户权限",
+        "bhd-00805": "获取权限失败",
+        "bhd-00806": "无效的请求数据: ",
+        "bhd-00807": "为用户设置资源权限时请求数据无效",
+        "bhd-00808": "为团队设置资源权限时请求数据无效",
+        "bhd-00809": "为内置角色设置资源权限时请求数据无效",
+        "bhd-00901": "创建数据源时请求数据无效",
+        "bhd-00902": "通过其序列 ID 更新现有数据源时请求数据无效",
+        "bhd-00903": "更新现有数据源时请求数据无效",
+        "bhd-00904": "添加数据源失败",
+        "bhd-00905": "ID 无效",
+        "bhd-00906": "缺少有效的数据源 ID",
+        "bhd-00907": "验证错误，URL 无效",
+        "bhd-00908": "UID 无效",
+        "bhd-00909": "缺少数据源 UID",
+        "bhd-00910": "缺少有效的数据源名称",
+        "bhd-00911": "缺少数据源 ID",
+        "bhd-00912": "未找到数据源",
+        "bhd-00913": "您没有足够的权限来更新数据源",
+        "bhd-00914": "您需要额外的权限才能执行此操作。所需权限: datasources.permissions:write",
+        "bhd-00915": "无法更新只读数据源",
+        "bhd-00916": "无法删除只读数据源",
+        "bhd-00917": "您没有足够的权限来删除数据源",
+        "bhd-00918": "数据源访问被拒绝",
+        "bhd-00919": "访问被拒绝",
+        "bhd-00920": "数据源已被其他人更新。请重新加载并重试",
+        "bhd-00921": "查询数据源失败",
+        "bhd-00922": "查询数据源失败",
+        "bhd-00923": "添加数据源失败: ",
+        "bhd-00924": "删除数据源失败: ",
+        "bhd-00925": "添加数据源失败",
+        "bhd-00926": "更新数据源失败",
+        "bhd-00927": "更新数据源失败: ",
+        "bhd-00928": "删除数据源失败",
+        "bhd-00929": "无法加载数据源元数据",
+        "bhd-00930": "无法获取插件上下文",
+        "bhd-00931": "插件请求失败",
+        "bhd-00932": "无法从后端插件解组详细响应",
+        "bhd-00936": "添加关联时请求数据无效",
+        "bhd-00937": "至少需要标签、描述或配置中的一项",
+        "bhd-00938": "更新关联时请求数据无效",
+        "bhd-00939": "关联只能通过配置进行编辑",
+        "bhd-00940": "未找到关联",
+        "bhd-00941": "未找到源数据源",
+        "bhd-00942": "未找到关联",
+        "bhd-00943": "获取关联失败",
+        "bhd-00944": "添加关联失败",
+        "bhd-00945": "获取关联失败",
+        "bhd-00946": "删除关联失败",
+        "bhd-00947": "更新关联失败",
+        "bhd-01001": "将新查询添加到查询历史记录时请求数据无效",
+        "bhd-01002": "更新查询历史记录中查询的备注时请求数据无效",
+        "bhd-01003": "查询历史记录中未找到查询",
+        "bhd-01004": "创建查询历史记录失败",
+        "bhd-01005": "获取查询历史记录失败",
+        "bhd-01006": "从查询历史记录中删除查询失败",
+        "bhd-01007": "收藏查询历史记录中的查询失败",
+        "bhd-01008": "取消收藏查询历史记录中的查询失败",
+        "bhd-01009": "更新查询历史记录中查询的备注失败",
+        "bhd-01011": "删除查询历史记录失败",
+        "bhd-01012": "收藏查询历史记录失败",
+        "bhd-01013": "取消收藏查询历史记录失败",
+        "bhd-01014": "更新查询历史记录中查询的备注失败",
+        "bhd-01101": "安装插件时请求数据无效",
+        "bhd-01102": "更新插件设置时请求数据无效",
+        "bhd-01103": "访问被拒绝",
+        "bhd-01104": "无法安装或更改核心插件",
+        "bhd-01105": "无法卸载核心插件",
+        "bhd-01106": "未找到插件，没有安装具有该ID的插件",
+        "bhd-01107": "插件未安装",
+        "bhd-01108": "文件不存在",
+        "bhd-01109": "插件已安装",
+        "bhd-01110": "获取插件列表失败",
+        "bhd-01111": "无法获取Markdown文件",
+        "bhd-01112": "获取插件设置失败",
+        "bhd-01113": "解组后端插件的详细响应失败",
+        "bhd-01114": "安装插件失败",
+        "bhd-01115": "卸载插件失败",
+        "bhd-01116": "获取插件仪表盘失败",
+        "bhd-01117": "更新插件设置失败",
+        "bhd-01201": "删除多个批注时请求数据不正确",
+        "bhd-01202": "创建批注时请求数据不正确",
+        "bhd-01203": "更新批注时请求数据不正确",
+        "bhd-01204": "以 Graphite 格式创建批注时请求数据不正确",
+        "bhd-01205": "批注ID无效",
+        "bhd-01206": "保存 Graphite 批注失败",
+        "bhd-01207": "批注请求中的仪表盘UID无效",
+        "bhd-01208": "批量删除批注的访问被拒绝",
+        "bhd-01209": "保存批注的访问被拒绝",
+        "bhd-01210": "未找到批注",
+        "bhd-01211": "检查批注权限时出错",
+        "bhd-01212": "删除批注失败",
+        "bhd-01213": "删除批注失败",
+        "bhd-01214": "保存批注失败",
+        "bhd-01215": "更新批注失败",
+        "bhd-01216": "查找批注标签失败",
+        "bhd-01217": "查找批注失败",
+        "bhd-01218": "获取批注失败",
+        "bhd-01219": "批注已删除",
+        "bhd-01301": "请求数据不正确",
+        "bhd-01302": "无效操作",
+        "bhd-01303": "无效的值及其类型",
+        "bhd-01304": "请求正文无效",
+        "bhd-01305": "JSON 格式无效",
+        "bhd-01306": "用户ID无效",
+        "bhd-01307": "角色名称缺失",
+        "bhd-01308": "您无法更新系统角色。",
+        "bhd-01309": "您无法删除系统角色。",
+        "bhd-01310": "此角色已关联用户。在删除此角色之前，请删除所有关联。",
+        "bhd-01311": "此角色已关联团队。在删除此角色之前，请删除所有关联。",
+        "bhd-01312": "角色ID无效",
+        "bhd-01313": "验证角色ID失败",
+        "bhd-01314": "角色ID无效",
+        "bhd-01315": "无效的有效负载",
+        "bhd-01316": "用户ID无效",
+        "bhd-01317": "用户ID无效",
+        "bhd-01318": "团队ID无效",
+        "bhd-01319": "团队不存在。",
+        "bhd-01320": "用户没有足够的权限。",
+        "bhd-01321": "IMS_JWT无效",
+        "bhd-01322": "授权标头缺少或为空",
+        "bhd-01323": "IMS_JWT无效或不正确",
+        "bhd-01324": "未向用户分配任何角色。",
+        "bhd-01325": "此角色不允许获取仪表板。",
+        "bhd-01326": "未经授权的访问",
+        "bhd-01327": "未找到角色",
+        "bhd-01328": "已存在同名角色",
+        "bhd-01329": "获取仪表板失败",
+        "bhd-01330": "获取视图列表失败",
+        "bhd-01331": "获取个性化数据失败",
+        "bhd-01332": "删除个性化数据失败",
+        "bhd-01334": "检查权限时出错",
+        "bhd-01335": "检索角色失败。",
+        "bhd-01336": "为管理员构建仪表板查询时出错",
+        "bhd-01337": "构建仪表板查询时出错",
+        "bhd-01338": "内部服务器错误",
+        "bhd-01339": "获取角色失败",
+        "bhd-01340": "更新角色失败",
+        "bhd-01341": "删除角色失败",
+        "bhd-01342": "搜索角色失败",
+        "bhd-01343": "更新用户角色失败",
+        "bhd-01344": "更新团队角色失败",
+        "bhd-01345": "获取权限列表失败",
+        "bhd-01346": "更新权限列表失败",
+        "bhd-01347": "搜索用户失败",
+        "bhd-01348": "添加用户角色映射失败。",
+        "bhd-01349": "移除用户角色映射失败。",
+        "bhd-01350": "添加团队角色失败",
+        "bhd-01351": "移除团队角色失败",
+        "bhd-01352": "发生意外错误",
+        "bhd-01364": "记录未找到",
+        "bhd-01365": "创建角色失败",
+        "bhd-01366": "搜索团队失败",
+        "bhd-01367": "团队 ID 无效",
+        "bhd-01401": "更新播放列表时请求数据无效",
+        "bhd-01402": "创建播放列表时请求数据无效",
+        "bhd-01403": "搜索失败",
+        "bhd-01404": "未找到播放列表",
+        "bhd-01405": "删除播放列表失败",
+        "bhd-01406": "保存播放列表失败",
+        "bhd-01407": "加载播放列表失败",
+        "bhd-01408": "创建播放列表失败",
+        "bhd-01501": "ID 无效",
+        "bhd-01502": "请求数据无效",
+        "bhd-01503": "作业 ID 无效",
+        "bhd-01504": "创建报告时请求数据无效",
+        "bhd-01505": "收件人是必需的",
+        "bhd-01506": "域限制失败",
+        "bhd-01507": "Cron 表达式无效",
+        "bhd-01508": "更新报告时请求数据无效",
+        "bhd-01509": "报告 ID 无效",
+        "bhd-01510": "内部域限制失败",
+        "bhd-01511": "没有可删除的报告",
+        "bhd-01512": "设置 FTP 配置时请求负载无效",
+        "bhd-01513": "修改 FTP 配置时请求负载无效",
+        "bhd-01514": "设置默认 FTP 配置时请求负载无效",
+        "bhd-01515": "发送邮件时请求数据无效",
+        "bhd-01516": "单次执行报告时请求数据无效",
+        "bhd-01517": "未指定 ID",
+        "bhd-01518": "禁用报告计划程序时请求数据无效",
+        "bhd-01519": "报告计划程序列表为空",
+        "bhd-01520": "同名报告计划程序已存在",
+        "bhd-01521": "请填写所需数据",
+        "bhd-01522": "无法编辑现有报告计划的仪表板",
+        "bhd-01523": "未找到报告租户详情",
+        "bhd-01524": "设置报告品牌设置时请求数据无效",
+        "bhd-01525": "无效的徽标图片。仅允许以下扩展名：.png、.jpg、.jpeg",
+        "bhd-01526": "无效的图片 URL。仅允许以下扩展名：.png、.jpg、.jpeg",
+        "bhd-01527": "无效的徽标 URL",
+        "bhd-01528": "无效的页脚 URL",
+        "bhd-01529": "更新或创建租户详情时，请求数据不正确",
+        "bhd-01530": "报表未在存储中",
+        "bhd-01531": "文件在存储中不可用",
+        "bhd-01532": "部分收件人不是内部用户",
+        "bhd-01533": "报表调度器不存在",
+        "bhd-01534": "报表计划超出限制",
+        "bhd-01535": "获取之前的 FTP 配置失败",
+        "bhd-01537": "删除报表调度器时，请求数据不正确",
+        "bhd-01538": "启用报表调度器时，请求数据不正确",
+        "bhd-01539": "部分密送收件人不是内部用户",
+        "bhd-01540": "部分收件人不在白名单中",
+        "bhd-01541": "部分密送收件人不在白名单中",
+        "bhd-01542": "获取报表失败",
+        "bhd-01543": "FTP 配置已存在",
+        "bhd-01544": "添加 FTP 配置失败",
+        "bhd-01545": "更新 FTP 配置失败",
+        "bhd-01546": "获取预览时，请求数据不正确",
+        "bhd-01547": "不允许删除默认 FTP 配置！",
+        "bhd-01548": "FTP 已在报表调度器中使用",
+        "bhd-01549": "删除 FTP 配置失败",
+        "bhd-01550": "删除该组织的报表计划失败",
+        "bhd-01551": "禁用该组织的报表计划失败",
+        "bhd-01552": "连接到 FTP 服务器失败",
+        "bhd-01601": "更新登录用户时，请求数据不正确",
+        "bhd-01602": "当身份验证代理使用电子邮件属性时，不允许更改电子邮件",
+        "bhd-01603": "当身份验证代理使用用户名属性时，不允许更改用户名",
+        "bhd-01604": "无效的电子邮件地址",
+        "bhd-01605": "ID 无效",
+        "bhd-01606": "只有用户和服务帐户才能收藏仪表板",
+        "bhd-01607": "无效的仪表板 UID",
+        "bhd-01608": "组织 ID 无效",
+        "bhd-01609": "只有用户和服务帐户才能获取已收藏的仪表板",
+        "bhd-01610": "更改用户密码时，请求数据不正确",
+        "bhd-01611": "撤销身份验证令牌时，请求数据不正确",
+        "bhd-01612": "更新用户时，请求数据不正确",
+        "bhd-01613": "不是有效的组织",
+        "bhd-01614": "实体不允许撤销令牌",
+        "bhd-01615": "实体不允许获取令牌",
+        "bhd-01616": "此端点仅供用户使用",
+        "bhd-01617": "更新将导致用户登录冲突",
+        "bhd-01618": "获取用户失败",
+        "bhd-01620": "获取用户组织失败",
+        "bhd-01621": "获取用户收藏失败",
+        "bhd-01622": "获取仪表板失败",
+        "bhd-01623": "收藏仪表板失败",
+        "bhd-01624": "取消收藏仪表板失败",
+        "bhd-01625": "更改用户密码失败",
+        "bhd-01626": "获取组织配额失败",
+        "bhd-01627": "更新帮助标志失败",
+        "bhd-01628": "生成电子邮件验证失败",
+        "bhd-01629": "解析用户ID失败",
+        "bhd-01630": "获取用户团队失败",
+        "bhd-01631": "更新用户失败",
+        "bhd-01632": "解析用户ID失败",
+        "bhd-01640": "未找到用户",
+        "bhd-01641": "未找到用户认证令牌",
+        "bhd-01642": "更改活动组织失败",
+        "bhd-01643": "撤销用户认证令牌失败",
+        "bhd-01644": "获取用户认证令牌失败",
+        "bhd-01645": "无法撤销活跃的用户认证令牌",
+        "bhd-01701": "创建新用户时请求数据无效",
+        "bhd-01702": "撤销用户认证令牌时请求数据无效",
+        "bhd-01703": "设置用户权限时请求数据无效",
+        "bhd-01704": "设置用户密码时请求数据无效",
+        "bhd-01705": "密码缺失或过短",
+        "bhd-01706": "ID无效",
+        "bhd-01707": "您无法注销自己",
+        "bhd-01708": "无法删除最后一个Grafana管理员",
+        "bhd-01709": "未找到用户",
+        "bhd-01710": "当登录表单被禁用时，不允许重置密码",
+        "bhd-01711": "无法更改外部同步用户的Grafana管理员角色",
+        "bhd-01712": "授权设置失败",
+        "bhd-01713": "用户登录名或电子邮件与其他用户冲突。请联系服务器管理员",
+        "bhd-01714": "从数据库获取管理员统计数据失败",
+        "bhd-01715": "从数据库获取匿名统计数据失败",
+        "bhd-01716": "重新加密数据密钥失败",
+        "bhd-01717": "数据密钥轮换失败",
+        "bhd-01718": "创建用户失败",
+        "bhd-01719": "无法从数据库读取用户",
+        "bhd-01720": "更新用户密码失败",
+        "bhd-01721": "更新用户权限失败",
+        "bhd-01722": "删除用户失败",
+        "bhd-01723": "无法禁用外部用户",
+        "bhd-01724": "禁用用户失败",
+        "bhd-01725": "无法启用外部用户",
+        "bhd-01726": "启用用户失败",
+        "bhd-01727": "获取用户失败",
+        "bhd-01728": "获取用户身份验证令牌失败",
+        "bhd-01729": "用户注销失败",
+        "bhd-01730": "用户密码已更新，但无法撤销用户会话",
+        "bhd-01740": "重新加密密钥失败",
+        "bhd-01741": "更新组织配额失败",
+        "bhd-01742": "回滚密钥失败",
+        "bhd-01746": "重新加载插件配置失败"
+      },
+      "success": {
+        "bhd-00001": "字段修改成功",
+        "bhd-00002": "字段删除成功",
+        "bhd-00003": "新字段创建成功",
+        "bhd-00101": "首选项已更新",
+        "bhd-00224": "文件夹已删除",
+        "bhd-00225": "文件夹权限已更新",
+        "bhd-00329": "仪表盘权限已更新",
+        "bhd-00330": "更改已广播到 GitOps 侦听器",
+        "bhd-00413": "库元素已删除",
+        "bhd-00511": "快照已删除。CDN 缓存清除可能需要一小时。",
+        "bhd-00607": "已登录",
+        "bhd-00749": "组织已更新",
+        "bhd-00750": "地址已更新",
+        "bhd-00751": "用户已添加到组织",
+        "bhd-00752": "组织用户已更新",
+        "bhd-00753": "组织配额已更新",
+        "bhd-00754": "用户已删除",
+        "bhd-00755": "组织已删除",
+        "bhd-00756": "组织已创建",
+        "bhd-00757": "邀请已撤销",
+        "bhd-00758": "配置已更新",
+        "bhd-00759": "配置已设置为默认值",
+        "bhd-00760": "已从组织中移除用户",
+        "bhd-00810": "权限已更新",
+        "bhd-00811": "权限已更新",
+        "bhd-00812": "权限已移除",
+        "bhd-00933": "数据源已添加",
+        "bhd-00934": "数据源已更新",
+        "bhd-00935": "数据源已删除",
+        "bhd-00948": "关联已创建",
+        "bhd-00949": "关联已删除",
+        "bhd-00950": "关联已更新",
+        "bhd-01010": "查询已删除",
+        "bhd-01118": "插件设置已更新",
+        "bhd-01220": "批注已添加",
+        "bhd-01221": "批注已更新",
+        "bhd-01222": "批注已修补",
+        "bhd-01223": "Graphite 批注已添加",
+        "bhd-01224": "批注已删除",
+        "bhd-01353": "尚未实现",
+        "bhd-01354": "个性化数据已删除",
+        "bhd-01355": "成功",
+        "bhd-01356": "已授权访问",
+        "bhd-01357": "权限已更新",
+        "bhd-01358": "用户角色映射已添加。",
+        "bhd-01359": "已移除所有角色的用户角色映射。",
+        "bhd-01361": "团队角色已添加。",
+        "bhd-01362": "团队角色已移除。",
+        "bhd-01363": "区域设置已成功更新",
+        "bhd-01553": "报表已成功创建",
+        "bhd-01554": "报表已成功更新",
+        "bhd-01555": "报表已成功删除",
+        "bhd-01556": "报表已成功删除",
+        "bhd-01557": "已成功从报表中删除用户。",
+        "bhd-01558": "FTP 配置已成功保存",
+        "bhd-01559": "FTP 配置已成功更新",
+        "bhd-01560": "FTP 已配置为默认值",
+        "bhd-01561": "FTP 配置已成功删除",
+        "bhd-01562": "报表计划已成功删除/禁用。",
+        "bhd-01563": "报表已成功启用",
+        "bhd-01564": "报表已成功启用",
+        "bhd-01565": "报表已成功禁用",
+        "bhd-01566": "报表已成功禁用。",
+        "bhd-01567": "报表品牌已成功更新。",
+        "bhd-01568": "报表品牌已设为默认。",
+        "bhd-01569": "已更新。",
+        "bhd-01570": "已删除。",
+        "bhd-01571": "执行成功。",
+        "bhd-01633": "活跃组织已更改。",
+        "bhd-01634": "仪表板已收藏！",
+        "bhd-01635": "仪表板已取消收藏。",
+        "bhd-01636": "用户密码已更改。",
+        "bhd-01637": "帮助标志已设置。",
+        "bhd-01638": "用户已更新。",
+        "bhd-01639": "验证邮件已发送。",
+        "bhd-01646": "用户身份验证令牌已撤销。",
+        "bhd-01731": "用户密码已更新。",
+        "bhd-01732": "用户权限已更新。",
+        "bhd-01733": "用户已删除。",
+        "bhd-01734": "用户已禁用。",
+        "bhd-01735": "用户已启用。",
+        "bhd-01736": "用户已注销。",
+        "bhd-01737": "用户已创建。",
+        "bhd-01748": "组织配额已更新。",
+        "bhd-01753": "仪表板配置已重新加载。",
+        "bhd-01754": "插件配置已重新加载。",
+        "bhd-01755": "数据源配置已重新加载。",
+        "bhd-01756": "告警配置已重新加载。"
+      }
+    },
+    "notifications": {
+      "dashboard": {
+        "imported": "仪表板已导入。",
+        "panel-not-found": "面板未找到。",
+        "restored": "仪表板已恢复。",
+        "restored-failed": "仪表板恢复失败。",
+        "restored-version": "已从版本 {{version}} 恢复。",
+        "restored-version-failed": "从版本 {{restoredversion}} 恢复失败。"
+      },
+      "error": {
+        "error-text": "错误",
+        "failed-validation": "验证失败。",
+        "generate-link": "生成短链接时出错。",
+        "http-error": "HTTP 错误 {{msg}}",
+        "unknown-error": "未知错误。"
+      },
+      "folder": {
+        "created": "文件夹已创建。",
+        "failed-creation": "创建文件夹失败。"
+      },
+      "settings": {
+        "saved": "设置已保存。",
+        "saved-failed": "保存设置失败"
+      },
+      "success": {
+        "copied-link": "短链接已复制到剪贴板",
+        "success-text": "成功"
+      }
+    },
+    "org-custom-config": {
+      "community": "社区",
+      "documentation": "文档",
+      "errors": {
+        "query-type-mandatory": "至少应启用一种查询类型"
+      },
+      "support": "支持",
+      "video": "视频"
+    },
+    "panel": {
+      "bmc-video": {
+        "enter-video": "输入嵌入式视频",
+        "invalid-url": "无效 URL",
+        "url": "视频 URL"
+      },
+      "bmc-welcome": {
+        "communities": "社区",
+        "community-description": "社区描述",
+        "default-community-description": "连接。共享。发现。与同行和专家就 BMC 产品和解决方案进行讨论。",
+        "default-documentation-description": "查阅产品文档，了解所有报告功能及其使用方法。",
+        "default-video-description": "在 BMC YouTube 频道上观看有关 BMC 产品和解决方案的视频教程、概述和演示。",
+        "documentation": "文档",
+        "documentation-description": "文档描述",
+        "logo-title": "BMC Helix 标志",
+        "video-description": "视频描述",
+        "videos": "视频"
+      }
+    },
+    "playlist": {
+      "empty": "播放列表为空。请在下方添加仪表板。",
+      "items-changed_one": "播放列表项已更改。播放列表中现有 {{count}} 个仪表板。",
+      "items-changed_other": "播放列表项已更改。播放列表中现有 {{count}} 个仪表板。"
+    },
+    "query": {
+      "query-name-label": "查询名称："
+    },
+    "rbac": {
+      "common": {
+        "all": "全部",
+        "assigned": "已分配",
+        "menu": "菜单",
+        "name": "名称"
+      },
+      "permissions": {
+        "admin": {
+          "datasource-manage": "管理数据源",
+          "datasource-manage-desc": "可管理数据源",
+          "reports-manage": "管理报告调度器",
+          "reports-manage-desc": "可管理所有报告",
+          "title": "管理"
+        },
+        "calc-fields": {
+          "create-desc": "可创建或更新计算字段",
+          "view-desc": "可查看计算字段"
+        },
+        "common": {
+          "create": "创建",
+          "view": "查看"
+        },
+        "dashboards": {
+          "create-desc": "可创建仪表板",
+          "download-desc": "可将仪表板下载为 PDF/XLSX/CSV",
+          "view-desc": "可以查看已获授权的仪表板"
+        },
+        "datasource": {
+          "explore": "探索",
+          "explore-desc": "可以使用数据源的探索模式"
+        },
+        "datasources": {
+          "title": "数据源"
+        },
+        "drawer-title": "{{name}} - 权限",
+        "folders": {
+          "create-desc": "可以创建文件夹",
+          "title": "文件夹",
+          "view-desc": "可以查看已获授权的文件夹"
+        },
+        "insightfinder": {
+          "access": "访问",
+          "access-desc-tooltip": "可以访问 Insight Finder",
+          "dashboards-create": "创建仪表板",
+          "dashboards-create-desc": "可以通过 Insight Finder 创建仪表板",
+          "title": "Insight Finder"
+        },
+        "reports": {
+          "access": "访问",
+          "access-desc": "可以查看和创建报表",
+          "history-read": "查看历史记录",
+          "history-read-desc": "可以查看报表历史记录部分",
+          "recipients-dash-access": "动态收件人",
+          "recipients-dash-access-desc": "可以在计划中从仪表板动态添加收件人",
+          "settings-read": "查看设置",
+          "settings-read-desc": "可以查看报表设置",
+          "title": "报表"
+        },
+        "servicemanagement-querytypes": {
+          "sql": "SQL",
+          "sql-desc": "可以编辑 SQL 查询",
+          "title": "服务管理查询类型"
+        },
+        "subtitle": "权限列表"
+      },
+      "roles": {
+        "actions": "操作",
+        "create": "创建",
+        "custom": "自定义",
+        "delete": "删除角色",
+        "delete-confirmation": "确定要删除此角色吗？",
+        "delete-role": "删除角色",
+        "description": "描述",
+        "edit": "编辑角色",
+        "manage-permissions": "管理权限",
+        "manage-teams": "管理团队",
+        "manage-users": "管理用户",
+        "name-required": "角色名称为必填项",
+        "new": "新建角色",
+        "search": "搜索角色",
+        "system": "系统",
+        "update": "更新"
+      },
+      "teams": {
+        "assigned-count_one": "已分配 {{count}} 个团队",
+        "assigned-count_other": "已分配 {{count}} 个团队",
+        "drawer-title": "{{name}} - 团队",
+        "none-assigned": "未分配任何团队",
+        "none-found": "未找到任何团队",
+        "search": "搜索团队名称"
+      },
+      "users": {
+        "assigned-count_one": "已分配 {{count}} 个用户",
+        "assigned-count_other": "已分配 {{count}} 个用户",
+        "drawer-title": "{{roleName}} - 用户",
+        "email": "电子邮件",
+        "login": "登录",
+        "none-assigned": "未分配任何用户",
+        "none-found": "未找到任何用户"
+      }
+    },
+    "rms": {
+      "description": "报告元数据工作室是一个基于 Pentaho 元数据编辑器的 Windows 应用程序。它用于创建自定义视图或修改现成视图的副本。有关更多信息，请参阅在线文档。",
+      "download": {
+        "error": "无法下载"
+      },
+      "headers": {
+        "env-details": "环境详细信息"
+      }
+    },
+    "search": {
+      "comfirm-export": "您是否要导出选定的 {{dashCount}} 个仪表板？",
+      "export": "导出",
+      "export-status": "导出状态"
+    },
+    "share-modal": {
+      "loading": "正在加载",
+      "theme-picker": {
+        "current-theme": "当前主题",
+        "dark-theme": "深色主题",
+        "light-theme": "浅色主题"
+      }
+    },
+    "shared-preferences": {
+      "datetime-format": {
+        "description": "这将更改仪表板、面板和报告中使用的默认时间格式。",
+        "label": "日期时间格式"
+      },
+      "fields": {
+        "apply-admins": "应用于管理员",
+        "enabled-query-types": "管理服务管理查询类型",
+        "query-type-label": "查询类型",
+        "query-type-placeholder": "选择查询类型"
+      },
+      "query-type": {
+        "form": "表单",
+        "sql": "SQL",
+        "vqb": "可视化查询构建器"
+      }
+    },
+    "tag-filter": {
+      "remove-tag": "移除标签 {{label}}"
+    },
+    "toggle-feature": {
+      "manage-features": "管理仪表板功能"
+    },
+    "transformers": {
+      "adv-functions": {
+        "against-field": "相对字段名称",
+        "alias": "别名",
+        "field-name": "字段名称",
+        "function-name": "函数名称",
+        "percentage": "百分比",
+        "percentile-placeholder": "百分位数",
+        "percentile-value": "百分位数",
+        "previous-row": "上一行",
+        "previous-row-placeholder": "上一行",
+        "rank-placeholder": "排名",
+        "rank-value": "排名值"
+      },
+      "dynamic-fields": {
+        "add-aria": "添加要清理的字段",
+        "add-button": "添加字段",
+        "field-label": "字段",
+        "format-as": "将动态字段格式化为",
+        "remove-aria": "移除动态字段格式化程序字段类型转换器"
+      },
+      "sanitize": {
+        "add-aria": "添加要清理的字段",
+        "add-button": "添加字段",
+        "field-label": "字段",
+        "remove-aria": "移除清理字段类型转换器"
+      }
+    },
+    "variables": {
+      "more-values": "... 更多值",
+      "optimize": {
+        "close-search-panel": "关闭",
+        "deselect-all": "取消全选",
+        "loading": "正在加载...",
+        "no-domain-selected": "未选择任何域",
+        "no-items": "无项目",
+        "remove-item": "移除项目",
+        "search": "搜索",
+        "selected": "已选择",
+        "selected-domains": "已选择的域",
+        "type-to-search": "输入以搜索"
+      },
+      "query-editor": {
+        "continue": "继续",
+        "enable-editor": "启用查询编辑器",
+        "enable-variable-caching": "启用变量缓存",
+        "modal-close-confirmation": "当前查询将丢失。是否要继续？",
+        "modal-close-title": "未保存的更改",
+        "query-text": "查询",
+        "service-management-note": "注意：仅适用于服务管理查询类型。",
+        "variable-caching": {
+          "dependant-error": "不允许对时间范围相关的变量进行缓存",
+          "modal-close-title": "变量缓存",
+          "modal-disable-confirmation": "是否要禁用此变量的缓存？",
+          "modal-enable-additional-text-1": "如果您编辑查询，所有用户的变量缓存将被清除",
+          "modal-enable-confirmation": "是否要为此变量启用缓存？",
+          "service-management-error": "仅服务管理查询支持缓存",
+          "time-dependant-warning": "依赖时间的变量不允许缓存。"
+        }
+      },
+      "refresh-aria": "刷新 {{name}}",
+      "refresh-tooltip": "刷新此变量",
+      "refresh-variable-aria": "刷新 {{name}}",
+      "variable-caching": {
+        "cache-delete-success": "已成功删除变量 {{variableName}} 的缓存。"
+      }
+    },
+    "welcome": {
+      "dashboards": "仪表板"
+    }
+  },
+  "bmcgrafana": {
+    "command-palette": {
+      "search-box": {
+        "aria-label": "搜索或跳转到..."
+      }
+    },
+    "dashboard": {
+      "panel-copied": "面板已复制。点击“添加面板”图标进行粘贴。",
+      "remove-panel": {
+        "confirm-button-text": "移除"
+      }
+    },
+    "dashboard-import": {
+      "datasource-validation": "需要数据源",
+      "name-validation-text": "名称是必需的",
+      "needs-value": "需要值",
+      "select-view": "选择视图",
+      "view-selection-tooltip": "请勿更改预选视图",
+      "view-selection-validation": "需要选择视图"
+    },
+    "dashboard-scene": {
+      "dashboard-preview-banner": {
+        "not-yet-saved": "该值未保存到 BMC Helix Dashboards 数据库中"
+      },
+      "help-wizard": {
+        "troubleshooting-request-help": "要请求故障排除帮助，请将此面板的快照发送给 BMC Helix Dashboards 技术支持。快照包含查询响应数据和面板设置。"
+      },
+      "save-provisioned-dashboard-form": {
+        "cannot-be-saved": "此仪表板无法从 BMC Helix Dashboards UI 保存，因为它已从其他来源预配。复制 JSON 或将其保存到下面的文件中，然后您可以在预配源中更新您的仪表板。"
+      }
+    },
+    "dashboards": {
+      "edit-panel": {
+        "actual": "实际",
+        "actual-description": "与仪表板上的大小相同",
+        "axis": {
+          "grid-lines": {
+            "auto-text": "自动"
+          }
+        },
+        "fill": "填充",
+        "fill-description": "使用所有可用空间",
+        "panel-options": {
+          "link-editor": {
+            "url-placeholder": "http://your-grafana.com/d/000000010/annotations"
+          }
+        },
+        "query": {
+          "empty-query-edit-warning": "不允许使用空查询名称",
+          "query-already-exist-warning": "查询名称已存在",
+          "query-options": {
+            "min-interval-placeholder": "无限制"
+          }
+        }
+      },
+      "save-dashboard": {
+        "error": "保存仪表板时出错",
+        "errors": {
+          "dash-folder-same-name": "仪表板名称不能与文件夹名称相同",
+          "dash-name-invalid": "仪表板名称无效"
+        }
+      },
+      "settings": {
+        "annotation": {
+          "edit-form": {
+            "new-annotation": "新建批注"
+          }
+        },
+        "links": {
+          "": {
+            "title-new-link": "新建链接"
+          },
+          "description-edit-link": "编辑仪表板的特定链接",
+          "title-edit-link": "编辑链接"
+        },
+        "variables": {
+          "editor": {
+            "exlude-variable": "排除变量",
+            "exlude-variable-desc": "选择以从查询中排除该变量",
+            "select-variable-type": {
+              "ad-hoc-filters": {
+                "name": "即席筛选器"
+              },
+              "constant": {
+                "description": "定义一个隐藏的常量变量，这在您希望共享的仪表板中用于指标前缀时很有用。",
+                "name": "常量"
+              },
+              "custom": {
+                "name": "自定义"
+              },
+              "data-source": {
+                "description": "使您能够动态切换多个面板的数据源。",
+                "name": "数据源"
+              },
+              "interval": {
+                "name": "间隔"
+              },
+              "query": {
+                "name": "查询"
+              },
+              "textbox": {
+                "description": "定义一个文本框变量，用户可以在其中输入任意字符串",
+                "name": "文本框"
+              }
+            },
+            "types": {
+              "ad-hoc": {
+                "data-source-placeholder": "选择数据源"
+              },
+              "date-range": {
+                "title": "选择时间范围"
+              },
+              "query": {
+                "refresh-options": {
+                  "on-dash-load": "仪表板加载时",
+                  "on-time-change": "时间范围更改时"
+                }
+              }
+            }
+          }
+        },
+        "versions": {
+          "loading-msgs": {
+            "changes": "正在获取更改…",
+            "history-list": "正在获取历史列表…",
+            "more-entries": "正在获取更多条目…"
+          }
+        }
+      }
+    },
+    "datesource": {
+      "configuration": {
+        "sort-asc": "按 A–Z 排序",
+        "sort-desc": "按 Z–A 排序"
+      }
+    },
+    "explore": {
+      "no-data": "无数据",
+      "query-added-announcement": "已添加新查询行。{{queryCount}}",
+      "rich-history-settings-tab": {
+        "alert-info": "BMC Helix Dashboards 将保留 {{optionLabel}} 以内的条目。星标条目不会被删除。"
+      },
+      "to-dashboard": {
+        "panel-to-dashboard": "将面板添加到仪表板",
+        "to-existing-dashboard-title": "将面板添加到现有仪表板",
+        "to-new-dashboard-title": "将面板添加到新仪表板"
+      }
+    },
+    "file-drop-zone": {
+      "accepted-file-types-prefix": "接受的文件类型",
+      "file-invalid-type-prefix": "文件类型必须是以下之一",
+      "max-file-size": "最大文件大小"
+    },
+    "grafana-data": {
+      "timezone": {
+        "browser-time": "浏览器时间",
+        "coord-universal-time": "协调世界时",
+        "local-browser-time": "本地浏览器时间"
+      },
+      "valueFormats": {
+        "categories": {
+          "misc": {
+            "formats": {
+              "european": "欧洲格式（已弃用）"
+            }
+          }
+        }
+      }
+    },
+    "grafana-ui": {
+      "date-time-pickers": {
+        "time-range-input-text": "选择时间范围"
+      },
+      "fieldValidationMessage": {
+        "warning": "警告"
+      },
+      "file-dropzone": {
+        "bulk-limit-error": "最多只能选择 {{maxFiles}} 个仪表板"
+      },
+      "icon": {
+        "information": "信息"
+      },
+      "inlineLabel": {
+        "info": "信息"
+      },
+      "table": {
+        "filter-placeholder": "筛选值"
+      },
+      "week-start-picker": {
+        "weekStarts-label-browser": "浏览器"
+      }
+    },
+    "import": {
+      "view-label": "视图：{{index}}"
+    },
+    "library-panels": {
+      "delete": {
+        "cannot-delete-text": "此库面板无法删除，因为它已连接到 {{message}} 个仪表板。请从以下列出的仪表板中移除此库面板，然后重试。"
+      },
+      "modal": {
+        "select-aria-label": "开始键入以搜索仪表板"
+      }
+    },
+    "manage-dashboards": {
+      "specify-constant": "指定字符串常量"
+    },
+    "nav": {
+      "config-general": {
+        "subtitle": "管理 BMC Helix Dashboards 中的默认首选项和设置"
+      }
+    },
+    "notifications": {
+      "empty-state": {
+        "description": "您收到的通知将显示在此处",
+        "title": "您已处理完所有通知！"
+      },
+      "live": {
+        "dismissed": {
+          "multiple_one": "已驳回 {{count}} 条通知",
+          "multiple_other": "已驳回 {{count}} 条通知",
+          "single": "已驳回 1 条通知"
+        }
+      },
+      "stored-notifications": {
+        "select-all": "选择所有通知"
+      }
+    },
+    "options-ui": {
+      "registry": {
+        "standard-field-condigs": {
+          "category-data-links": "数据链接"
+        }
+      }
+    },
+    "page-loader": {
+      "text": "正在加载"
+    },
+    "panel-message": {
+      "refresh-dashboard": "刷新仪表板以获取数据"
+    },
+    "plugins": {
+      "browse": {
+        "subtitle": "{{value}} 使用面板插件和应用程序扩展 Helix Dashboards 体验。要查找更多数据源，请转至 <3>Connections</3>。"
+      }
+    },
+    "search-inputs": {
+      "name-type": "按名称或类型搜索"
+    },
+    "team-permissions": {
+      "add-member": "添加成员",
+      "no-members-message": "此团队中没有成员，或者您没有列出当前成员的权限。"
+    },
+    "users-and-access": {
+      "headers": {
+        "email-text": "电子邮件",
+        "last-active-text": "最后活跃时间",
+        "login-text": "登录",
+        "members-text": "成员",
+        "name-text": "名称"
+      },
+      "search-user-placeholder-text": "按登录名、电子邮件或名称搜索用户"
+    }
+  },
+  "plugins": {
+    "reports": {
+      "history": {
+        "back-button": "返回",
+        "bcc-recipient": "密送收件人：",
+        "bccrecipeints-title": " - 密送收件人",
+        "created-by": "创建者",
+        "dashboard": "仪表板",
+        "delete": "删除",
+        "delete-report": "删除报告",
+        "delete-report-error": "您没有删除此报告的权限",
+        "disable": "禁用",
+        "download": "下载",
+        "dynamic-recipient": "动态收件人：",
+        "dynamicrecipients-title": " - 动态收件人",
+        "edit": "编辑",
+        "edit-report": "编辑报告",
+        "edit-report-error": "您没有编辑此报告的权限",
+        "enable": "启用",
+        "extra-info": {
+          "created-at": "创建时间",
+          "last-run": "上次运行时间",
+          "next-run": "下次运行时间",
+          "updated-at": "更新时间"
+        },
+        "failure-reason": "上次失败原因",
+        "fetch-history-error": "获取报告历史记录失败",
+        "filter": "筛选",
+        "filter-type": "按类型筛选报告",
+        "go-to-dashboard": "转到仪表板",
+        "go-to-folder": "转到文件夹",
+        "last-run": "上次运行",
+        "learn-more": "了解更多",
+        "no-bccrecipients-found": "未找到密送收件人",
+        "no-dynamicrecipients-found": "未找到动态收件人",
+        "no-recipients-found": "未找到收件人",
+        "no-records": "尚未为已执行的报告注册任何记录",
+        "no-report-more-info": "专家提示：您可以查看更多与报告计划相关的信息。",
+        "no-report-splash": "计划或运行报告以查看历史数据。",
+        "re-run-now": "立即重新运行",
+        "recipeints-title": " - 收件人",
+        "recipient": "收件人：",
+        "report-id": "报告ID",
+        "report-text": "报告",
+        "run-now": "立即运行报告",
+        "run-now-error": "您没有运行此报告的权限",
+        "search": "搜索",
+        "search-placeholder": "按报告名称搜索",
+        "show-last-10": "显示最近10个日程",
+        "sort": {
+          "asc": "按字母顺序 (A-Z)",
+          "default": "默认 A-Z",
+          "desc": "按字母顺序 (Z-A)",
+          "title": "排序"
+        },
+        "state": {
+          "failure": "失败",
+          "filter-by": "按报告状态筛选",
+          "pending": "待处理",
+          "success": "成功",
+          "title": "状态"
+        },
+        "status": {
+          "broadcasting_report_via_mail": "正在通过邮件广播报告",
+          "fail": "失败",
+          "failed": "失败",
+          "failed_to_broadcast_report": "未能广播报告",
+          "failed_to_generate_report": "未能生成报告",
+          "failed_to_prepare_and_run_job": "未能准备和运行作业",
+          "mail_skipped_due_to_no_data_in_report": "报告中无数据，邮件已跳过",
+          "none": "无",
+          "reporting_service_started": "报告服务已启动",
+          "requesting_impersonation_token_from_ims": "正在向IMS请求模拟令牌",
+          "requesting_renderer_to_generate_report": "正在请求渲染器生成报告",
+          "skipped": "已跳过",
+          "success": "成功",
+          "successfully_broadcasted_report": "报告已成功广播",
+          "successfully_generated_report": "报告已成功生成",
+          "successfully_prepared_job": "作业已成功准备"
+        },
+        "toggle-permission-error": "您没有{{action}}此报告的权限",
+        "total-failures": "总失败数",
+        "total-runs": "总运行次数",
+        "view-bccrecipients": "查看密送收件人",
+        "view-bccrecipients-error": "您没有查看密送收件人的权限",
+        "view-dynamicrecipients": "查看动态收件人",
+        "view-dynamicrecipients-error": "您没有查看动态收件人的权限",
+        "view-recipients": "查看收件人",
+        "view-recipients-error": "您没有查看收件人的权限"
+      },
+      "manage-ownership": {
+        "current-owner": "当前所有者：",
+        "default-current-owner": "未分配",
+        "last-execution": "上次执行",
+        "new-onwer-placeholder": "选择用户",
+        "new-owner": "新所有者：",
+        "new-owner-loading-text": "正在加载...",
+        "next-execution": "下次执行",
+        "schedule-name": "计划名称",
+        "search-placeholder": "按报表名称搜索",
+        "status": "状态"
+      },
+      "manage-reports": {
+        "basic-settings": {
+          "colon": "冒号",
+          "comma": "逗号",
+          "dashboard-required": "仪表板为必填项。",
+          "dashboard-text": "仪表板",
+          "delimiter": "分隔符",
+          "description": "描述",
+          "field-enclosure": "字段包围符",
+          "field-enclosure-default": "默认",
+          "field-enclosure-double": "双引号",
+          "ftp-directory": "FTP服务器目录",
+          "ftp-directory-required": "服务器目录为必填项。",
+          "ftp-server-required": "必须选择FTP服务器。",
+          "ftp-servers": "FTP服务器",
+          "hide-header": "隐藏表头",
+          "newline": "换行符格式",
+          "no-ftp-connections": "未找到FTP连接",
+          "optional": "可选",
+          "pipe": "管道符",
+          "recipient-dashboard-text": "接收方仪表板",
+          "report-desc-length": "描述过长。",
+          "report-name": "名称",
+          "report-name-length": "报表名称过长。",
+          "report-name-required": "报表名称为必填项。",
+          "report-type": "报表类型",
+          "schedule-type": "计划类型",
+          "schedule-type-desc": "选择报表发送/保存位置",
+          "schedule-type-email-desc": "报表将通过电子邮件发送。",
+          "schedule-type-xls-desc": "选择报表发送/保存位置。如果使用了重复面板/行，请确保面板数量小于 {{repeatVariablesLimit}}",
+          "select-dashboard": "以 / 开头搜索仪表板",
+          "semicolon": "分号",
+          "title": "基本设置",
+          "view-dashboard": "（查看仪表板）"
+        },
+        "cancel": "取消",
+        "dashboards-text": "仪表板",
+        "date-time": {
+          "month": {
+            "apr": "四月",
+            "aug": "八月",
+            "dec": "十二月",
+            "feb": "二月",
+            "jan": "一月",
+            "jul": "七月",
+            "jun": "六月",
+            "mar": "三月",
+            "may": "五月",
+            "nov": "十一月",
+            "oct": "十月",
+            "sep": "九月"
+          },
+          "quick-ranges": {
+            "day-before-yesterday": "前天",
+            "default": "默认",
+            "last-1-hour": "过去 1 小时",
+            "last-1-year": "过去 1 年",
+            "last-12-hour": "过去 12 小时",
+            "last-15-min": "过去 15 分钟",
+            "last-2-day": "过去 2 天",
+            "last-2-year": "过去 2 年",
+            "last-24-hour": "过去 24 小时",
+            "last-3-hour": "过去 3 小时",
+            "last-30-day": "过去 30 天",
+            "last-30-min": "过去 30 分钟",
+            "last-5-min": "过去 5 分钟",
+            "last-5-year": "过去 5 年",
+            "last-6-hour": "过去 6 小时",
+            "last-6-month": "过去 6 个月",
+            "last-7-day": "过去 7 天",
+            "last-90-day": "过去 90 天",
+            "prev-fiscal-quarter": "上个财政季度",
+            "prev-fiscal-year": "上个财政年度",
+            "prev-month": "上个月",
+            "prev-week": "上周",
+            "prev-year": "去年",
+            "this-day-last-week": "上周的今天",
+            "this-fiscal-quarter": "本财政季度",
+            "this-fiscal-quarter-so-far": "本财政季度至今",
+            "this-fiscal-year": "本财年",
+            "this-fiscal-year-so-far": "截至目前本财年",
+            "this-month": "本月",
+            "this-month-so-far": "截至目前本月",
+            "this-week": "本周",
+            "this-week-so-far": "截至目前本周",
+            "this-year": "本年",
+            "this-year-so-far": "截至目前本年",
+            "today": "今天",
+            "today-so-far": "截至目前今天",
+            "yesterday": "昨天"
+          },
+          "weekdays": {
+            "friday": "星期五",
+            "monday": "星期一",
+            "saturday": "星期六",
+            "sunday": "星期日",
+            "thursday": "星期四",
+            "tuesday": "星期二",
+            "wednesday": "星期三"
+          }
+        },
+        "filter-settings": {
+          "dashboard-variables": "仪表板变量",
+          "dashboard-variables-description": "根据表单指定的仪表板变量生成报告。如果筛选设置为“默认”，报告将使用已保存的仪表板变量；如果设置为“自定义”，则将使用当前会话的仪表板变量。",
+          "time-range": "时间范围",
+          "time-range-description": "根据表单指定的时间范围生成报告。如果自定义时间范围为“默认”，则使用报告仪表板的时间范围。",
+          "title": "筛选设置",
+          "use-current-variable": "使用当前变量",
+          "use-current-variable-description": "仪表板最近选择的变量",
+          "use-default-variable": "使用默认变量",
+          "use-default-variable-description": "默认仪表板变量",
+          "use-saved-variable": "使用已保存的变量",
+          "use-saved-variable-description": "报告中已保存的变量"
+        },
+        "frequency": {
+          "daily": "每天",
+          "hourly": "每小时",
+          "hourly-disabled-title": "动态爆发不支持每小时频率",
+          "monthly": "每月",
+          "weekly": "每周",
+          "yearly": "每年"
+        },
+        "layout": {
+          "grid": "网格",
+          "sample": "简单"
+        },
+        "mail-settings": {
+          "add-bccRecipeint": "添加新的密送收件人",
+          "add-recipeint": "添加新收件人",
+          "clear-recipient-msg": "移除静态收件人以启用仪表板选择。",
+          "custom-message": "自定义消息",
+          "custom-message-optional": "（可选）",
+          "dynamic-bcc": "作为密送发送",
+          "dynamic-bcc-disabled-title": "密送不能与动态分发一同使用",
+          "dynamic-bursting": "动态分发",
+          "dynamic-recipient": "动态收件人",
+          "email-compress-attachment": "选择如何将 CSV 或 XLSX 文件发送给您的收件人。请确保附件大小不超过 {{emailAttachmentSizeLimit}} MB。",
+          "ftp-compress-attachment": "您想在上传到 FTP 时压缩文件吗？",
+          "recipient-bcc-dashboard-required": "必须指定至少一个收件人、密送收件人或动态收件人",
+          "recipient-dashboard-required": "仅允许包含 1 个表格/BMC 表格面板的仪表板。",
+          "recipient-mode": "收件人列表",
+          "recipient-search": "输入以搜索或添加其他收件人",
+          "recipients": "收件人",
+          "Recipients": "密送收件人",
+          "remove-dashbaord-msg": "移除收件人仪表板以手动添加收件人和密送收件人",
+          "remove-recipient-msg": "移除收件人仪表板以手动添加收件人和密送收件人",
+          "static-recipient": "静态收件人",
+          "subject": "主题",
+          "subject-options": {
+            "current-date": "当前日期",
+            "description ": "描述 ",
+            "report-name": "报告名称",
+            "startdate": "开始日期"
+          },
+          "subject-options-end-date": "结束日期",
+          "title": "邮件设置",
+          "type-message-placeholder": "在此处输入您的消息..."
+        },
+        "orientations": {
+          "landscape": "横向",
+          "portrait": "纵向"
+        },
+        "preview": "预览",
+        "save": "保存",
+        "schedule-settings": {
+          "append-date": "在文件名中附加日期",
+          "append-file": "在文件名中附加时间",
+          "at-hours": "在以下小时（例如：1,5,20-23）",
+          "at-minutes": "在以下分钟（有效值为 0-59）",
+          "every-hour": "每小时",
+          "frequency": "频率",
+          "hours-invalid": "小时格式无效",
+          "hours-range-not-allowed": "启用动态分发时，小时数仅允许整数值",
+          "hours-required": "此频率需要指定小时数",
+          "month-days": "月份日期（例如：1,3,5,20-27）",
+          "month-days-everyday": "每月的每一天",
+          "month-days-invalid": "月份日期格式无效",
+          "month-days-required": "此频率需要指定月份日期",
+          "months": "月份",
+          "months-placeholder": "每年每月",
+          "months-required": "此频率需要指定月份",
+          "no-empty-reports": "不发送空报告",
+          "time-invalid": "时间格式无效。所需格式为“mm”，有效值为 0-59",
+          "timezone": "时区",
+          "title": "计划",
+          "week-days": "周天",
+          "week-days-required": "此频率需要指定周天",
+          "weekdays-placeholder": "每周每天"
+        },
+        "send-test-email": "发送测试邮件",
+        "send-test-email-disabled": "启用动态突发时不允许发送测试邮件",
+        "style-settings": {
+          "layout": "布局",
+          "orientation": "方向",
+          "pdf-styling": "PDF样式",
+          "table-scaling": "表格缩放",
+          "table-scaling-description": "选择一个选项以调整表格列宽。"
+        },
+        "table-scaling": {
+          "dynamic": "动态",
+          "fixed": "固定"
+        }
+      },
+      "nav": {
+        "subtitle": "创建和管理通过电子邮件或FTP分发的报告",
+        "title": "计划报告"
+      },
+      "reassign": {
+        "reassign-button": "重新分配"
+      },
+      "report-list": {
+        "alphabetically-a-z": "按字母顺序 (A-Z)",
+        "alphabetically-z-a": "按字母顺序 (Z-A)",
+        "back-button": "返回",
+        "clone-button": "克隆",
+        "delete-modal": {
+          "delete": "删除",
+          "delete-reports-body": "此操作将删除以下内容：",
+          "delete-reports-description": "计划报告：",
+          "delete-scheduled-reports": "删除计划报告",
+          "delete-text": "删除",
+          "deleting-text": "正在删除..."
+        },
+        "disable-modal": {
+          "disable": "禁用",
+          "disable-reports": "禁用报告",
+          "disable-reports-description": "是否要禁用选定的报告？"
+        },
+        "enable-modal": {
+          "enable": "启用",
+          "enable-reports": "启用报告",
+          "enable-reports-description": "是否要启用选定的报告？"
+        },
+        "every-na": "每 N/A",
+        "filter-report-tooltip": "按计划类型筛选报告",
+        "go-to-folder": "前往文件夹",
+        "history-page": "历史记录",
+        "last-run-tooltip": "上次运行时间：{{lastRun}}",
+        "last-sent": "上次发送时间：",
+        "manageonwership-page": "管理所有权",
+        "more-info-modal": {
+          "advanced-info": "报告高级信息",
+          "created-at": "创建时间",
+          "created-by": "创建者",
+          "last-execution": "上次执行时间",
+          "next-execution": "下次执行时间",
+          "updated-at": "更新时间"
+        },
+        "no-report-found": "未找到报告",
+        "reassign-modal": {
+          "reassign": "重新分配",
+          "reassign-description": "重新分配后，新的计划将基于新所有者的数据权限。",
+          "update-ownership": "更新所有权"
+        },
+        "report-history-modal": {
+          "download": "下载",
+          "Elapsed-time": "经过时间",
+          "Info": "信息",
+          "started-at": "开始时间",
+          "status": "状态"
+        },
+        "report-page": "报告",
+        "run-now-modal": {
+          "email-type-description": "这会将电子邮件发送给计划报告中配置的所有收件人。",
+          "ftp-type-description": "这会将报告上传到配置的 FTP 服务器。",
+          "run-now": "立即运行",
+          "success-generation": "报告已成功生成",
+          "title": "确定吗？"
+        },
+        "schedule-type-placeholder": "计划类型",
+        "scheduled-report-button": "新建计划报告",
+        "scheduled-type": {
+          "email": "电子邮件",
+          "ftp": "FTP"
+        },
+        "search-placeholder": "按报告名称搜索",
+        "settings-page": "设置",
+        "status-active": "活动",
+        "status-inactive": "非活动",
+        "update-modal": {
+          "update": "更新",
+          "update-description": "此操作将更新您的报告"
+        },
+        "view-last-scheduled-reports": "查看最近 10 份计划报告",
+        "view-more-info": "查看更多信息"
+      },
+      "settings": {
+        "acceptable-file-types": "可接受的文件类型: image/png, image/jpg, image/jpeg",
+        "custom-input": {
+          "add-button": "添加"
+        },
+        "email-security": {
+          "allow-external-internal-users-tooltip": "允许内部和外部用户。",
+          "allow-internal-users-tooltip": "仅允许内部用户。",
+          "domain-already-in-list": "{{value}} 已在列表中。",
+          "domains-for-external-users": "外部用户允许的域",
+          "domains-for-external-users-placeholder": "domain.xyz",
+          "domains-for-external-users-tooltip": "如果列表为空，则默认启用所有域。",
+          "not-valid-domain": "{{value}} 不是有效域。",
+          "only-internal-users": "仅限内部用户",
+          "title": "电子邮件安全性"
+        },
+        "ftp": {
+          "actions": "操作",
+          "cancel-button": "取消",
+          "connections": {
+            "delete": "删除",
+            "edit": "编辑",
+            "set-as-default": "设为默认"
+          },
+          "connections-text": "FTP 连接",
+          "delete-ftp": "删除 FTP",
+          "delete-ftp-body": "确定要删除 FTP 配置吗？",
+          "delete-ftp-server": "删除 FTP 服务器",
+          "edit-connections": "编辑 FTP 连接",
+          "ftp": "FTP",
+          "new-connection-text": "新建 FTP 连接",
+          "password": "密码",
+          "password-placeholder": "密码",
+          "port": "端口",
+          "port-placeholder": "端口",
+          "protocol": "协议",
+          "server": "服务器",
+          "server-placeholder": "your.ftp.address",
+          "sftp": "SFTP",
+          "submit-button": "提交",
+          "user": "用户",
+          "user-placeholder": "用户",
+          "username": "用户名"
+        },
+        "report-branding": {
+          "date-time-format": {
+            "custom": "自定义",
+            "description": "当前日期格式：",
+            "placeholder": "例如 DD/MM/YYYY, HH:mm:ss Z z",
+            "title": "日期和时间格式"
+          },
+          "drop-file-here": "将文件拖放到此处",
+          "file-invalid-type-prefix": "文件类型必须是以下之一：",
+          "file-too-large": "文件大小超过 128 KB",
+          "footer-text": "页脚文本",
+          "footer-text-error": "页脚文本无效",
+          "footer-text-url": "页脚文本 URL",
+          "footer-text-url-error": "页脚文本 URL 无效",
+          "footer-text-url-placeholder": "https://your.website",
+          "logo-url": "公司徽标 URL",
+          "logo-url-description": "显示在文档页眉和页脚中的徽标。",
+          "logo-url-error": "徽标 URL 无效",
+          "logo-url-placeholder": "https://your.website/logo.png",
+          "title": "报表品牌设置"
+        },
+        "reset-button": "重置",
+        "schedule-settings": {
+          "date-format": "日期格式",
+          "date-format-description": "文件名的日期格式："
+        },
+        "submit-button": "提交"
+      }
+    },
+    "insight-finder": {
+      "actions-drawer": {
+        "action-drawer": "操作抽屉",
+        "action-subtitle": "操作副标题",
+        "new-dashboard": "新建仪表板",
+        "save-dashboard": {
+          "dashboard-already-exists": "同名仪表板或文件夹已存在",
+          "description": "描述",
+          "folder": "文件夹",
+          "save": "保存",
+          "title": "标题"
+        },
+        "save-dashboard-text": "保存仪表板"
+      },
+      "actions-panel": {
+        "save-as-dashboard": "另存为仪表板"
+      },
+      "chat": {
+        "configuration-error": {
+          "review-missing-prerequisites": "请检查缺少的先决条件："
+        },
+        "constants": {
+          "helix-ds-needs-config": "BMC Helix 数据源需要在数据源下进行配置。",
+          "skill-id-needs-config": "Insight Finder 技能 ID 需要在 Insight Finder 设置下进行配置。"
+        },
+        "copied": "已复制！",
+        "copy-button": "复制",
+        "disclaimer": {
+          "inaccurate-info": "BMC HelixGPT 可能会显示不准确或冒犯性的信息。"
+        },
+        "handle-prompt": {
+          "other-recommended-visualizations": "其他推荐的可视化效果：",
+          "please-select-option": "请选择一个选项。",
+          "response-generation-stopped": "已按请求停止生成响应。",
+          "unable-to-process-please-refine": "无法处理您的请求。请优化您的查询。",
+          "viz-added": "已添加一个可视化效果。",
+          "viz-updated": "可视化效果已更新。"
+        },
+        "message-input": {
+          "ask-a-question": "提问",
+          "continue-update-last-visualisation": "继续更新上次的可视化效果..."
+        },
+        "message-input-addon": {
+          "clear-input": "清除输入",
+          "send-message": "发送消息",
+          "stop-action": "停止操作"
+        },
+        "new-topic": {
+          "new-topic": "新主题"
+        },
+        "panel-item": {
+          "export-as-pdf": "导出为 PDF",
+          "navigate-to-new-dashboard": "您即将离开此页面并创建新仪表板。要继续吗？",
+          "save-panel": "添加到仪表板",
+          "view-query": "查看查询"
+        },
+        "pre-configured-prompts": {
+          "show-more": "显示更多"
+        },
+        "prompt-message": {
+          "copied": "已复制！"
+        },
+        "send-message": {
+          "cant-process-request": "目前无法处理您的请求。请稍后再试。",
+          "unknown-error-for-ds": "数据源未知错误",
+          "unknown-error-for-ds-uid": "数据源 {{dataSourceUid}} 未知错误"
+        },
+        "start-new-topic": "开始新主题",
+        "start-over": {
+          "start-over": "重新开始"
+        },
+        "welcome": {
+          "hello": "您好，{{ usernameNameHelloString }}",
+          "how-can-i-help-you": "我今天能为您提供什么帮助？"
+        }
+      },
+      "dashboard": {
+        "blankDashboard": {
+          "message": "Insight Finder 帮助生成可视化。"
+        },
+        "cancel": "取消",
+        "continue": "继续",
+        "discard": "丢弃",
+        "have-unsaved-changes": {
+          "discard": "您可能有未保存的面板更改。确定要丢弃它们并离开吗？"
+        },
+        "prompt-currently-running": "提示当前正在运行。确定要丢弃它并离开吗？",
+        "query-drawer": {
+          "copy-to-clipboard": "复制到剪贴板",
+          "datasource": "数据源",
+          "query": "查询",
+          "query-type": "查询类型"
+        },
+        "saved": "仪表板已保存",
+        "start-over": {
+          "discard-confirmation-text": "此操作将丢弃当前可视化和聊天历史记录。要继续吗？"
+        },
+        "streaming": {
+          "analysing-prompt": "正在分析提示",
+          "generating-query": "正在生成查询",
+          "generating-visualization": "正在生成可视化",
+          "identifying-source": "正在识别源",
+          "mapping-prompt-to-view": "正在将提示映射到视图",
+          "parsing-query": "正在解析查询",
+          "refining-prompt": "正在优化提示",
+          "validating-prompt": "正在验证提示",
+          "validating-scope-of-views": "正在验证视图范围",
+          "working-on-the-request": "正在处理请求"
+        },
+        "unsaved-changes": "未保存的更改",
+        "utils": {
+          "discovery": "发现",
+          "events": "事件",
+          "failed-to-add-panel": "添加/更新面板失败，未找到与查询相关的数据源。",
+          "failed-to-delete-panel": "删除面板失败：未找到布局。",
+          "no-query-found": "此面板未找到查询",
+          "panel-deleted": "面板删除成功。",
+          "panel-not-found": "未找到面板。",
+          "remove": "移除",
+          "service-management": "服务管理",
+          "service-now": "ServiceNow",
+          "vulnerability": "漏洞"
+        }
+      },
+      "disclaimer": {
+        "inaccurate-info": "BMC HelixGPT 可能会显示不准确或冒犯性的信息。"
+      },
+      "feedback": {
+        "thumbs-down": "没有帮助",
+        "thumbs-up": "有帮助",
+        "toggletip": {
+          "cancel": "取消",
+          "placeholder": "告诉我们更多信息...",
+          "submit": "提交",
+          "submitting": "正在提交...",
+          "title": "您为何给出此评价？"
+        }
+      },
+      "generate-view": {
+        "generate-view": "生成视图",
+        "heading": "丰富视图",
+        "intro-text": "从支持的开箱即用视图生成丰富视图。",
+        "select-view": "选择视图",
+        "skill-id-not-set": "视图丰富器 Skill ID 未配置。",
+        "title": "生成丰富视图"
+      },
+      "main-settings": {
+        "heading": "设置",
+        "view-manage-config": "查看和管理您的配置"
+      },
+      "settings": {
+        "enable-streaming": "启用流式传输",
+        "heading": "Insight Finder 设置",
+        "save": "保存",
+        "skill-id": "Skill ID",
+        "skill-identifier": "Skill 标识符",
+        "skill-needs-config": "Skill ID 需要使用 HelixGPT Agent Studio {{version}} 或更高版本进行配置",
+        "streaming": {
+          "follow-up": "启用后续建议",
+          "follow-up-label": "生成可视化后启用后续建议"
+        },
+        "streaming-label": "启用流式传输的 Insight Finder 仅适用于 HelixGPT Agent Studio 25.3.00 或更高版本",
+        "tab-generate-enriched-view-label": "视图丰富器",
+        "tab-insight-finder-label": "Insight Finder",
+        "view-manage-config": "查看和管理您的 Insight Finder 配置"
+      },
+      "streaming": {
+        "working-on-the-request": "正在处理请求"
+      },
+      "view-enricher-settings": {
+        "heading": "视图增强器设置",
+        "view-manage-config": "查看和管理您的视图增强器配置"
+      },
+      "views-selector": {
+        "agent-generated-view": "代理生成",
+        "couldnt-save-submission": "无法保存选定的视图。",
+        "couldnt-validate-submission": "无法在提交前验证选定的视图",
+        "custom-view": "自定义",
+        "error-generating-view": "错误：{{errorMessage}}",
+        "error-generating-view-failed": "生成增强视图失败",
+        "error-processing-request": "错误：无法处理请求。请重试。",
+        "following-views-not-supported": "以下视图尚不支持在 Insight Finder 中使用：{{ invalidSelectedViewNames }}。请取消选择它们：",
+        "heading": "配置视图",
+        "ootb-and-child-both-views-are-selected": "同一域的视图 {{parentView}} 和 {{childView}} 不能同时选择",
+        "ootb-view": "开箱即用",
+        "succesfully-saved": "视图保存成功",
+        "supported": {
+          "following-views-available": "以下视图可在 Insight Finder 中使用",
+          "loading": "加载中...",
+          "no-description": "无描述",
+          "no-views-available": "Insight Finder 中没有可用的视图",
+          "select-view": "选择视图",
+          "submit": "提交"
+        },
+        "supported-views": "支持的视图",
+        "unsupported": {
+          "following-views-unavailable": "以下视图在 Insight Finder 中不可用",
+          "name": "名称",
+          "no-views-available": "您没有不支持的视图。",
+          "type": "类型"
+        },
+        "unsupported-views": "不支持的视图",
+        "untitled": "无标题",
+        "view-generated-successfully": "已成功生成视图，名称为：{{viewName}}"
+      }
+    }
+  }
+}

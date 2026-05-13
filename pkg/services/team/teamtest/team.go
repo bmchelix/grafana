@@ -26,7 +26,8 @@ func NewFakeServiceWithTeamDTO(teamDTO *team.TeamDTO) *FakeService {
 	}
 }
 
-func (s *FakeService) CreateTeam(ctx context.Context, cmd *team.CreateTeamCommand) (team.Team, error) {
+// BMC Change: Inline
+func (s *FakeService) CreateTeam(ctx context.Context, cmd *team.CreateTeamCommand, , Id int64, teamType int, IsMspTeams ...bool) (team.Team, error) {
 	return s.ExpectedTeam, s.ExpectedError
 }
 

@@ -7,7 +7,7 @@ import { usePullRequestParam } from 'app/features/provisioning/hooks/usePullRequ
 import { DashboardRoutes } from 'app/types/dashboard';
 
 import { useGetResourceRepositoryView } from '../../hooks/useGetResourceRepositoryView';
-import { PreviewBranchInfo, PreviewBannerViewPR } from '../Shared/PreviewBannerViewPR';
+import { PreviewBannerViewPR, PreviewBranchInfo } from '../Shared/PreviewBannerViewPR';
 
 export interface CommonBannerProps {
   queryParams: DashboardPageRouteSearchParams;
@@ -72,8 +72,9 @@ function DashboardPreviewBannerContent({ queryParams, slug, path }: DashboardPre
         'This dashboard is loaded from an external repository'
       )}
     >
-      <Trans i18nKey="dashboard-scene.dashboard-preview-banner.not-yet-saved">
-        The value is not saved in the Grafana database
+      {/* BMC code - replace "Grafana" with "BMC Helix Dashboards" */}
+      <Trans i18nKey="bmcgrafana.dashboard-scene.dashboard-preview-banner.not-yet-saved">
+        The value is not saved in the BMC Helix Dashboard database
       </Trans>
     </Alert>
   );

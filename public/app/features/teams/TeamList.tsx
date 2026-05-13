@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
+import { config } from '@grafana/runtime';
 import {
   Avatar,
   CellProps,
@@ -23,14 +24,14 @@ import {
 import { Page } from 'app/core/components/Page/Page';
 import { fetchRoleOptions } from 'app/core/components/RolePicker/api';
 import { contextSrv } from 'app/core/services/context_srv';
-import { Role, AccessControlAction } from 'app/types/accessControl';
+import { isGrafanaAdmin } from 'app/features/plugins/admin/permissions';
+import { AccessControlAction, Role } from 'app/types/accessControl';
 import { StoreState } from 'app/types/store';
 import { TeamWithRoles } from 'app/types/teams';
 
 import { TeamRolePicker } from '../../core/components/RolePicker/TeamRolePicker';
-import { EnterpriseAuthFeaturesCard } from '../admin/EnterpriseAuthFeaturesCard';
 
-import { deleteTeam, loadTeams, changePage, changeQuery, changeSort } from './state/actions';
+import { changePage, changeQuery, changeSort, deleteTeam, loadTeams } from './state/actions';
 
 type Cell<T extends keyof TeamWithRoles = keyof TeamWithRoles> = CellProps<TeamWithRoles, TeamWithRoles[T]>;
 export interface OwnProps {}
@@ -95,7 +96,8 @@ const TeamList = ({
       },
       {
         id: 'name',
-        header: 'Name',
+        // BMC Change: Next line
+        header: t('bmcgrafana.users-and-access.headers.name-text', 'Name'),
         cell: ({ cell: { value }, row: { original } }: Cell<'name'>) => {
           if (!hasFetched) {
             return <Skeleton width={100} />;
@@ -121,7 +123,8 @@ const TeamList = ({
       },
       {
         id: 'email',
-        header: 'Email',
+        // BMC Change: Next line
+        header: t('bmcgrafana.users-and-access.headers.email-text', 'Email'),
         cell: ({ cell: { value } }: Cell<'email'>) => {
           if (!hasFetched) {
             return <Skeleton width={60} />;
@@ -132,7 +135,8 @@ const TeamList = ({
       },
       {
         id: 'memberCount',
-        header: 'Members',
+        // BMC Change: Next line
+        header: t('bmcgrafana.users-and-access.headers.members-text', 'Members'),
         disableGrow: true,
         cell: ({ cell: { value } }: Cell<'memberCount'>) => {
           if (!hasFetched) {
@@ -210,14 +214,17 @@ const TeamList = ({
                   tooltip={t('teams.team-list.columns.tooltip-edit-team', 'Edit team')}
                 />
               )}
-              <DeleteButton
-                aria-label={t('teams.team-list.columns.aria-label-delete-button', 'Delete team {{teamName}}', {
-                  teamName: original.name,
-                })}
-                size="sm"
-                disabled={!canDelete}
-                onConfirm={() => deleteTeam(original.uid)}
-              />
+              {/* BMC Change: Hide button for non super admin */}
+              {config.buildInfo.env === 'development' || isGrafanaAdmin() ? (
+                <DeleteButton
+                  aria-label={t('teams.team-list.columns.aria-label-delete-button', 'Delete team {{teamName}}', {
+                    teamName: original.name,
+                  })}
+                  size="sm"
+                  disabled={!canDelete}
+                  onConfirm={() => deleteTeam(original.uid)}
+                />
+              ) : null}
             </Stack>
           );
         },
@@ -230,7 +237,8 @@ const TeamList = ({
     <Page
       navId="teams"
       actions={
-        !noTeams ? (
+        // BMC code - Next line
+        !noTeams && config.buildInfo.env === 'development' ? (
           <LinkButton href={canCreate ? 'org/teams/new' : '#'} disabled={!canCreate}>
             <Trans i18nKey="teams.team-list.new-team">New Team</Trans>
           </LinkButton>
@@ -238,7 +246,8 @@ const TeamList = ({
       }
     >
       <Page.Contents>
-        {noTeams ? (
+        {/* BMC Change: Next line */}
+        {noTeams && config.buildInfo.env === 'development' ? (
           <EmptyState
             variant="call-to-action"
             button={
@@ -288,7 +297,8 @@ const TeamList = ({
             )}
           </>
         )}
-        {!query && <EnterpriseAuthFeaturesCard page="teams" />}
+        {/* BMC code: comment next line */}
+        {/* {!query && <EnterpriseAuthFeaturesCard page="teams" />} */}
       </Page.Contents>
     </Page>
   );

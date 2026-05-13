@@ -104,7 +104,7 @@ class ImportDashboardOverviewUnConnected extends PureComponent<Props, State> {
           validateFieldsOnMount={['title', 'uid']}
           validateOn="onChange"
         >
-          {({ register, errors, control, watch, getValues }) => (
+          {({ register, errors, control, watch, getValues, setValue }) => (
             <ImportDashboardForm
               register={register}
               errors={errors}
@@ -116,6 +116,10 @@ class ImportDashboardOverviewUnConnected extends PureComponent<Props, State> {
               onUidReset={this.onUidReset}
               onSubmit={this.onSubmit}
               watch={watch}
+              // BMC Change: Below props, panels, variableList, setValue
+              panels={dashboard.panels}
+              variableList={dashboard?.templating?.list}
+              setValue={setValue}
             />
           )}
         </Form>

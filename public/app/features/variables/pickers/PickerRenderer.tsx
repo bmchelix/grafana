@@ -1,35 +1,72 @@
 import { PropsWithChildren, ReactElement, useMemo } from 'react';
 
-import { TypedVariableModel, VariableHide } from '@grafana/data';
+import { QueryVariableModel, TypedVariableModel, VariableHide } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans } from '@grafana/i18n';
-import { Stack, Tooltip } from '@grafana/ui';
+import { t } from '@grafana/i18n';
+import { Button, Stack, Tooltip } from '@grafana/ui';
 
+import { FEATURE_CONST, getFeatureStatus } from '../../dashboard/services/featureFlagSrv';
 import { variableAdapters } from '../adapters';
 import { VARIABLE_PREFIX } from '../constants';
 
 interface Props {
   variable: TypedVariableModel;
   readOnly?: boolean;
+  onRefresh?: (variable: QueryVariableModel) => void; // BMC code
 }
 
-export const PickerRenderer = (props: Props) => {
-  const PickerToRender = useMemo(() => variableAdapters.get(props.variable.type).picker, [props.variable]);
-
-  if (!props.variable) {
-    return (
-      <div>
-        <Trans i18nKey="variables.picker-renderer.couldnt-load-variable">Couldn't load variable</Trans>
-      </div>
-    );
+// BMC code starts
+function isCachingEnabledForVariables(queryVar: QueryVariableModel): boolean {
+  if (!queryVar) {
+    return false;
   }
+  if (queryVar?.bmcVarCache) {
+    return true;
+  }
+  return false;
+}
+// BMC code ends
+
+export const PickerRenderer = (props: Props) => {
+  // BMC code - next starts, modified original code.
+  const { variable, readOnly, onRefresh } = props;
+
+  const PickerToRender = useMemo(() => variableAdapters.get(variable.type).picker, [variable.type]);
+  const isCachingEnabled = useMemo(() => {
+    if (variable.type !== 'query') {
+      return false;
+    }
+    return isCachingEnabledForVariables(variable as QueryVariableModel);
+  }, [variable]);
+  // BMC code ends
 
   return (
+    // BMC code - inline changes
     <Stack gap={0}>
-      <PickerLabel variable={props.variable} />
-      {props.variable.hide !== VariableHide.hideVariable && PickerToRender && (
-        <PickerToRender variable={props.variable} readOnly={props.readOnly ?? false} />
+      <PickerLabel variable={variable} />
+      {variable.hide !== VariableHide.hideVariable && PickerToRender && (
+        <PickerToRender variable={variable} readOnly={readOnly ?? false} />
       )}
+      {/* BMC code starts */}
+      {getFeatureStatus(FEATURE_CONST.BHD_ENABLE_VAR_CACHING) &&
+        variable.type === 'query' &&
+        isCachingEnabled &&
+        variable.hide !== VariableHide.hideVariable &&
+        onRefresh && (
+          <Tooltip content={t('bmc.variables.refresh-tooltip', 'Refresh this variable')} placement="bottom">
+            <Button
+              variant="secondary"
+              icon="sync"
+              size="md"
+              onClick={() => onRefresh(variable)}
+              style={{ marginLeft: '4px' }}
+              aria-label={t('bmc.variables.refresh-variable-aria', 'Refresh {{name}}', {
+                name: variable.label || variable.name,
+              })}
+            />
+          </Tooltip>
+        )}
+      {/* BMC code ends */}
     </Stack>
   );
 };

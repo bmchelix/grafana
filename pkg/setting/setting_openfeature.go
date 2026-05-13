@@ -6,10 +6,8 @@ import (
 )
 
 const (
-	StaticProviderType          = "static"
-	GOFFProviderType            = "goff"
-	FeaturesServiceProviderType = "features-service"
-	OFREPProviderType           = "ofrep"
+	StaticProviderType = "static"
+	GOFFProviderType   = "goff"
 )
 
 type OpenFeatureSettings struct {

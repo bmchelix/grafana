@@ -1,4 +1,5 @@
 import { TimeZone } from '@grafana/data';
+import { t } from '@grafana/i18n';
 import { getBackendSrv } from '@grafana/runtime';
 import { WeekStart } from '@grafana/ui';
 import { notifyApp } from 'app/core/actions';
@@ -19,7 +20,11 @@ import { cleanUpDashboard } from './reducers';
 export function importDashboard(data: any, dashboardTitle: string): ThunkResult<void> {
   return async (dispatch) => {
     await getBackendSrv().post('/api/dashboards/import', data);
-    dispatch(notifyApp(createSuccessNotification('Dashboard Imported', dashboardTitle)));
+    dispatch(
+      notifyApp(
+        createSuccessNotification(t('bmc.notifications.dashboard.imported', 'Dashboard Imported'), dashboardTitle)
+      )
+    );
     dispatch(loadPluginDashboards());
   };
 }
@@ -41,6 +46,8 @@ export const cleanUpDashboardAndVariables = (): ThunkResult<void> => (dispatch, 
   }
 
   getTimeSrv().stopAutoRefresh();
+  // BMC Change: Next line to clear time model on dashboard unmount
+  getTimeSrv().clearTimeModel();
   dispatch(cleanUpDashboard());
   dispatch(removeAllPanels());
 

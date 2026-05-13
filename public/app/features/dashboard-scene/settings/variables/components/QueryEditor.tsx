@@ -2,11 +2,16 @@ import { DataSourceApi, LoadingState, TimeRange } from '@grafana/data';
 import { Trans } from '@grafana/i18n';
 import { getTemplateSrv } from '@grafana/runtime';
 import { QueryVariable } from '@grafana/scenes';
-import { Text, Box } from '@grafana/ui';
+import { Box, Text } from '@grafana/ui';
+import { LegacyVariableQueryEditor } from 'app/features/variables/editor/LegacyVariableQueryEditor';
 import { isLegacyQueryEditor, isQueryEditor } from 'app/features/variables/guard';
 import { VariableQueryEditorType } from 'app/features/variables/types';
 
 type VariableQueryType = QueryVariable['state']['query'];
+
+// BMC Code start
+const bmcDefaultDs = 'bmchelix-ade-datasource';
+// BMC Code end
 
 interface QueryEditorProps {
   query: VariableQueryType;
@@ -34,6 +39,26 @@ export function QueryEditor({
       ...query,
     };
   }
+
+  // BMC Code Start
+  if (datasource.type === bmcDefaultDs && (!query || typeof query === 'string')) {
+    return (
+      <Box marginBottom={2}>
+        <Text element={'h4'}>
+          <Trans i18nKey="bmc.variables.query-editor.query-text">Query</Trans>
+        </Text>
+        <Box marginTop={1}>
+          <LegacyVariableQueryEditor
+            datasource={datasource}
+            query={query}
+            templateSrv={getTemplateSrv()}
+            onChange={onLegacyQueryChange}
+          />
+        </Box>
+      </Box>
+    );
+  }
+  // BMC Code End
 
   if (VariableQueryEditor && isLegacyQueryEditor(VariableQueryEditor, datasource)) {
     return (

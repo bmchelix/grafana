@@ -338,8 +338,8 @@
         "content-grafana-admin": "Grafana Admin",
         "title-edit-user": "Edit user"
       },
-      "edit-aria-label": "Edit user: {{name}}",
-      "edit-tooltip": "Edit user",
+      "edit-aria-label": "View user: {{name}}",
+      "edit-tooltip": "View user",
       "last-seen-never": "Never",
       "no-licensed-roles": "Not assigned",
       "tooltip-assigned-role": "A licensed role will be assigned when this user signs in"
@@ -3521,6 +3521,1352 @@
       "label-value-color": "Value color"
     }
   },
+  "bmc": {
+    "admin": {
+      "users": {
+        "search-label": "Search user by login, email, or name"
+      }
+    },
+    "browse-dashboards": {
+      "action": {
+        "move-folder-tooltip": "Folders cannot be moved"
+      }
+    },
+    "bulk-operations": {
+      "cancel": "Cancel",
+      "datsource-not-found": "No data sources of type {{pluginName}} found",
+      "import": {
+        "import-all-failed": "Import all dashboard failed",
+        "no-import": "No Dashboards Imported"
+      },
+      "import-all": "Import all",
+      "import-failed": "Failed to import the following dashboards",
+      "import-success": "All dashboards are successfully imported",
+      "options": "Options",
+      "select-datasource": "Select a {{pluginName}} data source",
+      "set-parameters": "set required parameters for the selected dashboards",
+      "specify-constant": "Specify a string constant"
+    },
+    "calc-fields": {
+      "a-z": "A-Z",
+      "aggregated": "Aggregated",
+      "all": "All",
+      "clone": "Clone",
+      "confirm-delete": "Do you want to delete the selected calculated field(s)",
+      "connection-error": "Connectivity to BMC Helix ITSM is not configured.",
+      "custom": "Custom",
+      "delete": "Delete",
+      "details": "Calculated field details",
+      "edit": "Edit",
+      "edit-field": "Edit Calculated Field",
+      "eg": "Eg",
+      "failed": "Failed to get calculated fields",
+      "failure": "Failure",
+      "filter-by-type": "Filter by type (Default All)",
+      "form-name": "Form name",
+      "is-aggregate": "Is aggregate",
+      "is-aggregate-description": "Enable this option if your query includes aggregation functions.",
+      "module": "Module",
+      "module-name": "Module name",
+      "name": "Name",
+      "name-placeholder": "Enter the name of the calculated field",
+      "new-field": "New Calculated Field",
+      "no-calc-fields": "You haven't created any calculated fields yet.",
+      "not-found": "No calculated fields matching your query were found.",
+      "ootb": "Out-of-the-box",
+      "query-info": "Query must be a single column query",
+      "query-not-validated": "Query not validated",
+      "save": "Save",
+      "search-by-name": "Search calculated fields by name",
+      "search-items": "Search items",
+      "select-form": "Select form",
+      "select-module": "Select module",
+      "sort-asc": "Alphabetically (A-Z)",
+      "sort-asc-descripton": "Sort results in an alphabetically ascending order",
+      "sort-dsc": "Alphabetically (Z-A)",
+      "sort-dsc-descripton": "Sort results in an alphabetically descending order",
+      "sort-options": "Sort Options",
+      "sort-placeholder": "Sort (Default {{label}})",
+      "sql-label": "SQL",
+      "sql-query": "SQL query",
+      "subtitle": "Create and manage calculated fields for ITSM service",
+      "title": "Calculated fields",
+      "unknown-failure": "Unknown failure",
+      "update": "Update",
+      "validate": "Validate",
+      "validation-success": "Query Validated Successfully"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "dashboards": "Dashboards",
+      "delete": "Delete",
+      "download": "Download",
+      "edit": "Edit",
+      "loading": "Loading...",
+      "name": "Name",
+      "save": "Save",
+      "type": "Type"
+    },
+    "content-localization": "Invalid language code: {{langCode}}",
+    "dashboard": {
+      "toolbar": {
+        "manage-reports": "Manage scheduled reports",
+        "reset-filters": "Reset filters",
+        "reset-filters-failure": "Failed to reset filter values.",
+        "save-filters": "Save filters",
+        "save-filters-failure": "Failed to save filter values.",
+        "save-filters-success": "Saved filter values successfully."
+      }
+    },
+    "dashboard-import": {
+      "import-text": "Import",
+      "overwrite": "Overwrite",
+      "panel-import": "Panel import",
+      "panel-import-alert": "The import has a {{vqb}} panel. Please re-export it from the desired environment, or manual intervention will be required for view selection.",
+      "sub-title": "Import dashboard from file or via dashboard json"
+    },
+    "dashboard-scene": {
+      "get-editable-variables": {
+        "description": {
+          "optimize-variable-description": "Define an optimize variable, where users can select optimize query types"
+        },
+        "name": {
+          "datepicker": "Date Range",
+          "optimizepicker": "Optimize variable"
+        }
+      },
+      "text": {
+        "discard-changes-to-dashboard": "You have unsaved changes to this dashboard. Are you sure you want to discard them?"
+      }
+    },
+    "dashboard-settings": {
+      "general": {
+        "multilingual-pdf": "Multiligual PDF",
+        "multilingual-pdf-description": "Enable multilingual PDF generation for simple layout PDF reports"
+      }
+    },
+    "date-picker": {
+      "description": "Define a date range variable, where users can select any date range",
+      "name": "Date Range"
+    },
+    "error-page": {
+      "bmc-support": "BMC Support",
+      "description": "This page might have been removed, had its name changed, or is temporarily unavailable.",
+      "go-back": "Go back to the",
+      "home-page": "Home Page",
+      "or-contact": "or contact",
+      "title": "Oops... we could not load that page."
+    },
+    "explore": {
+      "total-result-count-aria-live_one": "{{ count }} query loaded",
+      "total-result-count-aria-live_other": "{{ count }} queries loaded"
+    },
+    "export": {
+      "csvdelimiter": "Delimiter",
+      "fail": "Export Failed:",
+      "failed-dashboards": "Failed Dashboards",
+      "field-enclosure": "Field enclosure",
+      "generation-failed": "Failed to generate report, try again later",
+      "grid": "Grid",
+      "hide-header": "Hide header",
+      "landscape": "Landscape",
+      "layout": "Layout",
+      "newline": "New line format",
+      "orientation": "Orientation",
+      "portrait": "Portrait",
+      "reduce-selection": "Please reduce selected variable values for {{variableQuery}} and try again later",
+      "save-as": "Save the {{target}} as {{type}}",
+      "select-report-type-aria": "Select report type",
+      "select-report-type-placeholder": "Select a report type",
+      "simple": "Simple",
+      "success": "Successfully generated report",
+      "successful": "Export Successfull:",
+      "tableScaling": "Table scaling",
+      "type": "Type",
+      "view": "View"
+    },
+    "features-list": {
+      "date-function-resolution-for-service-management": "Date function resolution for service management",
+      "enable-insight-finder": "Enable Insight Finder",
+      "enable-ootb-views-for-visual-query-builder": "Enable OOTB Views for Visual Query Builder",
+      "export-complete-table-in-pdf": "Export Complete Table In PDF",
+      "skip-ootb-dashboards-during-upgrade": "Skip OOTB dashboards during upgrade",
+      "skip-ootb-dashboards-during-upgrade-confirm-dialog": {
+        "confirm-button": "Enable",
+        "desc": "Delete the folders of out-of-the-box dashboards that are not required before enabling this feature",
+        "title": "Toggle Feature"
+      },
+      "snapshot": "Snapshot"
+    },
+    "inspector": {
+      "stats": {
+        "statistics": "Statistics",
+        "value": "Value"
+      }
+    },
+    "key-selector": {
+      "no-results": "No matching keys found"
+    },
+    "load-blank-dashoard": {
+      "loading-label": "Loading...",
+      "no-data": "No data",
+      "refresh-label": "Refresh dashboard to fetch data"
+    },
+    "manage-dashboards": {
+      "drop-click": "Drag and drop here or click to browse",
+      "import-failed": "Import failed",
+      "serialization-failed": "JSON -> JS Serialization failed",
+      "upload-json": "Upload dashboard JSON file(s)"
+    },
+    "manage-locales": {
+      "cancel": "Cancel",
+      "dashboards": {
+        "add": "Add",
+        "add-key": "Add new key",
+        "dashboard-name": "Dashboard name",
+        "enter-key": "Enter key",
+        "enter-value": "Enter value",
+        "key-text": "Key",
+        "key-validation": "Only aplhanumeric characters allowed",
+        "no-empty-key": "key can't be set empty",
+        "validation": {
+          "default-value-required": "default value is required",
+          "key-required": "key is required"
+        },
+        "value-text": "Value"
+      },
+      "export": "Export",
+      "folders": {
+        "folder-title": "Folder title"
+      },
+      "global": {
+        "subtitle": "Create and manage global keys for localization",
+        "title": "Localization management"
+      },
+      "global-keys-text": "Global keys",
+      "import": "Import",
+      "local-keys-text": "Local keys",
+      "localization-title": "Localization",
+      "new-key": "New key",
+      "save": "Save",
+      "search-keys": "Search keys...",
+      "title": "Manage locales"
+    },
+    "nav": {
+      "apps": {
+        "insight-finder": {
+          "configure-views-subtitle": "View and manage your views",
+          "configure-views-title": "Insight Finder Configure Views",
+          "home": "Insight Finder",
+          "settings-title": "Insight Finder Settings"
+        },
+        "reports": {
+          "history": "History",
+          "manage-ownership": "Manage Ownership",
+          "settings": "Settings"
+        }
+      },
+      "reports-scheduler": "Report Scheduler",
+      "rms": {
+        "subtitle": "An application to create and modify views for Visual Query Builder",
+        "title": "Reporting Metadata Studio"
+      },
+      "roles": {
+        "subtitle": "Manage roles across an organization",
+        "title": "Roles"
+      }
+    },
+    "notification": {
+      "error": {
+        "bhd-00004": "Failed to get Calculated Fields",
+        "bhd-00005": "Failed to create calculated field",
+        "bhd-00006": "Failed to delete calculated field",
+        "bhd-00007": "Failed to modify calculated field",
+        "bhd-00008": "Failed to Update Dashboards",
+        "bhd-00009": "Failed to delete field from Dashboard(s)",
+        "bhd-00010": "bad request payload while creating calculated field",
+        "bhd-00011": "bad request payload while deleting calculated field",
+        "bhd-00012": "bad request payload while modifying calculated field",
+        "bhd-00013": "Calculated field name is already taken. Please provide a different name.",
+        "bhd-00102": "bad request data while setting IMS user info",
+        "bhd-00103": "bad request data while updating user preferences",
+        "bhd-00104": "bad request data while updating org. preferences",
+        "bhd-00105": "Failed parse body",
+        "bhd-00106": "Invalid theme when updating preferences",
+        "bhd-00107": "Dashboard not found",
+        "bhd-00108": "Internal server error",
+        "bhd-00109": "Failed to get preferences",
+        "bhd-00110": "Failed to save preferences",
+        "bhd-00111": "Failed to update user preferences",
+        "bhd-00201": "id is invalid",
+        "bhd-00202": "bad request data while creating folder",
+        "bhd-00203": "bad request data while updating folder",
+        "bhd-00204": "bad request data when moving folder",
+        "bhd-00205": "bad request data while updating folder permissions",
+        "bhd-00206": "team and user permissions cannot have an associated role",
+        "bhd-00207": "permissions cannot have both a user and team",
+        "bhd-00208": "folder title cannot be empty",
+        "bhd-00209": "Dashboard cannot be changed to a folder",
+        "bhd-00210": "uid contains illegal characters",
+        "bhd-00211": "uid too long, max 40 characters",
+        "bhd-00212": "Folder could not be deleted because it contains library elements in use",
+        "bhd-00213": "Access denied",
+        "bhd-00214": "To use this service, you need to activate nested folder feature.",
+        "bhd-00215": "folder not found",
+        "bhd-00216": "a folder with the same name already exists in the current location",
+        "bhd-00217": "a folder/dashboard with the same uid already exists",
+        "bhd-00218": "the folder has been changed by someone else",
+        "bhd-00219": "move folder failed",
+        "bhd-00220": "Folder API error",
+        "bhd-00221": "Failed to get folder permissions",
+        "bhd-00222": "Error while checking folder permissions",
+        "bhd-00223": "Failed to create permission",
+        "bhd-00301": "Use folders endpoint for deleting folders.",
+        "bhd-00302": "dashboardId is invalid",
+        "bhd-00303": "bad request data while restoring dashboard version",
+        "bhd-00304": "bad request data while restoring deleted dashboard",
+        "bhd-00305": "bad request data while calculating dashboard diff",
+        "bhd-00306": "bad request data when creating or updating dashboard",
+        "bhd-00307": "Use folders endpoint for saving folders.",
+        "bhd-00308": "provisioned dashboard cannot be deleted",
+        "bhd-00309": "Quota reached",
+        "bhd-00310": "Access denied to this dashboard",
+        "bhd-00311": "Dashboard not found",
+        "bhd-00312": "Folder not found",
+        "bhd-00313": "Dashboard version not found",
+        "bhd-00314": "Error while retrieving public dashboards",
+        "bhd-00315": "Error while loading dashboard, dashboard data is invalid",
+        "bhd-00316": "Error while checking if dashboard was starred by user",
+        "bhd-00317": "Dashboard folder could not be read",
+        "bhd-00318": "Error while checking if dashboard is provisioned",
+        "bhd-00319": "Failed to delete dashboard",
+        "bhd-00320": "Failed to get quota",
+        "bhd-00321": "Unable to compute diff",
+        "bhd-00322": "Error while connecting library panels",
+        "bhd-00323": "Failed to update permissions",
+        "bhd-00324": "Error while checking dashboard permissions",
+        "bhd-00325": "Failed to get dashboard permissions",
+        "bhd-00326": "Failed to get preferences",
+        "bhd-00327": "Failed to load home dashboard",
+        "bhd-00328": "Dashboard cannot be restored",
+        "bhd-00331": "bad request data while updating dashboard permissions",
+        "bhd-00401": "bad request data while creating new library element",
+        "bhd-00402": "bad request data while updating existing library element",
+        "bhd-00403": "insufficient permissions for getting library panel",
+        "bhd-00404": "failed to get folder",
+        "bhd-00405": "Failed to create library element",
+        "bhd-00406": "Failed to delete library element",
+        "bhd-00407": "Failed to evaluate permissions",
+        "bhd-00408": "Failed to get library elements",
+        "bhd-00409": "Failed to get library element",
+        "bhd-00410": "unable to evaluate library panel permissions",
+        "bhd-00411": "Failed to get connections",
+        "bhd-00412": "Failed to update library element",
+        "bhd-00414": "library element with that name or UID already exists",
+        "bhd-00415": "library element could not be found",
+        "bhd-00416": "library element connection could not be found",
+        "bhd-00417": "folder not found",
+        "bhd-00418": "the library element has been changed by someone else",
+        "bhd-00419": "access denied to folder",
+        "bhd-00420": "the library element has connections",
+        "bhd-00421": "uid contains illegal characters",
+        "bhd-00422": "uid too long, max 40 characters",
+        "bhd-00501": "OrgID mismatch",
+        "bhd-00502": "Access denied to this snapshot",
+        "bhd-00503": "Empty snapshot key",
+        "bhd-00504": "Dashboard snapshot not found",
+        "bhd-00505": "Snapshot not found",
+        "bhd-00506": "Failed to get dashboard snapshot",
+        "bhd-00507": "Failed to delete dashboard snapshot",
+        "bhd-00508": "Failed to delete external dashboard",
+        "bhd-00509": "Error while checking permissions for snapshot",
+        "bhd-00510": "Search failed",
+        "bhd-00601": "Not Found",
+        "bhd-00602": "Internal Server Error",
+        "bhd-00604": "Unauthorized - Old Token is empty",
+        "bhd-00605": "Failed to authenticate",
+        "bhd-00606": "Unauthorized",
+        "bhd-00701": "userId is invalid",
+        "bhd-00702": "Organization name taken",
+        "bhd-00703": "bad request data",
+        "bhd-00704": "bad request data while updating current organization",
+        "bhd-00705": "bad request data while updating current Organization's address",
+        "bhd-00706": "bad request data while adding new user to the current organization",
+        "bhd-00707": "bad request data while updating users in organization",
+        "bhd-00708": "bad request data while updating organization",
+        "bhd-00709": "bad request data wile updating organization's address",
+        "bhd-00710": "bad request data while creating organization",
+        "bhd-00711": "bad request data while updating given user",
+        "bhd-00712": "bad request data when adding organization invite",
+        "bhd-00713": "bad request data when adding custom configuration",
+        "bhd-00714": "Invalid role specified",
+        "bhd-00715": "orgId is invalid",
+        "bhd-00716": "Cannot change role so that there is no organization admin left",
+        "bhd-00717": "Cannot remove last organization admin",
+        "bhd-00718": "Can not delete org for current user",
+        "bhd-00719": "Cannot invite external user when login is disabled.",
+        "bhd-00720": "Invalid Url",
+        "bhd-00721": "Cannot assign a role higher than user's role",
+        "bhd-00722": "Only users can create organizations",
+        "bhd-00723": "Permission denied: not permitted to add an existing user to this organisation",
+        "bhd-00724": "Organization not found",
+        "bhd-00725": "User not found",
+        "bhd-00726": "Failed to delete organization. ID not found",
+        "bhd-00727": "User is already member of this organization",
+        "bhd-00728": "Failed to get organization",
+        "bhd-00729": "failed to get quota",
+        "bhd-00730": "Failed to update organization",
+        "bhd-00731": "Failed to update org address",
+        "bhd-00732": "Failed to get users for current organization",
+        "bhd-00733": "Could not add user to organization",
+        "bhd-00734": "Failed to get users for organization",
+        "bhd-00735": "Failed to get user auth info",
+        "bhd-00736": "Failed update org user",
+        "bhd-00737": "Failed to remove user from organization",
+        "bhd-00738": "Failed to update org quotas",
+        "bhd-00739": "Failed to search orgs",
+        "bhd-00740": "Failed to parse user id",
+        "bhd-00741": "Failed to get invites from db",
+        "bhd-00742": "Failed to query db for existing user check",
+        "bhd-00743": "Failed to evaluate permissions",
+        "bhd-00744": "Could not generate random string",
+        "bhd-00745": "Failed to save invite to database",
+        "bhd-00746": "Failed to send email invite",
+        "bhd-00747": "Failed to update invite with email sent info",
+        "bhd-00748": "Failed to update invite status",
+        "bhd-00761": "Error while trying to create org user",
+        "bhd-00762": "Failed to send email invited_to_org",
+        "bhd-00763": "SMTP not configured, check your grafana.ini config file's [smtp] section",
+        "bhd-00764": "Failed to create organization",
+        "bhd-00765": "bad request data while adding a new user to current organization",
+        "bhd-00801": "'action' and 'actionPrefix' are mutually exclusive",
+        "bhd-00802": "at least one search option must be provided",
+        "bhd-00803": "invalid namespacedId",
+        "bhd-00804": "could not get org user permissions",
+        "bhd-00805": "Failed to get permissions",
+        "bhd-00806": "Bad request data: ",
+        "bhd-00807": "bad request data while setting resource permissions for a user",
+        "bhd-00808": "bad request data while setting resource permissions for a team",
+        "bhd-00809": "bad request data when setting resource permissions for a built-in role",
+        "bhd-00901": "bad request data while creating a data source",
+        "bhd-00902": "bad request data while updating an existing data source by its sequential ID",
+        "bhd-00903": "bad request data while update an existing data source",
+        "bhd-00904": "Failed to add datasource",
+        "bhd-00905": "id is invalid",
+        "bhd-00906": "Missing valid datasource id",
+        "bhd-00907": "Validation error, invalid URL",
+        "bhd-00908": "UID is invalid",
+        "bhd-00909": "Missing datasource uid",
+        "bhd-00910": "Missing valid datasource name",
+        "bhd-00911": "Datasource id is missing",
+        "bhd-00912": "Data source not found",
+        "bhd-00913": "You do not have enough permission to update datasource",
+        "bhd-00914": "You'll need additional permissions to perform this action. Permissions needed: datasources.permissions:write",
+        "bhd-00915": "Cannot update read-only data source",
+        "bhd-00916": "Cannot delete read-only data source",
+        "bhd-00917": "You do not have enough permission to delete datasource",
+        "bhd-00918": "Access denied to datasource",
+        "bhd-00919": "Access denied",
+        "bhd-00920": "Datasource has already been updated by someone else. Please reload and try again",
+        "bhd-00921": "Failed to query datasources",
+        "bhd-00922": "Failed to query datasource",
+        "bhd-00923": "Failed to add datasource: ",
+        "bhd-00924": "Failed to delete datasource: ",
+        "bhd-00925": "Failed to add datasource",
+        "bhd-00926": "Failed to update datasource",
+        "bhd-00927": "Failed to update datasource: ",
+        "bhd-00928": "Failed to delete datasource",
+        "bhd-00929": "Unable to load datasource metadata",
+        "bhd-00930": "Unable to get plugin context",
+        "bhd-00931": "Plugin request failed",
+        "bhd-00932": "Failed to unmarshal detailed response from backend plugin",
+        "bhd-00936": "bad request data while adding correlation",
+        "bhd-00937": "At least one of label, description or config is required",
+        "bhd-00938": "bad request data while updating a correlation",
+        "bhd-00939": "Correlation can only be edited via provisioning",
+        "bhd-00940": "No correlation found",
+        "bhd-00941": "Source data source not found",
+        "bhd-00942": "Correlation not found",
+        "bhd-00943": "Failed to get correlations",
+        "bhd-00944": "Failed to add correlation",
+        "bhd-00945": "Failed to get correlation",
+        "bhd-00946": "Failed to delete correlation",
+        "bhd-00947": "Failed to update correlation",
+        "bhd-01001": "bad request data while adding new query to query history",
+        "bhd-01002": "bad request data while Updating comment for query in query history",
+        "bhd-01003": "Query in query history not found",
+        "bhd-01004": "Failed to create query history",
+        "bhd-01005": "Failed to get query history",
+        "bhd-01006": "Failed to delete query from query history",
+        "bhd-01007": "Failed to star query in query history",
+        "bhd-01008": "Failed to unstar query in query history",
+        "bhd-01009": "Failed to update comment of query in query history",
+        "bhd-01011": "Failed to delete query history",
+        "bhd-01012": "Failed to star query history",
+        "bhd-01013": "Failed to unstar query history",
+        "bhd-01014": "Failed to update comment of query in query history",
+        "bhd-01101": "bad request data while installing plugin",
+        "bhd-01102": "bad request data while updating plugin setting",
+        "bhd-01103": "Access Denied",
+        "bhd-01104": "Cannot install or change a Core plugin",
+        "bhd-01105": "Cannot uninstall a Core plugin",
+        "bhd-01106": "Plugin not found, no installed plugin with that id",
+        "bhd-01107": "Plugin not installed",
+        "bhd-01108": "file does not exist",
+        "bhd-01109": "Plugin already installed",
+        "bhd-01110": "Failed to get list of plugins",
+        "bhd-01111": "Could not get markdown file",
+        "bhd-01112": "Failed to get plugin settings",
+        "bhd-01113": "Failed to unmarshal detailed response from backend plugin",
+        "bhd-01114": "Failed to install plugin",
+        "bhd-01115": "Failed to uninstall plugin",
+        "bhd-01116": "Failed to get plugin dashboards",
+        "bhd-01117": "Failed to update plugin setting",
+        "bhd-01201": "bad request data while deleting multiple annotations",
+        "bhd-01202": "bad request data while creating annotation",
+        "bhd-01203": "bad request data while updating annotationbad request data while updating annotation",
+        "bhd-01204": "bad request data while creating annotation in Graphite format",
+        "bhd-01205": "annotationId is invalid",
+        "bhd-01206": "Failed to save Graphite annotation",
+        "bhd-01207": "Invalid dashboard UID in annotation request",
+        "bhd-01208": "Access denied to mass delete annotations",
+        "bhd-01209": "Access denied to save the annotation",
+        "bhd-01210": "Annotation not found",
+        "bhd-01211": "Error while checking annotation permissions",
+        "bhd-01212": "Failed to delete annotations",
+        "bhd-01213": "Failed to delete annotation",
+        "bhd-01214": "Failed to save annotation",
+        "bhd-01215": "Failed to update annotation",
+        "bhd-01216": "Failed to find annotation tags",
+        "bhd-01217": "Failed to find annotation",
+        "bhd-01218": "Failed to get annotations",
+        "bhd-01219": "Annotations deleted",
+        "bhd-01301": "bad request data",
+        "bhd-01302": "invalid operation",
+        "bhd-01303": "invalid value and its type",
+        "bhd-01304": "Invalid request body",
+        "bhd-01305": "Invalid JSON format",
+        "bhd-01306": "Invalid User Id",
+        "bhd-01307": "Role name is missing",
+        "bhd-01308": "You cannot update system role.",
+        "bhd-01309": "You cannot delete system role.",
+        "bhd-01310": "This role is associated with users. Before deleting the role, delete all the associations.",
+        "bhd-01311": "This role is associated with teams. Before deleting the role, delete all the associations.",
+        "bhd-01312": "Role id is invalid",
+        "bhd-01313": "Failed to validated role id",
+        "bhd-01314": "Invalid role ID",
+        "bhd-01315": "Invalid payload",
+        "bhd-01316": "userId is invalid",
+        "bhd-01317": "User Id is invalid",
+        "bhd-01318": "teamId is invalid",
+        "bhd-01319": "Team does not exists.",
+        "bhd-01320": "User doesn't have enough permissions.",
+        "bhd-01321": "IMS_JWT is invalid",
+        "bhd-01322": "Missing or Empty Authorization Header",
+        "bhd-01323": "IMS_JWT is invalid or incorrect",
+        "bhd-01324": "No roles assigned to the user.",
+        "bhd-01325": "Role not allowed to fetch dashboards.",
+        "bhd-01326": "Unauthorized access'",
+        "bhd-01327": "Role not found",
+        "bhd-01328": "Role with the same name already exists",
+        "bhd-01329": "Failed to get dashboards",
+        "bhd-01330": "Failed to get the view list",
+        "bhd-01331": "Failed to get personalized data",
+        "bhd-01332": "Failed to delete personalized data",
+        "bhd-01334": "Error checking permissions",
+        "bhd-01335": "Failed to retrieve roles.",
+        "bhd-01336": "Error building dashboard query for admin",
+        "bhd-01337": "Error building dashboard query",
+        "bhd-01338": "Internal Server Error",
+        "bhd-01339": "Failed to get role",
+        "bhd-01340": "Failed to update role",
+        "bhd-01341": "Failed to delete role",
+        "bhd-01342": "Failed to search roles",
+        "bhd-01343": "Failed to update Users Role",
+        "bhd-01344": "Failed to update Teams Role",
+        "bhd-01345": "Failed to get permissions list",
+        "bhd-01346": "Failed to update permissions list",
+        "bhd-01347": "Failed to search Users",
+        "bhd-01348": "Failed to add user role mapping.",
+        "bhd-01349": "Failed to remove user role mapping.",
+        "bhd-01350": "Failed to add team role",
+        "bhd-01351": "Failed to remove team role",
+        "bhd-01352": "unexpected error",
+        "bhd-01364": "Record not found",
+        "bhd-01365": "Failed to create role",
+        "bhd-01366": "Failed to search Teams",
+        "bhd-01367": "Team Id is invalid",
+        "bhd-01401": "bad request data while updating playlist",
+        "bhd-01402": "bad request data while creating playlist",
+        "bhd-01403": "Search failed",
+        "bhd-01404": "Playlist not found",
+        "bhd-01405": "Failed to delete playlist",
+        "bhd-01406": "Failed to save playlist",
+        "bhd-01407": "Failed to load playlist",
+        "bhd-01408": "Failed to create playlist",
+        "bhd-01501": "invalid id",
+        "bhd-01502": "bad request data",
+        "bhd-01503": "Invalid job id",
+        "bhd-01504": "bad request data while creating a report",
+        "bhd-01505": "Recipients are required",
+        "bhd-01506": "Domain restriction failed",
+        "bhd-01507": "Invalid cron expression",
+        "bhd-01508": "bad request data while updating report",
+        "bhd-01509": "Invalid report id",
+        "bhd-01510": "Restriction of internal domains only failed",
+        "bhd-01511": "No reports to delete",
+        "bhd-01512": "bad request payload while setting FTP configuration",
+        "bhd-01513": "bad request payload while modifying FTP configurations",
+        "bhd-01514": "bad request payload while setting default FTP configuration",
+        "bhd-01515": "bad request data while sending mail",
+        "bhd-01516": "bad request data while executing report once",
+        "bhd-01517": "ID is not specified",
+        "bhd-01518": "bad request data while disabling report scheduler",
+        "bhd-01519": "report scheduler list is empty",
+        "bhd-01520": "report scheduler with the same name already exists",
+        "bhd-01521": "please fill the data required",
+        "bhd-01522": "cannot edit the dashboard for existing report schedule",
+        "bhd-01523": "report tenant details not found",
+        "bhd-01524": "bad request data while setting report branding settings",
+        "bhd-01525": "Invalid logo image. Only the following extensions are allowed: .png, .jpg, .jpeg",
+        "bhd-01526": "Invalid image URL. Only the following extensions are allowed: .png, .jpg, .jpeg",
+        "bhd-01527": "Invalid logo URL",
+        "bhd-01528": "Invalid footer URL",
+        "bhd-01529": "bad request data while updating or creating tenant details",
+        "bhd-01530": "Report is not in storage",
+        "bhd-01531": "File is not available on storage",
+        "bhd-01532": "Some recipients are not internal users",
+        "bhd-01533": "report scheduler does not exist",
+        "bhd-01534": "report schedule limit exceeded",
+        "bhd-01535": "Failed to get previous FTP configuration",
+        "bhd-01537": "bad request data while deleting report scheduler",
+        "bhd-01538": "bad request data while enabling report scheduler",
+        "bhd-01539": "Some BCC recipients are not internal users",
+        "bhd-01540": "Some recipients are not in whitelist",
+        "bhd-01541": "Some BCC recipients are not in whitelist",
+        "bhd-01542": "Failed to fetch reports",
+        "bhd-01543": "FTP Configuration already exist",
+        "bhd-01544": "Failed to Add FTP Configuration",
+        "bhd-01545": "Failed to Update FTP Configuration",
+        "bhd-01546": "bad request data while getting preview",
+        "bhd-01547": "Default FTP configuration deletion is not allowed!",
+        "bhd-01548": "FTP is used in report scheduler",
+        "bhd-01549": "Failed to delete FTP configuration",
+        "bhd-01550": "Failed to delete report schedules for the org.",
+        "bhd-01551": "Failed to disable report schedules for the org.",
+        "bhd-01552": "Failed to connect to FTP server",
+        "bhd-01601": "bad request data while updating signed in user",
+        "bhd-01602": "Not allowed to change email when auth proxy is using email property",
+        "bhd-01603": "Not allowed to change username when auth proxy is using username property",
+        "bhd-01604": "Invalid email address",
+        "bhd-01605": "id is invalid",
+        "bhd-01606": "Only users and service accounts can star dashboards",
+        "bhd-01607": "Invalid dashboard UID",
+        "bhd-01608": "orgId is invalid",
+        "bhd-01609": "Only users and service accounts get starred dashboards",
+        "bhd-01610": "bad request data while changing the password for the user",
+        "bhd-01611": "bad request data while revoking the auth token",
+        "bhd-01612": "bad request data while updating the user",
+        "bhd-01613": "Not a valid organization",
+        "bhd-01614": "entity not allowed to revoke tokens",
+        "bhd-01615": "entity not allowed to get tokens",
+        "bhd-01616": "Endpoint only available for users",
+        "bhd-01617": "Update would result in user login conflict",
+        "bhd-01618": "Failed to get user",
+        "bhd-01620": "Failed to get user organizations",
+        "bhd-01621": "Failed to get user stars",
+        "bhd-01622": "Failed to fetch dashboards",
+        "bhd-01623": "Failed to star dashboard",
+        "bhd-01624": "Failed to unstar dashboard",
+        "bhd-01625": "Failed to change user password",
+        "bhd-01626": "Failed to get org quotas",
+        "bhd-01627": "Failed to update help flag",
+        "bhd-01628": "Failed to generate email verification",
+        "bhd-01629": "failed to parse user id",
+        "bhd-01630": "Failed to get user teams",
+        "bhd-01631": "Failed to update user",
+        "bhd-01632": "Failed to parse user id",
+        "bhd-01640": "user not found",
+        "bhd-01641": "User auth token not found",
+        "bhd-01642": "Failed to change active organization",
+        "bhd-01643": "Failed to revoke user auth token",
+        "bhd-01644": "Failed to get user auth token",
+        "bhd-01645": "Cannot revoke active user auth token",
+        "bhd-01701": "bad request data while creating new user",
+        "bhd-01702": "bad request data while revoking auth token for user",
+        "bhd-01703": "bad request data while setting permissions for the user",
+        "bhd-01704": "bad request data while setting password for user",
+        "bhd-01705": "Password is missing or too short",
+        "bhd-01706": "id is invalid",
+        "bhd-01707": "You cannot logout yourself",
+        "bhd-01708": "cannot remove last grafana admin",
+        "bhd-01709": "User not found",
+        "bhd-01710": "Not allowed to reset password when login form is disabled",
+        "bhd-01711": "Cannot change Grafana Admin role for externally synced user",
+        "bhd-01712": "Failed to authorize settings",
+        "bhd-01713": "User has conflicting login or email with another user. Please contact server admin",
+        "bhd-01714": "Failed to get admin stats from database",
+        "bhd-01715": "Failed to get anon stats from database",
+        "bhd-01716": "Failed to re-encrypt data keys",
+        "bhd-01717": "Failed to rotate data keys",
+        "bhd-01718": "failed to create user",
+        "bhd-01719": "Could not read user from database",
+        "bhd-01720": "Failed to update user password",
+        "bhd-01721": "Failed to update user permissions",
+        "bhd-01722": "Failed to delete user",
+        "bhd-01723": "Could not disable external user",
+        "bhd-01724": "Failed to disable user",
+        "bhd-01725": "Could not enable external user",
+        "bhd-01726": "Failed to enable user",
+        "bhd-01727": "Failed to get user",
+        "bhd-01728": "Failed to get user auth tokens",
+        "bhd-01729": "Failed to logout user",
+        "bhd-01730": "User password updated but unable to revoke user sessions",
+        "bhd-01740": "Failed to re-encrypt secrets",
+        "bhd-01741": "Failed to update org quotas",
+        "bhd-01742": "Failed to rollback secrets",
+        "bhd-01746": "Failed to reload plugins config"
+      },
+      "success": {
+        "bhd-00001": "Fields Modified Successfully",
+        "bhd-00002": "Field(s) Deleted Successfully",
+        "bhd-00003": "New Field Created Successfully",
+        "bhd-00101": "Preferences updated",
+        "bhd-00224": "Folder deleted",
+        "bhd-00225": "Folder permissions updated",
+        "bhd-00329": "Dashboard permissions updated",
+        "bhd-00330": "changes were broadcast to the gitops listener",
+        "bhd-00413": "Library element deleted",
+        "bhd-00511": "Snapshot deleted. It might take an hour before it's cleared from any CDN caches.",
+        "bhd-00607": "Logged in",
+        "bhd-00749": "Organization updated",
+        "bhd-00750": "Address updated",
+        "bhd-00751": "User added to organization",
+        "bhd-00752": "Organization user updated",
+        "bhd-00753": "Organization quota updated",
+        "bhd-00754": "User deleted",
+        "bhd-00755": "Organization deleted",
+        "bhd-00756": "Organization created",
+        "bhd-00757": "Invite revoked",
+        "bhd-00758": "Configuration updated",
+        "bhd-00759": "Configuration is set to default",
+        "bhd-00760": "User removed from organization",
+        "bhd-00810": "Permissions updated",
+        "bhd-00811": "Permission updated",
+        "bhd-00812": "Permission removed",
+        "bhd-00933": "Datasource added",
+        "bhd-00934": "Datasource updated",
+        "bhd-00935": "Data source deleted",
+        "bhd-00948": "Correlation created",
+        "bhd-00949": "Correlation deleted",
+        "bhd-00950": "Correlation updated",
+        "bhd-01010": "Query deleted",
+        "bhd-01118": "Plugin settings updated",
+        "bhd-01220": "Annotation added",
+        "bhd-01221": "Annotation updated",
+        "bhd-01222": "Annotation patched",
+        "bhd-01223": "Graphite annotation added",
+        "bhd-01224": "Annotation deleted",
+        "bhd-01353": "Not implemented yet",
+        "bhd-01354": "Personalized data deleted",
+        "bhd-01355": "OK",
+        "bhd-01356": "Authorized access'",
+        "bhd-01357": "Permissions updated",
+        "bhd-01358": "User role mapping added.",
+        "bhd-01359": "User role mapping removed for all roles.",
+        "bhd-01361": "Team role added.",
+        "bhd-01362": "Team role removed.",
+        "bhd-01363": "Locale updated successfully",
+        "bhd-01553": "Report is successfully created",
+        "bhd-01554": "Report is successfully updated",
+        "bhd-01555": "Report is successfully deleted",
+        "bhd-01556": "Reports are successfully deleted",
+        "bhd-01557": "Successfully deleted user from reports.",
+        "bhd-01558": "FTP configuration saved successfully",
+        "bhd-01559": "FTP configuration updated successfully",
+        "bhd-01560": "FTP configured as default",
+        "bhd-01561": "FTP configuration deleted successfully",
+        "bhd-01562": "Report schedules deleted/disabled successfully.",
+        "bhd-01563": "Report is successfully enabled",
+        "bhd-01564": "Reports are successfully enabled",
+        "bhd-01565": "Report is successfully disabled",
+        "bhd-01566": "Reports are successfully disabled",
+        "bhd-01567": "Report branding is successfully updated.",
+        "bhd-01568": "Report branding is set to default.",
+        "bhd-01569": "Updated.",
+        "bhd-01570": "Deleted.",
+        "bhd-01571": "Successfully executed",
+        "bhd-01633": "Active organization changed",
+        "bhd-01634": "Dashboard starred!",
+        "bhd-01635": "Dashboard unstarred",
+        "bhd-01636": "User password changed",
+        "bhd-01637": "Help flag set",
+        "bhd-01638": "User updated",
+        "bhd-01639": "Email sent for verification",
+        "bhd-01646": "User auth token revoked",
+        "bhd-01731": "User password updated",
+        "bhd-01732": "User permissions updated",
+        "bhd-01733": "User deleted",
+        "bhd-01734": "User disabled",
+        "bhd-01735": "User enabled",
+        "bhd-01736": "User logged out",
+        "bhd-01737": "User created",
+        "bhd-01748": "Organization quota updated",
+        "bhd-01753": "Dashboards config reloaded",
+        "bhd-01754": "Plugins config reloaded",
+        "bhd-01755": "Datasources config reloaded",
+        "bhd-01756": "Alerting config reloaded"
+      }
+    },
+    "notifications": {
+      "dashboard": {
+        "imported": "Dashboard Imported",
+        "panel-not-found": "Panel not found",
+        "restored": "Dashboard restored",
+        "restored-failed": "Dashboard restore failed",
+        "restored-version": "Restored from version {{version}}",
+        "restored-version-failed": "Failed to restore from version {{restoredversion}}"
+      },
+      "error": {
+        "error-text": "Error",
+        "failed-validation": "Validation failed",
+        "generate-link": "Error generating shortened link",
+        "http-error": "HTTP error {{msg}}",
+        "unknown-error": "Error unknown"
+      },
+      "folder": {
+        "created": "Folder created",
+        "failed-creation": "Failed to create folder"
+      },
+      "settings": {
+        "saved": "Settings saved",
+        "saved-failed": "Failed to save settings"
+      },
+      "success": {
+        "copied-link": "Shortened link copied to clipboard",
+        "success-text": "Success"
+      }
+    },
+    "org-custom-config": {
+      "community": "Community",
+      "documentation": "Documentation",
+      "errors": {
+        "query-type-mandatory": "At least one query type should be enabled"
+      },
+      "support": "Support",
+      "video": "Video"
+    },
+    "panel": {
+      "bmc-video": {
+        "enter-video": "Enter embeded video",
+        "invalid-url": "Not a valid URL",
+        "url": "Video URL"
+      },
+      "bmc-welcome": {
+        "communities": "Communities",
+        "community-description": "Community description",
+        "default-community-description": "Connect. Share. Discover. Join discussions with peers and experts on BMC products and solutions.",
+        "default-documentation-description": "Go through the product documentation to understand all the Reporting features and how to use them.",
+        "default-video-description": "View video how-tos, overviews, and demos about BMC products and solutions on the BMC YouTube channel.",
+        "documentation": "Documentation",
+        "documentation-description": "Documentation description",
+        "logo-title": "BMC Helix Logo",
+        "video-description": "Video description",
+        "videos": "Videos"
+      }
+    },
+    "playlist": {
+      "empty": "Playlist is empty. Add dashboards below.",
+      "items-changed_one": "Playlist items changed. There is {{count}} dashboard in playlist now.",
+      "items-changed_other": "Playlist items changed. There are {{count}} dashboards in playlist now."
+    },
+    "query": {
+      "query-name-label": "Query name :"
+    },
+    "rbac": {
+      "common": {
+        "all": "All",
+        "assigned": "Assigned",
+        "menu": "Menu",
+        "name": "Name"
+      },
+      "permissions": {
+        "admin": {
+          "datasource-manage": "Manage datasources",
+          "datasource-manage-desc": "can manage datasources",
+          "reports-manage": "Manage report scheduler",
+          "reports-manage-desc": "can manage all reports",
+          "title": "Administration"
+        },
+        "calc-fields": {
+          "create-desc": "can create or update calculated fields",
+          "view-desc": "can view calculated fields"
+        },
+        "common": {
+          "create": "Create",
+          "view": "View"
+        },
+        "dashboards": {
+          "create-desc": "can create dashboards",
+          "download-desc": "can download dashboard as pdf/xlsx/csv",
+          "view-desc": "can view permitted dashboards"
+        },
+        "datasource": {
+          "explore": "Explore",
+          "explore-desc": "can use explore mode for datasources"
+        },
+        "datasources": {
+          "title": "Datasources"
+        },
+        "drawer-title": "{{name}} - Permissions",
+        "folders": {
+          "create-desc": "can create folders",
+          "title": "Folders",
+          "view-desc": "can view permitted folders"
+        },
+        "insightfinder": {
+          "access": "Access",
+          "access-desc-tooltip": "can access insight finder",
+          "dashboards-create": "Create dashboards",
+          "dashboards-create-desc": "can create dashboards through insight finder",
+          "title": "Insight Finder"
+        },
+        "reports": {
+          "access": "Access",
+          "access-desc": "can view and create reports",
+          "history-read": "View history",
+          "history-read-desc": "can view reports history section",
+          "recipients-dash-access": "Dynamic recipients",
+          "recipients-dash-access-desc": "Can add recipients dynamically from dashboard in schedule",
+          "settings-read": "View settings",
+          "settings-read-desc": "can view reports settings",
+          "title": "Reports"
+        },
+        "servicemanagement-querytypes": {
+          "sql": "SQL",
+          "sql-desc": "can edit sql query",
+          "title": "Service management query types"
+        },
+        "subtitle": "List of permissions"
+      },
+      "roles": {
+        "actions": "Actions",
+        "create": "Create",
+        "custom": "Custom",
+        "delete": "Delete role",
+        "delete-confirmation": "Are you sure you want to delete this role?",
+        "delete-role": "Delete role",
+        "description": "Description",
+        "edit": "Edit role",
+        "manage-permissions": "Manage permissions",
+        "manage-teams": "Manage teams",
+        "manage-users": "Manage users",
+        "name-required": "Role name is required",
+        "new": "New role",
+        "search": "Search roles",
+        "system": "System",
+        "update": "Update"
+      },
+      "teams": {
+        "assigned-count_one": "{{count}} team assigned",
+        "assigned-count_other": "{{count}} teams assigned",
+        "drawer-title": "{{name}} - Teams",
+        "none-assigned": "No teams assigned",
+        "none-found": "No teams found",
+        "search": "Search team name"
+      },
+      "users": {
+        "assigned-count_one": "{{count}} user assigned",
+        "assigned-count_other": "{{count}} users assigned",
+        "drawer-title": "{{roleName}} - Users",
+        "email": "Email",
+        "login": "Login",
+        "none-assigned": "No users assigned",
+        "none-found": "No users found"
+      }
+    },
+    "rms": {
+      "description": "Reporting Metadata Studio is a Windows application based on Pentaho Metadata Editor. It is used to create customized views or modify a copy of an out-of-the-box view. For more information, see the online documentation.",
+      "download": {
+        "error": "Unable to download"
+      },
+      "headers": {
+        "env-details": "Environment details"
+      }
+    },
+    "search": {
+      "comfirm-export": "Do you want to export the {{dashCount}} selected dashboard(s)?",
+      "export": "Export",
+      "export-status": "Export Status"
+    },
+    "share-modal": {
+      "loading": "Loading",
+      "theme-picker": {
+        "current-theme": "Current theme",
+        "dark-theme": "Dark theme",
+        "light-theme": "Light theme"
+      }
+    },
+    "shared-preferences": {
+      "datetime-format": {
+        "description": "This will change the default time format used in dashboards, panels and reports.",
+        "label": "Datetime Format"
+      },
+      "fields": {
+        "apply-admins": "Apply to admins",
+        "enabled-query-types": "Manage service management query types",
+        "query-type-label": "Query Type",
+        "query-type-placeholder": "Choose query type"
+      },
+      "query-type": {
+        "form": "Form",
+        "sql": "SQL",
+        "vqb": "Visual query builder"
+      }
+    },
+    "tag-filter": {
+      "remove-tag": "Remove tag {{label}}"
+    },
+    "toggle-feature": {
+      "manage-features": "Manage dashboard features"
+    },
+    "transformers": {
+      "adv-functions": {
+        "against-field": "Against field name",
+        "alias": "Alias",
+        "field-name": "Field name",
+        "function-name": "Function name",
+        "percentage": "Percentage",
+        "percentile-placeholder": "percentile value",
+        "percentile-value": "Percentile value",
+        "previous-row": "Previous row",
+        "previous-row-placeholder": "Previous row",
+        "rank-placeholder": "Rank",
+        "rank-value": "Rank value"
+      },
+      "dynamic-fields": {
+        "add-aria": "Add a field to sanitize",
+        "add-button": "Add field",
+        "field-label": "Field",
+        "format-as": "Format dynamic field as",
+        "remove-aria": "Remove dynamic fields formatter field type transformer"
+      },
+      "sanitize": {
+        "add-aria": "Add a field to sanitize",
+        "add-button": "Add field",
+        "field-label": "Field",
+        "remove-aria": "Remove sanitize field type transformer"
+      }
+    },
+    "variables": {
+      "more-values": "... More values",
+      "optimize": {
+        "close-search-panel": "Close",
+        "deselect-all": "Deselect all",
+        "loading": "Loading...",
+        "no-domain-selected": "No Domain Selected",
+        "no-items": "No items",
+        "remove-item": "Remove item",
+        "search": "Search",
+        "selected": "selected",
+        "selected-domains": "Selected domains",
+        "type-to-search": "Type to search"
+      },
+      "query-editor": {
+        "continue": "Continue",
+        "enable-editor": "Enable query editor",
+        "enable-variable-caching": "Enable variable caching",
+        "modal-close-confirmation": "The current query will be lost. Do you want to continue?",
+        "modal-close-title": "Unsaved changes",
+        "query-text": "Query",
+        "service-management-note": "Note: Applicable only to the Service Management query type.",
+        "variable-caching": {
+          "dependant-error": "Caching for time range dependent variables not allowed",
+          "modal-close-title": "Variable caching",
+          "modal-disable-confirmation": "Do you want to disable caching for the variable?",
+          "modal-enable-additional-text-1": "Variable cache will be cleared for all users if you edit the query",
+          "modal-enable-confirmation": "Do you want to enable caching for the variable?",
+          "service-management-error": "Caching is supported only for Service Management queries",
+          "time-dependant-warning": "Caching is not allowed for variables which are time dependant."
+        }
+      },
+      "refresh-aria": "Refresh {{name}}",
+      "refresh-tooltip": "Refresh this variable",
+      "refresh-variable-aria": "Refresh {{name}}",
+      "variable-caching": {
+        "cache-delete-success": "Cache deleted successfully for variable {{variableName}}"
+      }
+    },
+    "welcome": {
+      "dashboards": "Dashboards"
+    }
+  },
+  "bmcgrafana": {
+    "command-palette": {
+      "search-box": {
+        "aria-label": "Search or jump to..."
+      }
+    },
+    "dashboard": {
+      "panel-copied": "Panel copied. Click **Add panel** icon to paste.",
+      "picker": {
+        "placeholder": "Select dashboard"
+      },
+      "remove-panel": {
+        "confirm-button-text": "Remove"
+      }
+    },
+    "dashboard-import": {
+      "datasource-validation": "A data source is required",
+      "name-validation-text": "Name is required",
+      "needs-value": "needs a value",
+      "select-view": "Select view",
+      "view-selection-tooltip": "Do not change the pre-selected view",
+      "view-selection-validation": "A view selection is required"
+    },
+    "dashboard-scene": {
+      "dashboard-preview-banner": {
+        "not-yet-saved": "The value is not saved in the BMC Helix Dashboard database"
+      },
+      "help-wizard": {
+        "troubleshooting-request-help": "To request troubleshooting help, send a snapshot of this panel to BMC Helix Dashboards Technical Support. The snapshot contains query response data and panel settings."
+      },
+      "save-provisioned-dashboard-form": {
+        "cannot-be-saved": "This dashboard cannot be saved from the BMC Helix Dashboards UI because it has been provisioned from another source. Copy the JSON or save it to a file below, then you can update your dashboard in the provisioning source."
+      }
+    },
+    "dashboards": {
+      "edit-panel": {
+        "actual": "Actual",
+        "actual-description": "Make same size as on the dashboard",
+        "axis": {
+          "grid-lines": {
+            "auto-text": "Auto"
+          }
+        },
+        "discard": "Discard",
+        "fill": "Fill",
+        "fill-description": "Use all available space",
+        "panel-options": {
+          "link-editor": {
+            "url-placeholder": "http://your-grafana.com/d/000000010/annotations"
+          }
+        },
+        "query": {
+          "empty-query-edit-warning": "An empty query name is not allowed",
+          "query-already-exist-warning": "Query name already exists",
+          "query-options": {
+            "min-interval-placeholder": "No limit"
+          }
+        }
+      },
+      "save-dashboard": {
+        "error": "Error saving dashboard",
+        "errors": {
+          "dash-folder-same-name": "Dashboard name cannot be the same as folder name",
+          "dash-name-invalid": "Dashboard name is invalid"
+        }
+      },
+      "settings": {
+        "annotation": {
+          "edit-form": {
+            "new-annotation": "New annotation"
+          }
+        },
+        "links": {
+          "description-edit-link": "Edit a specific link of your dashboard",
+          "description-new-link": "Create a new link on your dashboard",
+          "title-edit-link": "Edit link",
+          "title-new-link": "New link"
+        },
+        "variables": {
+          "editor": {
+            "exlude-variable": "Exclude variable",
+            "exlude-variable-desc": "Select to exclude the variable from the query",
+            "select-variable-type": {
+              "ad-hoc-filters": {
+                "name": "Ad hoc filters"
+              },
+              "constant": {
+                "description": "Define a hidden constant variable, useful for metric prefixes in dashboards you want to share.",
+                "name": "Constant"
+              },
+              "custom": {
+                "name": "Custom"
+              },
+              "data-source": {
+                "description": "Enables you to dynamically switch the data source for multiple panels.",
+                "name": "Data source"
+              },
+              "interval": {
+                "name": "Interval"
+              },
+              "query": {
+                "name": "Query"
+              },
+              "textbox": {
+                "description": "Define a textbox variable, where users can enter any arbitrary string",
+                "name": "Text box"
+              }
+            },
+            "types": {
+              "ad-hoc": {
+                "data-source-placeholder": "Select data source"
+              },
+              "date-range": {
+                "title": "Select Time Range"
+              },
+              "query": {
+                "refresh-options": {
+                  "on-dash-load": "On dashboard load",
+                  "on-time-change": "On time range change"
+                }
+              }
+            }
+          }
+        },
+        "versions": {
+          "loading-msgs": {
+            "changes": "Fetching changes&hellip;",
+            "history-list": "Fetching history list&hellip;",
+            "more-entries": "Fetching more entries&hellip;"
+          }
+        }
+      }
+    },
+    "datesource": {
+      "configuration": {
+        "sort-asc": "Sort by A–Z",
+        "sort-desc": "Sort by Z–A"
+      }
+    },
+    "explore": {
+      "no-data": "No data",
+      "query-added-announcement": "New Query Row Added. {{queryCount}}",
+      "rich-history-settings-tab": {
+        "alert-info": "BMC Helix Dashboards will keep entries up to {{optionLabel}}.Starred entries won't be deleted."
+      },
+      "to-dashboard": {
+        "panel-to-dashboard": "Add panel to dashboard",
+        "to-existing-dashboard-title": "Add panel to existing dashboard",
+        "to-new-dashboard-title": "Add panel to new dashboard"
+      }
+    },
+    "file-drop-zone": {
+      "accepted-file-types-prefix": "Accepted file types",
+      "file-invalid-type-prefix": "File type must be one of",
+      "max-file-size": "Max file size"
+    },
+    "grafana-data": {
+      "timezone": {
+        "browser-time": "Browser Time",
+        "coord-universal-time": "Coordinated Universal Time",
+        "local-browser-time": "Local browser time"
+      },
+      "valueFormats": {
+        "categories": {
+          "misc": {
+            "formats": {
+              "european": "European format (Deprecated)"
+            }
+          }
+        }
+      }
+    },
+    "grafana-ui": {
+      "date-time-pickers": {
+        "time-range-input-text": "Select time range"
+      },
+      "fieldValidationMessage": {
+        "warning": "Warning"
+      },
+      "file-dropzone": {
+        "bulk-limit-error": "Select upto {{maxFiles}} dashboards only"
+      },
+      "icon": {
+        "information": "information"
+      },
+      "inlineLabel": {
+        "info": "Info"
+      },
+      "table": {
+        "filter-placeholder": "Filter values"
+      },
+      "week-start-picker": {
+        "weekStarts-label-browser": "Browser"
+      }
+    },
+    "import": {
+      "view-label": "View: {{index}}"
+    },
+    "library-panels": {
+      "delete": {
+        "cannot-delete-text": "This library panel can not be deleted because it is connected to {{message}} dashboard(s). Remove the library panel from the dashboards listed below and retry."
+      },
+      "modal": {
+        "select-aria-label": "Start typing to search for dashboard"
+      }
+    },
+    "manage-dashboards": {
+      "specify-constant": "Specify a string constant"
+    },
+    "nav": {
+      "config-general": {
+        "subtitle": "Manage default preferences and settings across BMC Helix Dashboards"
+      }
+    },
+    "notifications": {
+      "empty-state": {
+        "description": "Notifications you have received will appear here",
+        "title": "You're all caught up!"
+      },
+      "live": {
+        "dismissed": {
+          "multiple_one": "Dismissed {{count}} notification",
+          "multiple_other": "Dismissed {{count}} notifications",
+          "single": "Dismissed 1 notification"
+        }
+      },
+      "stored-notifications": {
+        "select-all": "Select all Notifications"
+      }
+    },
+    "options-ui": {
+      "registry": {
+        "standard-field-condigs": {
+          "category-data-links": "Data links"
+        }
+      }
+    },
+    "page-loader": {
+      "text": "Loading"
+    },
+    "panel-message": {
+      "refresh-dashboard": "Refresh dashboard to fetch data"
+    },
+    "plugins": {
+      "browse": {
+        "subtitle": "{{value}} Extend the Helix Dashboards experience with panel plugins and apps. To find more data sources go to <3>Connections</3>."
+      }
+    },
+    "search-inputs": {
+      "name-type": "Search by name or type"
+    },
+    "team-permissions": {
+      "add-member": "Add member",
+      "no-members-message": "There are no members in this team or you do not have the permissions to list the current members."
+    },
+    "users-and-access": {
+      "headers": {
+        "email-text": "Email",
+        "last-active-text": "Last active",
+        "login-text": "Login",
+        "members-text": "Members",
+        "name-text": "Name"
+      },
+      "search-user-placeholder-text": "Search user by login, email or name"
+    }
+  },
   "bookmarks-page": {
     "empty": {
       "message": "It looks like you haven’t created any bookmarks yet",
@@ -3611,7 +4957,7 @@
       "expand-folder-button": "Expand folder {{title}}",
       "name-column": "Name",
       "select-all-header-checkbox": "Select all",
-      "select-checkbox": "Select",
+      "select-checkbox": "Select {{title}}",
       "tags-column": "Tags"
     },
     "delete-folder": {
@@ -5300,7 +6646,7 @@
     "save-dashboard-diff": {
       "full-json-diff": "Full JSON diff",
       "no-changes-in-the-dashboard-json": "No changes in the dashboard JSON",
-      "title-because-dashboard-migrated-grafana-format": "The diff is hard to read because the dashboard has been migrated to the new Grafana dashboard format",
+      "title-because-dashboard-migrated-grafana-format": "The diff is hard to read because the dashboard has been migrated to the new dashboard format",
       "title-folder": "folder"
     },
     "save-dashboard-drawer": {
@@ -5328,11 +6674,10 @@
     },
     "save-provisioned-dashboard-form": {
       "cancel": "Cancel",
-      "cannot-be-saved": "This dashboard cannot be saved from the Grafana UI because it has been provisioned from another source. Copy the JSON or save it to a file below, then you can update your dashboard in the provisioning source.",
+      "cannot-be-saved": "This dashboard cannot be saved from the BMC Helix Dashboards because it has been provisioned from another source. Copy the JSON or save it to a file below, then you can update your dashboard in the provisioning source.",
       "copy-json-to-clipboard": "Copy JSON to clipboard",
       "file-path": "<strong>File path:</strong> {{filePath}}",
-      "save-json-to-file": "Save JSON to file",
-      "see-docs": "See <2>documentation</2> for more information about provisioning."
+      "save-json-to-file": "Save JSON to file"
     },
     "search-panel": {
       "no-match": "No panels matching"
@@ -5657,8 +7002,6 @@
       "load": "Load"
     },
     "gcom-field": {
-      "label": "Find and import dashboards for common applications at <1></1>",
-      "load-button": "Load",
       "placeholder": "Grafana.com dashboard URL or ID",
       "validation-required": "A Grafana dashboard URL or ID is required"
     },
@@ -5803,7 +7146,6 @@
       "type": "Type"
     },
     "dashboard-preview-banner": {
-      "not-yet-saved": "The value is not saved in the Grafana database",
       "title-dashboard-loaded-external-repository": "This dashboard is loaded from an external repository",
       "title-error-loading-dashboard": "Error loading dashboard"
     },
@@ -5813,8 +7155,7 @@
         "view-panel": "View panel"
       },
       "title": {
-        "dashboard": "Dashboard",
-        "discard-changes-to-dashboard": "Discard changes to dashboard?"
+        "dashboard": "Dashboard"
       }
     },
     "dashboard-scene-page-state-manager": {
@@ -5972,9 +7313,7 @@
         }
       },
       "title-complete-git-hub-comment-clipboard": "Copy a complete GitHub comment to the clipboard",
-      "title-get-help-with-this-panel": "Get help with this panel",
-      "troubleshooting-docs": "Troubleshooting docs",
-      "troubleshooting-request-help": "To request troubleshooting help, send a snapshot of this panel to Grafana Labs Technical Support. The snapshot contains query response data and panel settings."
+      "title-get-help-with-this-panel": "Get help with this panel"
     },
     "import-dashboard-form-v2": {
       "cancel": "Cancel",
@@ -6224,7 +7563,6 @@
     "save-provisioned-dashboard-form": {
       "api-error": "Error saving dashboard",
       "cancel": "Cancel",
-      "cannot-be-saved": "This dashboard cannot be saved from the Grafana UI because it has been provisioned from another source. Copy the JSON or save it to a file below, then you can update your dashboard in the provisioning source.",
       "copy-json-to-clipboard": "Copy JSON to clipboard",
       "file-path": "<strong>File path:</strong> {{filePath}}",
       "label-description": "Description",
@@ -6233,7 +7571,6 @@
       "save": "Save",
       "save-json-to-file": "Save JSON to file",
       "saving": "Saving...",
-      "see-docs": "See <2>documentation</2> for more information about provisioning.",
       "title-required": "Dashboard title is required",
       "title-same-as-folder": "Dashboard name cannot be the same as the folder name",
       "title-validation-failed": "Dashboard title validation failed."
@@ -6288,6 +7625,9 @@
     },
     "textbox-variable-form": {
       "label-value": "Value"
+    },
+    "title": {
+      "discard-changes-to-dashboard": "Discard changes to dashboard?"
     },
     "title-field-label": {
       "title": "Title"
@@ -6655,9 +7995,6 @@
     "dashboards-table": {
       "aria-label-delete-dashboard": "Delete dashboard",
       "import": "Import"
-    },
-    "data-source-categories": {
-      "find-more-data-source-plugins": "Find more data source plugins"
     },
     "data-source-load-error": {
       "back": "Back",
@@ -7314,7 +8651,6 @@
       "sort-placeholder": "Sort queries by"
     },
     "rich-history-settings-tab": {
-      "alert-info": "Grafana will keep entries up to {{optionLabel}}.Starred entries won't be deleted.",
       "change-default-tab": "Change the default active tab from “Query history” to “Starred”",
       "clear-history-info": "Delete all of your query history, permanently.",
       "clear-query-history": "Clear query history",
@@ -9228,6 +10564,11 @@
     "name-line-width": "Line width",
     "name-stacking": "Stacking"
   },
+  "insight-finder": {
+    "main-settings": {
+      "view-manage-config": "View and manage your configuration"
+    }
+  },
   "inspector": {
     "inspect-data-tab": {
       "loading": "Loading",
@@ -9978,9 +11319,6 @@
       "title-delete": "Delete"
     },
     "unthemed-dashboard-import": {
-      "subTitle": {
-        "import-dashboard-from-file-or-grafanacom": "Import dashboard from file or Grafana.com"
-      },
       "text": {
         "import-dashboard": "Import dashboard"
       }
@@ -10317,7 +11655,7 @@
       "title": "Application"
     },
     "apps": {
-      "subtitle": "App plugins that extend the Grafana experience",
+      "subtitle": "App plugins that extend the BMC Helix Dashboards experience",
       "title": "More apps"
     },
     "authentication": {
@@ -10340,7 +11678,6 @@
       "title": "Users and access"
     },
     "config-general": {
-      "subtitle": "Manage default preferences and settings across Grafana",
       "title": "General"
     },
     "config-plugins": {
@@ -10405,11 +11742,11 @@
       "title": "Frontend"
     },
     "global-orgs": {
-      "subtitle": "Isolated instances of Grafana running on the same server",
+      "subtitle": "Isolated instances of BMC Helix Dashboards running on the same server",
       "title": "Organizations"
     },
     "global-users": {
-      "subtitle": "Manage users in Grafana",
+      "subtitle": "Manage users in BMC Helix Dashboards",
       "title": "Users"
     },
     "grafana-quaderno": {
@@ -10496,7 +11833,7 @@
       "title": "Playlists"
     },
     "plugins": {
-      "subtitle": "Extend the Grafana experience with plugins",
+      "subtitle": "Extend the BMC Helix Dashboards experience with plugins",
       "title": "Plugins"
     },
     "private-data-source-connections": {
@@ -10535,7 +11872,7 @@
       "title": "Search dashboards"
     },
     "server-settings": {
-      "subtitle": "View the settings defined in your Grafana config",
+      "subtitle": "View the settings defined in your BMC Helix Dashboards config",
       "title": "Settings"
     },
     "service-accounts": {
@@ -10628,7 +11965,6 @@
     },
     "megamenu": {
       "close": "Close menu",
-      "dialog-label": "Navigation",
       "dock": "Dock menu",
       "list-label": "Navigation",
       "open": "Open menu",
@@ -10732,10 +12068,6 @@
     }
   },
   "notifications": {
-    "empty-state": {
-      "description": "Notifications you have received will appear here",
-      "title": "You're all caught up!"
-    },
     "starred-dashboard": "Dashboard starred",
     "stored-notifications": {
       "dismiss-notifications": "Dismiss notifications",
@@ -10765,9 +12097,6 @@
       "get-all-option-editors": {
         "description-time-zone": "Time zone selection",
         "name-time-zone": "Time zone"
-      },
-      "standard-field-condigs": {
-        "category-data-links": "Data links and actions"
       },
       "standard-field-configs": {
         "category": "Standard options",
@@ -10817,8 +12146,7 @@
     },
     "org-profile": {
       "label-organization-name": "Organization name",
-      "label-organization-profile": "Organization profile",
-      "update-organization-name": "Update organization name"
+      "label-organization-profile": "Organization profile"
     },
     "select-org-page": {
       "description": "You have been invited to another organization! Please select which organization that you want to use right now. You can change this later at any time."
@@ -11088,7 +12416,6 @@
       "label-search": "Search",
       "label-state": "State",
       "label-type": "Type",
-      "subtitle": "Extend the Grafana experience with panel plugins and apps. To find more data sources go to <2>Connections</2>.",
       "tooltip-filter-disabled": "This filter has been disabled because the Grafana server cannot access grafana.com"
     },
     "catalog": {
@@ -11286,9 +12613,6 @@
     },
     "plugin-signature-details-badge": {
       "signed-by": "Signed by: {{signatureOrg}}"
-    },
-    "plugin-update-available-badge": {
-      "update-available": "Update available!"
     },
     "plugin-usage": {
       "body-missing-feature-toggle-panel-title-search": "Plugin usage requires the new search index to find usage across dashboards. Please enable the feature toggle",
@@ -12346,7 +13670,8 @@
       "sort-placeholder": "Sort",
       "starred": "Starred",
       "view-as-folders": "View by folders",
-      "view-as-list": "View as list"
+      "view-as-list": "View as list",
+      "view-layout": "View layout"
     },
     "bluge-searcher": {
       "opts": {
@@ -12547,7 +13872,7 @@
     "embed": {
       "copy": "Copy to clipboard",
       "html": "Embed HTML",
-      "html-description": "The HTML code below can be pasted and included in another web page. Unless anonymous access is enabled, the users viewing that page need to be signed into Grafana for the graph to load.",
+      "html-description": "The HTML code below can be pasted and included in another web page. Unless anonymous access is enabled, the users viewing that page need to be signed into BMC Helix Dashboards for the graph to load.",
       "info": "Generate HTML for embedding an iframe with this panel",
       "time-range": "Lock time range"
     },
@@ -12794,8 +14119,7 @@
       "delete-title": "Delete snapshot",
       "deleted-alert": "Snapshot deleted. It could take an hour to be cleared from CDN caches.",
       "expiration-label": "Expires in",
-      "info-alert": "A Grafana dashboard snapshot publicly shares a dashboard while removing sensitive data such as queries and panel links, leaving only visible metrics and series names. Anyone with the link can access the snapshot.",
-      "learn-more-button": "Learn more",
+      "info-alert": "A dashboard snapshot publicly shares a dashboard while removing sensitive data such as queries and panel links, leaving only visible metrics and series names. Anyone with the link can access the snapshot.",
       "local-button": "Publish snapshot",
       "name-label": "Snapshot name",
       "new-snapshot-button": "New snapshot",
@@ -12804,7 +14128,7 @@
       "view-all-button": "View all snapshots"
     },
     "share-panel": {
-      "info-alert": "A Grafana panel snapshot publicly shares a panel while removing sensitive data such as queries and panel links, leaving only visible metrics and series names. Anyone with the link can access the snapshot."
+      "info-alert": "A panel snapshot publicly shares a panel while removing sensitive data such as queries and panel links, leaving only visible metrics and series names. Anyone with the link can access the snapshot."
     },
     "url-column-header": "Snapshot url",
     "view-button": "View"
@@ -13067,8 +14391,7 @@
     "loading": "Loading...",
     "no-tags": "No tags found",
     "placeholder": "Filter by tag",
-    "select-aria-label": "Tag filter",
-    "tag-option-label": "Tag option"
+    "select-aria-label": "Tag filter"
   },
   "team-picker": {
     "noOptionsMessage-no-teams-found": "No teams found",
@@ -13198,6 +14521,8 @@
       "filter-placeholder": "Search quick ranges"
     },
     "copy-paste": {
+      "aria-label-copy": "Copy time range to clipboard",
+      "aria-label-paste": "Paste time range",
       "copy-success-message": "Time range copied to clipboard",
       "default-error-message": "{{error}} is not a valid time range",
       "default-error-title": "Invalid time range",
@@ -14175,7 +15500,6 @@
   "user-orgs": {
     "current-org-button": "Current",
     "name-column": "Name",
-    "role-column": "Role",
     "select-org-button": "Select organisation",
     "title": "Organizations"
   },
@@ -14212,6 +15536,7 @@
     "empty-state": {
       "message": "No users found"
     },
+    "loading": "Loading users...",
     "token-revoked-modal": {
       "auto-revoked": "Your session token was automatically revoked because you have reached <strong>the maximum number of {{numSessions}} concurrent sessions</strong> for your account.",
       "resume-message": "<strong>To resume your session, sign in again.</strong> Contact your administrator or visit the license page to review your quota if you are repeatedly signed out automatically.",
@@ -14219,7 +15544,6 @@
       "title-you-have-been-automatically-signed-out": "You have been automatically signed out"
     },
     "users-action-bar-unconnected": {
-      "invite": "Invite",
       "options": {
         "label": {
           "users": "Users"
@@ -14306,9 +15630,6 @@
     },
     "no-unknowns": {
       "no-renamed-or-missing-variables-found": "No renamed or missing variables found."
-    },
-    "picker-renderer": {
-      "couldnt-load-variable": "Couldn't load variable"
     },
     "query-variable-refresh-select": {
       "description-update-values-variable": "When to update the values of this variable",

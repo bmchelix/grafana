@@ -10,6 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/grafana/grafana/pkg/api/response"
+	"github.com/grafana/grafana/pkg/bhdcodes"
 	"github.com/grafana/grafana/pkg/services/dashboards"
 	"github.com/grafana/grafana/pkg/services/dashboards/dashboardaccess"
 	"github.com/grafana/grafana/pkg/services/folder"
@@ -40,18 +41,21 @@ func ToFolderErrorResponse(err error) response.Response {
 
 	// --- 404 Not Found ---
 	if errors.Is(err, dashboards.ErrFolderNotFound) {
-		return response.JSON(http.StatusNotFound, util.DynMap{"status": "not-found", "message": dashboards.ErrFolderNotFound.Error()})
+		// BMC code change
+		return response.JSON(http.StatusNotFound, util.DynMap{"status": "not-found", "message": dashboards.ErrFolderNotFound.Error(), "bhdCode": bhdcodes.FolderNotFound})
 	}
 
 	// --- 409 Conflict ---
-	if errors.Is(err, dashboards.ErrFolderWithSameUIDExists) {
+	// BMC code: Restrict duplicate named resources, like v11.2
+	if errors.Is(err, dashboards.ErrFolderWithSameUIDExists) || errors.Is(err, dashboards.ErrFolderSameNameExists) {
 		return response.Error(http.StatusConflict, err.Error(), nil)
 	}
 
 	// --- 412 Precondition Failed ---
 	if errors.Is(err, dashboards.ErrFolderVersionMismatch) ||
 		k8sErrors.IsAlreadyExists(err) {
-		return response.JSON(http.StatusPreconditionFailed, util.DynMap{"status": "version-mismatch", "message": dashboards.ErrFolderVersionMismatch.Error()})
+		// BMC code: added bhdCode
+		return response.JSON(http.StatusPreconditionFailed, util.DynMap{"status": "version-mismatch", "message": dashboards.ErrFolderVersionMismatch.Error(), "bhdCode": bhdcodes.FolderChangedByAnotherUser})
 	}
 
 	// --- Kubernetes status errors ---
