@@ -1,8 +1,8 @@
-import { selectors } from '@grafana/e2e-selectors';
+// import { selectors } from '@grafana/e2e-selectors';
+// import config from 'app/core/config';
 import { Trans, t } from '@grafana/i18n';
-import { Button, Field, FieldSet, Icon, Input, Tooltip } from '@grafana/ui';
+import { Field, FieldSet, Icon, Input, Tooltip } from '@grafana/ui';
 import { Form } from 'app/core/components/Form/Form';
-import config from 'app/core/config';
 import { UserDTO } from 'app/types/user';
 
 import { ProfileUpdateFields } from './types';
@@ -13,7 +13,8 @@ export interface Props {
   updateProfile: (payload: ProfileUpdateFields) => void;
 }
 
-const { disableLoginForm } = config;
+// BMC code - inline change
+const disableLoginForm = true;
 
 export const UserProfileEditForm = ({ user, isSavingUser, updateProfile }: Props) => {
   const onSubmitProfileUpdate = (data: ProfileUpdateFields) => {
@@ -75,14 +76,15 @@ export const UserProfileEditForm = ({ user, isSavingUser, updateProfile }: Props
                 />
               </Field>
             </FieldSet>
-            <Button
+            {/* BMC Code: Comment out Save button */}
+            {/* <Button
               variant="primary"
               disabled={isSavingUser || disabledEdit}
               data-testid={selectors.components.UserProfile.profileSaveButton}
               type="submit"
             >
               <Trans i18nKey="common.save">Save</Trans>
-            </Button>
+            </Button> */}
           </>
         );
       }}
@@ -100,7 +102,8 @@ const InputSuffix = () => {
         'Login details locked because they are managed in another system.'
       )}
     >
-      <Icon name="lock" />
+      {/*BMC Accessibility Change next 1 line : Added aria-hidden */}
+      <Icon name="lock" aria-hidden="true" />
     </Tooltip>
   ) : null;
 };

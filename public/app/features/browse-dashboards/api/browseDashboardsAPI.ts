@@ -19,8 +19,8 @@ import { SaveDashboardCommand } from 'app/features/dashboard/components/SaveDash
 import { dashboardWatcher } from 'app/features/live/dashboard/dashboardWatcher';
 import { dispatch } from 'app/store/store';
 import { PermissionLevel } from 'app/types/acl';
-import { SaveDashboardResponseDTO, ImportDashboardResponseDTO } from 'app/types/dashboard';
-import { FolderListItemDTO, FolderDTO, DescendantCount, DescendantCountDTO } from 'app/types/folders';
+import { ImportDashboardResponseDTO, SaveDashboardResponseDTO } from 'app/types/dashboard';
+import { DescendantCount, DescendantCountDTO, FolderDTO, FolderListItemDTO } from 'app/types/folders';
 
 import { getDashboardScenePageStateManager } from '../../dashboard-scene/pages/DashboardScenePageStateManager';
 import { deletedDashboardsCache } from '../../search/service/deletedDashboardsCache';
@@ -28,6 +28,9 @@ import { refetchChildren, refreshParents } from '../state/actions';
 
 import { isProvisionedDashboard } from './isProvisioned';
 import { PAGE_SIZE } from './services';
+
+// BMC Change: Next line
+const ErrDashboardUpdateAccessDenied = 'Access denied to save dashboard';
 
 export interface DeleteFoldersArgs {
   folderUIDs: string[];
@@ -327,6 +330,8 @@ export const browseDashboardsAPI = createApi({
               // when this is merged https://github.com/grafana/grafana/pull/67259
               forceDeleteRules: false,
             },
+            // BMC code: next line
+            showErrorAlert: true,
           });
         }
         return { data: undefined };
@@ -419,14 +424,25 @@ export const browseDashboardsAPI = createApi({
 
       onQueryStarted: ({ folderUid }, { queryFulfilled, dispatch }) => {
         dashboardWatcher.ignoreNextSave();
-        queryFulfilled.then(async () => {
+        queryFulfilled.then(async (response) => {
           await contextSrv.fetchUserPermissions();
-          dispatch(
+          // BMC Change: Starts
+          // Wait for refetch and then change the location if needed.
+          await dispatch(
             refetchChildren({
               parentUID: folderUid,
               pageSize: PAGE_SIZE,
             })
           );
+          const currentLocation = locationService.getLocation();
+          const newUrl = locationUtil.stripBaseFromUrl(response.data.url);
+
+          if (newUrl !== currentLocation.pathname) {
+            setTimeout(async () => {
+              locationService.replace({ pathname: newUrl, search: currentLocation.search });
+            });
+          }
+          // BMC Change: Ends
         });
       },
     }),
@@ -466,12 +482,17 @@ export const browseDashboardsAPI = createApi({
 
         queryFulfilled.then(async (response) => {
           // Refresh destination folder
-          dispatch(
+          // BMC Change: Starts
+          // Wait for fetch user permissions
+          // Wait for refetch and then change the location.
+          await contextSrv.fetchUserPermissions();
+          await dispatch(
             refetchChildren({
               parentUID: folderUid,
               pageSize: PAGE_SIZE,
             })
           );
+          // BMC Change: Ends
 
           // If the dashboard was moved from a different folder, refresh the source folder too
           if (currentFolderUid && currentFolderUid !== folderUid) {
@@ -486,6 +507,16 @@ export const browseDashboardsAPI = createApi({
           const dashboardUrl = locationUtil.stripBaseFromUrl(response.data.importedUrl);
           locationService.push(dashboardUrl);
         });
+      },
+      // BMC Change: transformErrorResponse handler added
+      transformErrorResponse(baseQueryReturnValue, meta, arg) {
+        if (
+          (baseQueryReturnValue as any).status === 403 &&
+          (baseQueryReturnValue as any).data?.message === ErrDashboardUpdateAccessDenied
+        ) {
+          (baseQueryReturnValue as any).data.message =
+            `${ErrDashboardUpdateAccessDenied}, Name or UID might already be in use.`;
+        }
       },
     }),
 

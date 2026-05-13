@@ -2,7 +2,7 @@ import { css, cx } from '@emotion/css';
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { useOverlay } from '@react-aria/overlays';
-import { KBarAnimator, KBarPortal, KBarPositioner, VisualState, useKBar, ActionImpl } from 'kbar';
+import { ActionImpl, KBarAnimator, KBarPortal, KBarPositioner, VisualState, useKBar } from 'kbar';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
@@ -79,6 +79,9 @@ function CommandPaletteContents() {
               <Icon name="search" size="md" className={styles.searchIcon} />
               <AncestorBreadcrumbs />
               <KBarSearch
+                //BMC Accessibility Change next 1 line : Added the aria-label
+                aria-label={t('bmcgrafana.command-palette.search-box.aria-label', 'Search or jump to...')}
+                //BMC Accessibility Change End
                 defaultPlaceholder={t('command-palette.search-box.placeholder', 'Search or jump to...')}
                 className={styles.search}
               />

@@ -96,6 +96,7 @@ describe('DashboardControls', () => {
       const renderer = render(<scene.Component model={scene} />);
 
       expect(renderer.queryByTestId(selectors.pages.Dashboard.Controls)).not.toBeInTheDocument();
+      expect(await renderer.findByTestId(selectors.components.RefreshPicker.runButtonV2)).toBeInTheDocument();
     });
 
     it('should render ScopesVariable Component even when hidden', () => {

@@ -23,7 +23,6 @@ export const RepeatRowSelect = ({ repeat, onChange, id }: Props) => {
     const options: Array<SelectableValue<string | null>> = variables.map((item) => {
       return { label: item.name, value: item.name };
     });
-
     if (options.length === 0) {
       options.unshift({
         label: t(

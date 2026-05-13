@@ -3,19 +3,19 @@ import { css, cx } from '@emotion/css';
 import { GrafanaTheme2, VariableHide } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import {
-  SceneObjectState,
-  SceneObjectBase,
+  CancelActivationHandler,
   SceneComponentProps,
-  SceneTimePicker,
-  SceneRefreshPicker,
   SceneDebugger,
-  VariableDependencyConfig,
   sceneGraph,
+  SceneObjectBase,
+  SceneObjectState,
   SceneObjectUrlSyncConfig,
   SceneObjectUrlValues,
-  CancelActivationHandler,
+  SceneRefreshPicker,
+  SceneTimePicker,
+  VariableDependencyConfig,
 } from '@grafana/scenes';
-import { Box, useStyles2 } from '@grafana/ui';
+import { useStyles2 } from '@grafana/ui';
 
 import { PanelEditControls } from '../panel-edit/PanelEditControls';
 import { getDashboardSceneFor } from '../utils/utils';
@@ -90,7 +90,8 @@ export class DashboardControls extends SceneObjectBase<DashboardControlsState> {
       let refreshPickerDeactivation: CancelActivationHandler | undefined;
 
       if (this.state.hideTimeControls) {
-        refreshPickerDeactivation = this.state.refreshPicker.activate();
+        // BMC Change: Hide time picker only when hideTimeControls is true, but don't disable the refresh picker
+        // refreshPickerDeactivation = this.state.refreshPicker.activate();
       }
 
       return () => {
@@ -152,24 +153,31 @@ function DashboardControlsRenderer({ model }: SceneComponentProps<DashboardContr
   const styles = useStyles2(getStyles);
   const showDebugger = window.location.search.includes('scene-debugger');
 
-  if (!model.hasControls()) {
-    // To still have spacing when no controls are rendered
-
-    return <Box padding={1}>{renderHiddenVariables(dashboard)}</Box>;
-  }
+  // if (!model.hasControls()) {
+  //   // BMC code: added data-testid
+  //   // Hidden variables must be a child component so variable useState() is not called
+  //   // conditionally in this renderer (Rules of Hooks).
+  //   return (
+  //     <Box padding={1} data-testid={`${selectors.pages.Dashboard.Controls} empty`}>
+  //       <HiddenVariablesRenderer dashboard={dashboard} />
+  //     </Box>
+  //   );
+  // }
 
   return (
     <div
       data-testid={selectors.pages.Dashboard.Controls}
       className={cx(styles.controls, editPanel && styles.controlsPanelEdit)}
     >
+      {!model.hasControls() ? <HiddenVariablesRenderer dashboard={dashboard} /> : null}
       <div className={cx(styles.rightControls, editPanel && styles.rightControlsWrap)}>
-        {!hideTimeControls && (
+        {
           <div className={styles.timeControls}>
-            <timePicker.Component model={timePicker} />
+            {/* BMC Code: Hide time picker only and keep refresh picker always visible */}
+            {!hideTimeControls && <timePicker.Component model={timePicker} />}
             <refreshPicker.Component model={refreshPicker} />
           </div>
-        )}
+        }
         {!hideDashboardControls && model.hasDashboardControls() && (
           <div className={styles.dashboardControlsButton}>
             <DashboardControlsButton dashboard={dashboard} />
@@ -189,19 +197,20 @@ function DashboardControlsRenderer({ model }: SceneComponentProps<DashboardContr
   );
 }
 
-function renderHiddenVariables(dashboard: DashboardScene) {
-  const { variables } = sceneGraph.getVariables(dashboard).useState();
+/** Renders variables that must stay mounted for logic; separate component so hooks are not conditional in DashboardControlsRenderer. */
+function HiddenVariablesRenderer({ dashboard }: { dashboard: DashboardScene }) {
+  const { variables } = sceneGraph.getVariables(dashboard)!.useState();
   const renderAsHiddenVariables = variables.filter((v) => v.UNSAFE_renderAsHidden);
-  if (renderAsHiddenVariables && renderAsHiddenVariables.length > 0) {
-    return (
-      <>
-        {renderAsHiddenVariables.map((v) => (
-          <v.Component model={v} key={v.state.key} />
-        ))}
-      </>
-    );
+  if (renderAsHiddenVariables.length === 0) {
+    return null;
   }
-  return null;
+  return (
+    <>
+      {renderAsHiddenVariables.map((v) => (
+        <v.Component model={v} key={v.state.key} />
+      ))}
+    </>
+  );
 }
 
 function getStyles(theme: GrafanaTheme2) {

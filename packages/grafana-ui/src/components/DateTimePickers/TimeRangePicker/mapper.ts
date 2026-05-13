@@ -1,4 +1,5 @@
-import { TimeOption, TimeRange, TimeZone, rangeUtil, dateTimeFormat } from '@grafana/data';
+import { TimeOption, TimeRange, TimeZone, dateTimeFormat, rangeUtil } from '@grafana/data';
+import { t } from '@grafana/i18n';
 
 import { getFeatureToggle } from '../../../utils/featureToggle';
 import { commonFormat } from '../commonFormat';
@@ -17,7 +18,8 @@ export const mapRangeToTimeOption = (range: TimeRange, timeZone?: TimeZone): Tim
   const from = dateTimeFormat(range.from, { timeZone, format: commonFormat });
   const to = dateTimeFormat(range.to, { timeZone, format: commonFormat });
 
-  let display = `${from} to ${to}`;
+  // BMC Change: Next line : Localized the display string
+  let display = `${from} ${t('time-picker.range-picker.to', 'to')} ${to}`;
 
   if (getFeatureToggle('localeFormatPreference')) {
     display = rangeUtil.describeTimeRange(range, timeZone);

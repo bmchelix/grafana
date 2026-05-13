@@ -1,0 +1,1092 @@
+[
+  {
+    "folder_name": "aiops",
+    "file_path": "aiops/AIOps Value Dashboard.json",
+    "content_hash": "e0eef7495d1f5270be16604428209ced67fc7b8a1793f76d9e9bab01e5f17108"
+  },
+  {
+    "folder_name": "aiops",
+    "file_path": "aiops/Service_Predictions_Dashboard.json",
+    "content_hash": "0cd6d92f10eaeba5fbf506faa4c6095fd99febafdb7215c3b05b0c8aa1d7da7d"
+  },
+  {
+    "folder_name": "aism",
+    "file_path": "aism/ITSM Insights Dashboard.json",
+    "content_hash": "75f60546245d0eca9b5466f4f35559c409f47f48a300b800098d3cd455f53547"
+  },
+  {
+    "folder_name": "aism",
+    "file_path": "aism/ITSM Insights PPM Analytics Dashboard.json",
+    "content_hash": "8fcf83f7daf07ad3575519cf75838494ee8dcddce14c89783219fad9015c45e8"
+  },
+  {
+    "folder_name": "audit-service",
+    "file_path": "audit-service/BMC Helix Audit Dashboard - Details.json",
+    "content_hash": "e884f85a0f4d56a8586ab37d737969e2b70dd31a48d6f7a45552849b71ec3971"
+  },
+  {
+    "folder_name": "audit-service",
+    "file_path": "audit-service/BMC Helix Group wise and Role wise users list.json",
+    "content_hash": "5b48d57bc23d8ee04695de952c80321c66b43fa2a0d8849438ca89ca1f0cedf5"
+  },
+  {
+    "folder_name": "audit-service",
+    "file_path": "audit-service/BMC Helix Portal Audit Dashboard.json",
+    "content_hash": "ce94374571c06c82d41d946e61e76323f971ff5062d9d44ee91b103d8982a5eb"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Case Audit Trail.json",
+    "content_hash": "2f24bd47828852a78e4eca70732309cd3089cafecc13ad323af3a932ea53ec45"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Case Details for Cases with Service Targets.json",
+    "content_hash": "0f534ac6ce31a9287688b9435037ef48a7c4e2b75277d565876287fa107fcd48"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Case Manager Dashboard.json",
+    "content_hash": "293bb587135fcb00ddf361a950b1f62fef65c1f2534944ce9dd658335cc21a15"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Case Summary.json",
+    "content_hash": "c7819ac11118bc346769babce1cf3bc522a8ae1b2abd5eeb5faa95199f190614"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Dashboard.json",
+    "content_hash": "a123419905613089d4eec370f6746009e8768c473a3f39d084a0f74be5f6d794"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Onboarding Dashboard.json",
+    "content_hash": "723ca3af6af9bbd92a45943ceb5230c61d5377d79aa21837d17ecd36e6a43f2e"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Onboarding Request Details.json",
+    "content_hash": "95edf7c13e26369004b1ef5311683da6cb514e7a2ef5cee5eb4999c9fb481a2f"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Service Targets Against Cases.json",
+    "content_hash": "78288d4e58cc2c6766d8efbd7a84e0557cab9d7fc20642c71839d0c222f466a0"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Survey and CSAT Metrics for Assigned Groups.json",
+    "content_hash": "88ff0f2c51e4096ae1fd46d13dcc555375f501bec7ab2295aa705616b3d7039d"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Survey and CSAT Metrics for Line Of Business.json",
+    "content_hash": "7d41f623c785369b7475671e9815ad3b71d4500825e6fbf6241c4a2569332d68"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_View Case Details.json",
+    "content_hash": "83335ae81dde271dddca6b01b60947b7485f41619a0ea194eeb4e34bf1d63dfa"
+  },
+  {
+    "folder_name": "bwf-case",
+    "file_path": "bwf-case/BWF_Workplace Service Dashboard.json",
+    "content_hash": "d507a0873a1056e4d06800cfdbf729a6ff34edb6adf84b56a518455720ecde27"
+  },
+  {
+    "folder_name": "bwf-license",
+    "file_path": "bwf-license/BWF_License Usage By Requester - Summary.json",
+    "content_hash": "564ef4ccd43f4bc6876b37206bc50eae329234e97459687993cfb1a3d479c932"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/CMDB Data Quality Details.json",
+    "content_hash": "a6a441e50bc01460967e01f8982eca41f2e8a2c87614613b5a14503783b1b126"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/CMDB Data Quality.json",
+    "content_hash": "186409d80b800ccf681ba564b0c19e1c73bf69e9720bdb928d024ccb298e9ab3"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/CMDB Overview.json",
+    "content_hash": "8da1db1c4236bf5f6f90a857147a900c52f456c55720f79cf69aefb0f7b69556"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/CMDB_Infra.json",
+    "content_hash": "63dd88d6a022caf045b46d1e44fe01cc5d0081b402d0e38a11b09479880d7271"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/CMDB_Operations.json",
+    "content_hash": "080afd83d07fca14ab0362f99dc21c70f6d3d03c7bcee50d975ceb17a74a03b9"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/CMDB_Product_LifeCycle_Analysis.json",
+    "content_hash": "981442c4429499dec51139f50267b1344eccd1ffb335ff7b9b3aea29b1e40f72"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/CMDB_Stale_CI.json",
+    "content_hash": "8275d2fdbc8cc0b600df983dd6b6fe018e35fcb1612dd6f41d6bfa64da849e0f"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/Drill Through_CMDB CI Details.json",
+    "content_hash": "1c14e9fea7d58ec941e5cd8cb989991d44051f0a4428d16e7b00f56b7d6937fb"
+  },
+  {
+    "folder_name": "cmdb",
+    "file_path": "cmdb/Product_LifeCycle_Details.json",
+    "content_hash": "1b3a9e6c93f822ebb38f56d9bff134287fc1f48b727c8f3bf5cf7c717e7070d8"
+  },
+  {
+    "folder_name": "dashboards",
+    "file_path": "dashboards/hdb-usage-data-dashboard-and-folder-permissions.json",
+    "content_hash": "291b7fb50ab254a5cb6be1b8747ecb8fd2d14f1e400c7521c7c186464c8df715"
+  },
+  {
+    "folder_name": "dashboards",
+    "file_path": "dashboards/hdb-usage-data-schedule-active.json",
+    "content_hash": "8edbe1a37ba2bb83341fcb0b1a23e44861262fb0938f02669eaec807836e942e"
+  },
+  {
+    "folder_name": "dashboards",
+    "file_path": "dashboards/hdb-usage-data-schedule-types.json",
+    "content_hash": "993c3fc601557502579c2c6cab09c28050d8865a1dc8014f14a02a4d6762852b"
+  },
+  {
+    "folder_name": "dashboards",
+    "file_path": "dashboards/hdb-usage-data-user-information.json",
+    "content_hash": "5f95969a22a5f56fd05b09e6e725929a5abae06bb37a95469e64566b761cebb2"
+  },
+  {
+    "folder_name": "dashboards",
+    "file_path": "dashboards/hdb-usage-data-usercount-schedule-main.json",
+    "content_hash": "b20878d10b178b240e6eb43cfd2903c1edfba7c5ce7e3592cac269bab39dc165"
+  },
+  {
+    "folder_name": "dashboards",
+    "file_path": "dashboards/individual-dashboard-statistics.json",
+    "content_hash": "3d62bf23db14113946d2dbc341fc8db39f16f13636c342707994295b68aa0a2e"
+  },
+  {
+    "folder_name": "dashboards",
+    "file_path": "dashboards/org-dashboard-statistics.json",
+    "content_hash": "0d1fa654818dfc125a0ace7011a6d9b97492e0f32f4fee08d0f8a20504f55747"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM cluster reports details.json",
+    "content_hash": "fc1d2097ce96835e68976436d978045420de87432da9d89027937056800454e0"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM-Cluster Reports.json",
+    "content_hash": "036c8d31dafd6d40c1e06a16a1034ceefb634960fe7e78f14c1da4b0f67a3668"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSMRiskDetailedReport.json",
+    "content_hash": "f595d9d995540c265b391cc05dad7382bc68cae91d28013b3761ddf3b1e3ea6f"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSMSoftwareRiskAssessment.json",
+    "content_hash": "427aef8cea0eb6ad9855da78299efb2f52de6931af15eef5d597eb1b28cfcba5"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM_Infra_In_Context.json",
+    "content_hash": "ea0b7b30e7e0608c6d9074ffe3445eec2e3d4c267285c954a76e4062b4b79586"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM_Operations.json",
+    "content_hash": "04cd2814fb938def2074e02845ebac502ee374237ecee1da2587aad7a155a376"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM_Product_LifeCycle_Analysis.json",
+    "content_hash": "b63e7e099a949ac3cff47f981fdd3a531ec4c02bbf794240643ef4e3213efb59"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM_Product_LifeCycle_Analysis_Detail.json",
+    "content_hash": "4818cbcedb0d9867d0bde48be5d4361fc57e0bf18176955bdebaf41fefbd3fa9"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM_infra_in_context_detail.json",
+    "content_hash": "bb9adf3b9008699442306045e3cb0871f6f685e9a1c059dc1e30dc11b6e5d0c2"
+  },
+  {
+    "folder_name": "discovery",
+    "file_path": "discovery/DSM_operations_details.json",
+    "content_hash": "e98be72dc6b8b3b3c538f6437cfa021c312c04f30b32fbc0952f12e9caaca8e8"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/AIOpsDetails.json",
+    "content_hash": "e950364a76708423922625a06bad679de64180fbd9e55132f4200a9869f9ec6f"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/AnomaliesByService.json",
+    "content_hash": "195b39e724501876518c11e2b5d3fd271903aa602c6b7c5a7a5d1c10ee511497"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/AnomaliesOverview.json",
+    "content_hash": "cf71e20d5a1a0081f7849ab865eee3988449fa5a16cde7871048f43f47662d6a"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/DSOM_Service_Dashboard.json",
+    "content_hash": "eed88eaa3586c96551706d0996dd6a692516eef5933affac6b8c3ff09279975a"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/INC_View_Open_Incidents.json",
+    "content_hash": "f7325addd2b4224ae47a53fa3682eb146c712ef27a1518b028f4208da89258a4"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/OperationsCenter.json",
+    "content_hash": "57f358d112882c36a9149dcc0282f4341b357bd1d4942b0e49d1cc493137d533"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/Service_and_Operations.json",
+    "content_hash": "d3ef645b74aebc8e358c42c0a589db6afe1a4a4b6d0a74b1ce4d013707eeb8ae"
+  },
+  {
+    "folder_name": "dsom",
+    "file_path": "dsom/UnivariateAnomaliesByDevice.json",
+    "content_hash": "568ed9944ea126140c7b6222052068f39e716e83a0d0990255b0e3e891a8e83c"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWP Customer Satisfaction Report.json",
+    "content_hash": "3e3d6e2eea191c5dc940d4107ac6842ce25b52a84c961f2b6cb8d995f7d4a350"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWP Net Promoter Score Report.json",
+    "content_hash": "1ad21b31b18177e6bb36e4ea41dc637278aa74a17901a811534cebc4bca81c52"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWP Question Answer.json",
+    "content_hash": "3341118e0c3fe6d6f07ec32414e87c4486865dffc1d40153a1e140266689b318"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWP Survey Drill Report.json",
+    "content_hash": "92059a42ea998a48d2c923aae7ff49d976286b762e7ef5f72db5c2c60cd67f72"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWP Survey Question Answers.json",
+    "content_hash": "c36d913caac349d6cd47e742f8fb0e6859085e25fae1f09c292d7d9eb0f7b842"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWPC_Request Overview Dashboard.json",
+    "content_hash": "91b69a124515a45b7833f6af3f9d71b0e76147c631b43f801b3e1f91a1ce2262"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWPEntitlement.json",
+    "content_hash": "6833ddfc0e94247fbb35158543ef808997b201f3a67cb7f46e6d675fe4da1a07"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/DWP_Service Request Details.json",
+    "content_hash": "ef4ab6f4cf924dcacd7eda203528fb191541c1ad9fb227a45bb17510ca615bf0"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/Printable DWP Request Details.json",
+    "content_hash": "1ea14158ad02dfc7f9ec6294e970e9e97ccdfd982271c1decc1c5b8b11c34f45"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/Request Fulfillment.json",
+    "content_hash": "d727b5b656693db230470741ffeb445b867ad35c4e97065d66bd47be5088a4f7"
+  },
+  {
+    "folder_name": "dwpc",
+    "file_path": "dwpc/VM_Banners_UserDrill.json",
+    "content_hash": "fc815039393f0b0c4c633947c9b093d84b8de191149317bfcd266a44441b34a7"
+  },
+  {
+    "folder_name": "hco",
+    "file_path": "hco/DSOM_Service_Risk_Dashboard.json",
+    "content_hash": "53547720a0108f817bc104712f258137c912678fc5d3210a4a0decf2be78a83e"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/BWF - Service Collaborator Value Dashboard.json",
+    "content_hash": "c6419a6f19e0b6e66337772de44c7cc24eddb7f6ef2f1fedb37a08ab29f7f378"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/Employee Navigator for ServiceNow Value Dashboard.json",
+    "content_hash": "e5ebea53381c446440b481cdf1d16ff9a3758c0f41568ae54269c57bdae45986"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/HKM Knowledge Curator Generation - Drillthrough.json",
+    "content_hash": "d3240ce748215baf52d84ecec504ccb3e912703fa0c8200a8bf5d1f5f9b3907c"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/HKM Knowledge Curator Generation Dashboard.json",
+    "content_hash": "0846e6c13aebe3ff052c22a802ce3ff6114226bc3b030528551105cde986776d"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/HKM Knowledge Curator Value Dashboard.json",
+    "content_hash": "c051d134c953d41913a6b14e3d3c17cc6c839a30cf16542cfc263474d8a940ae"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/HelixGPT Conversation Dashboard.json",
+    "content_hash": "9dcab993adc176e53fad35c06a7e0f2744f13c7ae8677674554cb566917e4c1c"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/HelixGPT Performance and Token Consumption Dashboard.json",
+    "content_hash": "32967bdcf81dd5e1146cdd1adaa8d59f5f16b7c7651133e6c7329ef341aeffe7"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/ISKM - Knowledge Curator Value Dashboard.json",
+    "content_hash": "6178521d286666d23ddd81f46b16a7d2dfc79978abb1d38ddc3389d5cbc40b49"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/ITSM - Service Collaborator Value Dashboard.json",
+    "content_hash": "ceaf5b57aaee12d417dc557a84804305d1e34969db9b56c9c3c99e806b7a06e6"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/Insight Finder Value Dashboard.json",
+    "content_hash": "87cde01be56eef2c771463512a027519e48f18b48b6a0ceb6f9e90ead3434610"
+  },
+  {
+    "folder_name": "helix-gpt",
+    "file_path": "helix-gpt/Ops Swarmer Value Dashboard.json",
+    "content_hash": "a442513ddf8dbe8915ccad45dfb40b857a8171b81e93e1c85dbaf442c69ef9aa"
+  },
+  {
+    "folder_name": "helix-ss",
+    "file_path": "helix-ss/ITSM Health Check - AR Admin Only.json",
+    "content_hash": "e94c94213cb58479fd36193e2c55c77bfccf535ae01acfab08db490f94618bbb"
+  },
+  {
+    "folder_name": "intelligent-automation",
+    "file_path": "intelligent-automation/Intelligent_Automation.json",
+    "content_hash": "9245473249736fb1423163f0076f39433f73a7dffb523895c2f77a5d0c503e81"
+  },
+  {
+    "folder_name": "is-chatbot",
+    "file_path": "is-chatbot/Chatbot Knowledge Dashboards.json",
+    "content_hash": "f02a75fc269fdcf420cc767adf69ca76986871a4e92fe66533912067dc1bb848"
+  },
+  {
+    "folder_name": "is-chatbot",
+    "file_path": "is-chatbot/Chatbot_Dashboard.json",
+    "content_hash": "6bab15423f3aee726b1a8412bbb666118c4d7f701100ba16f3c8b58b99213390"
+  },
+  {
+    "folder_name": "is-chatbot",
+    "file_path": "is-chatbot/Chatbot_Overview.json",
+    "content_hash": "9e8ce5b36b666db8daaa15bd17a27e8da47f226ac67ac37afdd0d793b35a818d"
+  },
+  {
+    "folder_name": "is-chatbot",
+    "file_path": "is-chatbot/Chatbot_User.json",
+    "content_hash": "9a793548af3b4d9221574e00dc7026f4b6527168970a6a22e966c66b97a78993"
+  },
+  {
+    "folder_name": "is-chatbot",
+    "file_path": "is-chatbot/GPT Conversation Dashboard.json",
+    "content_hash": "70f6ff7117547cd0c225cc3aa0a3ee84a80f293e2bc9030a6b3bcd227eddfad2"
+  },
+  {
+    "folder_name": "is-chatbot",
+    "file_path": "is-chatbot/GPT Feedback Dashboard.json",
+    "content_hash": "536c9e7fe1b02911076b067f306aa5a98d17abf8460f4572261aa26770c3e193"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/AST_Compliance.json",
+    "content_hash": "2e15b22acda5bc164e07d7486ab857b7338ccde418a424435fd9f1a2a299083c"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/AST_Contracts.json",
+    "content_hash": "46f349f17fa1a54f03b90ddfec882271a39681c239bf1510a24e6f5f365d073d"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/AST_Details.json",
+    "content_hash": "d902982c932c215f88a4b4f2e59bfbccb9ee7e0333d72525122f1c1fbc125523"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/AST_Inventory.json",
+    "content_hash": "abdbc9ed5e4b80db8a2b4a518b89e025919fffd9c198b50c31abc315254c3876"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/AST_Overview.json",
+    "content_hash": "dfd8abf82aab27446b5040e692e335026b117e94591196ce56bb753a673c6fff"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Ageing Incident Analysis.json",
+    "content_hash": "a74beee61f5648d5383ed5dc9cc4e974ad3ea6eb2531bb5e191bc55a1ba7e6a4"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/All Problem Details.json",
+    "content_hash": "3ce678367ee5223bbdba083b22ddd9c9dea89ae54b003a39c15500de84081cdc"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Application Availability Dashboard.json",
+    "content_hash": "5070c616a7ccc6a891cf2e797989abc0804525d35cb645d437d67b27445cfc51"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Archived_Work_orders.json",
+    "content_hash": "ab9798c525886463cfd9dedb83228d865b4a7f544ec0db02cd3f5bf4b1878d19"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Asset Incidents Dashboard.json",
+    "content_hash": "673591c3585333b482489bdb583660b48af27d5da70ad73e49852c9027b0981c"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Bounce Rate Dashboard.json",
+    "content_hash": "7ab3ec8fdd047f634df8e6c2756f686cf20a61f54e6ed0ddeef2f23a59d8170f"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Change Agent Dashboard.json",
+    "content_hash": "2a71d2a1b228586ecf36eb96f3f031e80a09cd284216ae0bdfd2d6463602f869"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Change Analysis Detail.json",
+    "content_hash": "80108df7d2a77d16f4284281a73ca7124b8a4ba8877a97cb2daa15524a1df8a0"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/ChangeCalendar.json",
+    "content_hash": "4d7b228b21ec131a4c608a6cdce0652b2a2fe17897e57a5f0448cfc141897fa5"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Change_Dashboard.json",
+    "content_hash": "028192956f7341c3077e7c2e7fff5cc3445b9149e846025dfda5c64c0bf40264"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Change_Details.json",
+    "content_hash": "83735d068328e4f7316337c2a2d8d52176a59eca626b0a235cf18e1e3ac0f2d2"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Changes by Assets.json",
+    "content_hash": "1176ac5d156b418d16319e6c9b4af4e755c0c452e59b3615de348985f51f4cf8"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Closed Incidents Metrics Archive.json",
+    "content_hash": "9afa20ba0796e1aeba253f017a9a0850b154a745239d7a77f0db2cdcc4ece2ab"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Closed Incidents Metrics.json",
+    "content_hash": "55c7f4dd50fdda338efa73f5d533aed3c75f2c0e38c3efdf33f87054004ba24e"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/DSM_CRSPRD_Channel_Dashboard.json",
+    "content_hash": "1a3a9bf331b126a61dd5d1a7db4db42cadf02c8839baef71bbc68b6eeec3e53e"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/DSM_CRSPRD_Request Overview Dashboard.json",
+    "content_hash": "9365b6cc58ab732be757df606464a4193a4a6e76a661f04f216f52b6fc7eb260"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/DevOps Metrics Dashboard.json",
+    "content_hash": "3fe2d190ca9993bba5ab91c4ad158de5f68d929c5964df34760b7abd3a48ddcb"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/INC SLA Details.json",
+    "content_hash": "e97f0a72484f1db9ebf0e8d82d49fa11be4cd4c6a2f10e06c46dd9f318cf658c"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/INC_Dashboard.json",
+    "content_hash": "3965c3b51ed1813dfd85e930824f885625a97843f1df6c0bc095666d33f6a207"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/INC_Major Incident Analysis.json",
+    "content_hash": "3a6391978d1d935c297edabd9014bc4bad9cb8f16c9c57796a6bb27229f2f1fd"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/INC_Open Incident Analytics.json",
+    "content_hash": "fe5a9fd8acf98bcc10e349cf47db10360c9b568d92af6ae68155adaf28f6defc"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/INC_View Incident Details.json",
+    "content_hash": "8026cbf45154ff9f108478542f96fa2a130a5e299f3dd7d3d826b3d06f523c9d"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/ITSM Usage Tracker.json",
+    "content_hash": "a81ccdb910e0c6a4c2cd1db34e347ce2126eda8b08f8ce12efe4a06a2c1fb59c"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Incident Aged Backlog Analysis.json",
+    "content_hash": "92e7500a0f12f67c7eafeb02704b77f543c9b52151d8a8a6c9be4939892c400c"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Incident Agent Dashboard.json",
+    "content_hash": "cde87f58fffb57e8beb9ce3bf90d5f0919522095700911654c4b27d41bbeb4d8"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Incident SLA Performance Archive.json",
+    "content_hash": "126a4481d9a758351c14ced26f8baa0e86bc56ba9cdbae94354367cc693f53a2"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Incident SLA Performance.json",
+    "content_hash": "377a291e33033491d1a8c7e17b206681b0a6edcff447dcddf07fe1fdc222b4d7"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/KCS Effectiveness and Efficiency.json",
+    "content_hash": "fc1d680539d6b7d8153b5aa24d9b4f85fc2315ce5e9a6f242d9f8e64da4fd38a"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/KCS_Article Details.json",
+    "content_hash": "8db6b2fd9b030dae0874b414122537a3e447d5551248e4b0ce4bdb34505ef4f6"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/KCS_Associated Tickets.json",
+    "content_hash": "014fce9ea80caa58eb339fe98250c4255f7ddb09069ecfc5a39e0856982b009c"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Open Change Analysis.json",
+    "content_hash": "b72ccef4abed548fa79427eab04e2274580d4b81b7b032b54c05bb3194a66c36"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/PBM_Aging_Analysis.json",
+    "content_hash": "b2741fe39a181b0b2e8034d4d7174227fa22250bede5aed05a67aba3ffebeef4"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/PBM_Open Problem Analysis.json",
+    "content_hash": "a3c0030a14a9d8d92f64e6d37ad63c481c3c172796895a773107dcc4e37c1862"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/PBM_Problem Management Analysis.json",
+    "content_hash": "e803f5679ed271f815608cac446afd02f0ca1fddd34c2fec0eeb34a8bad42ac8"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/PBM_View Problem Details.json",
+    "content_hash": "7d81515f4c4be2fbff683a5df84295ca47ec9ff8f2b77c4a9e0acfd4bf43c5b1"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Archived Change Details.json",
+    "content_hash": "364d6120d358bed50a610a05706baf0ed1d51197b466a6fa88cc8f9b0f6a073d"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Archived Incident Details.json",
+    "content_hash": "c3c279dd99c24d864291d1c6594ca4505ca94a16e5902f40d8f52ae936b4e879"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Archived Problem Details.json",
+    "content_hash": "539cadd3d57a0bacfecf3e96dc69cc4c76c5114ea7bbb364e479982d8190b4ee"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Archived Work Order Details.json",
+    "content_hash": "557addc67f1a7fd5987d23bb1785c6dd62c0464457511ec2a989484e7c1f08a6"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Asset Details.json",
+    "content_hash": "8be28955298dd1681c19da4e81e57c15c6ba3caf27e9317e70217ab23758af49"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Change Details.json",
+    "content_hash": "f521ec5ae1a27237f9754a54b2d36840a27098c0689bc93e13308c9d7885a1e3"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Incident Details.json",
+    "content_hash": "7a3a9fe3db0605d1976cff12e2dce4192a9769523b7aa68985dec46b812fbbfb"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Problem Details.json",
+    "content_hash": "b609e0234ffa9d0437ebb609c5f63da1f664d3b496379353f7d1f0bcaf8130d0"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Printable Work Order Details.json",
+    "content_hash": "41e1ead5dd67deaa3a47756f65d1cb0e1caac572c4522bbc61f9fd150d484593"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Problem Agent Dashboard.json",
+    "content_hash": "1e162f3b3a2f7e821d25ada2ff8f3b8d386bca14951e6458ad8c638425c10b1e"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Problem Management Summary.json",
+    "content_hash": "90c518c2773540da0d8e14bc38dc123482ad3e45e258d5205196bdc7e28ed07f"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/Problems by Asset.json",
+    "content_hash": "8f1e0b091588ce6b59a2937313093fdbab80b5c54c08a36c7463a6a2fbfce3e3"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/UnassignedAssetReport.json",
+    "content_hash": "d18b76415fd3d5d9761a4fc1c939c151a08f54e6e3e9b3bacb013954943ccb56"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/WO_Service Automation Dashboard.json",
+    "content_hash": "9bfc3bc794d1ab1c31472b1c9848ca0d1cd1344b553f26546a94bd4b97f25080"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/WO_Work Order Details - Drill.json",
+    "content_hash": "1aff1052a1bc7bf0bfc3a43300aa8b13ab5af4b8774ecc08f8004c797629f955"
+  },
+  {
+    "folder_name": "itsm-inc",
+    "file_path": "itsm-inc/workorder_archive_detailed.json",
+    "content_hash": "a07cc9088a23373c04633fdc2f5c2bdf3fcf8851c9cc781995f0405a0c4a3a8b"
+  },
+  {
+    "folder_name": "livechat",
+    "file_path": "livechat/Live Chat Customer Experience.json",
+    "content_hash": "37ca7d867b9a3b834a62f9012ab7b421638b3ce8d2bd1a4ffeede963aae98cdb"
+  },
+  {
+    "folder_name": "livechat",
+    "file_path": "livechat/Live Chat Details - Drill Through.json",
+    "content_hash": "86dc655a18c2013d56b832833f199e9cc928177f0ebbaf7a8178ccfd9950f8ce"
+  },
+  {
+    "folder_name": "livechat",
+    "file_path": "livechat/Live Chat Historic Data.json",
+    "content_hash": "7097649543ae7433c3f4cfbd861f76cb620076c3176e60af1fe9b012c1b67ed1"
+  },
+  {
+    "folder_name": "livechat",
+    "file_path": "livechat/Live Chat Survey Dashboard.json",
+    "content_hash": "5aea24ca4cf99489ce7989c326bdd5ec9e437dbce3084347a14a873b9ddb7e64"
+  },
+  {
+    "folder_name": "livechat",
+    "file_path": "livechat/Live Chat Team and Agent Performance.json",
+    "content_hash": "2d7bd2c521358d8cf306425371519502dccde50110340e4a5b61325eae282a1b"
+  },
+  {
+    "folder_name": "livechat",
+    "file_path": "livechat/Live Chat Usage and Value.json",
+    "content_hash": "9a19ed6cd3493b8d97b75ed3127c88988b97a2af775117be5da3d04c21f4658d"
+  },
+  {
+    "folder_name": "log-analytics",
+    "file_path": "log-analytics/AWS.json",
+    "content_hash": "514821acda63a312a55f50fa4a432c55ffa333dbc1a3decd7222bab0c1fc4084"
+  },
+  {
+    "folder_name": "log-analytics",
+    "file_path": "log-analytics/Kubernetes.json",
+    "content_hash": "45c3e7608a02b810d8ee96f95425c04ac9c4f31dc5f9717bdd5f21938d803991"
+  },
+  {
+    "folder_name": "log-analytics",
+    "file_path": "log-analytics/SelfMonitoring.json",
+    "content_hash": "05b83376766eb98d026a88c1faedc3b7acd7e3d7c7adccd5e0e48f18b0f30709"
+  },
+  {
+    "folder_name": "log-analytics",
+    "file_path": "log-analytics/Syslog.json",
+    "content_hash": "641e6a2561e5df0072286e5694ba1c5f7fd50fbd2d360dbb9f247104bcaaf374"
+  },
+  {
+    "folder_name": "log-analytics",
+    "file_path": "log-analytics/WindowsEvents.json",
+    "content_hash": "6daeb3ab0a3e4782ace9659adc6f2179f592681e3845b31c678ae4b31d00498a"
+  },
+  {
+    "folder_name": "lus",
+    "file_path": "lus/licensing-utilization-dashboard-details-view.json",
+    "content_hash": "cbaf9d2e54bf1b6710eb057bbf8db72f804d1b3957e856cfc84a7b406ffa0746"
+  },
+  {
+    "folder_name": "lus",
+    "file_path": "lus/licensing-utilization-dashboard-donut-view.json",
+    "content_hash": "75d80a48e600dc073246e7691b8c047881724e082f5ffacdca7c5ee3d1f62004"
+  },
+  {
+    "folder_name": "lus",
+    "file_path": "lus/licensing-utilization-dashboard-tabular-view.json",
+    "content_hash": "672474dbb3e47a202b0dda33acaa4bb353e61c17dd3bbe3a3714e0bae26a9fa7"
+  },
+  {
+    "folder_name": "lus",
+    "file_path": "lus/licensing-utilization-discovery-dashboard.json",
+    "content_hash": "b990a47d1e2e2eb722918da38eceb21e4ccf866aae7917578767cd4a4abdcb41"
+  },
+  {
+    "folder_name": "lus",
+    "file_path": "lus/licensing-utilization-storage-dashboard.json",
+    "content_hash": "61ba1fef13d7169e9430f1f6dd56de5a4bc77dd72f4f607cf706eb8f3f161185"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/AWS EC2 Instances.json",
+    "content_hash": "dd9df84f0661c9240282ca18b694fad23a193a8a7aeb88c5b5c53dc3dfba5146"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/AWS EC2 Overview.json",
+    "content_hash": "88a2c33a29570aae1286f099de2981a1a692b7da42bc4fd6586d5affa19e99e1"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/AWS RDS.json",
+    "content_hash": "82c72965d77d8fd9624912811ef244189f343d63e693c50732f93bb1098969b3"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/CIO Overview.json",
+    "content_hash": "aea9d76bdbd23824b6442eb018c5375d6f12c3f9cd3608f1a771f1314180f51b"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Discovery List By Kind.json",
+    "content_hash": "322f77b7175d8d90d274ff7109bf33e40520f6deb215f3a045862e6d9d1d84b5"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Dynamic_Metrics_Dashboard.json",
+    "content_hash": "82b4a95fc4dcfa917167f26c9e16f32bfa7b12f260194f68e8616ace3faf310a"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Event List by Severity.json",
+    "content_hash": "8ea7759f1945946a528e1fdfd7060ef658cde66b0899a823bf9d86a58292cdb9"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Event List by Source.json",
+    "content_hash": "ba003ddb981453ee58244d56989e587f778bf686c8181a10074e23b52a65bf32"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Event_Data.json",
+    "content_hash": "98722b56957931570a0a163665261d4cf0be9e28362c667555edfef6f0faba86"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/K8S Daemonset.json",
+    "content_hash": "d546f8454668904630b8ff64195670a55a6028003c791475730ffa23a1808e79"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/K8S Deployment.json",
+    "content_hash": "7782de0091d1f07f523104fb6c3f4df4c1be0496f368b454d51ba0cabf45f46a"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/K8s Container.json",
+    "content_hash": "35a2ee636cd3dfd2cd7c6d33a2f9ddc6a62be5f6e563525f449d23e46907c897"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/K8s Node.json",
+    "content_hash": "b366492a9e3a374d8716392dd47b37d07c8034e9def98c26a433ffc1aa40de43"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/K8s Pods.json",
+    "content_hash": "7bbe507ccb65c8088f1d71d524c5a313a6e85d1e8570238091bb727854b5e1e9"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/KPI Tabular Report.json",
+    "content_hash": "7ef96161b2a8510bed884d2d2bf6d7246fbd601d077341e2cf5522acb00918d1"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Linux_Servers.json",
+    "content_hash": "9fe20fa13b36704adc8af2ae7481f4135b4cc587408caf850d01e3c06dbdbf33"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Metrics_Data.json",
+    "content_hash": "46ed7322f8ee3de559bc1d39de78f5d09efd68d90fa4a7fc8999f8d4e0f2583c"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Network_Devices_Overview.json",
+    "content_hash": "e697e511cc93a69b2f2681f9e2e7c050e06d8dfc583c29a988ba07a51fcdb2a9"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Oracle Health Drilldown.json",
+    "content_hash": "c3618b01bf794f8f8b52669d86275524336b7bf34153bbf1c59f52658184c1e2"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Oracle Health.json",
+    "content_hash": "27ed6ba85c3357a209db376131aa55e684c97e9ed4fa7e39e0ebdd2404fdd7b6"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Oracle Overview.json",
+    "content_hash": "8577a247cfddd49d9c30cc668830ac3d559bb83fd0e99a2bc43f3c6d7a1b2e78"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Oracle_Database.json",
+    "content_hash": "67e49bf01f7a9b76225b53a81881f9f5464393117010ca0ff26da1435c4248fb"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/SQL_Database.json",
+    "content_hash": "59065326e307c12d461e368b90277e49dc48924c64308d7b09cf22e81f0a741f"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/SSLExpiry.json",
+    "content_hash": "9fca9471e19896c019097be120ff563b962c9ec9499ab5e39a088bd752dd7e02"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Service Health Overview.json",
+    "content_hash": "9418cc66a026dfef00e82d5b6957ce37b00163b30f03cb16b9e0c8cb0913549c"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Storage Health Drilldown.json",
+    "content_hash": "2bf2f5f86bd95270971850d24df7adc434c10afef987011df2f17bef51cb56bd"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Storage Health.json",
+    "content_hash": "5851a76b8927db10688670811c91964f5ac23998ec70fb53c9adc60810659cc4"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Storage Overview.json",
+    "content_hash": "cee5fd4c4605d381904720b8caa9d528da9f6595e2fc018c844757cecca8be04"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Tagbased_Eventdata.json",
+    "content_hash": "f82d4e926c00205c63bac2deca00e93f11f7a5195b807c963ea6171ce91617ba"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/Windows_Servers.json",
+    "content_hash": "0ff32827d13f70e9075ae22482e33cdf642f18a654e363ef7f62fb6fa7fbd80e"
+  },
+  {
+    "folder_name": "monitor",
+    "file_path": "monitor/vSphere Infrastructure.json",
+    "content_hash": "ed0507237121bdd7a85a78e5edd3b5b29dadb37c4d7f826cbecfdf79e6b60cda"
+  },
+  {
+    "folder_name": "otel",
+    "file_path": "otel/OTel_Namespace_Overview.json",
+    "content_hash": "29e556d8d0351de6538964f60e9597d971915f5e0545f03097d256a3b44d0555"
+  },
+  {
+    "folder_name": "otel",
+    "file_path": "otel/OTel_Overview.json",
+    "content_hash": "faaa99e2539f04bd0e0f07596a43325644a9536bea83fa4f0d5ed7ba6823e2b9"
+  },
+  {
+    "folder_name": "otel",
+    "file_path": "otel/OTel_Raw_Trace_Data.json",
+    "content_hash": "e9033a953750dd42204fef935fe9eb30aef5ca1240d9733da27026ec02c83f36"
+  },
+  {
+    "folder_name": "otel",
+    "file_path": "otel/OTel_Trace.json",
+    "content_hash": "c7f24fe85263c40ef160a9b1ed9ba13c7ad468245e1c650f4b8327a64f914892"
+  },
+  {
+    "folder_name": "otel",
+    "file_path": "otel/OTel_Trace_Search.json",
+    "content_hash": "a99e59ac6f78090bfa46365d394ec42becea4417ab788815b9fba19d392a0432"
+  },
+  {
+    "folder_name": "otel",
+    "file_path": "otel/OTel_Trace_Stats.json",
+    "content_hash": "8a73ca15ccd80debab35fb4ce78cc6d7aff3bce84e1d68be4fcb5eeb4ca501df"
+  },
+  {
+    "folder_name": "remediate-cs",
+    "file_path": "remediate-cs/CloudSecurity_Data.json",
+    "content_hash": "05c238347eb30f8d775bf61d19ae2e76ccd497abbb427924ffebae62d2329f65"
+  },
+  {
+    "folder_name": "remediate-tsac",
+    "file_path": "remediate-tsac/HAC_Dashboard.json",
+    "content_hash": "cc3c5fb457af4b446870d330cad65b236a17a6021b91cd0e83e5c671db19c3a9"
+  },
+  {
+    "folder_name": "remediate-tsac",
+    "file_path": "remediate-tsac/TSAC_Data.json",
+    "content_hash": "e93a7dbcea1f2bf3cb7af75f5520c55c2a6735264000ca431ac6e1e5c8a1e8b9"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - Ceph by Cluster.json",
+    "content_hash": "dd1be4929f37e6f866e9ce09ecf201ee78fa5e3ddfa7c818b6b7c6a81eb61342"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - Elasticsearch by Cluster.json",
+    "content_hash": "76521eb63afd24f68c22579f08e6ced83e1f2833c62ecb29ee3f8d2862030e40"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - K8s by Cluster.json",
+    "content_hash": "d748f9b60b23c8ed41f89e5aaf770435fecfe570189b3cd7e06f1517a9a9b3d4"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - Kafka.json",
+    "content_hash": "884d9ba2eef71f48e8e1dfcddd381104f5f93f0e73c9b3c01b4e91304bb756a0"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - OpenShift by Cluster.json",
+    "content_hash": "d4d4756691ab472d8ecdb7eea9f6a4afc4d7b2b40f1b22e7fba5cf83b1d79b26"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - PostgreSQL by DB Server.json",
+    "content_hash": "ae69610a0373ac9267fe179b5a1a6666a957dbbceddc5c7adb63ac2b9131a5b2"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - Redis.json",
+    "content_hash": "d8d6f9dfafb0f640dd7f98285fe662a797003048c15fe32127307e1a10a3546f"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - VictoriaMetrics - Cluster.json",
+    "content_hash": "d30e0b2ebe6f56bdaa107367290efafaa899af129b278445f7bd917516cd0125"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-Monitoring - Zookeeper.json",
+    "content_hash": "ae675470c1b0574d85624707d40905116780f80bd2a844bbcc2c53081fcba317"
+  },
+  {
+    "folder_name": "self-mon",
+    "file_path": "self-mon/Self-monitoring - Discovery-Service-Status.json",
+    "content_hash": "dc77f7e68130b816cccad1ccf6e3cf5a5557974e8c25aadf7e503868e8d9f2a2"
+  },
+  {
+    "folder_name":  "dashboards-library",
+    "file_path":  "dashboards-library/BMC Helix Portal Audit Dashboard.json",
+      "content_hash":  "c26ee376155b48316ffcaf50b15cd44df2e252cd1dc90918e410da199e7d35b7"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/CHG_Open Change Analysis.json",
+      "content_hash":  "34d1e8d5d0ecc8f6a0552d29db398ff19924ab1b54c9e6ddb54a6d928df1007a"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/Continuos Optimization ETL Health.json",
+      "content_hash":  "bf61d9ea219e93cbd0aa7054247a872471a3f6d10c4ac2ddf7602a587759c903"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/Deprecated Plugins.json",
+      "content_hash":  "5e53fbb89aeb0c51ccf394a89035c9676195bf88b052cdd10654b7d8bed05c75"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/INC_Incident Backlog Aging Analysis.json",
+      "content_hash":  "84686c08ccbd3b7dbbf3e0352edfad988dbcfa5744cc1a6bed47b2bc1fcec6cc"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/K8s Container.json",
+      "content_hash":  "3ba68830d984f51e72f74fea5b6cebd0d8b4b0b70139d0b56b47896dfcb305a6"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/K8s Namespace_Deployment.json",
+      "content_hash":  "394b787c6fca1962ca728642c2eeaf03efab8ef91f0ed988897da5ae4346cade"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/K8s Node.json",
+      "content_hash":  "1b4a219d4d949f633e2434c6d943038f3b138acf6e767c07f6ed584afd12cea9"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/K8s Overview.json",
+      "content_hash":  "59f8fea18893014c9822d344a7a0f772826fa2e00bdaa9a5477b5e5843010ab4"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/K8s Pods.json",
+      "content_hash":  "71842f56e7006b1a4534cf6be8941554e85383a399a93301b9ab923c313b7703"
+  },
+  {
+      "folder_name":  "dashboards-library",
+      "file_path":  "dashboards-library/PBM_Open Problem Metrics.json",
+      "content_hash":  "caa95628512c76727491168d5db778454e25fdc8c55a5ced765ad602a952a3a2"
+  }
+]

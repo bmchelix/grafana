@@ -19,6 +19,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/org"
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginaccesscontrol"
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginstore"
+	"github.com/grafana/grafana/pkg/services/sqlstore"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/web"
 )
@@ -294,3 +295,28 @@ func shouldForceLogin(c *contextmodel.ReqContext) bool {
 
 	return forceLogin
 }
+
+// BMC code
+func IsFeatureEnabled(ss sqlstore.SQLStore, featureName string) func(c *contextmodel.ReqContext) {
+	return func(c *contextmodel.ReqContext) {
+		ok := ss.IsFeatureEnabled(c.Req.Context(), c.OrgID, featureName)
+		if !ok {
+			accessForbidden(c)
+		}
+	}
+}
+
+// New: only enforce feature for specific request paths
+func IsFeatureEnabledWhenPathContains(ss sqlstore.SQLStore, featureName string, pathSubstring string) func(c *contextmodel.ReqContext) {
+	return func(c *contextmodel.ReqContext) {
+		if strings.Contains(c.Req.URL.Path, pathSubstring) {
+			ok := ss.IsFeatureEnabled(c.Req.Context(), c.OrgID, featureName)
+			if !ok {
+				c.JsonApiErr(403, "Insight finder is disabled", nil)
+				return
+			}
+		}
+	}
+}
+
+// End

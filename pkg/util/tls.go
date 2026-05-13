@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/tls"
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -11,8 +12,14 @@ func TlsNameToVersion(name string) (uint16, error) {
 	name = strings.ToUpper(name)
 	switch name {
 	case "TLS1.0":
+		if os.Getenv("FIPS_ENABLED") == "true" {
+			return 0, fmt.Errorf("FIPS 140-3: TLS 1.0 is not permitted; minimum is TLS 1.2")
+		}
 		return tls.VersionTLS10, nil
 	case "TLS1.1":
+		if os.Getenv("FIPS_ENABLED") == "true" {
+			return 0, fmt.Errorf("FIPS 140-3: TLS 1.1 is not permitted; minimum is TLS 1.2")
+		}
 		return tls.VersionTLS11, nil
 	case "TLS1.2":
 		return tls.VersionTLS12, nil

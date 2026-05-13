@@ -9,6 +9,7 @@ import {
   SceneVariableSet,
   TestVariable,
 } from '@grafana/scenes';
+import { contextSrv } from 'app/core/core';
 
 import { activateFullSceneTree } from '../../utils/test-utils';
 
@@ -35,7 +36,53 @@ describe('PanelTimeRange', () => {
     expect(panelTime.state.value.raw.from).toBe('now-2h');
     expect(panelTime.state.timeInfo).toBe('Last 2 hours');
   });
+  it('should apply timeFrom when parent range is absolute in render mode (e.g. image renderer)', () => {
+    const prevAuth = contextSrv.user.authenticatedBy;
+    contextSrv.user.authenticatedBy = 'render';
 
+    try {
+      const panelTime = new PanelTimeRange({ timeFrom: '2h' });
+      const panel = new SceneCanvasText({ text: 'Hello', $timeRange: panelTime });
+      const scene = new SceneFlexLayout({
+        $timeRange: new SceneTimeRange({
+          from: '2019-02-11T13:00:00.000Z',
+          to: '2019-02-11T19:00:00.000Z',
+        }),
+        children: [new SceneFlexItem({ body: panel })],
+      });
+      activateFullSceneTree(scene);
+
+      expect(panelTime.state.value.from.toISOString()).toBe('2019-02-11T17:00:00.000Z');
+      expect(panelTime.state.value.to.toISOString()).toBe(fakeCurrentDate.toISOString());
+      expect(panelTime.state.value.raw.from).toBe('now-2h');
+      expect(panelTime.state.timeInfo).toBe('Last 2 hours');
+    } finally {
+      contextSrv.user.authenticatedBy = prevAuth;
+    }
+  });
+
+  it('should not apply timeFrom when parent range is absolute outside render mode', () => {
+    const prevAuth = contextSrv.user.authenticatedBy;
+    contextSrv.user.authenticatedBy = '';
+
+    try {
+      const panelTime = new PanelTimeRange({ timeFrom: '2h' });
+      const panel = new SceneCanvasText({ text: 'Hello', $timeRange: panelTime });
+      const scene = new SceneFlexLayout({
+        $timeRange: new SceneTimeRange({
+          from: '2019-02-11T13:00:00.000Z',
+          to: '2019-02-11T19:00:00.000Z',
+        }),
+        children: [new SceneFlexItem({ body: panel })],
+      });
+      activateFullSceneTree(scene);
+
+      expect(panelTime.state.timeInfo).toBe('');
+      expect(panelTime.state.value.raw.from).not.toBe('now-2h');
+    } finally {
+      contextSrv.user.authenticatedBy = prevAuth;
+    }
+  });
   it('should apply time shift', () => {
     const panelTime = new PanelTimeRange({ timeShift: '2h' });
 

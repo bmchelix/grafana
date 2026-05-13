@@ -5,9 +5,11 @@ import { bindActionCreators } from 'redux';
 
 import { GrafanaTheme2, LoadingState, SelectableValue, VariableHide, VariableType } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { locationService } from '@grafana/runtime';
-import { Button, Stack, Icon, Themeable2, withTheme2 } from '@grafana/ui';
+import { Button, Icon, Stack, Themeable2, withTheme2 } from '@grafana/ui';
+import { deleteVariableCache } from 'app/features/dashboard-scene/settings/variables/utils';
+import { KeySelectorProvider } from 'app/features/keySelector/KeySelector';
 import { StoreState, ThunkDispatch } from 'app/types/store';
 
 import { VariableHideSelect } from '../../dashboard-scene/settings/variables/components/VariableHideSelect';
@@ -32,6 +34,8 @@ import { OnPropChangeArguments, VariableNameConstraints } from './types';
 const mapStateToProps = (state: StoreState, ownProps: OwnProps) => ({
   editor: getVariablesState(ownProps.identifier.rootStateKey, state).editor,
   variable: getVariable(ownProps.identifier, state),
+  // BMC Change: To enable localization
+  dashboard: state.dashboard.getModel(),
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch) => {
@@ -133,6 +137,10 @@ export class VariableEditorEditorUnConnected extends PureComponent<Props, State>
     this.props.removeVariable(this.props.identifier);
     this.onModalClose();
     locationService.partial({ editIndex: null });
+    // BMC code starts
+    const dashboardUID = this.props.identifier.rootStateKey;
+    deleteVariableCache(this.props.variable, dashboardUID, true);
+    // BMC code ends
   };
 
   onApply = () => {
@@ -187,27 +195,34 @@ export class VariableEditorEditorUnConnected extends PureComponent<Props, State>
             required
           />
 
-          <VariableTextField
-            name={t('variables.variable-editor-editor-un-connected.name-label', 'Label')}
-            description={t(
-              'variables.variable-editor-editor-un-connected.description-optional-display-name',
-              'Optional display name'
-            )}
-            value={this.props.variable.label ?? ''}
-            placeholder={t('variables.variable-editor-editor-un-connected.placeholder-label-name', 'Label name')}
-            onChange={this.onLabelChange}
-            testId={selectors.pages.Dashboard.Settings.Variables.Edit.General.generalLabelInputV2}
-          />
-          <VariableTextAreaField
-            name={t('variables.variable-editor-un-connected.name-description', 'Description')}
-            value={variable.description ?? ''}
-            placeholder={t(
-              'variables.variable-editor-editor-un-connected.placeholder-descriptive-text',
-              'Descriptive text'
-            )}
-            onChange={this.onDescriptionChange}
-            width={52}
-          />
+          {/*BMC Change: wrap everything on keyselectorprovider*/}
+          <KeySelectorProvider
+            keys={this.props.dashboard?.getDashCurrentLocales()}
+            resourceUid={this.props.dashboard?.uid}
+          >
+            <VariableTextField
+              name={t('variables.variable-editor-editor-un-connected.name-label', 'Label')}
+              description={t(
+                'variables.variable-editor-editor-un-connected.description-optional-display-name',
+                'Optional display name'
+              )}
+              value={this.props.variable.label ?? ''}
+              placeholder={t('variables.variable-editor-editor-un-connected.placeholder-label-name', 'Label name')}
+              onChange={this.onLabelChange}
+              testId={selectors.pages.Dashboard.Settings.Variables.Edit.General.generalLabelInputV2}
+            />
+            <VariableTextAreaField
+              name={t('variables.variable-editor-un-connected.name-description', 'Description')}
+              value={variable.description ?? ''}
+              placeholder={t(
+                'variables.variable-editor-editor-un-connected.placeholder-descriptive-text',
+                'Descriptive text'
+              )}
+              onChange={this.onDescriptionChange}
+              width={52}
+            />
+          </KeySelectorProvider>
+          {/* BMC Change: Ends */}
           <VariableHideSelect
             onChange={this.onHideChange}
             hide={this.props.variable.hide}

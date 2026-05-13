@@ -3,6 +3,8 @@ package authnimpl
 import (
 	"context"
 
+	"github.com/grafana/grafana/pkg/infra/db"
+
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/infra/remotecache"
 	"github.com/grafana/grafana/pkg/infra/tracing"
@@ -25,6 +27,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/org"
 	"github.com/grafana/grafana/pkg/services/quota"
 	"github.com/grafana/grafana/pkg/services/rendering"
+	"github.com/grafana/grafana/pkg/services/team"
 	tempuser "github.com/grafana/grafana/pkg/services/temp_user"
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/setting"
@@ -44,6 +47,10 @@ func ProvideRegistration(
 	socialService social.Service, cache *remotecache.RemoteCache,
 	ldapService service.LDAP, settingsProviderService setting.Provider,
 	tracer tracing.Tracer, tempUserService tempuser.Service, notificationService notifications.Service,
+	// BMC Code: to inject db and team and team permission services
+	db db.DB,
+	teamService team.Service,
+	teamPermissionsService accesscontrol.TeamPermissionsService,
 ) Registration {
 	logger := log.New("authn.registration")
 
@@ -104,7 +111,8 @@ func ProvideRegistration(
 	}
 
 	if cfg.AuthProxy.Enabled && len(proxyClients) > 0 {
-		proxy, err := clients.ProvideProxy(cfg, cache, tracer, proxyClients...)
+		// BMC code: inline change to inject org service
+		proxy, err := clients.ProvideProxy(cfg, cache, tracer, orgService, proxyClients...)
 		if err != nil {
 			logger.Error("Failed to configure auth proxy", "err", err)
 		} else {
@@ -133,7 +141,13 @@ func ProvideRegistration(
 
 	// FIXME (jguer): move to User package
 	// Pass nil for k8sClient - it will be handled gracefully in the SCIMSettingsUtil
-	userSync := sync.ProvideUserSync(userService, userProtectionService, authInfoService, quotaService, tracer, features, cfg, nil)
+	// BMC Code: inline change to inject db, team and team permission services
+	userSync := sync.ProvideUserSync(userService, userProtectionService, authInfoService, quotaService, tracer, features, cfg, nil, db, teamService, teamPermissionsService, orgService)
+	// BMC Code: Starts , Adding post auth hooks
+	authnSvc.RegisterPostAuthHook(userSync.CheckIfUserSynced, 40)
+	authnSvc.RegisterPostAuthHook(userSync.TeamSync, 50)
+	authnSvc.RegisterPostAuthHook(userSync.BHDRoleUpdate, 101)
+	// BMC Code: Ends
 	orgSync := sync.ProvideOrgSync(userService, orgService, accessControlService, cfg, tracer)
 	authnSvc.RegisterPostAuthHook(userSync.SyncUserHook, 10)
 	authnSvc.RegisterPostAuthHook(userSync.EnableUserHook, 20)

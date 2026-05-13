@@ -161,6 +161,7 @@ describe('when creating variables objects', () => {
       state: LoadingState.Done,
       error: null,
       description: null,
+      bmcVarCache: false, //BMC CODE FOR VARIABLE CACHING
     };
 
     const migrated = createSceneVariableFromVariableModel(variable);

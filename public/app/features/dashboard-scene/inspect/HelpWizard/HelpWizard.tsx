@@ -1,27 +1,26 @@
 import { css } from '@emotion/css';
-import { useMemo, useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
-import { GrafanaTheme2, FeatureState } from '@grafana/data';
+import { GrafanaTheme2 } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
 import { config } from '@grafana/runtime';
 import { VizPanel } from '@grafana/scenes';
 import {
-  Drawer,
-  Tab,
-  TabsBar,
+  Alert,
+  Button,
+  ClipboardButton,
   CodeEditor,
-  useStyles2,
+  Drawer,
   Field,
   InlineSwitch,
-  Button,
-  Spinner,
-  Alert,
-  FeatureBadge,
   Select,
-  ClipboardButton,
+  Spinner,
   Stack,
+  Tab,
+  TabsBar,
   TextLink,
+  useStyles2
 } from '@grafana/ui';
 import { contextSrv } from 'app/core/services/context_srv';
 import { AccessControlAction } from 'app/types/accessControl';
@@ -75,15 +74,17 @@ export function HelpWizard({ panel, onClose }: Props) {
       onClose={onClose}
       subtitle={
         <Stack direction="column" gap={1}>
-          <Stack direction="row" gap={1}>
+          {/* BMC code - comment out the feature badge and troubleshooting docs link */}
+          {/* <Stack direction="row" gap={1}>
             <FeatureBadge featureState={FeatureState.beta} />
             <TextLink href="https://grafana.com/docs/grafana/latest/troubleshooting/" external>
               <Trans i18nKey="dashboard-scene.help-wizard.troubleshooting-docs">Troubleshooting docs</Trans>
             </TextLink>
-          </Stack>
+          </Stack> */}
           <span className="muted">
-            <Trans i18nKey="dashboard-scene.help-wizard.troubleshooting-request-help">
-              To request troubleshooting help, send a snapshot of this panel to Grafana Labs Technical Support. The
+            {/* BMC code - replace "Grafana" with "BMC Helix Dashboards" */}
+            <Trans i18nKey="bmcgrafana.dashboard-scene.help-wizard.troubleshooting-request-help">
+              To request troubleshooting help, send a snapshot of this panel to BMC Helix Dashboards Technical Support. The
               snapshot contains query response data and panel settings.
             </Trans>
           </span>

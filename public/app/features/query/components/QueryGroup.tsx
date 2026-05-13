@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
-import { PureComponent, useEffect, useState } from 'react';
 import * as React from 'react';
+import { PureComponent, useEffect, useState } from 'react';
 import { Unsubscribable } from 'rxjs';
 
 import {
@@ -13,7 +13,7 @@ import {
   PanelData,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { getDataSourceSrv, locationService } from '@grafana/runtime';
 import { DataQuery } from '@grafana/schema';
 import { Button, InlineFormLabel, Modal, ScrollContainer, Stack, stylesFactory } from '@grafana/ui';
@@ -422,7 +422,8 @@ export function QueryGroupTopSection({
               onChange={async (ds, defaultQueries) => {
                 return await onDataSourceChange?.(ds, defaultQueries);
               }}
-              isDataSourceModalOpen={Boolean(locationService.getSearchObject().firstPanel)}
+              // BMC Change: Comment below line to disable DS Modal
+              // isDataSourceModalOpen={Boolean(locationService.getSearchObject().firstPanel)}
             />
           </div>
           {dataSource && (

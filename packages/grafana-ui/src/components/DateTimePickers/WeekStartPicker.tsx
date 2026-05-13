@@ -16,7 +16,8 @@ export interface Props {
   inputId?: string;
 }
 
-export type WeekStart = 'saturday' | 'sunday' | 'monday';
+// BMC code: added 'browser' option
+export type WeekStart = 'saturday' | 'sunday' | 'monday' | 'browser';
 
 export function isWeekStart(value: string): value is WeekStart {
   return ['saturday', 'sunday', 'monday'].includes(value);
@@ -36,7 +37,8 @@ export function getWeekStart(override?: string): WeekStart {
     return preference;
   }
 
-  return 'monday';
+  // BMC Change: Next line: default to browser as use_browser_locale set to true
+  return 'browser';
 }
 
 /**
@@ -50,6 +52,7 @@ export const WeekStartPicker = (props: Props) => {
       { value: 'saturday', label: t('grafana-ui.week-start-picker.weekStarts-label-saturday', 'Saturday') },
       { value: 'sunday', label: t('grafana-ui.week-start-picker.weekStarts-label-sunday', 'Sunday') },
       { value: 'monday', label: t('grafana-ui.week-start-picker.weekStarts-label-monday', 'Monday') },
+      { value: 'monday', label: t('bmcgrafana.grafana-ui.week-start-picker.weekStarts-label-browser', 'Browser') },
     ],
     []
   );
@@ -71,6 +74,8 @@ export const WeekStartPicker = (props: Props) => {
       value={selected}
       placeholder={selectors.components.WeekStartPicker.placeholder}
       autoFocus={autoFocus}
+      // BMC Change: Next aria-labelledby
+      aria-labelledby="week-start-picker"
       width={width}
       options={weekStarts}
       onChange={onChangeWeekStart}

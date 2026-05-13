@@ -1,3 +1,4 @@
+import { Location } from 'history';
 import { useEffect } from 'react';
 
 import { NavModelItem } from '@grafana/data';
@@ -17,20 +18,30 @@ const emitOpenShortcutsModal = () => {
   appEvents.publish(new ShowModalReactEvent({ component: HelpModal }));
 };
 
-export const getEnrichedHelpItem = (helpItem: NavModelItem): NavModelItem => {
+// BMC code: added footerLinkData parameter
+export const getEnrichedHelpItem = (helpItem: NavModelItem, footerLinkData?: any): NavModelItem => {
   let menuItems = helpItem.children || [];
 
   if (helpItem.id !== 'help') {
     return helpItem;
   }
 
+  // BMC code - use Helix Dashboard version in subTitle
+  const bhdVersion = config.bhdVersion;
+  const versionSubTitle =
+    bhdVersion && !/^v\.?\s?/i.test(bhdVersion) ? `v. ${bhdVersion}` : bhdVersion;
+
   return {
     ...helpItem,
-    subTitle: config.buildInfo.versionString,
+    // BMC code - start
+    // subTitle: config.buildInfo.versionString,
+    subTitle: versionSubTitle,
+    // BMC code - end
     children: [
       ...menuItems,
-      ...getFooterLinks(),
-      ...getEditionAndUpdateLinks(),
+      // BMC code - Update footer data and Hide "open source" item from Help menu
+      ...getFooterLinks(footerLinkData),
+      // ...getEditionAndUpdateLinks(),
       {
         id: 'keyboard-shortcuts',
         text: t('nav.help/keyboard-shortcuts', 'Keyboard shortcuts'),
@@ -132,6 +143,26 @@ export const getActiveItem = (
 
   return undefined;
 };
+
+// BMC Code: Next function
+export const isSearchActive = (location: Location<unknown>) => {
+  const query = new URLSearchParams(location.search);
+  return query.get('search') === 'open';
+};
+
+export function getNavModelItemKey(item: NavModelItem) {
+  return item.id ?? item.text;
+}
+// BMC code
+export const prepareLogoColor = (isSelected: Boolean) => {
+  const reportApp: any = document.querySelector('a[aria-label="Report Scheduler"] img') || { style: {} };
+  if (config.theme.isDark) {
+    reportApp.style['filter'] = `contrast(0) ${isSelected ? 'brightness(1.8)' : 'brightness(1.2)'}`;
+  } else {
+    reportApp.style['filter'] = `${isSelected ? 'inherit' : 'contrast(0.35)'}`;
+  }
+};
+// End
 
 export function getEditionAndUpdateLinks(): NavModelItem[] {
   const { buildInfo, licenseInfo } = config;

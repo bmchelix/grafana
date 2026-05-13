@@ -12,9 +12,7 @@ import { setFiltersFromUrl } from './actions';
 import { AdHocPicker } from './picker/AdHocPicker';
 import { adHocVariableReducer, initialAdHocVariableModelState } from './reducer';
 import * as urlParser from './urlParser';
-
 const noop = async () => {};
-
 export const createAdHocVariableAdapter = (): VariableAdapter<AdHocVariableModel> => {
   return {
     id: 'adhoc',
@@ -22,7 +20,11 @@ export const createAdHocVariableAdapter = (): VariableAdapter<AdHocVariableModel
       'variables.create-ad-hoc-variable-adapter.description.add-keyvalue-filters-on-the-fly',
       'Add key/value filters on the fly.'
     ),
-    name: 'Ad hoc filters',
+    // BMC Change: To enable localization for below text
+    name: t(
+      'bmcgrafana.dashboards.settings.variables.editor.select-variable-type.ad-hoc-filters.name',
+      'Ad hoc filters'
+    ),
     initialState: initialAdHocVariableModelState,
     reducer: adHocVariableReducer,
     picker: AdHocPicker,

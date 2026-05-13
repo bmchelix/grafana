@@ -208,7 +208,8 @@ const getStyles = (theme: GrafanaTheme2) => {
     container: css({
       borderRadius: theme.shape.radius.default,
       border: `1px solid ${theme.components.input.borderColor}`,
-      overflow: 'hidden',
+      // BMC Change: Commenting next line, as it creates problem with code editor used in data source query editor
+      // overflow: 'hidden',
     }),
   };
 };

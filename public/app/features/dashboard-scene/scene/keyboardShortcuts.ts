@@ -1,4 +1,4 @@
-import { locationUtil, SetPanelAttentionEvent, LegacyGraphHoverClearEvent } from '@grafana/data';
+import { LegacyGraphHoverClearEvent, locationUtil, SetPanelAttentionEvent } from '@grafana/data';
 import { config, locationService } from '@grafana/runtime';
 import { behaviors, sceneGraph, VizPanel } from '@grafana/scenes';
 import appEvents from 'app/core/app_events';
@@ -80,6 +80,19 @@ export function setupKeyboardShortcuts(scene: DashboardScene) {
       scene.showModal(drawer);
     }),
   });
+  //BMC Change: added download shortcut
+  keybindings.addBinding({
+    key: 'p o',
+    onTrigger: withFocusedPanel(scene, async (vizPanel: VizPanel) => {
+      const drawer = new ShareDrawer({
+        shareView: shareDashboardType.download,
+        panelRef: vizPanel.getRef(),
+      });
+
+      scene.showModal(drawer);
+    }),
+  });
+  //BMC Change: Ends
 
   if (
     contextSrv.isSignedIn &&

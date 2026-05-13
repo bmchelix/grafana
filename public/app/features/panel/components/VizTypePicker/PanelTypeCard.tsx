@@ -1,13 +1,13 @@
 import { css, cx } from '@emotion/css';
-import { MouseEventHandler } from 'react';
 import * as React from 'react';
+import { MouseEventHandler } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 import { GrafanaTheme2, isUnsignedPluginSignature, PanelPluginMeta, PluginState } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { t } from '@grafana/i18n';
 import { IconButton, PluginSignatureBadge, useStyles2 } from '@grafana/ui';
-import { SkeletonComponent, attachSkeleton } from '@grafana/ui/unstable';
+import { attachSkeleton, SkeletonComponent } from '@grafana/ui/unstable';
 import { PluginStateInfo } from 'app/features/plugins/components/PluginStateInfo';
 
 interface Props {
@@ -43,9 +43,20 @@ const PanelTypeCardComponent = ({
     [styles.current]: isCurrent,
   });
 
+  // BMC Accessibility Change: Add keyboard support
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isDisabled) {
+      return;
+    }
+    // Activate on Enter or Space key
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      // Trigger a native click event which will call the onClick handler naturally
+      event.currentTarget.click();
+    }
+  };
+
   return (
-    // TODO: fix keyboard a11y
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <div
       className={cssClass}
       aria-label={selectors.components.PluginVisualization.item(plugin.name)}
@@ -54,6 +65,10 @@ const PanelTypeCardComponent = ({
       title={
         isCurrent ? t('panel.panel-type-card.title-click-to-close', 'Click again to close this section') : plugin.name
       }
+      // BMC code: a11y below lines
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={isDisabled ? -1 : 0}
     >
       <img className={cx(styles.img, { [styles.disabled]: isDisabled })} src={plugin.info.logos.small} alt="" />
 

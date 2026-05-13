@@ -21,6 +21,8 @@ type Builder struct {
 
 	params []any
 	sql    bytes.Buffer
+	// BMC Change: Next line
+	Lang string
 }
 
 // ToSQL builds the SQL query and returns it as a string, together with the SQL parameters.
@@ -38,10 +40,17 @@ func (b *Builder) ToSQL(limit, page int64) (string, []any) {
 	b.sql.WriteString("\n")
 
 	// covered by UQE_folder_org_id_uid
-	b.sql.WriteString(
-		`LEFT OUTER JOIN folder ON folder.uid = dashboard.folder_uid AND folder.org_id = dashboard.org_id`)
+	// BMC Change: Below condition for localized lang
+	if b.Lang != "" {
+		b.sql.WriteString(
+			fmt.Sprintf(`LEFT OUTER JOIN (select f.uid, f.org_id, case when flocale.name is not null and flocale.name != '' then flocale.name else f.title end as title from folder f left join lateral(select resource_uid as uid, "%s"::jsonb  ->> 'name' as name from bhd_localization bl where bl.org_id = f.org_id) flocale on flocale.uid = f.uid) folder ON folder.uid = dashboard.folder_uid AND folder.org_id = dashboard.org_id`, b.Lang))
+	} else {
+		b.sql.WriteString(
+			`LEFT OUTER JOIN folder ON folder.uid = dashboard.folder_uid AND folder.org_id = dashboard.org_id`)
+	}
+
 	b.sql.WriteString(`
-	LEFT OUTER JOIN dashboard_tag ON dashboard.id = dashboard_tag.dashboard_id`)
+LEFT OUTER JOIN dashboard_tag ON dashboard.id = dashboard_tag.dashboard_id`)
 	b.sql.WriteString("\n")
 	b.sql.WriteString(orderQuery)
 
@@ -52,8 +61,21 @@ func (b *Builder) buildSelect() {
 	var recQuery string
 	var recQueryParams []any
 
-	b.sql.WriteString(
-		`SELECT
+	if b.Lang != "" {
+		b.sql.WriteString(
+			`SELECT
+			dashboard.id,
+			dashboard.uid,
+			ids.title,
+			dashboard.slug,
+			dashboard_tag.term,
+			dashboard.is_folder,
+			dashboard.folder_id,
+			folder.uid AS folder_uid,
+		`)
+	} else {
+		b.sql.WriteString(
+			`SELECT
 			dashboard.id,
 			dashboard.org_id,
 			dashboard.uid,
@@ -67,29 +89,30 @@ func (b *Builder) buildSelect() {
 			folder.title AS folder_slug,
 			folder.title AS folder_title 
 		`)
-	for _, f := range b.Filters {
-		if f, ok := f.(model.FilterSelect); ok {
-			b.sql.WriteString(fmt.Sprintf(", %s", f.Select()))
+		for _, f := range b.Filters {
+			if f, ok := f.(model.FilterSelect); ok {
+				b.sql.WriteString(fmt.Sprintf(", %s", f.Select()))
+			}
+
+			if f, ok := f.(model.FilterWith); ok {
+				recQuery, recQueryParams = f.With()
+			}
 		}
 
-		if f, ok := f.(model.FilterWith); ok {
-			recQuery, recQueryParams = f.With()
+		b.sql.WriteString(` FROM `)
+
+		if recQuery == "" {
+			return
 		}
+
+		// prepend recursive queries
+		var bf bytes.Buffer
+		bf.WriteString(recQuery)
+		bf.WriteString(b.sql.String())
+
+		b.sql = bf
+		b.params = append(recQueryParams, b.params...)
 	}
-
-	b.sql.WriteString(` FROM `)
-
-	if recQuery == "" {
-		return
-	}
-
-	// prepend recursive queries
-	var bf bytes.Buffer
-	bf.WriteString(recQuery)
-	bf.WriteString(b.sql.String())
-
-	b.sql = bf
-	b.params = append(recQueryParams, b.params...)
 }
 
 func (b *Builder) applyFilters() (ordering string) {
@@ -141,7 +164,15 @@ func (b *Builder) applyFilters() (ordering string) {
 		forceIndex = " FORCE INDEX (IDX_dashboard_title) "
 	}
 
-	b.sql.WriteString(fmt.Sprintf("SELECT dashboard.id FROM dashboard %s", forceIndex))
+	// BMC Change: Starts, adding query on lang condition
+	// b.sql.WriteString(fmt.Sprintf("SELECT dashboard.id FROM dashboard %s", forceIndex))
+	if b.Lang != "" {
+		b.sql.WriteString(fmt.Sprintf("SELECT dashboard.id, case when locale.name is not null and locale.name != '' then locale.name else dashboard.title end AS title FROM dashboard left join lateral (SELECT resource_uid as uid, \"%s\"::jsonb ->> 'name' as name from bhd_localization bl where bl.org_id = dashboard.org_id) locale on locale.uid = dashboard.uid", b.Lang))
+	} else {
+		b.sql.WriteString(fmt.Sprintf("SELECT dashboard.id FROM dashboard %s", forceIndex))
+	}
+	// BMC Change: Ends
+
 	b.sql.WriteString(strings.Join(joins, ""))
 
 	if len(wheres) > 0 {
@@ -150,7 +181,7 @@ func (b *Builder) applyFilters() (ordering string) {
 	}
 
 	if len(orders) < 1 {
-		orders = append(orders, TitleSorter{}.OrderBy())
+		orders = append(orders, TitleSorter{Localized: b.Lang != ""}.OrderBy())
 	}
 
 	if len(groups) > 0 {

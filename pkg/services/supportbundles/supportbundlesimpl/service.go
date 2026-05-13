@@ -3,6 +3,7 @@ package supportbundlesimpl
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	grafanaApi "github.com/grafana/grafana/pkg/api"
@@ -42,6 +43,9 @@ type Service struct {
 
 	enabled         bool
 	serverAdminOnly bool
+	// BMC code changes start - FIPS
+	fipsEnabled bool
+	// BMC code changes end - FIPS
 }
 
 func ProvideService(
@@ -60,6 +64,9 @@ func ProvideService(
 	usageStats usagestats.Service,
 	tracer tracing.Tracer) (*Service, error) {
 	section := cfg.SectionWithEnvOverrides("support_bundles")
+	// BMC code changes start - FIPS
+	fipsEnabled := os.Getenv("FIPS_ENABLED") == "true"
+	// BMC code changes end - FIPS
 	s := &Service{
 		accessControl:        accessControl,
 		bundleRegistry:       bundleRegistry,
@@ -73,7 +80,19 @@ func ProvideService(
 		serverAdminOnly:      section.Key("server_admin_only").MustBool(true),
 		store:                newStore(kvStore),
 		tracer:               tracer,
+		// BMC code changes start - FIPS
+		fipsEnabled: fipsEnabled,
+		// BMC code changes end - FIPS
 	}
+
+	// BMC code changes start - FIPS
+	if fipsEnabled && len(s.encryptionPublicKeys) > 0 {
+		s.log.Warn("FIPS mode is enabled but support bundle encryption public_keys are configured. " +
+			"Bundle encryption uses filippo.io/age (X25519 + ChaCha20-Poly1305) which are non-FIPS-approved algorithms. " +
+			"Support bundle creation will fail if encryption is triggered. " +
+			"Remove public_keys from [support_bundles] config to allow unencrypted bundle creation.")
+	}
+	// BMC code changes end - FIPS
 
 	usageStats.RegisterMetricsFunc(s.getUsageStats)
 

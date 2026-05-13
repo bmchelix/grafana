@@ -3,15 +3,15 @@ import { CSSProperties } from 'react';
 import { OnDrag, OnResize, OnRotate } from 'react-moveable/declaration/types';
 
 import {
+  ActionModel,
+  ActionType,
+  ActionVariableInput,
   FieldType,
   getLinksSupplier,
   LinkModel,
+  OneClickMode,
   ScopedVars,
   ValueLinkConfig,
-  OneClickMode,
-  ActionModel,
-  ActionVariableInput,
-  ActionType,
 } from '@grafana/data';
 import { t } from '@grafana/i18n';
 import { TooltipDisplayMode } from '@grafana/schema';
