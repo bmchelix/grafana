@@ -81,6 +81,14 @@ type Identity struct {
 
 	IDTokenClaims     *authn.Claims[authn.IDTokenClaims]
 	AccessTokenClaims *authn.Claims[authn.AccessTokenClaims]
+	// Bmc code - start
+	HasExternalOrg     bool
+	IsUnrestrictedUser bool
+	MspOrgs            []string
+	BHDRoles           []int64
+	SubTenantId        string
+	IsDedicatedInst    bool
+	// Bmc code end
 }
 
 func (i *Identity) GetID() string {
@@ -306,6 +314,14 @@ func (i *Identity) SignedInUser() *user.SignedInUser {
 		IDTokenClaims:     i.IDTokenClaims,
 		AccessTokenClaims: i.AccessTokenClaims,
 		FallbackType:      i.Type,
+		// BMC Change: Starts
+		HasExternalOrg:     i.HasExternalOrg,
+		IsUnrestrictedUser: i.IsUnrestrictedUser,
+		MspOrgs:            i.MspOrgs,
+		BHDRoles:           i.BHDRoles,
+		SubTenantId:        i.SubTenantId,
+		IsDedicatedInst:    i.IsDedicatedInst,
+		// BMC Change: Ends
 	}
 
 	if i.IsIdentityType(claims.TypeAPIKey) {
@@ -337,3 +353,26 @@ func (i *Identity) ExternalUserInfo() login.ExternalUserInfo {
 		IsDisabled:     i.IsDisabled,
 	}
 }
+
+// BMC Change: Starts
+func (i *Identity) GetHasExternalOrg() bool {
+	return i.HasExternalOrg
+}
+
+func (i *Identity) GetIsUnrestrictedUser() bool {
+	return i.IsUnrestrictedUser
+}
+
+func (i *Identity) GetMspOrgs() []string {
+	return i.MspOrgs
+}
+
+func (i *Identity) GetBHDRoles() []int64 {
+	return i.BHDRoles
+}
+
+func (i *Identity) GetIsDedicatedIst() bool {
+	return i.IsDedicatedInst
+}
+
+// BMC Change: Ends

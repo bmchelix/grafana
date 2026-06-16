@@ -41,6 +41,12 @@ export function getNavTitle(navId: string | undefined) {
       return t('nav.snapshots.title', 'Snapshots');
     case 'dashboards/library-panels':
       return t('nav.library-panels.title', 'Library panels');
+    // BMC code - start
+    case 'calc-fields':
+      return t('bmc.calc-fields.title', 'Calculated fields');
+    case 'global-locales':
+      return t('bmc.manage-locales.global.title', 'Localization management');
+    // BMC code - end
     case 'reports':
       return t('nav.reporting.title', 'Reporting');
     case 'dashboards/public':
@@ -109,6 +115,28 @@ export function getNavTitle(navId: string | undefined) {
       return t('nav.users.title', 'Users');
     case 'teams':
       return t('nav.teams.title', 'Teams');
+    // BMC Code: Start
+    case 'roles':
+      return t('bmc.nav.roles.title', 'Roles');
+    case 'rms-config':
+      return t('bmc.nav.rms.title', 'Reporting Metadata Studio');
+    // Reports Plugin
+    case 'plugin-page-reports':
+      return t('bmc.nav.reports-scheduler', 'Report Scheduler');
+    case 'reports/history':
+      return t('bmc.nav.apps.reports.history', 'History');
+    case 'reports/settings':
+      return t('bmc.nav.apps.reports.settings', 'Settings');
+    case 'reports/manage-ownership':
+      return t('bmc.nav.apps.reports.manage-ownership', 'Manage Ownership');
+    // Insight Finder plugin
+    case 'plugin-page-bmc-insightfinder-app':
+      return t('bmc.nav.apps.insight-finder.home', 'Insight Finder');
+    case 'insight-finder/configure-views':
+      return t('bmc.nav.apps.insight-finder.configure-views-title', 'Insight Finder Configure Views');
+    case 'insight-finder/settings':
+      return t('bmc.nav.apps.insight-finder.settings-title', 'Insight Finder Settings');
+    // BMC Code: End
     case 'plugins':
       return t('nav.plugins.title', 'Plugins');
     case 'org-settings':
@@ -217,6 +245,12 @@ export function getNavSubTitle(navId: string | undefined) {
       t('nav.shared-dashboard.subtitle', "Manage your organization's externally shared dashboards");
     case 'dashboards/library-panels':
       return t('nav.library-panels.subtitle', 'Reusable panels that can be added to multiple dashboards');
+    // BMC code - start
+    case 'calc-fields':
+      return t('bmc.calc-fields.subtitle', 'Create and manage calculated fields for ITSM service');
+    case 'global-locales':
+      return t('bmc.manage-locales.global.subtitle', 'Create and manage global keys for localization');
+    // BMC code - end
     case 'dashboards/recently-deleted':
       return t(
         'nav.recently-deleted.subtitle',
@@ -257,8 +291,14 @@ export function getNavSubTitle(navId: string | undefined) {
       return t('nav.users.subtitle', 'Invite and assign roles to users');
     case 'teams':
       return t('nav.teams.subtitle', 'Groups of users that have common dashboard and permission needs');
+    // BMC code - start
+    case 'roles':
+      return t('bmc.nav.roles.subtitle', 'Manage roles across an organization');
+    case 'rms-config':
+      return t('bmc.nav.rms.subtitle', 'An application to create and modify views for Visual Query Builder');
+    // BMC code - end
     case 'plugins':
-      return t('nav.plugins.subtitle', 'Extend the Grafana experience with plugins');
+      return t('nav.plugins.subtitle', 'Extend the BMC Helix Dashboards experience with plugins');
     case 'org-settings':
       return t('nav.org-settings.subtitle', 'Manage preferences across an organization');
     case 'serviceaccounts':
@@ -266,11 +306,11 @@ export function getNavSubTitle(navId: string | undefined) {
     case 'groupsync':
       return t('nav.groupsync.subtitle', 'Manage mappings of Identity Provider groups to Grafana Roles');
     case 'global-users':
-      return t('nav.global-users.subtitle', 'Manage users in Grafana');
+      return t('nav.global-users.subtitle', 'Manage users in BMC Helix Dashboards');
     case 'global-orgs':
-      return t('nav.global-orgs.subtitle', 'Isolated instances of Grafana running on the same server');
+      return t('nav.global-orgs.subtitle', 'Isolated instances of BMC Helix Dashboards running on the same server');
     case 'server-settings':
-      return t('nav.server-settings.subtitle', 'View the settings defined in your Grafana config');
+      return t('nav.server-settings.subtitle', 'View the settings defined in your BMC Helix Dashboards config');
     case 'storage':
       return t('nav.storage.subtitle', 'Manage file storage');
     case 'migrate-to-cloud':
@@ -283,13 +323,19 @@ export function getNavSubTitle(navId: string | undefined) {
         'Manage server-wide settings and access to resources such as organizations, users, and licenses'
       );
     case 'cfg/general':
-      return t('nav.config-general.subtitle', 'Manage default preferences and settings across Grafana');
+      return t('bmcgrafana.nav.config-general.subtitle', 'Manage default preferences and settings across BMC Helix Dashboards');
     case 'cfg/plugins':
       return t('nav.config-plugins.subtitle', 'Install plugins and define the relationships between data');
     case 'cfg/access':
       return t('nav.config-access.subtitle', 'Configure access for individual users, teams, and service accounts');
-    case 'apps':
-      return t('nav.apps.subtitle', 'App plugins that extend the Grafana experience');
+    //BMC Code: Start
+    case 'insight-finder/configure-views':
+      return t('bmc.nav.apps.insight-finder.configure-views-subtitle', 'View and manage your views');
+    case 'insight-finder/settings':
+      return t('insight-finder.main-settings.view-manage-config', 'View and manage your configuration');
+    //BMC Code: End
+      case 'apps':
+      return t('nav.apps.subtitle', 'App plugins that extend the BMC Helix Dashboards experience');
     case 'monitoring':
       return t('nav.monitoring.subtitle', 'Out-of-the-box observability solutions');
     case 'infrastructure':

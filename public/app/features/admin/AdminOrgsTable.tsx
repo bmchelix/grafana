@@ -6,6 +6,7 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
 import { Button, ConfirmModal, useStyles2 } from '@grafana/ui';
 import { SkeletonComponent, attachSkeleton } from '@grafana/ui/unstable';
+import config from 'app/core/config';
 import { contextSrv } from 'app/core/core';
 import { AccessControlAction } from 'app/types/accessControl';
 import { Organization } from 'app/types/organization';
@@ -47,16 +48,19 @@ function AdminOrgsTableComponent({ orgs, onDelete }: Props) {
             <td className="link-td">
               <a href={`admin/orgs/edit/${org.id}`}>{org.name}</a>
             </td>
-            <td className="text-right">
-              <Button
-                variant="destructive"
-                size="sm"
-                icon="times"
-                onClick={() => setDeleteOrg(org)}
-                aria-label={t('admin.admin-orgs-table.aria-label-delete-org', 'Delete org')}
-                disabled={!canDeleteOrgs}
-              />
-            </td>
+            {/* BMC code  - next line */}
+            {config.buildInfo.env === 'development' && (
+              <td className="text-right">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  icon="times"
+                  onClick={() => setDeleteOrg(org)}
+                  aria-label={t('admin.admin-orgs-table.aria-label-delete-org', 'Delete org')}
+                  disabled={!canDeleteOrgs}
+                />
+              </td>
+            )}
           </tr>
         ))}
       </tbody>

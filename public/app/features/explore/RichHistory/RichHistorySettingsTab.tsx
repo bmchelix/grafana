@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import { GrafanaTheme2, SelectableValue } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
 import { getAppEvents } from '@grafana/runtime';
-import { useStyles2, Select, Button, Field, InlineField, InlineSwitch, Alert } from '@grafana/ui';
+import { Alert, Button, Field, InlineField, InlineSwitch, Select, useStyles2 } from '@grafana/ui';
 import { notifyApp } from 'app/core/actions';
 import { createSuccessNotification } from 'app/core/copy/appNotification';
 import { MAX_HISTORY_ITEMS } from 'app/core/history/RichHistoryLocalStorage';
@@ -20,6 +20,9 @@ export interface RichHistorySettingsProps {
   toggleStarredTabAsFirstTab: () => void;
   toggleActiveDatasourcesOnly: () => void;
   deleteRichHistory: () => void;
+  // BMC Code : Accessibility Change ( Next 2 lines )
+  tabId?: string;
+  tabPanelId?: string;
 }
 
 const getStyles = (theme: GrafanaTheme2) => {
@@ -51,6 +54,9 @@ export function RichHistorySettingsTab(props: RichHistorySettingsProps) {
     toggleStarredTabAsFirstTab,
     toggleActiveDatasourcesOnly,
     deleteRichHistory,
+    // BMC Code : Accessibility Change ( Next 2 lines )
+    tabId,
+    tabPanelId,
   } = props;
   const styles = useStyles2(getStyles);
 
@@ -87,7 +93,8 @@ export function RichHistorySettingsTab(props: RichHistorySettingsProps) {
   };
 
   return (
-    <div className={styles.container}>
+    // BMC Code : Accessibility Change ( Next 1 line )
+    <div className={styles.container} role="tabpanel" aria-labelledby={tabId} id={tabPanelId}>
       {supportedFeatures().changeRetention ? (
         <Field
           label={t('explore.rich-history-settings-tab.history-time-span', 'History time span')}
@@ -103,9 +110,10 @@ export function RichHistorySettingsTab(props: RichHistorySettingsProps) {
         </Field>
       ) : (
         <Alert severity="info" title={t('explore.rich-history-settings-tab.history-time-span', 'History time span')}>
+          {/* BMC code - replace "Grafana" with "BMC Helix Dashboards" */}
           {t(
-            'explore.rich-history-settings-tab.alert-info',
-            "Grafana will keep entries up to {{optionLabel}}.Starred entries won't be deleted.",
+            'bmcgrafana.explore.rich-history-settings-tab.alert-info',
+            "BMC Helix Dashboards will keep entries up to {{optionLabel}}.Starred entries won't be deleted.",
             {
               optionLabel: selectedOption?.label,
             }

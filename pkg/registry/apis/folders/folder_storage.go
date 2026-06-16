@@ -20,7 +20,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/apiserver/endpoints/request"
 	"github.com/grafana/grafana/pkg/services/dashboards/dashboardaccess"
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
-	"github.com/grafana/grafana/pkg/services/org"
+	"github.com/grafana/grafana/pkg/services/msp"
 )
 
 var (
@@ -170,12 +170,23 @@ func (s *folderStorage) setDefaultFolderPermissions(ctx context.Context, orgID i
 		permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
 			UserID: userID, Permission: dashboardaccess.PERMISSION_ADMIN.String(),
 		})
+
+		// BMC code - changes for MSP: provide default permissions to org0 team
+		// ToDo: Check for user object, it is changed to identity.Requester
+		if user.GetHasExternalOrg() {
+			permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
+				TeamID: msp.GetUnrestrictedTeamID(user.GetOrgID()), Permission: dashboardaccess.PERMISSION_EDIT.String(),
+			})
+		}
+		// BMC code ends
 	}
 
 	if !isNested {
 		permissions = append(permissions, []accesscontrol.SetResourcePermissionCommand{
-			{BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
-			{BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// BMC code Start - Fix for DRJ71-4418 - Changes related to folder and Dashboard permission in 9.x
+			// {BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
+			// {BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// BMC code end
 		}...)
 	}
 

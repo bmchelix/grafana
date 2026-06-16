@@ -9,12 +9,14 @@ import { Trans, t } from '@grafana/i18n';
 import { reportInteraction } from '@grafana/runtime';
 import { SceneVariable } from '@grafana/scenes';
 import { VariableHide, defaultVariableModel } from '@grafana/schema';
-import { Button, LoadingPlaceholder, ConfirmModal, ModalsController, Stack, useStyles2 } from '@grafana/ui';
+import { Button, ConfirmModal, LoadingPlaceholder, ModalsController, Stack, useStyles2 } from '@grafana/ui';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { VariableHideSelect } from 'app/features/dashboard-scene/settings/variables/components/VariableHideSelect';
 import { VariableLegend } from 'app/features/dashboard-scene/settings/variables/components/VariableLegend';
 import { VariableTextAreaField } from 'app/features/dashboard-scene/settings/variables/components/VariableTextAreaField';
 import { VariableTextField } from 'app/features/dashboard-scene/settings/variables/components/VariableTextField';
 import { VariableValuesPreview } from 'app/features/dashboard-scene/settings/variables/components/VariableValuesPreview';
+import { ALL_VARIABLE_VALUE } from 'app/features/variables/constants';
 import { VariableNameConstraints } from 'app/features/variables/editor/types';
 
 import { VariableTypeSelect } from './components/VariableTypeSelect';
@@ -75,6 +77,24 @@ export function VariableEditorForm({ variable, onTypeChange, onGoBack, onDelete 
     hideModal();
   };
 
+  // BMC code: support for bhd-ar-all-values feature
+  const getOptionsWithOmit = (variable: any) => {
+    const options = variable.getOptionsForSelect(false);
+    const { query, includeAll, discardForAll } = variable.useState();
+
+    if (includeAll) {
+      return options.map((opt: { value: string; label: string }) =>
+        opt.value === ALL_VARIABLE_VALUE &&
+        (query?.startsWith?.('remedy') || query?.sourceType === 'remedy') &&
+        discardForAll === true
+          ? { ...opt, label: 'Omit' }
+          : opt
+      );
+    }
+    return options;
+  };
+  // BMC code: end
+
   return (
     <form
       aria-label={t('dashboard-scene.variable-editor-form.aria-label-variable-editor-form', 'Variable editor form')}
@@ -123,7 +143,13 @@ export function VariableEditorForm({ variable, onTypeChange, onGoBack, onDelete 
 
       {EditorToRender && <EditorToRender variable={variable} onRunQuery={onRunQuery} />}
 
-      {isHasVariableOptions && <VariableValuesPreview options={variable.getOptionsForSelect(false)} />}
+      {/* BMC code: support for bhd-ar-all-values */}
+      {isHasVariableOptions &&
+        (getFeatureStatus('bhd-ar-all-values-v2') ? (
+          <VariableValuesPreview options={getOptionsWithOmit(variable)} />
+        ) : (
+          <VariableValuesPreview options={variable.getOptionsForSelect(false)} />
+        ))}
 
       <div className={styles.buttonContainer}>
         <Stack gap={2}>

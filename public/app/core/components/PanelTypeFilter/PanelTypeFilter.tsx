@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { GrafanaTheme2, PanelPluginMeta, SelectableValue } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
-import { Icon, Button, MultiSelect, useStyles2 } from '@grafana/ui';
+import { Button, Icon, MultiSelect, useStyles2 } from '@grafana/ui';
 import { getAllPanelPluginMeta } from 'app/features/panel/state/util';
 
 export interface Props {

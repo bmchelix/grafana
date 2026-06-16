@@ -2,10 +2,10 @@ import { css } from '@emotion/css';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom-v5-compat';
 
-import { SelectableValue, GrafanaTheme2, PluginType } from '@grafana/data';
+import { GrafanaTheme2, PluginType, SelectableValue } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
 import { locationSearchToObject } from '@grafana/runtime';
-import { Select, RadioButtonGroup, useStyles2, Tooltip, Field, TextLink } from '@grafana/ui';
+import { Field, RadioButtonGroup, Select, TextLink, Tooltip, useStyles2 } from '@grafana/ui';
 import { Page } from 'app/core/components/Page/Page';
 import { getNavModel } from 'app/core/selectors/navModel';
 import { AdvisorRedirectNotice } from 'app/features/connections/components/AdvisorRedirectNotice/AdvisorRedirectNotice';
@@ -78,8 +78,9 @@ export default function Browse() {
 
   const subTitle = (
     <div>
-      <Trans i18nKey="plugins.browse.subtitle">
-        Extend the Grafana experience with panel plugins and apps. To find more data sources go to{' '}
+      <Trans i18nKey="bmcgrafana.plugins.browse.subtitle">
+        {/* BMC Code: Next Inline */}
+        Extend the Helix Dashboards experience with panel plugins and apps. To find more data sources go to{' '}
         <TextLink href={`${CONNECTIONS_ROUTES.AddNewConnection}?cat=data-source`}>Connections</TextLink>.
       </Trans>
     </div>

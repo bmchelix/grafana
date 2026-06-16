@@ -27,7 +27,7 @@
     },
     "permissions": {
       "add-label": "Berechtigung hinzufügen",
-      "loading": "",
+      "loading": "Berechtigungen werden geladen...",
       "no-permissions": "Keine Berechtigungen vorhanden",
       "permissions-change-warning": "Dadurch werden die Berechtigungen für diesen Ordner und alle seine Unterordner geändert. Insgesamt betrifft dies Folgendes:",
       "role": "Rolle",
@@ -108,7 +108,7 @@
       "dismiss": "Schließen",
       "heading": "Enterprise-Authentifizierung",
       "learn-more-link": "Mehr erfahren",
-      "text": ""
+      "text": "Verwalten Sie Benutzer, Teams und Berechtigungen automatisch mit <strong>SAML</strong>, <strong>SCIM</strong>, <strong>LDAP</strong> und <strong>RBAC</strong> – verfügbar in Grafana Cloud und Enterprise."
     },
     "feature-listing": {
       "title-auditing": "Auditing",
@@ -137,11 +137,11 @@
       "title": "Holen Sie sich Grafana Enterprise"
     },
     "ldap": {
-      "debug-subtitle": "",
-      "debug-title": "",
+      "debug-subtitle": "Überprüfen Sie Ihre LDAP- und Benutzerzuordnungskonfiguration.",
+      "debug-title": "LDAP-Diagnose",
       "test-mapping-heading": "Testbenutzer-Mapping",
       "test-mapping-run-button": "Ausführen",
-      "text-loading-ldap-status": ""
+      "text-loading-ldap-status": "LDAP-Status wird geladen..."
     },
     "ldap-connection-status": {
       "columns": {
@@ -209,7 +209,7 @@
       "title-delete": "Löschen"
     },
     "orgs": {
-      "delete-body": "",
+      "delete-body": "Möchten Sie '{{deleteOrgName}}' wirklich löschen?<br/><5>Alle Dashboards dieser Organisation werden entfernt!</5>",
       "id-header": "ID",
       "name-header": "Name",
       "new-org-button": "Neue Organisation"
@@ -2090,6 +2090,8 @@
         },
         "inherited": "Übernommen",
         "mute-time": "Stummgeschaltet wenn",
+        "n-instances_one": "Instanz",
+        "n-instances_other": "Instanzen",
         "timingOptions": {
           "groupInterval": {
             "description": "Legt fest, wie lange gewartet wird, bevor eine Benachrichtigung über neue Warnungen gesendet wird, die zu einer Gruppe von Warnungen hinzugefügt wurden, für die bereits eine ursprüngliche Benachrichtigung gesendet wurde.",
@@ -2103,10 +2105,10 @@
             "description": "Legt fest, wie oft Benachrichtigungen gesendet werden, wenn sich die Warnungsgruppe seit der letzten Benachrichtigung nicht geändert hat.",
             "label": "Alle <1></1> wiederholen"
           }
-        },
-        "n-instances_one": "Instanz",
-        "n-instances_other": "Instanzen"
+        }
       },
+      "n-more-policies_one": "",
+      "n-more-policies_other": "",
       "new-child": "Neue untergeordnete Richtlinie",
       "new-policy": "Neue Richtlinie hinzufügen",
       "no-matchers": "Keine Matcher",
@@ -2126,9 +2128,7 @@
         },
         "suffix": "Bitte aktualisieren Sie die Seite und versuchen Sie es erneut.",
         "title": "Benachrichtigungsrichtlinie konnte nicht hinzugefügt oder aktualisiert werden"
-      },
-      "n-more-policies_one": "",
-      "n-more-policies_other": ""
+      }
     },
     "policy": {
       "label-new-child-policy": "Neue untergeordnete Richtlinie",
@@ -2226,6 +2226,13 @@
     },
     "receiver-metadata-badge": {
       "aria-label-open-external-link": "Externen Link öffnen"
+    },
+    "receivers": {
+      "protected": {
+        "field": {
+          "description": "This field is protected and can only be edited by users with elevated permissions"
+        }
+      }
     },
     "receivers-section": {
       "button-more": "Mehr",
@@ -2329,9 +2336,9 @@
       "label-tenant-sources": "Tenant-Quellen"
     },
     "rule-details-matching-instances": {
-      "showing-count": "Angezeigt werden {{visibleItems}} von {{totalItems}} Instanzen",
       "button-show-all_one": "Alle {{totalItems}} Warninstanzen anzeigen",
-      "button-show-all_other": "Alle {{totalItems}} Warninstanzen anzeigen"
+      "button-show-all_other": "Alle {{totalItems}} Warninstanzen anzeigen",
+      "showing-count": "Angezeigt werden {{visibleItems}} von {{totalItems}} Instanzen"
     },
     "rule-editor": {
       "get-content": {
@@ -2498,16 +2505,16 @@
       "unknown-rule-type": "Unbekannter Regeltyp"
     },
     "rule-list-errors": {
+      "button-errors_one": "{{count}} Fehler",
+      "button-errors_other": "{{count}} Fehler",
       "cloud-rulessource-errors-title-errors-loading-rules": "Fehler beim Laden der Regeln",
       "failed-to-load-grafana-rules-config": "Fehler beim Laden der Regelkonfiguration in Grafana:",
       "failed-to-load-grafana-rules-state": "Fehler beim Laden des Regelstatus in Grafana:",
       "failed-to-load-rules-config": "Fehler beim Laden der Regelkonfiguration von <2>{{dataSource}}</2>",
       "failed-to-load-rules-state": "Fehler beim Laden des Regelstatus von <2>{{dataSource}}</2>",
-      "unknown-error": "Unbekannter Fehler.",
-      "button-errors_one": "{{count}} Fehler",
-      "button-errors_other": "{{count}} Fehler",
       "more-errors_one": "{{count}} weitere Fehler",
-      "more-errors_other": "{{count}} weitere Fehler"
+      "more-errors_other": "{{count}} weitere Fehler",
+      "unknown-error": "Unbekannter Fehler."
     },
     "rule-list-v1": {
       "collapse-all": "Alle einklappen",
@@ -2535,15 +2542,15 @@
       }
     },
     "rule-stats": {
+      "error_one": "{{count}} Fehler",
+      "error_other": "{{count}} Fehler",
       "firing": "{{alertingStats}} auslösen",
       "inactive": "{{normalStats}} normal",
       "nodata": "{{nodataStats}} keine Daten",
       "paused": "{{normalStats}} normal ({{pausedStats}} pausiert)",
       "pending": "{{pendingStats}} ausstehend",
       "recording": "{{recordingStats}} aufzeichnend",
-      "recovering": "{{recoveringStats}} wiederherstellen",
-      "error_one": "{{count}} Fehler",
-      "error_other": "{{count}} Fehler"
+      "recovering": "{{recoveringStats}} wiederherstellen"
     },
     "rule-time-range-label": {
       "relative": "",
@@ -3160,7 +3167,7 @@
       "no-annotations-found": "Keine Anmerkungen gefunden"
     },
     "annotation-list-item": {
-      "tooltip-created-by": ""
+      "tooltip-created-by": "Erstellt von:<br/>{{email}}"
     },
     "category-annotation-query": "Annotationsabfrage",
     "category-display": "Display",
@@ -3193,12 +3200,12 @@
     "annotation-field-mapper": {
       "annotation": "Anmerkung",
       "first-value": "Erster Wert",
-      "from": "",
+      "from": "Ab",
       "noOptionsMessage-unknown-field-names": "Unbekannte Feldnamen"
     },
     "empty-state": {
       "button-title": "Anmerkungsabfrage hinzufügen",
-      "info-box-content": "",
+      "info-box-content": "<p> Annotationen bieten eine Möglichkeit, Ereignisdaten in Ihre Diagramme zu integrieren. Sie werden als vertikale Linien und Symbole auf allen Diagramm-Panels visualisiert. Wenn Sie den Mauszeiger über ein Annotationssymbol bewegen, erhalten Sie den Ereignistext und die Tags für das Ereignis. Sie können Annotationsereignisse direkt aus Grafana hinzufügen, indem Sie STRG oder CMD gedrückt halten und auf ein Diagramm klicken (oder einen Bereich ziehen). Diese werden in Grafanas Annotationsdatenbank gespeichert. </p>",
       "info-box-content-2": "Weitere Informationen finden Sie in der <2>Anmerkungs-Dokumentation</2>.",
       "title": "Es wurden noch keine benutzerdefinierten Anmerkungsabfragen hinzugefügt"
     },
@@ -3236,7 +3243,7 @@
       "auth-settings": "Authentifizierungseinstellungen"
     },
     "auth-drawer-unconneced": {
-      "subtitle": ""
+      "subtitle": "Authentifizierungseinstellungen konfigurieren. Erfahren Sie mehr in unserer <2>Dokumentation</2>."
     },
     "auth-drawer-unconnected": {
       "advanced-auth": "Erweiterte Authentifizierung",
@@ -3270,7 +3277,7 @@
       "allowed-organizations-description": "Durch Komma oder Leerzeichen getrennte Liste der Organisationen. Der Nutzer sollte Mitglied von mindestens\neiner Organisation sein, um sich anzumelden.",
       "allowed-organizations-label": "Erlaubte Organisationen",
       "allowed-organizations-placeholder": "Geben Sie Organisationen (my-team, myteam …) ein und drücken Sie zum Hinzufügen die Eingabetaste",
-      "api-url-description": "",
+      "api-url-description": "Der Benutzerinformations-Endpunkt Ihres OAuth2-Anbieters. Die von diesem Endpunkt zurückgegebenen Informationen müssen mit <2>OpenID UserInfo</2> kompatibel sein.",
       "api-url-required": "Dieses Feld muss – sofern festgelegt – eine gültige URL sein.",
       "auth-style-description": "Es bestimmt, wie „{{ clientIDLabel }}“ und „{{ clientSecretLabel }}“ an den Oauth2-Provider gesendet werden. Die Standardeinstellung ist AutoDetect.",
       "auth-style-label": "Authentifizierungsart",
@@ -3287,7 +3294,7 @@
       "define-allowed-teams-ids-label": "Erlaubte Team-IDs festlegen",
       "display-name-description": "Wird auf der Anmeldeseite als „Anmelden mit …“ angezeigt. Hilfreich, wenn Sie mehr als einen Identitätsanbieter oder SSO-Protokolle nutzen.",
       "display-name-label": "Anzeigename",
-      "domain-hint-description": "",
+      "domain-hint-description": "Parameter zur Angabe des Realms des Benutzers im Entra ID Tenant und zur Optimierung des Anmeldevorgangs.",
       "domain-hint-label": "Domain-Hinweis",
       "domain-hint-valid-domain": "Dieses Feld muss eine gültige Domain sein.",
       "email-attribute-name-description": "Name des Keys, der für die Nutzer-E-Mail-Suche in der Attributzuordnung des OAuth2-ID-Tokens verwendet wird.",
@@ -3415,7 +3422,7 @@
     }
   },
   "auth-config-auth-config-page-unconnected": {
-    "subtitle": ""
+    "subtitle": "Verwalten Sie Ihre Authentifizierungseinstellungen und konfigurieren Sie einmaliges Anmelden. Erfahren Sie mehr in unserer <2>Dokumentation</2> ."
   },
   "bar-chart": {
     "warn": {
@@ -3514,6 +3521,1352 @@
       "label-value-color": "Wertfarbe"
     }
   },
+  "bmc": {
+    "admin": {
+      "users": {
+        "search-label": "Benutzer nach Login, E-Mail oder Name suchen"
+      }
+    },
+    "browse-dashboards": {
+      "action": {
+        "move-folder-tooltip": "Ordner können nicht verschoben werden"
+      }
+    },
+    "bulk-operations": {
+      "cancel": "Abbrechen",
+      "datsource-not-found": "Keine Datenquellen des Typs {{pluginName}} gefunden",
+      "import": {
+        "import-all-failed": "Import aller Dashboards fehlgeschlagen",
+        "no-import": "Keine Dashboards importiert"
+      },
+      "import-all": "Alle importieren",
+      "import-failed": "Folgende Dashboards konnten nicht importiert werden",
+      "import-success": "Alle Dashboards erfolgreich importiert",
+      "options": "Optionen",
+      "select-datasource": "Eine {{pluginName}} Datenquelle auswählen",
+      "set-parameters": "erforderlichen Parameter für die ausgewählten Dashboards festlegen",
+      "specify-constant": "Eine String-Konstante angeben"
+    },
+    "calc-fields": {
+      "a-z": "A-Z",
+      "aggregated": "Aggregiert",
+      "all": "Alle",
+      "clone": "Klonen",
+      "confirm-delete": "Möchten Sie das/die ausgewählte/-n berechnete/-n Feld/-er löschen",
+      "connection-error": "Verbindung mit BMC Helix ITSM nicht konfiguriert",
+      "custom": "Benutzerdefiniert",
+      "delete": "Löschen",
+      "details": "Details zu berechneten Feldern",
+      "edit": "Bearbeiten",
+      "edit-field": "Berechnetes Feld bearbeiten",
+      "eg": "Z. B.",
+      "failed": "Berechnete Felder konnten nicht abgerufen werden",
+      "failure": "Fehler",
+      "filter-by-type": "Nach Typ filtern (Standardwert: Alle)",
+      "form-name": "Formularname",
+      "is-aggregate": "Ist aggregiert",
+      "is-aggregate-description": "Aktivieren Sie diese Option, wenn Ihre Abfrage Funktionen zur Aggregation enthält.",
+      "module": "Modul",
+      "module-name": "Modulname",
+      "name": "Name",
+      "name-placeholder": "Geben Sie den Namen des berechneten Felds ein",
+      "new-field": "Neues berechnetes Feld",
+      "no-calc-fields": "Sie haben noch keine berechneten Felder erstellt.",
+      "not-found": "Es wurden keine berechneten Felder gefunden, die mit Ihrer Abfrage übereinstimmen.",
+      "ootb": "Standardmäßig",
+      "query-info": "Die Abfrage muss einspaltig sein",
+      "query-not-validated": "Abfrage nicht validiert",
+      "save": "Speichern",
+      "search-by-name": "Berechnete Felder nach Namen suchen",
+      "search-items": "Elemente suchen",
+      "select-form": "Formular auswählen",
+      "select-module": "Modul auswählen",
+      "sort-asc": "Alphabetisch (A–Z)",
+      "sort-asc-descripton": "Ergebnisse in alphabetisch aufsteigender Reihenfolge sortieren",
+      "sort-dsc": "Alphabetisch (Z–A)",
+      "sort-dsc-descripton": "Ergebnisse in alphabetisch absteigender Reihenfolge sortieren",
+      "sort-options": "Sortieroptionen",
+      "sort-placeholder": "Sortierung (Standard {{label}})",
+      "sql-label": "SQL",
+      "sql-query": "SQL-Abfrage",
+      "subtitle": "Berechnete Felder für ITSM-Service erstellen und verwalten",
+      "title": "Berechnete Felder",
+      "unknown-failure": "Unbekannter Fehler",
+      "update": "Aktualisieren",
+      "validate": "Validieren",
+      "validation-success": "Abfrage erfolgreich validiert"
+    },
+    "common": {
+      "cancel": "Abbrechen",
+      "dashboards": "Dashboards",
+      "delete": "Löschen",
+      "download": "Herunterladen",
+      "edit": "Bearbeiten",
+      "loading": "Ladevorgang...",
+      "name": "Name",
+      "save": "Speichern",
+      "type": "Typ"
+    },
+    "content-localization": "Ungültiger Sprachcode: {{langCode}}",
+    "dashboard": {
+      "toolbar": {
+        "manage-reports": "Geplante Berichte verwalten",
+        "reset-filters": "Filter zurücksetzen",
+        "reset-filters-failure": "Filterwerte konnten nicht zurückgesetzt werden.",
+        "save-filters": "Gespeicherte Filter",
+        "save-filters-failure": "Filterwerte konnten nicht gespeichert werden.",
+        "save-filters-success": "Filterwerte erfolgreich gespeichert."
+      }
+    },
+    "dashboard-import": {
+      "import-text": "Importieren",
+      "overwrite": "Überschreiben",
+      "panel-import": "Bereichsimport",
+      "panel-import-alert": "Der Importvorgang hat einen {{vqb}}-Bereich. Exportieren Sie erneut aus der gewünschten Umgebung; andernfalls sind zum Anzeigen der Auswahl manuelle Eingriffe nötig.",
+      "sub-title": "Dashboard aus Datei oder Dashboard-JSON importieren"
+    },
+    "dashboard-scene": {
+      "get-editable-variables": {
+        "description": {
+          "optimize-variable-description": "Definieren Sie eine Optimierungsvariable, bei der Benutzer Optimierungsabfragetypen auswählen können."
+        },
+        "name": {
+          "datepicker": "Datumsbereich",
+          "optimizepicker": "Optimierungsvariable"
+        }
+      },
+      "text": {
+        "discard-changes-to-dashboard": "Sie haben nicht gespeicherte Änderungen an diesem Dashboard. Sind Sie sicher, dass Sie diese verwerfen möchten?"
+      }
+    },
+    "dashboard-settings": {
+      "general": {
+        "multilingual-pdf": "Mehrsprachiges PDF",
+        "multilingual-pdf-description": "Aktivieren Sie die Erstellung mehrsprachiger PDFs für PDF-Berichte mit einfachem Layout"
+      }
+    },
+    "date-picker": {
+      "description": "Eine Datumsbereichvariable definieren, mit der Benutzer einen beliebigen Datumsbereich auswählen können",
+      "name": "Datumsbereich"
+    },
+    "error-page": {
+      "bmc-support": "BMC Support",
+      "description": "Diese Seite wurde möglicherweise entfernt, umbenannt oder ist vorübergehend nicht verfügbar.",
+      "go-back": "Gehen Sie zurück zur",
+      "home-page": "Startseite",
+      "or-contact": "oder kontaktieren Sie",
+      "title": "Hoppla... wir konnten diese Seite nicht laden."
+    },
+    "explore": {
+      "total-result-count-aria-live_one": "{{ count }} Abfrage geladen",
+      "total-result-count-aria-live_other": "{{ count }} Abfragen geladen"
+    },
+    "export": {
+      "csvdelimiter": "Trennzeichen",
+      "fail": "Export fehlgeschlagen:",
+      "failed-dashboards": "Fehlgeschlagene Dashboards",
+      "field-enclosure": "Feldgehäuse",
+      "generation-failed": "Bericht konnte nicht erstellt werden, versuchen Sie es später erneut",
+      "grid": "Raster",
+      "hide-header": "Kopfzeile ausblenden",
+      "landscape": "Querformat",
+      "layout": "Layout",
+      "newline": "Neues Zeilenformat",
+      "orientation": "Ausrichtung",
+      "portrait": "Hochformat",
+      "reduce-selection": "Reduzieren Sie die ausgewählten Variablenwerte für {{variableQuery}} und versuchen Sie es später erneut",
+      "save-as": "{{target}} als {{type}} speichern",
+      "select-report-type-aria": "Berichtstyp auswählen",
+      "select-report-type-placeholder": "Wählen Sie einen Berichtstyp aus",
+      "simple": "Einfach",
+      "success": "Bericht erfolgreich erstellt",
+      "successful": "Export war erfolgreich:",
+      "tableScaling": "Tabellenskalierung",
+      "type": "Typ",
+      "view": "Anzeigen"
+    },
+    "features-list": {
+      "date-function-resolution-for-service-management": "Datumsfunktionslösung für Service Management",
+      "enable-insight-finder": "Insight Finder aktivieren",
+      "enable-ootb-views-for-visual-query-builder": "OOTB-Ansichten für Visual Query Builder aktivieren",
+      "export-complete-table-in-pdf": "Gesamte Tabelle in PDF exportieren",
+      "skip-ootb-dashboards-during-upgrade": "OOTB-Dashboards während Upgrade überspringen",
+      "skip-ootb-dashboards-during-upgrade-confirm-dialog": {
+        "confirm-button": "Aktivieren",
+        "desc": "Löschen Sie die nicht erforderlichen Ordner der standardmäßigen Dashboards, bevor Sie diese Funktion aktivieren",
+        "title": "Funktion umschalten"
+      },
+      "snapshot": "Snapshot"
+    },
+    "inspector": {
+      "stats": {
+        "statistics": "Statistiken",
+        "value": "Wert"
+      }
+    },
+    "key-selector": {
+      "no-results": "Keine übereinstimmenden Schlüssel gefunden"
+    },
+    "load-blank-dashoard": {
+      "loading-label": "Ladevorgang...",
+      "no-data": "Keine Daten",
+      "refresh-label": "Dashboard aktualisieren, um Daten abzurufen"
+    },
+    "manage-dashboards": {
+      "drop-click": "Hier per Drag-and-Drop ablegen oder zum Durchsuchen klicken",
+      "import-failed": "Import fehlgeschlagen",
+      "serialization-failed": "JSON -> JS-Serialisierung fehlgeschlagen",
+      "upload-json": "Dashboard-JSON-Datei(en) hochladen"
+    },
+    "manage-locales": {
+      "cancel": "Abbrechen",
+      "dashboards": {
+        "add": "Hinzufügen",
+        "add-key": "Neuen Schlüssel hinzufügen",
+        "dashboard-name": "Dashboard-Name",
+        "enter-key": "Schlüssel eingeben",
+        "enter-value": "Wert eingeben",
+        "key-text": "Schlüssel",
+        "key-validation": "Nur alphanumerische Zeichen zulässig",
+        "no-empty-key": "Angabe für Schlüssel erforderlich",
+        "validation": {
+          "default-value-required": "Standardwert ist erforderlich",
+          "key-required": "Schlüssel ist erforderlich."
+        },
+        "value-text": "Wert"
+      },
+      "export": "Exportieren",
+      "folders": {
+        "folder-title": "Foldertitel"
+      },
+      "global": {
+        "subtitle": "Erstellung und Verwaltung globaler Schlüssel für die Lokalisierung",
+        "title": "Lokalisierungsmanagement"
+      },
+      "global-keys-text": "Globale Schlüssel",
+      "import": "Importieren",
+      "local-keys-text": "Lokale Schlüssel",
+      "localization-title": "Lokalisierung",
+      "new-key": "Neuer Schlüssel",
+      "save": "Speichern",
+      "search-keys": "Schlüssel suchen …",
+      "title": "Gebietsschemata verwalten"
+    },
+    "nav": {
+      "apps": {
+        "insight-finder": {
+          "configure-views-subtitle": "Ihre Ansichten anzeigen und verwalten",
+          "configure-views-title": "Insight Finder Ansichten konfigurieren",
+          "home": "Insight Finder",
+          "settings-title": "Insight Finder-Einstellungen"
+        },
+        "reports": {
+          "history": "Historie",
+          "manage-ownership": "Besitzrechte verwalten",
+          "settings": "Einstellungen"
+        }
+      },
+      "reports-scheduler": "Berichtsplanung",
+      "rms": {
+        "subtitle": "Eine Anwendung, um Ansichten für Visual Query Builder zu erstellen oder zu ändern",
+        "title": "Berichterstattung für Metadata Studio"
+      },
+      "roles": {
+        "subtitle": "Organisationsübergreifend Rollen verwalten",
+        "title": "Rollen"
+      }
+    },
+    "notification": {
+      "error": {
+        "bhd-00004": "Berechnete Felder konnten nicht abgerufen werden",
+        "bhd-00005": "Berechnetes Feld konnte nicht erstellt werden",
+        "bhd-00006": "Berechnetes Feld konnte nicht gelöscht werden",
+        "bhd-00007": "Berechnetes Feld konnte nicht bearbeitet werden",
+        "bhd-00008": "Dashboards konnten nicht aktualisiert werden",
+        "bhd-00009": "Feld konnte nicht aus Dashboard(s) gelöscht werden",
+        "bhd-00010": "Ungültige Anforderungsnutzlast beim Erstellen des berechneten Feldes",
+        "bhd-00011": "Ungültige Anforderungsnutzlast beim Löschen des berechneten Feldes",
+        "bhd-00012": "Ungültige Anforderungsnutzlast beim Bearbeiten des berechneten Feldes",
+        "bhd-00013": "Der Name des berechneten Feldes ist bereits vergeben. Geben Sie einen anderen Namen an.",
+        "bhd-00102": "Ungültige Anforderungsdaten beim Einstellen der IMS-Benutzerinformationen",
+        "bhd-00103": "Ungültige Anforderungsdaten beim Aktualisieren der Benutzereinstellungen",
+        "bhd-00104": "Ungültige Anforderungsdaten beim Aktualisieren der Organisationseinstellungen",
+        "bhd-00105": "Parse-Text fehlgeschlagen",
+        "bhd-00106": "Ungültiges Theme beim Aktualisieren der Einstellungen",
+        "bhd-00107": "Dashboard nicht gefunden",
+        "bhd-00108": "Interner Serverfehler",
+        "bhd-00109": "Einstellungen konnten nicht abgerufen werden",
+        "bhd-00110": "Einstellungen konnten nicht gespeichert werden",
+        "bhd-00111": "Benutzereinstellungen konnten nicht aktualisiert werden",
+        "bhd-00201": "ID ist ungültig",
+        "bhd-00202": "Ungültige Anforderungsdaten beim Erstellen des Ordners",
+        "bhd-00203": "Ungültige Anforderungsdaten beim Aktualisieren des Ordners",
+        "bhd-00204": "Ungültige Anforderungsdaten beim Verschieben des Ordners",
+        "bhd-00205": "Ungültige Anforderungsdaten beim Aktualisieren der Ordnerberechtigungen",
+        "bhd-00206": "Team- und Benutzerberechtigungen dürfen keine verknüpfte Rolle haben",
+        "bhd-00207": "Berechtigungen können nicht einen Benutzer und ein Team haben",
+        "bhd-00208": "Ordnertitel darf nicht leer sein",
+        "bhd-00209": "Dashboard darf nicht in einen Ordner geändert werden",
+        "bhd-00210": "UID enthält unzulässige Zeichen",
+        "bhd-00211": "UID ist zu lang, max. 40 Zeichen",
+        "bhd-00212": "Ordner konnte nicht gelöscht werden, weil er aktive Bibliothekselemente enthält",
+        "bhd-00213": "Zugriff verweigert",
+        "bhd-00214": "Damit Sie diesen Service nutzen können, müssen Sie die Ordnerverschachtelung aktivieren.",
+        "bhd-00215": "Ordner nicht gefunden",
+        "bhd-00216": "Ein Ordner mit diesem Namen ist bereits am aktuellen Speicherort vorhanden",
+        "bhd-00217": "Ein Ordner/Dashboard mit dieser UID ist bereits vorhanden",
+        "bhd-00218": "Der Ordner wurde von einer anderen Person geändert",
+        "bhd-00219": "Ordner konnte nicht verschoben werden",
+        "bhd-00220": "API-Fehler für Ordner",
+        "bhd-00221": "Ordnerberechtigungen konnten nicht abgerufen werden",
+        "bhd-00222": "Fehler beim Prüfen der Ordnerberechtigungen",
+        "bhd-00223": "Berechtigung konnte nicht erstellt werden",
+        "bhd-00301": "Verwenden Sie den Ordnerendpunkt, um Ordner zu löschen.",
+        "bhd-00302": "Dashboard-ID ist ungültig",
+        "bhd-00303": "Ungültige Anforderungsdaten beim Wiederherstellen der Dashboard-Version",
+        "bhd-00304": "Ungültige Anforderungsdaten beim Wiederherstellen des gelöschten Dashboards",
+        "bhd-00305": "Ungültige Anforderungsdaten beim Berechnen der Dashboard-Differenz",
+        "bhd-00306": "Ungültige Anforderungsdaten beim Erstellen oder Aktualisieren des Dashboards",
+        "bhd-00307": "Verwenden Sie den Ordnerendpunkt, um Ordner zu speichern.",
+        "bhd-00308": "Bereitgestelltes Dashboard kann nicht gelöscht werden",
+        "bhd-00309": "Kontingent erreicht",
+        "bhd-00310": "Zugriff auf dieses Dashboard verweigert",
+        "bhd-00311": "Dashboard nicht gefunden",
+        "bhd-00312": "Ordner nicht gefunden",
+        "bhd-00313": "Dashboard-Version nicht gefunden",
+        "bhd-00314": "Fehler beim Abrufen öffentlicher Dashboards",
+        "bhd-00315": "Fehler beim Laden des Dashboards, Dashboard-Daten sind ungültig",
+        "bhd-00316": "Fehler beim Prüfen, ob das Dashboard vom Benutzer mit einem Stern gekennzeichnet wurde",
+        "bhd-00317": "Dashboard-Ordner konnte nicht gelesen werden",
+        "bhd-00318": "Fehler beim Prüfen, ob das Dashboard bereitgestellt ist",
+        "bhd-00319": "Dashboard konnte nicht gelöscht werden",
+        "bhd-00320": "Kontingent konnte nicht abgerufen werden",
+        "bhd-00321": "Differenz konnte nicht berechnet werden",
+        "bhd-00322": "Fehler beim Verbinden der Bibliotheksbereiche",
+        "bhd-00323": "Fehler beim Aktualisieren der Berechtigungen",
+        "bhd-00324": "Fehler beim Prüfen der Dashboard-Berechtigungen",
+        "bhd-00325": "Dashboard-Berechtigungen konnten nicht abgerufen werden",
+        "bhd-00326": "Einstellungen konnten nicht abgerufen werden",
+        "bhd-00327": "Dashboard auf der Startseite konnte nicht geladen werden",
+        "bhd-00328": "Dashboard konnte nicht wiederhergestellt werden",
+        "bhd-00331": "Ungültige Anforderungsdaten beim Aktualisieren der Dashboard-Berechtigungen",
+        "bhd-00401": "Ungültige Anforderungsdaten beim Erstellen des neuen Bibliothekselements",
+        "bhd-00402": "Ungültige Anforderungsdaten beim Aktualisieren des Bibliothekselements",
+        "bhd-00403": "Unzureichende Berechtigungen für das Abrufen der Bibliotheksbereiche",
+        "bhd-00404": "Ordner konnte nicht abgerufen werden",
+        "bhd-00405": "Bibliothekselement konnte nicht erstellt werden",
+        "bhd-00406": "Bibliothekselement konnte nicht gelöscht werden",
+        "bhd-00407": "Berechtigungen konnten nicht evaluiert werden",
+        "bhd-00408": "Bibliothekselemente konnten nicht abgerufen werden",
+        "bhd-00409": "Bibliothekselement konnte nicht abgerufen werden",
+        "bhd-00410": "Berechtigungen für Bibliotheksbereich konnten nicht evaluiert werden",
+        "bhd-00411": "Verbindungen konnten nicht abgerufen werden",
+        "bhd-00412": "Bibliothekselement konnte nicht aktualisiert werden",
+        "bhd-00414": "Bibliothekselement mit diesem Namen oder dieser UID ist bereits vorhanden",
+        "bhd-00415": "Bibliothekselement konnte nicht gefunden werden",
+        "bhd-00416": "Bibliothekselement-Verbindung konnte nicht gefunden werden",
+        "bhd-00417": "Ordner nicht gefunden",
+        "bhd-00418": "Bibliothekselement ist von einer anderen Person geändert worden",
+        "bhd-00419": "Zugriff auf Ordner verweigert",
+        "bhd-00420": "Bibliothekselement hat Verbindungen",
+        "bhd-00421": "UID enthält unzulässige Zeichen",
+        "bhd-00422": "UID ist zu lang, max. 40 Zeichen",
+        "bhd-00501": "OrgID-Diskrepanz",
+        "bhd-00502": "Zugriff auf diesen Snapshot verweigert",
+        "bhd-00503": "Leerer Snapshot-Schlüssel",
+        "bhd-00504": "Dashboard-Snapshot nicht gefunden",
+        "bhd-00505": "Snapshot nicht gefunden",
+        "bhd-00506": "Dashboard-Snapshot konnte nicht abgerufen werden",
+        "bhd-00507": "Dashboard-Snapshot konnte nicht gelöscht werden",
+        "bhd-00508": "Externes Dashboard konnte nicht gelöscht werden",
+        "bhd-00509": "Fehler beim Prüfen der Berechtigungen für den Snapshot",
+        "bhd-00510": "Suche fehlgeschlagen",
+        "bhd-00601": "Nicht gefunden",
+        "bhd-00602": "Interner Serverfehler",
+        "bhd-00604": "Nicht autorisiert – altes Token ist leer",
+        "bhd-00605": "Authentifizierung fehlgeschlagen",
+        "bhd-00606": "Nicht autorisiert",
+        "bhd-00701": "userID ist ungültig",
+        "bhd-00702": "Organisationsname vergeben",
+        "bhd-00703": "ungültige Anforderungsdaten",
+        "bhd-00704": "ungültige Anforderungsdaten beim Aktualisieren der aktuellen Organisation",
+        "bhd-00705": "ungültige Anforderungsdaten beim Aktualisieren der Adresse der aktuellen Organisation",
+        "bhd-00706": "ungültige Anforderungsdaten beim Hinzufügen eines neuen Benutzers zur aktuellen Organisation",
+        "bhd-00707": "ungültige Anforderungsdaten beim Aktualisieren der Benutzer in der Organisation",
+        "bhd-00708": "ungültige Anforderungsdaten beim Aktualisieren der Organisation",
+        "bhd-00709": "ungültige Anforderungsdaten beim Aktualisieren der Adresse der Organisation",
+        "bhd-00710": "ungültige Anforderungsdaten beim Erstellen der Organisation",
+        "bhd-00711": "ungültige Anforderungsdaten beim Aktualisieren des jeweiligen Benutzers",
+        "bhd-00712": "ungültige Anforderungsdaten beim Hinzufügen der Organisationseinladung",
+        "bhd-00713": "ungültige Anforderungsdaten beim Hinzufügen der benutzerdefinierten Konfiguration",
+        "bhd-00714": "Ungültige Rolle angegeben",
+        "bhd-00715": "orgId ist ungültig",
+        "bhd-00716": "Rolle kann nicht geändert werden, sodass kein Organisationsadministrator übrig ist",
+        "bhd-00717": "Letzter Organisationsadministrator kann nicht entfernt werden",
+        "bhd-00718": "Organisation für aktuellen Benutzer kann nicht gelöscht werden",
+        "bhd-00719": "Externer Benutzer kann nicht eingeladen werden, wenn die Anmeldung deaktiviert ist.",
+        "bhd-00720": "Ungültige URL",
+        "bhd-00721": "Kann keine Rolle höher als der Rolle des Benutzers zuweisen",
+        "bhd-00722": "Nur Benutzer können Organisationen erstellen",
+        "bhd-00723": "Berechtigung abgelehnt: das Hinzufügen eines bestehenden Benutzers zu dieser Organisation ist nicht erlaubt",
+        "bhd-00724": "Organisation nicht gefunden",
+        "bhd-00725": "Benutzer nicht gefunden",
+        "bhd-00726": "Löschen der Organisation fehlgeschlagen. ID nicht gefunden",
+        "bhd-00727": "Benutzer ist bereits Mitglied dieser Organisation",
+        "bhd-00728": "Abrufen der Organisation fehlgeschlagen",
+        "bhd-00729": "Kontingent konnte nicht abgerufen werden",
+        "bhd-00730": "Aktualisieren der Organisation fehlgeschlagen",
+        "bhd-00731": "Aktualisieren der Adresse der Organisation fehlgeschlagen",
+        "bhd-00732": "Abrufen des Benutzers für die aktuelle Organisation fehlgeschlagen",
+        "bhd-00733": "Benutzer konnte nicht zur Organisation hinzugefügt werden",
+        "bhd-00734": "Abrufen des Benutzers für die Organisation fehlgeschlagen",
+        "bhd-00735": "Abrufen der Info zur Benutzerauthentifizierung fehlgeschlagen",
+        "bhd-00736": "Aktualisierung des Organisationsbenutzers fehlgeschlagen",
+        "bhd-00737": "Entfernen des Benutzers aus Organisation fehlgeschlagen",
+        "bhd-00738": "Aktualisieren der Organisationskontingente fehlgeschlagen",
+        "bhd-00739": "Suche von Organisationen fehlgeschlagen",
+        "bhd-00740": "Parsen der Benutzer-ID fehlgeschlagen",
+        "bhd-00741": "Abrufen der Einladungen von db fehlgeschlagen",
+        "bhd-00742": "Abfrage von db für bestehende Benutzerprüfung fehlgeschlagen",
+        "bhd-00743": "Berechtigungen konnten nicht evaluiert werden",
+        "bhd-00744": "Zufälliger String konnte nicht generiert werden",
+        "bhd-00745": "Speichern der Einladung zur Datenbank fehlgeschlagen",
+        "bhd-00746": "Senden der E-Mail-Einladung fehlgeschlagen",
+        "bhd-00747": "Aktualisieren der Einladung mit E-Mail-Absenderinfo fehlgeschlagen",
+        "bhd-00748": "Aktualisieren des Einladungsstatus fehlgeschlagen",
+        "bhd-00761": "Fehler beim Versuch der Erstellung eines Organisationsbenutzers",
+        "bhd-00762": "Senden der E-Mail invited_to_org fehlgeschlagen",
+        "bhd-00763": "SMTP nicht konfiguriert, prüfen Sie den [smtp] Abschnitt Ihrer grafana.ini-Konfigurationsdatei",
+        "bhd-00764": "Erstellen der Organisation fehlgeschlagen",
+        "bhd-00765": "ungültige Anforderungsdaten beim Hinzufügen eines neuen Benutzers zur aktuellen Organisation",
+        "bhd-00801": "'action' und 'actionPrefix' schließen sich gegenseitig aus",
+        "bhd-00802": "mindestens eine Suchoption muss angegeben werden",
+        "bhd-00803": "ungültige namespacedId",
+        "bhd-00804": "Berechtigungen für Organisationsbenutzer konnten nicht abgerufen werden",
+        "bhd-00805": "Abrufen der Berechtigungen fehlgeschlagen",
+        "bhd-00806": "Ungültige Anforderungsdaten: ",
+        "bhd-00807": "ungültige Anforderungsdaten beim Festlegen der Ressourcenberechtigungen für einen Benutzer",
+        "bhd-00808": "ungültige Anforderungsdaten beim Festlegen der Ressourcenberechtigungen für ein Team",
+        "bhd-00809": "ungültige Anforderungsdaten beim Festlegen der Ressourcenberechtigungen für eine integrierte Rolle",
+        "bhd-00901": "ungültige Anforderungsdaten beim Erstellen einer Datenquelle",
+        "bhd-00902": "ungültige Anforderungsdaten beim Aktualisieren einer bestehenden Datenquelle über die sequentielle ID",
+        "bhd-00903": "ungültige Anforderungsdaten beim Aktualisieren einer bestehenden Datenquelle",
+        "bhd-00904": "Hinzufügen der Datenquelle fehlgeschlagen",
+        "bhd-00905": "ID ist ungültig",
+        "bhd-00906": "Gültige Datenquellen-ID fehlt",
+        "bhd-00907": "Validierungsfehler, ungültige URL",
+        "bhd-00908": "UID ist ungültig",
+        "bhd-00909": "Datenquellen-ID fehlt",
+        "bhd-00910": "Gültiger Datenquellen-Name fehlt",
+        "bhd-00911": "Datenquellen-ID fehlt",
+        "bhd-00912": "Datenquelle nicht gefunden",
+        "bhd-00913": "Sie haben keine ausreichende Berechtigung zum Aktualisieren der Datenquelle",
+        "bhd-00914": "Zum Ausführen dieser Aktion benötigen Sie zusätzliche Berechtigungen. Erforderliche Berechtigungen: datasources.permissions:write",
+        "bhd-00915": "Schreibgeschützte Datenquelle kann nicht aktualisiert werden",
+        "bhd-00916": "Schreibgeschützte Datenquelle kann nicht gelöscht werden",
+        "bhd-00917": "Sie haben keine ausreichende Berechtigung zum Löschen der Datenquelle",
+        "bhd-00918": "Zugriff auf Datenquelle verweigert",
+        "bhd-00919": "Zugriff verweigert",
+        "bhd-00920": "Datenquelle wurde bereits von jemand anderem aktualisiert. Bitte neu laden und erneut versuchen",
+        "bhd-00921": "Abrufen der Datenquellen fehlgeschlagen",
+        "bhd-00922": "Abrufen der Datenquelle fehlgeschlagen",
+        "bhd-00923": "Hinzufügen der Datenquelle fehlgeschlagen: ",
+        "bhd-00924": "Löschen der Datenquelle fehlgeschlagen: ",
+        "bhd-00925": "Hinzufügen der Datenquelle fehlgeschlagen",
+        "bhd-00926": "Aktualisieren der Datenquelle fehlgeschlagen",
+        "bhd-00927": "Aktualisieren der Datenquelle fehlgeschlagen: ",
+        "bhd-00928": "Löschen der Datenquelle fehlgeschlagen",
+        "bhd-00929": "Datenquellen-Metadaten konnten nicht geladen werden",
+        "bhd-00930": "Plugin-Kontext konnte nicht abgerufen werden",
+        "bhd-00931": "Plugin-Anforderung fehlgeschlagen",
+        "bhd-00932": "Auflösen der Anordnung der detaillierten Antwort vom Backend-Plugin fehlgeschlagen",
+        "bhd-00936": "ungültige Anforderungsdaten beim Hinzufügen der Korrelation",
+        "bhd-00937": "Mindestens eine Bezeichnung, Beschreibung oder Konfiguration ist erforderlich",
+        "bhd-00938": "ungültige Anforderungsdaten beim Aktualisieren der Korrelation",
+        "bhd-00939": "Korrelation kann nur über Provisioning bearbeitet werden",
+        "bhd-00940": "Keine Korrelation gefunden",
+        "bhd-00941": "Quellen-Datenquelle nicht gefunden",
+        "bhd-00942": "Korrelation nicht gefunden",
+        "bhd-00943": "Abrufen der Korrelationen fehlgeschlagen",
+        "bhd-00944": "Hinzufügen der Korrelation fehlgeschlagen",
+        "bhd-00945": "Abrufen der Korrelation fehlgeschlagen",
+        "bhd-00946": "Löschen der Korrelation fehlgeschlagen",
+        "bhd-00947": "Aktualisieren der Korrelation fehlgeschlagen",
+        "bhd-01001": "ungültige Anforderungsdaten beim Hinzufügen einer neuen Abfrage zum Abfrageverlauf",
+        "bhd-01002": "ungültige Anforderungsdaten beim Aktualisieren des Kommentars für die Abfrage im Abfrageverlauf",
+        "bhd-01003": "Abfrage in Abfrageverlauf nicht gefunden",
+        "bhd-01004": "Erstellen des Abfrageverlaufs fehlgeschlagen",
+        "bhd-01005": "Abrufen des Abfrageverlaufs fehlgeschlagen",
+        "bhd-01006": "Löschen der Abfrage aus Abfrageverlauf fehlgeschlagen",
+        "bhd-01007": "Vergeben eines Sterns für die Abfrage im Abfrageverlauf fehlgeschlagen",
+        "bhd-01008": "Löschen eines Sterns für die Abfrage im Abfrageverlauf fehlgeschlagen",
+        "bhd-01009": "Aktualisieren des Kommentars der Abfrage in Abfrageverlauf fehlgeschlagen",
+        "bhd-01011": "Löschen des Abfrageverlaufs fehlgeschlagen",
+        "bhd-01012": "Vergeben eines Sterns für den Abfrageverlauf fehlgeschlagen",
+        "bhd-01013": "Löschen eines Sterns für den Abfrageverlauf fehlgeschlagen",
+        "bhd-01014": "Aktualisieren des Kommentars der Abfrage in Abfrageverlauf fehlgeschlagen",
+        "bhd-01101": "ungültige Anforderungsdaten beim Installieren des Plugins",
+        "bhd-01102": "ungültige Anforderungsdaten beim Aktualisieren der Plugin-Einstellung",
+        "bhd-01103": "Zugriff verweigert",
+        "bhd-01104": "Kern-Plugin kann nicht installiert oder geändert werden",
+        "bhd-01105": "Ein Kern-Plugin kann nicht deinstalliert werden",
+        "bhd-01106": "Plugin nicht gefunden, kein installiertes Plugin mit dieser ID",
+        "bhd-01107": "Plugin nicht installiert",
+        "bhd-01108": "Die Datei ist nicht vorhanden",
+        "bhd-01109": "Plugin bereits installiert",
+        "bhd-01110": "Abrufen der Liste von Plugins fehlgeschlagen",
+        "bhd-01111": "Konnte Markdown-Datei nicht abrufen",
+        "bhd-01112": "Abrufen der Plugin-Einstellungen fehlgeschlagen",
+        "bhd-01113": "Auflösen der Anordnung der detaillierten Antwort vom Backend-Plugin fehlgeschlagen",
+        "bhd-01114": "Installation des Plugins fehlgeschlagen",
+        "bhd-01115": "Deinstallation des Plugins fehlgeschlagen",
+        "bhd-01116": "Abrufen der Plugin-Dashboards fehlgeschlagen",
+        "bhd-01117": "Aktualisieren der Plugin-Einstellung fehlgeschlagen",
+        "bhd-01201": "ungültige Anforderungsdaten beim Löschen mehrerer Anmerkungen",
+        "bhd-01202": "ungültige Anforderungsdaten beim Erstellen der Anmerkung",
+        "bhd-01203": "ungültige Anforderungsdaten beim Aktualisieren der Anmerkung, ungültige Anforderungsdaten beim Aktualisieren der Anmerkung",
+        "bhd-01204": "ungültige Anforderungsdaten beim Erstellen der Anmerkung im Graphite-Format",
+        "bhd-01205": "annotationId ist ungültig",
+        "bhd-01206": "Speichern der Graphite-Anmerkung fehlgeschlagen",
+        "bhd-01207": "Ungültige Dashboard-UID in Anmerkungsanforderung",
+        "bhd-01208": "Zugriff abgelehnt für eine Massenlöschung von Anmerkungen",
+        "bhd-01209": "Zugriff abgelehnt für das Speichern der Anmerkung",
+        "bhd-01210": "Anmerkung nicht gefunden",
+        "bhd-01211": "Fehler beim Prüfen der Anmerkungsberechtigungen",
+        "bhd-01212": "Löschen der Anmerkungen fehlgeschlagen",
+        "bhd-01213": "Löschen der Anmerkung fehlgeschlagen",
+        "bhd-01214": "Speichern der Anmerkung fehlgeschlagen",
+        "bhd-01215": "Aktualisieren der Anmerkung fehlgeschlagen",
+        "bhd-01216": "Anmerkungskennzeichnungen konnten nicht gefunden werden",
+        "bhd-01217": "Anmerkung konnte nicht gefunden werden",
+        "bhd-01218": "Abrufen der Anmerkungen fehlgeschlagen",
+        "bhd-01219": "Anmerkungen gelöscht",
+        "bhd-01301": "ungültige Anforderungsdaten",
+        "bhd-01302": "ungültiger Vorgang",
+        "bhd-01303": "ungültiger Wert und Typ",
+        "bhd-01304": "Ungültiger Anforderungstext",
+        "bhd-01305": "Ungültiges JSON-Format",
+        "bhd-01306": "Ungültige Benutzer-ID",
+        "bhd-01307": "Rollenname fehlt",
+        "bhd-01308": "Sie können die Systemrolle nicht aktualisieren.",
+        "bhd-01309": "Sie können die Systemrolle nicht löschen.",
+        "bhd-01310": "Diese Rolle ist mit Benutzern verbunden. Bevor Sie diese Rolle löschen, löschen Sie alle Verbindungen.",
+        "bhd-01311": "Diese Rolle ist mit Teams verbunden. Bevor Sie diese Rolle löschen, löschen Sie alle Verbindungen.",
+        "bhd-01312": "Rollen-ID ist ungültig",
+        "bhd-01313": "Validieren der Rollen-ID fehlgeschlagen",
+        "bhd-01314": "Ungültige Rollen-ID",
+        "bhd-01315": "Ungültige Nutzlast",
+        "bhd-01316": "userID ist ungültig",
+        "bhd-01317": "Benutzer-ID ist ungültig",
+        "bhd-01318": "teamId ist ungültig",
+        "bhd-01319": "Team existiert nicht.",
+        "bhd-01320": "Benutzer hat keine ausreichenden Berechtigungen.",
+        "bhd-01321": "IMS_JWT ist ungültig",
+        "bhd-01322": "Fehlende oder leere Autorisierungskopfzeile",
+        "bhd-01323": "IMS_JWT ist ungültig oder inkorrekt",
+        "bhd-01324": "Dem Benutzer sind keine Rollen zugewiesen",
+        "bhd-01325": "Rolle darf keine Dashboards abrufen",
+        "bhd-01326": "Unbefugter Zugriff",
+        "bhd-01327": "Rolle nicht gefunden",
+        "bhd-01328": "Rolle mit demselben Namen ist bereits vorhanden",
+        "bhd-01329": "Abrufen von Dashboards fehlgeschlagen",
+        "bhd-01330": "Abrufen der Ansichtsliste fehlgeschlagen",
+        "bhd-01331": "Abrufen personenbezogener Daten fehlgeschlagen",
+        "bhd-01332": "Löschen personenbezogener Daten fehlgeschlagen",
+        "bhd-01334": "Fehler beim Prüfen der Berechtigungen",
+        "bhd-01335": "Abrufen der Rollen fehlgeschlagen.",
+        "bhd-01336": "Fehler beim Erstellen der Dashboard-Abfrage für den Administrator",
+        "bhd-01337": "Fehler beim Erstellen der Dashboard-Abfrage",
+        "bhd-01338": "Interner Serverfehler",
+        "bhd-01339": "Abrufen der Rolle fehlgeschlagen",
+        "bhd-01340": "Aktualisieren der Rolle fehlgeschlagen",
+        "bhd-01341": "Löschen der Rolle fehlgeschlagen",
+        "bhd-01342": "Suche der Rollen fehlgeschlagen",
+        "bhd-01343": "Aktualisieren der Benutzerrolle fehlgeschlagen",
+        "bhd-01344": "Aktualisieren der Teamrolle fehlgeschlagen",
+        "bhd-01345": "Abrufen der Berechtigungenliste fehlgeschlagen",
+        "bhd-01346": "Aktualisieren der Berechtigungenliste fehlgeschlagen",
+        "bhd-01347": "Suche der Benutzer fehlgeschlagen",
+        "bhd-01348": "Hinzufügen der Benutzerrollen-Zuordnung fehlgeschlagen.",
+        "bhd-01349": "Entfernen der Benutzerrollen-Zuordnung fehlgeschlagen.",
+        "bhd-01350": "Hinzufügen der Teamrolle fehlgeschlagen",
+        "bhd-01351": "Entfernen der Teamrolle fehlgeschlagen",
+        "bhd-01352": "unerwarteter Fehler",
+        "bhd-01364": "Record nicht gefunden",
+        "bhd-01365": "Erstellen der Rolle fehlgeschlagen",
+        "bhd-01366": "Suche von Teams fehlgeschlagen",
+        "bhd-01367": "Team-ID ist ungültig",
+        "bhd-01401": "ungültige Anforderungsdaten beim Aktualisieren der Playlist",
+        "bhd-01402": "ungültige Anforderungsdaten beim Erstellen der Playlist",
+        "bhd-01403": "Suche fehlgeschlagen",
+        "bhd-01404": "Playlist nicht gefunden",
+        "bhd-01405": "Löschen der Playlist fehlgeschlagen",
+        "bhd-01406": "Speichern der Playlist fehlgeschlagen",
+        "bhd-01407": "Laden der Playlist fehlgeschlagen",
+        "bhd-01408": "Erstellen der Playlist fehlgeschlagen",
+        "bhd-01501": "ungültige ID",
+        "bhd-01502": "ungültige Anforderungsdaten",
+        "bhd-01503": "Ungültige Job-ID",
+        "bhd-01504": "ungültige Anforderungsdaten beim Erstellen eines Berichts",
+        "bhd-01505": "Empfänger sind erforderlich",
+        "bhd-01506": "Domäneneinschränkung fehlgeschlagen",
+        "bhd-01507": "Ungültiger Cron-Ausdruck",
+        "bhd-01508": "ungültige Anforderungsdaten beim Aktualisieren des Berichts",
+        "bhd-01509": "Ungültige Bericht-ID",
+        "bhd-01510": "Nur Einschränkung interner Domänen fehlgeschlagen",
+        "bhd-01511": "Keine Berichte zu löschen",
+        "bhd-01512": "ungültige Anforderungsnutzlast beim Festlegen der FTP-Konfiguration",
+        "bhd-01513": "ungültige Anforderungsnutzlast beim Bearbeiten der FTP-Konfigurationen",
+        "bhd-01514": "ungültige Anforderungsnutzlast beim Festlegen der Standard-FTP-Konfiguration",
+        "bhd-01515": "ungültige Anforderungsdaten beim Senden der E-Mail",
+        "bhd-01516": "ungültige Anforderungsdaten bei einmaliger Ausführung des Berichts",
+        "bhd-01517": "ID ist nicht angegeben",
+        "bhd-01518": "ungültige Anforderungsdaten beim Deaktivieren der Berichtsplanung",
+        "bhd-01519": "Berichtsplanungsliste ist leer",
+        "bhd-01520": "Berichtsplanung mit demselben Namen existiert bereits",
+        "bhd-01521": "bitte geben Sie die erforderlichen Daten an",
+        "bhd-01522": "das Dashboard für die bestehende Berichtsplanung kann nicht bearbeitet werden",
+        "bhd-01523": "Berichtsmandantendetails nicht gefunden",
+        "bhd-01524": "ungültige Anforderungsdaten beim Festlegen der Bericht-Branding-Einstellungen",
+        "bhd-01525": "Ungültiges Logobild. Nur folgende Erweiterungen sind zulässig: .png, .jpg, .jpeg",
+        "bhd-01526": "Ungültige Bild-URL. Nur folgende Erweiterungen sind zulässig: .png, .jpg, .jpeg",
+        "bhd-01527": "Ungültige Logo-URL",
+        "bhd-01528": "Ungültige Fußzeilen-URL",
+        "bhd-01529": "ungültige Anforderungsdaten bei der Aktualisierung oder Erstellung der Mandantendetails",
+        "bhd-01530": "Bericht befindet sich nicht im Speicher",
+        "bhd-01531": "Datei ist auf Speicher nicht verfügbar",
+        "bhd-01532": "Einige Empfänger sind keine internen Benutzer",
+        "bhd-01533": "Berichtsplanung existiert nicht",
+        "bhd-01534": "Berichtsplansgrenze überschritten",
+        "bhd-01535": "Abrufen der vorigen FTP-Konfiguration fehlgeschlagen",
+        "bhd-01537": "ungültige Anforderungsdaten beim Löschen der Berichtsplanung",
+        "bhd-01538": "ungültige Anforderungsdaten beim Aktivieren der Berichtsplanung",
+        "bhd-01539": "Einige BCC-Empfänger sind keine internen Benutzer",
+        "bhd-01540": "Einige Empfänger befinden sich nicht auf der Whitelist",
+        "bhd-01541": "Einige BCC-Empfänger befinden sich nicht auf der Whitelist",
+        "bhd-01542": "Abrufen der Berichte fehlgeschlagen",
+        "bhd-01543": "FTP-Konfiguration ist bereits vorhanden",
+        "bhd-01544": "Hinzufügen der FTP-Konfiguration fehlgeschlagen",
+        "bhd-01545": "Aktualisieren der FTP-Konfiguration fehlgeschlagen",
+        "bhd-01546": "ungültige Anforderungsdaten beim Abrufen der Vorschau",
+        "bhd-01547": "Löschung der Standard-FTP-Konfiguration ist nicht zulässig!",
+        "bhd-01548": "FTP wird in Berichtsplanung verwendet",
+        "bhd-01549": "Löschen der FTP-Konfiguration fehlgeschlagen",
+        "bhd-01550": "Löschen der Berichtsplanungen für die Organisation fehlgeschlagen",
+        "bhd-01551": "Deaktivieren der Berichtsplanungen für die Organisation fehlgeschlagen",
+        "bhd-01552": "Verbindung zum FTP-Server fehlgeschlagen",
+        "bhd-01601": "ungültige Anforderungsdaten beim Aktualisieren des angemeldeten Benutzers",
+        "bhd-01602": "Änderung der E-Mail nicht zulässig, wenn das Auth-Proxy die E-Mail-Eigenschaft nutzt",
+        "bhd-01603": "Änderung des Benutzernamens nicht zulässig, wenn das Auth-Proxy die Benutzernamen-Eigenschaft nutzt",
+        "bhd-01604": "Ungültige E-Mail-Adresse",
+        "bhd-01605": "ID ist ungültig",
+        "bhd-01606": "Nur Benutzer und Servicekonten können Sterne für Dashboards festlegen",
+        "bhd-01607": "Ungültige Dashboard-UID",
+        "bhd-01608": "orgId ist ungültig",
+        "bhd-01609": "Nur Benutzer und Servicekonten erhalten mit Sternen versehene Dashboards",
+        "bhd-01610": "ungültige Anforderungsdaten beim Ändern des Kennworts für den Benutzer",
+        "bhd-01611": "ungültige Anforderungsdaten beim Deaktivieren des Auth-Tokens",
+        "bhd-01612": "ungültige Anforderungsdaten beim Aktualisieren des Benutzers",
+        "bhd-01613": "Keine gültige Organisation",
+        "bhd-01614": "Entität darf keine Token deaktivieren",
+        "bhd-01615": "Entität darf keine Token abrufen",
+        "bhd-01616": "Endpunkt nur für Benutzer verfügbar",
+        "bhd-01617": "Aktualisierung wurde zu Konflikt bei Benutzeranmeldung führen",
+        "bhd-01618": "Abrufen des Benutzers fehlgeschlagen",
+        "bhd-01620": "Abrufen der Benutzerorganisationen fehlgeschlagen",
+        "bhd-01621": "Abrufen der Benutzersterne fehlgeschlagen",
+        "bhd-01622": "Abrufen der Dashboards fehlgeschlagen",
+        "bhd-01623": "Festlegen eines Sterns für Dashboard fehlgeschlagen",
+        "bhd-01624": "Entfernen des Sterns für Dashboard fehlgeschlagen",
+        "bhd-01625": "Änderung des Benutzerkennworts fehlgeschlagen",
+        "bhd-01626": "Abrufen der Organisationskontingente fehlgeschlagen",
+        "bhd-01627": "Aktualisieren des Hilfe-Flag fehlgeschlagen",
+        "bhd-01628": "Generieren der E-Mail-Verifizierung fehlgeschlagen",
+        "bhd-01629": "Parsen der Benutzer-ID fehlgeschlagen",
+        "bhd-01630": "Abrufen der Benutzerteams fehlgeschlagen",
+        "bhd-01631": "Aktualisieren des Benutzers fehlgeschlagen",
+        "bhd-01632": "Parsen der Benutzer-ID fehlgeschlagen",
+        "bhd-01640": "Benutzer nicht gefunden",
+        "bhd-01641": "Benutzer-Auth-Token nicht gefunden",
+        "bhd-01642": "Ändern der aktiven Organisation fehlgeschlagen",
+        "bhd-01643": "Deaktivierung des Benutzer-Auth-Tokens fehlschlagen",
+        "bhd-01644": "Abrufen des Benutzer-Auth-Tokens fehlschlagen",
+        "bhd-01645": "Auth-Token des aktiven Benutzers kann nicht deaktiviert werden",
+        "bhd-01701": "ungültige Anforderungsdaten beim Erstellen des neuen Benutzers",
+        "bhd-01702": "ungültige Anforderungsdaten beim Deaktivieren des Auth-Tokens für den Benutzer",
+        "bhd-01703": "ungültige Anforderungsdaten beim Festlegen der Berechtigungen für den Benutzer",
+        "bhd-01704": "ungültige Anforderungsdaten beim Festlegen des Kennworts für den Benutzer",
+        "bhd-01705": "Kennwort fehlt oder ist zu kurz",
+        "bhd-01706": "ID ist ungültig",
+        "bhd-01707": "Sie können sich nicht selbst abmelden",
+        "bhd-01708": "letzter Grafana-Administrator kann nicht entfernt werden",
+        "bhd-01709": "Benutzer nicht gefunden",
+        "bhd-01710": "Eine Rücksetzung des Kennworts bei deaktiviertem Anmeldeformular ist nicht zulässig",
+        "bhd-01711": "Grafana-Administratorrolle für extern synchronisierten Benutzer kann nicht geändert werden",
+        "bhd-01712": "Autorisierung der Einstellungen fehlgeschlagen",
+        "bhd-01713": "Anmeldung oder E-Mail des Benutzers steht im Konflikt mit einem anderen Benutzer. Wenden Sie sich an den Serveradministrator",
+        "bhd-01714": "Abrufen der Administratorstatistiken aus der Datenbank fehlgeschlagen",
+        "bhd-01715": "Abrufen der anon-Statistiken aus der Datenbank fehlgeschlagen",
+        "bhd-01716": "Erneute Verschlüsselung der Datenschlüssel fehlgeschlagen",
+        "bhd-01717": "Rotieren der Datenschlüssel fehlgeschlagen",
+        "bhd-01718": "Erstellen des Benutzers fehlgeschlagen",
+        "bhd-01719": "Benutzer konnte nicht aus Datenbank gelesen werden",
+        "bhd-01720": "Aktualisieren des Benutzerkennworts fehlgeschlagen",
+        "bhd-01721": "Aktualisieren der Benutzerberechtigungen fehlgeschlagen",
+        "bhd-01722": "Löschen des Benutzers fehlgeschlagen",
+        "bhd-01723": "Externer Benutzer konnte nicht deaktiviert werden",
+        "bhd-01724": "Benutzer konnte nicht deaktiviert werden.",
+        "bhd-01725": "Externer Benutzer konnte nicht aktiviert werden",
+        "bhd-01726": "Aktivieren des Benutzers fehlgeschlagen",
+        "bhd-01727": "Abrufen des Benutzers fehlgeschlagen",
+        "bhd-01728": "Abrufen der Benutzer-Auth-Token fehlschlagen",
+        "bhd-01729": "Abmeldung des Benutzers fehlgeschlagen",
+        "bhd-01730": "Benutzerkennwort aktualisiert, Benutzersitzungen konnten jedoch nicht deaktiviert werden",
+        "bhd-01740": "Erneute Verschlüsselung der Sicherheiten fehlgeschlagen",
+        "bhd-01741": "Aktualisieren der Organisationskontingente fehlgeschlagen",
+        "bhd-01742": "Rollback der Sicherheiten fehlgeschlagen",
+        "bhd-01746": "Neues Laden der Plugin-Konfiguration fehlgeschlagen"
+      },
+      "success": {
+        "bhd-00001": "Felder erfolgreich bearbeitet",
+        "bhd-00002": "Feld(er) erfolgreich gelöscht",
+        "bhd-00003": "Neues Feld erfolgreich erstellt",
+        "bhd-00101": "Einstellungen aktualisiert",
+        "bhd-00224": "Ordner gelöscht",
+        "bhd-00225": "Ordnerberechtigungen aktualisiert",
+        "bhd-00329": "Dashboard-Berechtigungen aktualisiert",
+        "bhd-00330": "Änderungen wurden an den GitOps-Listener gesendet",
+        "bhd-00413": "Bibliothekselement gelöscht",
+        "bhd-00511": "Snapshot gelöscht. Das Entfernen aus dem CDN-Cache kann bis zu eine Stunde dauern.",
+        "bhd-00607": "Angemeldet",
+        "bhd-00749": "Organisation aktualisiert",
+        "bhd-00750": "Adresse aktualisiert",
+        "bhd-00751": "Benutzer wurde der Organisation hinzugefügt",
+        "bhd-00752": "Organisationsbenutzer aktualisiert",
+        "bhd-00753": "Organisationskontingent aktualisiert",
+        "bhd-00754": "Benutzer gelöscht",
+        "bhd-00755": "Organisation gelöscht",
+        "bhd-00756": "Organisation erstellt",
+        "bhd-00757": "Einladung deaktiviert",
+        "bhd-00758": "Konfiguration aktualisiert",
+        "bhd-00759": "Konfiguration ist auf Standard eingestellt",
+        "bhd-00760": "Benutzer aus Organisation entfernt",
+        "bhd-00810": "Berechtigungen aktualisiert",
+        "bhd-00811": "Berechtigung aktualisiert",
+        "bhd-00812": "Berechtigung entfernt",
+        "bhd-00933": "Datenquelle hinzugefügt",
+        "bhd-00934": "Datenquelle aktualisiert",
+        "bhd-00935": "Datenquelle gelöscht",
+        "bhd-00948": "Korrelation erstellt",
+        "bhd-00949": "Korrelation gelöscht",
+        "bhd-00950": "Korrelation aktualisiert",
+        "bhd-01010": "Abfrage gelöscht",
+        "bhd-01118": "Plugin-Einstellungen aktualisiert",
+        "bhd-01220": "Anmerkung hinzugefügt",
+        "bhd-01221": "Anmerkung aktualisiert",
+        "bhd-01222": "Anmerkung gepatcht",
+        "bhd-01223": "Graphite-Anmerkung hinzugefügt",
+        "bhd-01224": "Anmerkung gelöscht",
+        "bhd-01353": "Noch nicht implementiert",
+        "bhd-01354": "Personenbezogene Daten gelöscht",
+        "bhd-01355": "OK",
+        "bhd-01356": "Autorisierter Zugriff",
+        "bhd-01357": "Berechtigungen aktualisiert",
+        "bhd-01358": "Benutzerrollen-Zuordnung hinzugefügt.",
+        "bhd-01359": "Benutzerrollen-Zuordnung für alle Rollen entfernt.",
+        "bhd-01361": "Teamrolle hinzugefügt.",
+        "bhd-01362": "Teamrolle entfernt.",
+        "bhd-01363": "Gebietsschema wurde erfolgreich aktualisiert",
+        "bhd-01553": "Bericht erfolgreich erstellt",
+        "bhd-01554": "Bericht erfolgreich aktualisiert",
+        "bhd-01555": "Bericht erfolgreich gelöscht",
+        "bhd-01556": "Berichte erfolgreich gelöscht",
+        "bhd-01557": "Benutzer erfolgreich aus Berichten gelöscht.",
+        "bhd-01558": "FTP-Konfiguration erfolgreich gespeichert",
+        "bhd-01559": "FTP-Konfiguration erfolgreich aktualisiert",
+        "bhd-01560": "FTP als Standard konfiguriert",
+        "bhd-01561": "FTP-Konfiguration erfolgreich gelöscht",
+        "bhd-01562": "Berichtsplanungen erfolgreich gelöscht/deaktiviert.",
+        "bhd-01563": "Bericht erfolgreich aktiviert",
+        "bhd-01564": "Berichte erfolgreich aktiviert",
+        "bhd-01565": "Bericht erfolgreich deaktiviert",
+        "bhd-01566": "Berichte erfolgreich deaktiviert",
+        "bhd-01567": "Berichts-Branding erfolgreich aktualisiert.",
+        "bhd-01568": "Berichts-Branding ist auf Standard festgelegt.",
+        "bhd-01569": "Aktualisiert",
+        "bhd-01570": "Gelöscht",
+        "bhd-01571": "Erfolgreich ausgeführt",
+        "bhd-01633": "Aktive Organisation geändert",
+        "bhd-01634": "Dashboard mit Stern gekennzeichnet!",
+        "bhd-01635": "Stern für Dashboard entfernt",
+        "bhd-01636": "Benutzerkennwort wurde geändert",
+        "bhd-01637": "Hilfe-Flag festgelegt",
+        "bhd-01638": "Benutzer aktualisiert",
+        "bhd-01639": "E-Mail für Verifizierung gesendet",
+        "bhd-01646": "Benutzer-Auth-Token deaktiviert",
+        "bhd-01731": "Benutzerkennwort aktualisiert",
+        "bhd-01732": "Benutzerberechtigungen aktualisiert",
+        "bhd-01733": "Benutzer gelöscht",
+        "bhd-01734": "Benutzer deaktiviert",
+        "bhd-01735": "Benutzer aktiviert",
+        "bhd-01736": "Benutzer abgemeldet",
+        "bhd-01737": "Benutzer erstellt",
+        "bhd-01748": "Organisationskontingent aktualisiert",
+        "bhd-01753": "Dashboard-Konfiguration neu geladen",
+        "bhd-01754": "Plugin-Konfiguration neu geladen",
+        "bhd-01755": "Datenquellen-Konfiguration neu geladen",
+        "bhd-01756": "Warnmeldungskonfiguration neu geladen"
+      }
+    },
+    "notifications": {
+      "dashboard": {
+        "imported": "Dashboard importiert",
+        "panel-not-found": "Bereich nicht gefunden",
+        "restored": "Dashboard wiederhergestellt",
+        "restored-failed": "Wiederherstellung des Dashboards fehlgeschlagen",
+        "restored-version": "Wiederhergestellt aus der Version {{version}}",
+        "restored-version-failed": "Wiederherstellung aus der Version {{restoredversion}} fehlgeschlagen"
+      },
+      "error": {
+        "error-text": "Fehler",
+        "failed-validation": "Validierung fehlgeschlagen",
+        "generate-link": "Fehler bei der Generierung des gekürzten Links",
+        "http-error": "HTTP-Fehler {{msg}}",
+        "unknown-error": "Fehler unbekannt"
+      },
+      "folder": {
+        "created": "Ordner erstellt",
+        "failed-creation": "Ordner konnte nicht erstellt werden"
+      },
+      "settings": {
+        "saved": "Einstellungen gespeichert",
+        "saved-failed": "Speichern der Einstellungen fehlgeschlagen"
+      },
+      "success": {
+        "copied-link": "Gekürzter Link in Zwischenablage kopiert",
+        "success-text": "Erfolg"
+      }
+    },
+    "org-custom-config": {
+      "community": "Community",
+      "documentation": "Dokumentation",
+      "errors": {
+        "query-type-mandatory": "Mindestens ein Abfragetyp sollte aktiviert sein"
+      },
+      "support": "Support",
+      "video": "Video"
+    },
+    "panel": {
+      "bmc-video": {
+        "enter-video": "Eingebettetes Video eingeben",
+        "invalid-url": "Keine gültige URL",
+        "url": "Video-URL"
+      },
+      "bmc-welcome": {
+        "communities": "Communitys",
+        "community-description": "Community-Beschreibung",
+        "default-community-description": "Verbinden. Freigeben. Ermitteln. Diskutieren Sie mit Kollegen und Experten über BMC-Produkte und -Lösungen.",
+        "default-documentation-description": "Lesen Sie die Produktdokumentation, um alle Funktionen für die Berichterstellung und ihre Nutzung zu verstehen.",
+        "default-video-description": "Auf dem YouTube-Kanal von BMC finden Sie Videoanleitungen, Überblicke und Demos von BMC-Produkten und -Lösungen.",
+        "documentation": "Dokumentation",
+        "documentation-description": "Beschreibung der Dokumentation",
+        "logo-title": "BMC Helix Logo",
+        "video-description": "Videobeschreibung",
+        "videos": "Videos"
+      }
+    },
+    "playlist": {
+      "empty": "Die Wiedergabeliste ist leer. Dashboards unten hinzufügen.",
+      "items-changed_one": "Playlist-Elemente geändert. Es befindet sich jetzt {{count}} Dashboard in der Playlist.",
+      "items-changed_other": "Playlist-Elemente geändert. Es befinden sich jetzt {{count}} Dashboards in der Playlist."
+    },
+    "query": {
+      "query-name-label": "Abfragename :"
+    },
+    "rbac": {
+      "common": {
+        "all": "Alle",
+        "assigned": "Zugewiesen",
+        "menu": "Menü",
+        "name": "Name"
+      },
+      "permissions": {
+        "admin": {
+          "datasource-manage": "Datenquellen verwalten",
+          "datasource-manage-desc": "kann Datenquellen verwalten",
+          "reports-manage": "Berichtsplanung verwalten",
+          "reports-manage-desc": "kann alle Berichte verwalten",
+          "title": "Administration"
+        },
+        "calc-fields": {
+          "create-desc": "kann berechnete Felder erstellen oder aktualisieren",
+          "view-desc": "kann berechnete Felder ansehen"
+        },
+        "common": {
+          "create": "Erstellen",
+          "view": "Anzeigen"
+        },
+        "dashboards": {
+          "create-desc": "kann Dashboards erstellen",
+          "download-desc": "kann Dashboard als PDF/XLSX/CSV herunterladen",
+          "view-desc": "kann zulässige Dashboards ansehen"
+        },
+        "datasource": {
+          "explore": "Ermitteln",
+          "explore-desc": "kann Ermittlungsmodus für Datenquellen nutzen"
+        },
+        "datasources": {
+          "title": "Datenquellen"
+        },
+        "drawer-title": "{{name}} - Berechtigungen",
+        "folders": {
+          "create-desc": "kann Ordner erstellen",
+          "title": "Ordner",
+          "view-desc": "kann zulässige Ordner ansehen"
+        },
+        "insightfinder": {
+          "access": "Zugriff",
+          "access-desc-tooltip": "hat Zugriff auf den Insight Finder",
+          "dashboards-create": "Dashboards erstellen",
+          "dashboards-create-desc": "kann im Insight Finder Dashboards erstellen",
+          "title": "Insight Finder"
+        },
+        "reports": {
+          "access": "Zugriff",
+          "access-desc": "kann Berichte ansehen und erstellen",
+          "history-read": "Verlauf anzeigen",
+          "history-read-desc": "kann den Berichtsverlaufsabschnitt ansehen",
+          "recipients-dash-access": "Dynamische Empfänger",
+          "recipients-dash-access-desc": "Kann Empfänger dynamisch aus dem Dashboard im Zeitplan hinzufügen",
+          "settings-read": "Einstellungen anzeigen",
+          "settings-read-desc": "kann Berichtseinstellungen ansehen",
+          "title": "Berichte"
+        },
+        "servicemanagement-querytypes": {
+          "sql": "SQL",
+          "sql-desc": "kann SQL-Abfrage bearbeiten",
+          "title": "Abfragetypen für das Service Management"
+        },
+        "subtitle": "Liste der Berechtigungen"
+      },
+      "roles": {
+        "actions": "Aktionen",
+        "create": "Erstellen",
+        "custom": "Benutzerdefiniert",
+        "delete": "Rolle löschen",
+        "delete-confirmation": "Möchten Sie diese Rolle wirklich löschen?",
+        "delete-role": "Rolle löschen",
+        "description": "Beschreibung",
+        "edit": "Rolle bearbeiten",
+        "manage-permissions": "Berechtigungen verwalten",
+        "manage-teams": "Teams verwalten",
+        "manage-users": "Benutzer verwalten",
+        "name-required": "Rollenname ist erforderlich",
+        "new": "Neue Rolle",
+        "search": "Suchrollen",
+        "system": "System",
+        "update": "Aktualisieren"
+      },
+      "teams": {
+        "assigned-count_one": "{{count}} Team zugewiesen",
+        "assigned-count_other": "{{count}} Teams zugewiesen",
+        "drawer-title": "{{name}} - Teams",
+        "none-assigned": "Keine Teams zugewiesen",
+        "none-found": "Keine Teams gefunden",
+        "search": "Nach Teamnamen suchen"
+      },
+      "users": {
+        "assigned-count_one": "{{count}} Benutzer zugewiesen",
+        "assigned-count_other": "{{count}} Benutzer zugewiesen",
+        "drawer-title": "{{roleName}} - Benutzer",
+        "email": "E-Mail",
+        "login": "Anmeldung",
+        "none-assigned": "Keine Benutzer zugewiesen",
+        "none-found": "Keine Benutzer gefunden"
+      }
+    },
+    "rms": {
+      "description": "Reporting Metadata Studio ist eine Windows-Anwendung auf der Grundlage von Pentaho Metadata Editor. Sie wird zum Erstellen angepasster Ansichten bzw. Ändern oder Kopieren einer Standardansicht verwendet. Weitere Informationen finden Sie in der Onlinedokumentation.",
+      "download": {
+        "error": "Herunterladen nicht möglich"
+      },
+      "headers": {
+        "env-details": "Umgebungsdetails"
+      }
+    },
+    "search": {
+      "comfirm-export": "Möchten Sie das/die {{dashCount}} ausgewählte/-n Dashboard/-s exportieren?",
+      "export": "Exportieren",
+      "export-status": "Exportstatus"
+    },
+    "share-modal": {
+      "loading": "Ladevorgang",
+      "theme-picker": {
+        "current-theme": "Aktuelles Layout",
+        "dark-theme": "Dunkles Layout",
+        "light-theme": "Helles Layout"
+      }
+    },
+    "shared-preferences": {
+      "datetime-format": {
+        "description": "Dadurch wird das Standardformat für die in Dashboards, Bereichen und Berichten verwendete Uhrzeit geändert.",
+        "label": "Datums-/Uhrzeitformat"
+      },
+      "fields": {
+        "apply-admins": "Auf Admins anwenden",
+        "enabled-query-types": "Abfragetypen für das Service Management verwalten",
+        "query-type-label": "Abfragetyp",
+        "query-type-placeholder": "Abfragetyp auswählen"
+      },
+      "query-type": {
+        "form": "Formular",
+        "sql": "SQL",
+        "vqb": "Visueller Abfrage-Builder"
+      }
+    },
+    "tag-filter": {
+      "remove-tag": "Tag {{label}} entfernen"
+    },
+    "toggle-feature": {
+      "manage-features": "Dashboard-Funktionen verwalten"
+    },
+    "transformers": {
+      "adv-functions": {
+        "against-field": "Feldname zum Vergleich",
+        "alias": "Alias",
+        "field-name": "Feldname",
+        "function-name": "Funktionsname",
+        "percentage": "Prozentsatz",
+        "percentile-placeholder": "Perzentilwert",
+        "percentile-value": "Perzentilwert",
+        "previous-row": "Vorherige Zeile",
+        "previous-row-placeholder": "Vorherige Zeile",
+        "rank-placeholder": "Rang",
+        "rank-value": "Rangwert"
+      },
+      "dynamic-fields": {
+        "add-aria": "Feld zur Bereinigung hinzufügen",
+        "add-button": "Feld hinzufügen",
+        "field-label": "Feld",
+        "format-as": "Dynamisches Feld formatieren als",
+        "remove-aria": "Dynamische Felder Formatierungs-Feldtyp-Transformer entfernen"
+      },
+      "sanitize": {
+        "add-aria": "Feld zur Bereinigung hinzufügen",
+        "add-button": "Feld hinzufügen",
+        "field-label": "Feld",
+        "remove-aria": "Bereinigungs-Feldtyp-Transformer entfernen"
+      }
+    },
+    "variables": {
+      "more-values": "... Weitere Werte",
+      "optimize": {
+        "close-search-panel": "Schließen",
+        "deselect-all": "Alle abwählen",
+        "loading": "Wird geladen ...",
+        "no-domain-selected": "Keine Domäne ausgewählt",
+        "no-items": "Keine Elemente",
+        "remove-item": "Element entfernen",
+        "search": "Suche",
+        "selected": "ausgewählt",
+        "selected-domains": "Ausgewählte Domänen",
+        "type-to-search": "Zum Suchen eingeben"
+      },
+      "query-editor": {
+        "continue": "Weiter",
+        "enable-editor": "Abfrageeditor aktivieren",
+        "enable-variable-caching": "Variablen-Caching aktivieren",
+        "modal-close-confirmation": "Die aktuelle Abfrage geht verloren. Möchten Sie fortfahren?",
+        "modal-close-title": "Nicht gespeicherte Änderungen",
+        "query-text": "Abfrage",
+        "service-management-note": "Hinweis: Gilt nur für den Abfragetyp für das Service Management.",
+        "variable-caching": {
+          "dependant-error": "Caching für zeitbereichsabhängige Variablen ist nicht gestattet",
+          "modal-close-title": "Variablen-Caching",
+          "modal-disable-confirmation": "Möchten Sie das Caching für die Variable deaktivieren?",
+          "modal-enable-additional-text-1": "Der Variablen-Cache wird für alle Benutzer gelöscht, wenn Sie die Abfrage bearbeiten.",
+          "modal-enable-confirmation": "Möchten Sie das Caching für die Variable aktivieren?",
+          "service-management-error": "Caching wird nur für Service-Management-Anfragen unterstützt",
+          "time-dependant-warning": "Caching ist für zeitabhängige Variablen nicht zulässig."
+        }
+      },
+      "refresh-aria": "{{name}} aktualisieren",
+      "refresh-tooltip": "Diese Variable aktualisieren",
+      "refresh-variable-aria": "{{name}} aktualisieren",
+      "variable-caching": {
+        "cache-delete-success": "Cache für Variable {{variableName}} erfolgreich gelöscht"
+      }
+    },
+    "welcome": {
+      "dashboards": "Dashboards"
+    }
+  },
+  "bmcgrafana": {
+    "command-palette": {
+      "search-box": {
+        "aria-label": "Suchen oder weiter zu..."
+      }
+    },
+    "dashboard": {
+      "panel-copied": "Bereich kopiert. Klicken Sie zum Einfügen auf das Symbol **Bereich hinzufügen**.",
+      "picker": {
+        "placeholder": "Dashboard auswählen"
+      },
+      "remove-panel": {
+        "confirm-button-text": "Entfernen"
+      }
+    },
+    "dashboard-import": {
+      "datasource-validation": "Eine Datenquelle ist erforderlich",
+      "name-validation-text": "Name ist erforderlich",
+      "needs-value": "Wert wird benötigt",
+      "select-view": "Ansicht auswählen",
+      "view-selection-tooltip": "Die vorausgewählte Ansicht nicht ändern",
+      "view-selection-validation": "Eine Ansichtsauswahl ist erforderlich"
+    },
+    "dashboard-scene": {
+      "dashboard-preview-banner": {
+        "not-yet-saved": "Der Wert ist nicht in der BMC Helix Dashboard-Datenbank gespeichert."
+      },
+      "help-wizard": {
+        "troubleshooting-request-help": "Um Hilfe bei der Fehlerbehebung anzufordern, senden Sie einen Snapshot dieses Panels an den technischen Support von BMC Helix Dashboards. Der Snapshot enthält Abfrageantwortdaten und Paneleinstellungen."
+      },
+      "save-provisioned-dashboard-form": {
+        "cannot-be-saved": "Dieses Dashboard kann nicht über die BMC Helix Dashboards-Benutzeroberfläche gespeichert werden, da es von einer anderen Quelle bereitgestellt wurde. Kopieren Sie das JSON oder speichern Sie es unten in einer Datei. Anschließend können Sie Ihr Dashboard in der Bereitstellungsquelle aktualisieren."
+      }
+    },
+    "dashboards": {
+      "edit-panel": {
+        "actual": "Tatsächlich",
+        "actual-description": "Die gleiche Größe wie auf dem Dashboard anwenden",
+        "axis": {
+          "grid-lines": {
+            "auto-text": "Automatisch"
+          }
+        },
+        "discard": "Verwerfen",
+        "fill": "Ausfüllen",
+        "fill-description": "Allen verfügbaren Platz nutzen",
+        "panel-options": {
+          "link-editor": {
+            "url-placeholder": "http://your-grafana.com/d/000000010/annotations"
+          }
+        },
+        "query": {
+          "empty-query-edit-warning": "Ein leerer Abfragename ist nicht zulässig",
+          "query-already-exist-warning": "Abfragename bereits vorhanden",
+          "query-options": {
+            "min-interval-placeholder": "Kein Limit"
+          }
+        }
+      },
+      "save-dashboard": {
+        "error": "Fehler beim Speichern von Dashboard",
+        "errors": {
+          "dash-folder-same-name": "Name des Dashboards darf nicht mit dem Ordnernamen übereinstimmen",
+          "dash-name-invalid": "Name des Dashboards ist ungültig"
+        }
+      },
+      "settings": {
+        "annotation": {
+          "edit-form": {
+            "new-annotation": "Neue Anmerkung"
+          }
+        },
+        "links": {
+          "description-edit-link": "Spezifischen Link Ihres Dashboards bearbeiten",
+          "description-new-link": "Erstellen Sie einen neuen Link auf Ihrem Dashboard",
+          "title-edit-link": "Link bearbeiten",
+          "title-new-link": "Neuer Link"
+        },
+        "variables": {
+          "editor": {
+            "exlude-variable": "Variable ausschließen",
+            "exlude-variable-desc": "Auswählen, um Variable aus der Abfrage auszuschließen",
+            "select-variable-type": {
+              "ad-hoc-filters": {
+                "name": "Ad-hoc-Filter"
+              },
+              "constant": {
+                "description": "Definieren Sie eine verborgene konstante Variable, die für Messgrößen-Präfixe in Dashboards nützlich ist, die Sie gemeinsam verwenden möchten.",
+                "name": "Konstant"
+              },
+              "custom": {
+                "name": "Benutzerdefiniert"
+              },
+              "data-source": {
+                "description": "Ermöglicht Ihnen das dynamische Umschalten der Datenquelle für mehrere Bereiche.",
+                "name": "Datenquelle"
+              },
+              "interval": {
+                "name": "Intervall"
+              },
+              "query": {
+                "name": "Abfrage"
+              },
+              "textbox": {
+                "description": "Definieren Sie eine Textfeldvariable, in die Benutzer eine beliebige Zeichenfolge eingeben können",
+                "name": "Textfeld"
+              }
+            },
+            "types": {
+              "ad-hoc": {
+                "data-source-placeholder": "Datenquelle auswählen"
+              },
+              "date-range": {
+                "title": "Zeitrahmen auswählen"
+              },
+              "query": {
+                "refresh-options": {
+                  "on-dash-load": "Auf Dashboard laden",
+                  "on-time-change": "Pünktlichen Zeitrahmen ändern"
+                }
+              }
+            }
+          }
+        },
+        "versions": {
+          "loading-msgs": {
+            "changes": "Änderungen werden abgerufen&hellip;",
+            "history-list": "Verlaufsliste wird abgerufen&hellip;",
+            "more-entries": "Mehr Einträge werden abgerufen&hellip;"
+          }
+        }
+      }
+    },
+    "datesource": {
+      "configuration": {
+        "sort-asc": "Nach A–Z sortieren",
+        "sort-desc": "Nach Z–A sortieren"
+      }
+    },
+    "explore": {
+      "no-data": "Keine Daten",
+      "query-added-announcement": "Neue Abfragezeile hinzugefügt. {{queryCount}}",
+      "rich-history-settings-tab": {
+        "alert-info": "BMC Helix Dashboards speichert Einträge bis zu {{optionLabel}}. Mit Stern markierte Einträge werden nicht gelöscht."
+      },
+      "to-dashboard": {
+        "panel-to-dashboard": "Bereich zu Dashboard hinzufügen",
+        "to-existing-dashboard-title": "Bereich zu vorhandenem Dashboard hinzufügen",
+        "to-new-dashboard-title": "Bereich zu neuem Dashboard hinzufügen"
+      }
+    },
+    "file-drop-zone": {
+      "accepted-file-types-prefix": "Akzeptierte Dateitypen",
+      "file-invalid-type-prefix": "Zulässige Dateitypen sind",
+      "max-file-size": "Maximale Dateigröße"
+    },
+    "grafana-data": {
+      "timezone": {
+        "browser-time": "Browserzeit",
+        "coord-universal-time": "Koordinierte Weltzeit",
+        "local-browser-time": "Lokale Browserzeit"
+      },
+      "valueFormats": {
+        "categories": {
+          "misc": {
+            "formats": {
+              "european": "Europäisches Format (veraltet)"
+            }
+          }
+        }
+      }
+    },
+    "grafana-ui": {
+      "date-time-pickers": {
+        "time-range-input-text": "Zeitrahmen auswählen"
+      },
+      "fieldValidationMessage": {
+        "warning": "Warnung"
+      },
+      "file-dropzone": {
+        "bulk-limit-error": "Sie können maximal{{maxFiles}} Dashboards auswählen"
+      },
+      "icon": {
+        "information": "Informationen"
+      },
+      "inlineLabel": {
+        "info": "Info"
+      },
+      "table": {
+        "filter-placeholder": "Filterwerte"
+      },
+      "week-start-picker": {
+        "weekStarts-label-browser": "Browser"
+      }
+    },
+    "import": {
+      "view-label": "Ansicht: {{index}}"
+    },
+    "library-panels": {
+      "delete": {
+        "cannot-delete-text": "Dieser Bibliotheksbereich kann nicht gelöscht werden, weil er mit {{message}} Dashboard(s) verbunden ist. Entfernen Sie den Bibliotheksbereich aus den unten aufgelisteten Dashboards und versuchen Sie es erneut."
+      },
+      "modal": {
+        "select-aria-label": "Geben Sie etwas ein, um nach dem Dashboard zu suchen."
+      }
+    },
+    "manage-dashboards": {
+      "specify-constant": "Eine String-Konstante angeben"
+    },
+    "nav": {
+      "config-general": {
+        "subtitle": "Standardeinstellungen und Präferenzen für BMC Helix Dashboards verwalten"
+      }
+    },
+    "notifications": {
+      "empty-state": {
+        "description": "Benachrichtigungen, die Sie erhalten haben, werden hier angezeigt.",
+        "title": "Sie sind auf dem neuesten Stand!"
+      },
+      "live": {
+        "dismissed": {
+          "multiple_one": "{{count}} Benachrichtigung verworfen",
+          "multiple_other": "Verworfene Mitteilungen ({{count}})",
+          "single": "1 verworfene Mitteilung"
+        }
+      },
+      "stored-notifications": {
+        "select-all": "Alle Benachrichtigungen auswählen"
+      }
+    },
+    "options-ui": {
+      "registry": {
+        "standard-field-condigs": {
+          "category-data-links": "Datenlinks"
+        }
+      }
+    },
+    "page-loader": {
+      "text": "Ladevorgang"
+    },
+    "panel-message": {
+      "refresh-dashboard": "Dashboard aktualisieren, um Daten abzurufen"
+    },
+    "plugins": {
+      "browse": {
+        "subtitle": "{{value}} Erweitern Sie das Helix Dashboards-Erlebnis mit Panel-Plugins und Apps. Weitere Datenquellen finden Sie unter <3>Verbindungen</3>."
+      }
+    },
+    "search-inputs": {
+      "name-type": "Nach Name oder Typ suchen"
+    },
+    "team-permissions": {
+      "add-member": "Mitglied hinzufügen",
+      "no-members-message": "Es gibt keine Mitglieder in diesem Team oder Sie haben nicht die Berechtigung, die aktuellen Mitglieder aufzulisten."
+    },
+    "users-and-access": {
+      "headers": {
+        "email-text": "E-Mail",
+        "last-active-text": "Letzte aktive",
+        "login-text": "Anmeldung",
+        "members-text": "Mitglieder",
+        "name-text": "Name"
+      },
+      "search-user-placeholder-text": "Benutzer nach Login, E-Mail-Adresse oder Name suchen"
+    }
+  },
   "bookmarks-page": {
     "empty": {
       "message": "Offenbar haben Sie noch keine Lesezeichen erstellt",
@@ -3532,7 +4885,7 @@
       "delete-button": "Löschen",
       "delete-modal-invalid-text": "Ein oder mehrere Ordner enthalten Bibliotheksfenster oder Alarmierungsregeln. Löschen Sie diese zuerst, um fortzufahren.",
       "delete-modal-invalid-title": "Ordner kann nicht gelöscht werden",
-      "delete-modal-restore-dashboards-text": "",
+      "delete-modal-restore-dashboards-text": "Diese Aktion löscht die ausgewählten Ordner sofort. Gelöschte Dashboards werden für bis zu 12 Monate im Verlauf gespeichert und können in diesem Zeitraum von Ihrem Organisationsadministrator wiederhergestellt werden. Der Verlauf ist auf 1000 Dashboards begrenzt – ältere können früher entfernt werden, wenn das Limit erreicht ist. Ordner können nicht wiederhergestellt werden.",
       "delete-modal-text": "Diese Aktion wird folgenden Inhalt löschen:",
       "delete-modal-title": "Löschen",
       "delete-provisioned-folder": "Bereitgestellten Ordner löschen",
@@ -3543,7 +4896,7 @@
       "move-modal-field-label": "Ordnername",
       "move-modal-text": "Diese Aktion wird folgenden Inhalt verschieben:",
       "move-modal-title": "Verschieben",
-      "move-provisioned-folder": "",
+      "move-provisioned-folder": "Bereitgestellten Ordner verschieben",
       "moving": "Verschieben...",
       "new-folder-name-required-phrase": "Ordnername ist erforderlich.",
       "selected-mix-resources-modal-text": "Sie haben sowohl bereitgestellte als auch nicht bereitgestellte Ressourcen ausgewählt. Diese können nicht zusammen verarbeitet werden. Bitte wählen Sie nur bereitgestellte Ressourcen oder nur nicht bereitgestellte Ressourcen aus und versuchen Sie es dann erneut.",
@@ -3579,9 +4932,9 @@
       },
       "error-moving-resources": "Fehler beim Verschieben von Ressourcen",
       "error-no-target-folder-path": "Der Zielordnerpfad ist ungültig oder leer, bitte wählen Sie ihn erneut aus.",
-      "move-total": "",
-      "move-warning": "",
-      "move-warning-tooltip": "",
+      "move-total": "Insgesamt betrifft dies:",
+      "move-warning": "Dadurch werden ausgewählte Ordner und deren Unterelemente verschoben. Verfügbare Zielordner hängen von den ausgewählten Ressourcen ab.",
+      "move-warning-tooltip": "Sie können bereitgestellte Ressourcen nur innerhalb ihres bereitgestellten Ordners und lokale Ressourcen nur in lokale Ordner verschieben.",
       "target-folder": "Zielordner"
     },
     "counts": {
@@ -3615,7 +4968,7 @@
       "button-cancel": "Abbrechen",
       "button-delete": "Löschen",
       "button-deleting": "Wird gelöscht …",
-      "commit": "",
+      "commit": "Ordner löschen",
       "delete-warning": "Dadurch werden dieser und alle untergeordneten Ordner gelöscht. Insgesamt betrifft dies:",
       "success-message": "Ordner erfolgreich gelöscht"
     },
@@ -3680,21 +5033,21 @@
       "text": "Keine Ergebnisse für deine Abfrage gefunden"
     },
     "restore": {
-      "success": "",
-      "all-failed_one": "",
-      "all-failed_other": "",
-      "failed-count_one": "",
-      "failed-count_other": "",
-      "success-count_one": "",
-      "success-count_other": ""
+      "all-failed_one": "Fehler bei der Wiederherstellung von {{count}} Dashboard",
+      "all-failed_other": "Fehler bei der Wiederherstellung von {{count}} Dashboards",
+      "failed-count_one": "{{count}} Dashboard fehlgeschlagen",
+      "failed-count_other": "{{count}} Dashboards fehlgeschlagen",
+      "success": "Dashboards erfolgreich wiederhergestellt",
+      "success-count_one": "{{count}} Dashboard erfolgreich wiederhergestellt",
+      "success-count_other": "{{count}} Dashboards erfolgreich wiederhergestellt"
     },
     "text-this-repository-is-read-only": "Wenn Sie direkten Zugriff auf das Ziel haben, kopieren Sie den JSON und fügen Sie ihn dort ein.",
     "trash-state-manager": {
       "label": {
         "alphabetically-az": "Alphabetisch (A–Z)",
         "alphabetically-za": "Alphabetisch (Z–A)",
-        "deleted-newest": "",
-        "deleted-oldest": ""
+        "deleted-newest": "Gelöscht (Neueste zuerst)",
+        "deleted-oldest": "Gelöscht (Älteste zuerst)"
       }
     }
   },
@@ -4044,7 +5397,7 @@
       }
     },
     "tooltip-options": {
-      "label-disable-one-click": "",
+      "label-disable-one-click": "Für Ein-Klick-Elemente deaktivieren",
       "name-tooltip-mode": "Tooltip-Modus",
       "tooltip-mode-options": {
         "label-disabled": "Deaktiviert",
@@ -4118,7 +5471,7 @@
       "description": "Benutzerdefinierten Wert verwenden"
     },
     "options": {
-      "loading": "",
+      "loading": "Optionen werden geladen ...",
       "no-found": "Keine Optionen gefunden."
     }
   },
@@ -4134,7 +5487,7 @@
     },
     "scopes": {
       "apply-selected-scopes": "Anwenden",
-      "selected-scopes-label": ""
+      "selected-scopes-label": "Bereiche:"
     },
     "search-box": {
       "placeholder": "Suche oder springe zu ..."
@@ -4155,7 +5508,7 @@
     "cancel": "Abbrechen",
     "clear": "Löschen",
     "collapse": "Einklappen",
-    "disabled": "",
+    "disabled": "Deaktiviert",
     "edit": "Bearbeiten",
     "help": "Hilfe",
     "loading": "Wird geladen ...",
@@ -4194,11 +5547,11 @@
       "go-to-advisor": "Zu Advisor"
     },
     "cache-feature-highlight-page": {
-      "header": "",
-      "item-1": "",
-      "item-2": "",
-      "item-3": "",
-      "title": ""
+      "header": "Abfrage-Caching kann Ladezeiten verbessern und API-Kosten reduzieren, indem die Ergebnisse von Datenquellenabfragen temporär gespeichert werden. Wenn Sie oder andere Benutzer dieselbe Abfrage senden, kommen die Ergebnisse aus dem Cache anstatt von der Datenquelle zurück.",
+      "item-1": "Schnellere Dashboard-Ladezeiten, insbesondere für beliebte Dashboards.",
+      "item-2": "Reduzierte API-Kosten.",
+      "item-3": "Geringere Wahrscheinlichkeit, dass APIs Anfragen ratenbegrenzen oder drosseln.",
+      "title": "Abfragen mit Abfrage-Caching in Grafana Cloud optimieren"
     },
     "cloud": {
       "connections-home-page": {
@@ -4208,7 +5561,7 @@
         },
         "collector": {
           "subtitle": "Verwalten Sie die Konfiguration von Grafana Alloy, unserer Bereitstellung des OpenTelemetry Collector",
-          "title": ""
+          "title": "Sammler"
         },
         "data-sources": {
           "subtitle": "Verwalten Sie Ihre vorhandenen Datenquellenverbindungen",
@@ -4249,18 +5602,18 @@
       }
     },
     "feature-highlight-page": {
-      "foot-note": "",
-      "footer": "",
-      "footer-link": "",
-      "link-button-label": ""
+      "foot-note": "Nach der Kontoerstellung können Sie diese Instanz mit unserem Migrationsassistenten einfach <2>zu Grafana Cloud migrieren</2>.",
+      "footer": "Erstellen Sie ein kostenloses Grafana Cloud-Konto, um Datenquellenberechtigungen zu nutzen. Diese Funktion ist auch mit einer Grafana Enterprise-Lizenz verfügbar.",
+      "footer-link": "Mehr über Enterprise erfahren",
+      "link-button-label": "Konto erstellen"
     },
     "insights-feature-highlight-page": {
-      "header": "",
-      "item-1": "",
-      "item-2": "",
-      "item-3": "",
-      "item-4": "",
-      "title": ""
+      "header": "Nutzungs-Insights liefern detaillierte Informationen über die Nutzung von Datenquellen, wie die Anzahl der Aufrufe, Abfragen und Fehler, die Benutzer erlebt haben. Sie können dies verwenden, um die Benutzererfahrung zu verbessern und Probleme zu beheben.",
+      "item-1": "Den Wert Ihres Observability-Dienstes demonstrieren und verbessern, indem Sie die Benutzerinteraktion verfolgen",
+      "item-2": "Grafana leistungsfähig halten, indem Sie langsame, fehleranfällige Datenquellen identifizieren und beheben",
+      "item-3": "Ihre Instanz bereinigen, indem Sie ungenutzte Datenquellen finden und entfernen",
+      "item-4": "Individuelle Nutzungs-Insights von Datenquellen auf einen Blick in der Benutzeroberfläche prüfen, Suchergebnisse nach Nutzung und Fehlern sortieren oder detaillierte Nutzungs-Logs untersuchen",
+      "title": "Die Nutzung Ihrer Datenquellen mit Grafana Cloud verstehen"
     },
     "new-data-source-page": {
       "subTitle": {
@@ -4277,7 +5630,7 @@
       "okay": "Okay"
     },
     "not-found-datasource": {
-      "body": ""
+      "body": "Vielleicht haben Sie die URL falsch eingegeben oder das Plugin mit der ID <1></1> ist nicht verfügbar.<br/>Um eine Liste der verfügbaren Datenquellen anzuzeigen, <5>klicken Sie hier</5>."
     },
     "oss": {
       "connections-home-page": {
@@ -4293,11 +5646,11 @@
       }
     },
     "permissions-feature-highlight-page": {
-      "header": "",
-      "item-1": "",
-      "item-2": "",
-      "item-3": "",
-      "title": ""
+      "header": "Mit Datenquellenberechtigungen können Sie sensible Daten schützen, indem Sie den Zugriff auf diese Datenquelle auf bestimmte Benutzer, Teams und Rollen beschränken.",
+      "item-1": "Sensible Daten schützen, wie Sicherheitsprotokolle, Produktionsdatenbanken und persönlich identifizierbare Informationen",
+      "item-2": "Die Benutzererfahrung verbessern, indem Sie Datenquellen ausblenden, die sie nicht verwenden müssen",
+      "item-3": "Grafana-Zugriff freier teilen, wissend, dass Benutzer sensible Daten nicht unwissentlich sehen werden",
+      "title": "Sicherer Datenzugriff mit Datenquellenberechtigungen in Grafana Cloud"
     },
     "search": {
       "aria-label-search-all": "Alle durchsuchen",
@@ -4320,8 +5673,8 @@
     "versionHistory": {
       "comparison": {
         "header": {
-          "hide-json-diff": "",
-          "show-json-diff": "",
+          "hide-json-diff": "JSON-Diff ausblenden",
+          "show-json-diff": "JSON-Diff anzeigen",
           "text": "Version {{version}} aktualisiert von {{createdBy}} ({{ageString}}) {{message}}"
         },
         "select": "Wählen Sie zwei Versionen aus, um den Vergleich zu starten"
@@ -4348,7 +5701,7 @@
       "label-label": "Label",
       "label-placeholder": "z.B. Tempospuren",
       "label-required": "Dieses Feld ist erforderlich.",
-      "sub-text": "",
+      "sub-text": "<p>Definieren Sie einen Text, der die Korrelation beschreibt.</p>",
       "title": "Korrelationsbezeichnung definieren (Schritt 1 von 3)"
     },
     "configure-correlation-target-form": {
@@ -4392,7 +5745,7 @@
     },
     "source-form": {
       "control-required": "Dieses Feld ist erforderlich.",
-      "description": "",
+      "description": "Ein Datenpunkt muss allen Variablen Werte als Felder oder als Transformationsausgabe bereitstellen, damit die Korrelationsschaltfläche in der Visualisierung angezeigt wird.<br/>Hinweis: Nicht jede Variable muss unten explizit definiert werden. Eine Transformation wie <4>logfmt</4> erstellt Variablen für jedes Schlüssel-Wert-Paar.",
       "description-external-pre": "Sie haben folgende Variablen in der Ziel-URL verwendet:",
       "description-query-pre": "Sie haben folgende Variablen in der Zielabfrage verwendet:",
       "external-title": "Konfigurieren Sie die Datenquelle, die die URL verwenden soll (Schritt 3 von 3)",
@@ -4404,12 +5757,12 @@
       "results-required": "Dieses Feld ist erforderlich.",
       "source-description": "Die Ergebnisse aus der ausgewählten Quelldatenquelle verfügen über Links, die im Fenster angezeigt werden",
       "source-label": "Quelle",
-      "sub-text": ""
+      "sub-text": "<p> Definieren Sie, welche Datenquelle die Korrelation anzeigt und welche Daten zuvor definierte Variablen ersetzen. </p>"
     },
     "sub-title": "Bestimmen Sie, wie Daten aus verschiedenen Datenquellen zueinander in Beziehung stehen. Lesen Sie mehr in der <2>Dokumentation</2>",
     "target-form": {
       "control-rules": "Dieses Feld ist erforderlich.",
-      "sub-text": "",
+      "sub-text": "<p> Definieren Sie, worauf die Korrelation verlinkt. Beim Abfragetyp wird eine Abfrage ausgeführt, wenn auf die Korrelation geklickt wird. Beim externen Typ wird durch Klicken auf die Korrelation eine URL geöffnet. </p>",
       "target-description-external": "Geben Sie die URL an, die geöffnet werden soll, wenn auf den Link geklickt wird",
       "target-description-query": "Geben Sie an, welche Datenquelle beim Anklicken des Links abgefragt wird",
       "target-label": "Ziel",
@@ -4528,8 +5881,8 @@
     },
     "canvas-actions": {
       "add-panel": "Panel hinzufügen",
-      "disabled-nested-grouping": "",
-      "disabled-nested-tabs": "",
+      "disabled-nested-grouping": "Die Gruppierung ist auf 2 Ebenen begrenzt",
+      "disabled-nested-tabs": "Registerkarten können nicht in anderen Registerkarten verschachtelt werden",
       "group-into-row": "In Zeile gruppieren",
       "group-into-tab": "In Registerkarte gruppieren",
       "group-panels": "Panels gruppieren",
@@ -4539,8 +5892,8 @@
       "paste-row": "Zeile einfügen",
       "paste-tab": "Tab einfügen",
       "un-group-panels": "Gruppierung aufheben",
-      "ungroup-rows": "",
-      "ungroup-tabs": ""
+      "ungroup-rows": "Zeilen Gruppierung aufheben",
+      "ungroup-tabs": "Registerkarten Gruppierung aufheben"
     },
     "conditional-rendering": {
       "conditions": {
@@ -4598,33 +5951,33 @@
           "value": "Wert"
         },
         "wrapper": {
-          "delete-condition": "",
-          "unsupported-object-type": ""
+          "delete-condition": "Bedingung löschen",
+          "unsupported-object-type": "Diese Bedingung wird vom Element nicht unterstützt und wird daher ignoriert."
         }
       },
       "editor": {
-        "info": "",
-        "learn-more": "",
-        "not-supported-for-custom-grid": "",
-        "unsupported-object-type": ""
+        "info": "Legen Sie Regeln fest, um die Sichtbarkeit von {{type}} zu steuern, indem Sie alle oder beliebige Regeln abgleichen.",
+        "learn-more": "Mehr erfahren",
+        "not-supported-for-custom-grid": "Anzeige-/Ausblendregeln werden für Panels im benutzerdefinierten Panel-Layout nicht unterstützt. Ändern Sie das Panel-Layout in 'Automatisches Raster', um diese Funktion zu aktivieren.",
+        "unsupported-object-type": "Bedingte Anzeige wird für diesen Elementtyp nicht unterstützt"
       },
       "overlay": {
-        "tooltip": ""
+        "tooltip": "Element ist durch Anzeige-/Ausblendregeln ausgeblendet."
       },
       "root": {
         "title": "Regeln ein-/ausblenden"
       }
     },
     "confirm-plugin-dashboard-save-modal": {
-      "body-plugin-dashboard": "",
+      "body-plugin-dashboard": "Ihre Änderungen gehen beim Aktualisieren des Plugins verloren.<br/><2>Verwenden Sie <strong>Speichern unter</strong>, um eine benutzerdefinierte Version zu erstellen.</2>",
       "cancel": "Abbrechen",
       "overwrite": "Überschreiben",
       "title-plugin-dashboard": "Plugin-Dashboard"
     },
     "controls": {
       "menu": {
-        "aria-label": "",
-        "title": ""
+        "aria-label": "Option für automatische Aktualisierung",
+        "title": "Option für automatische Aktualisierung"
       }
     },
     "dash-nav": {
@@ -4642,7 +5995,7 @@
     },
     "dashboard-links-menu": {
       "aria-label-dashboard-name": "{{dashboardName}} Dashboard",
-      "label-no-dashboards-found": ""
+      "label-no-dashboards-found": "Keine Dashboards gefunden"
     },
     "dashboard-loading": {
       "cancel-loading-dashboard": "Laden des Dashboards abbrechen"
@@ -4745,16 +6098,16 @@
       "move": "Verschieben von {{typeName}}",
       "panel-background": "Panel-Hintergrund ändern",
       "panel-description": "Panel-Beschreibung ändern",
-      "panel-edit": "",
+      "panel-edit": "Panel-Änderungen",
       "panel-max-repeats-per-row": "Max. Wiederholungen pro Zeile",
       "panel-repeat-direction": "Richtung wiederholen",
       "panel-repeat-variable": "Panel-Wiederholung durch",
       "panel-title": "Panel-Titel ändern",
       "paste-panel": "Panel einfügen",
       "remove": "{{typeName}} entfernen",
-      "row-title": "",
+      "row-title": "Zeilentitel ändern",
       "switch-layout": "Layout wechseln",
-      "tab-title": ""
+      "tab-title": "Registerkartentitel ändern"
     },
     "edit-pane": {
       "elements": {
@@ -4784,8 +6137,8 @@
       },
       "variable": {
         "custom-options": {
-          "close": "",
-          "modal-title": "",
+          "close": "Schließen",
+          "modal-title": "Benutzerdefinierte Variable",
           "values": "Werte werden durch Komma getrennt"
         },
         "datasource-options": {
@@ -4833,13 +6186,13 @@
       "add-visualization-body": "Wählen Sie eine Datenquelle aus und visualisieren und fragen Sie dann Ihre Daten mit Diagrammen, Statistiken und Tabellen ab oder erstellen Sie Listen, Markierungen und andere Widgets.",
       "add-visualization-button": "Visualisierung hinzufügen",
       "add-visualization-header": "Starten Sie Ihr neues Dashboard, indem Sie eine Visualisierung hinzufügen",
-      "import-a-dashboard-body": "",
+      "import-a-dashboard-body": "Dashboards aus Dateien oder von <2>grafana.com</2> importieren.",
       "import-a-dashboard-header": "Dashboard importieren",
       "import-dashboard-button": "Dashboard importieren",
-      "show-less-dashboards": "",
-      "show-more-dashboards": "",
-      "start-with-suggested-dashboards": "",
-      "use-template-button": ""
+      "show-less-dashboards": "Weniger anzeigen",
+      "show-more-dashboards": "Mehr anzeigen",
+      "start-with-suggested-dashboards": "Mit einem vorgefertigten Dashboard aus Ihrer Datenquelle beginnen",
+      "use-template-button": "Dieses Dashboard verwenden"
     },
     "errors": {
       "failed-to-load": "Dashboard konnte nicht geladen werden"
@@ -5008,8 +6361,8 @@
       "download-logs": "Logs herunterladen",
       "download-service": "Servicediagramm herunterladen",
       "download-traces": "Traces herunterladen",
-      "excel-compatibility-mode-description": "",
-      "excel-compatibility-mode-label": "",
+      "excel-compatibility-mode-description": "Generiert eine CSV-Datei, die mit den meisten Excel-Versionen kompatibel ist",
+      "excel-compatibility-mode-label": "Für Excel herunterladen",
       "formatted": "Formatierte Daten",
       "formatted-data-description": "Tabellendaten werden mit den in den Tabs „Feld“ und „Überschreiben“ definierten Optionen formatiert",
       "formatted-data-label": "Formatierte Daten",
@@ -5052,7 +6405,7 @@
       }
     },
     "layout": {
-      "cancel": "",
+      "cancel": "Abbrechen",
       "common": {
         "copy": "Kopieren",
         "copy-or-duplicate": "Kopieren oder duplizieren",
@@ -5063,9 +6416,9 @@
         "panel-layout": "Panel-Layout",
         "panel-layout-disabled": "Wählen Sie eine Zeile oder Registerkarte, um die Panel-Layout-Optionen zu ändern"
       },
-      "continue": "",
-      "ungroup-nested-text": "",
-      "ungroup-nested-title": ""
+      "continue": "Weiter",
+      "ungroup-nested-text": "Dadurch werden alle verschachtelten Gruppen aufgehoben.",
+      "ungroup-nested-title": "Verschachtelte Gruppen Gruppierung aufheben?"
     },
     "legacy-dashboard-api": {
       "fetch-error": {
@@ -5134,15 +6487,15 @@
     },
     "panel": {
       "time-range-settings": {
-        "hide-time-info": "",
-        "hide-time-info-description": "",
-        "time-from": "",
-        "time-from-description": "",
-        "time-shift": "",
-        "time-shift-description": "",
-        "time-window-compare": "",
-        "time-window-compare-description": "",
-        "title": ""
+        "hide-time-info": "Panel-Zeitbereich ausblenden",
+        "hide-time-info-description": "Den Panel-Zeitbereich nicht im Panel-Header anzeigen",
+        "time-from": "Panel-Zeitbereich",
+        "time-from-description": "Überschreibt den Dashboard-Zeitbereich. Verwenden Sie einen der voreingestellten Werte oder geben Sie einen benutzerdefinierten Wert wie 5m oder 2h ein.",
+        "time-shift": "Zeitverschiebung",
+        "time-shift-description": "Fügt eine Zeitverschiebung relativ zum Dashboard- oder Panel-Zeitbereich hinzu. Verwenden Sie einen der voreingestellten Werte oder geben Sie einen benutzerdefinierten Wert wie 5m oder 2h ein.",
+        "time-window-compare": "Zeitvergleich",
+        "time-window-compare-description": "Daten zwischen zwei Zeitbereichen vergleichen",
+        "title": "Panel-Zeiteinstellungen"
       }
     },
     "panel-edit": {
@@ -5227,14 +6580,14 @@
       "title-row-options": "Zeilenoptionen"
     },
     "rows-layout": {
-      "cancel": "",
-      "convert-to": "",
+      "cancel": "Abbrechen",
+      "convert-to": "In {{name}} konvertieren",
       "delete-row-text": "Wenn Sie diese Zeile löschen, werden auch alle Panels entfernt. Sind Sie sicher, dass Sie fortfahren möchten?",
       "delete-row-title": "Zeile löschen?",
       "delete-row-yes": "Löschen",
       "description": "Einklappbare Panel-Gruppen mit Überschriften",
       "edit": {
-        "ungroup-rows": ""
+        "ungroup-rows": "Zeilen Gruppierung aufheben"
       },
       "header-hidden-tooltip": "Kopfzeile nur im Bearbeitungsmodus sichtbar",
       "name": "Zeilen",
@@ -5266,8 +6619,8 @@
       "row-warning": {
         "title-not-unique": "Dieser Titel ist nicht eindeutig"
       },
-      "ungroup-convert-text": "",
-      "ungroup-convert-title": ""
+      "ungroup-convert-text": "Alle Raster müssen in denselben Typ konvertiert werden, und Positionen gehen verloren.",
+      "ungroup-convert-title": "Gemischte Raster konvertieren?"
     },
     "save-dashboard": {
       "message-dashboard-saved": "Dashboard gespeichert"
@@ -5304,8 +6657,8 @@
       "title-provisioned": "Bereitgestelltes Dashboard"
     },
     "save-dashboard-error-proxy": {
-      "body-name-exists": "",
-      "body-version-mismatch": "",
+      "body-name-exists": "Ein Dashboard mit demselben Namen im ausgewählten Ordner existiert bereits.<br/><2>Möchten Sie dieses Dashboard trotzdem speichern?</2>",
+      "body-version-mismatch": "Jemand anderes hat dieses Dashboard aktualisiert.<br/><2>Möchten Sie dieses Dashboard trotzdem speichern?</2>",
       "confirmText-save-and-overwrite": "Speichern und überschreiben",
       "title-name-exists": "Widerspruch",
       "title-version-mismatch": "Widerspruch"
@@ -5323,12 +6676,11 @@
       "cancel": "Abbrechen",
       "cannot-be-saved": "Dieses Dashboard kann nicht über die Grafana-Benutzeroberfläche gespeichert werden, da es von einer anderen Quelle bereitgestellt wurde. Kopieren Sie JSON oder speichern Sie es unten in einer Datei. Anschließend können Sie Ihr Dashboard in der Bereitstellungsquelle aktualisieren.",
       "copy-json-to-clipboard": "JSON in die Zwischenablage kopieren",
-      "file-path": "",
-      "save-json-to-file": "JSON in Datei speichern",
-      "see-docs": "Weitere Informationen zur Bereitstellung finden Sie in der <2>Dokumentation</2>."
+      "file-path": "<strong>Dateipfad:</strong> {{filePath}}",
+      "save-json-to-file": "JSON in Datei speichern"
     },
     "search-panel": {
-      "no-match": ""
+      "no-match": "Keine übereinstimmenden Panels"
     },
     "share-public-dashboard-loader": {
       "loading-configuration": "Konfiguration wird geladen"
@@ -5358,7 +6710,7 @@
       "delete-tab-yes": "Löschen",
       "description": "Panels in horizontalen Tabs organisieren",
       "edit": {
-        "ungroup-tabs": ""
+        "ungroup-tabs": "Gruppierung von Registerkarten aufheben"
       },
       "name": "Tabs",
       "tab": {
@@ -5492,10 +6844,10 @@
       "save-library-panel": "Bibliotheks-Panel speichern",
       "settings": "Dashboard-Einstellungen",
       "share-button": "Teilen",
-      "star-add-error": "",
-      "star-added": "",
-      "star-remove-error": "",
-      "star-removed": "",
+      "star-add-error": "Hinzufügen zu Favoriten fehlgeschlagen",
+      "star-added": "Zu Favoriten hinzugefügt",
+      "star-remove-error": "Entfernen aus Favoriten fehlgeschlagen",
+      "star-removed": "Aus Favoriten entfernt",
       "unlink-library-panel": "Verknüpfung mit der Bibliotheksleiste aufheben",
       "unmark-favorite": "Markierung als Favorit entfernen"
     },
@@ -5522,7 +6874,7 @@
     "transformation-picker": {
       "info": "Mit Transformationen können Sie Ihre Abfrageergebnisse vor ihrer Visualisierung verbinden, berechnen, neu anordnen, ausblenden und umbenennen.",
       "info-graph-not-suitable": "Viele Transformationen sind ungeeignet, wenn Sie die Graph-Visualisierung nutzen, da derzeit nur Zeitreihen-Daten unterstützt werden.",
-      "info-switch-to-table": "",
+      "info-switch-to-table": "Es kann hilfreich sein, zur Tabellenvisualisierung zu wechseln, um die Auswirkungen einer Transformation zu verstehen.",
       "placeholder-search-for-transformation": "Nach Transformation suchen",
       "read-more": "Mehr erfahren",
       "title-transformations": "Transformationen"
@@ -5588,8 +6940,8 @@
     "version-history-comparison": {
       "button-restore": "Auf Version {{version}} wiederherstellen",
       "label-view-json-diff": "JSON-Diff anzeigen",
-      "new-updated-by": "",
-      "old-updated-by": ""
+      "new-updated-by": "**Version {{version}}** aktualisiert von {{editor}} {{timeAgo}}",
+      "old-updated-by": "**Version {{version}}** aktualisiert von {{editor}} {{timeAgo}}"
     },
     "version-history-table": {
       "aria-label-toggle-selection": "Auswahl der Version {{version}} umschalten",
@@ -5604,7 +6956,7 @@
       "title-json": "JSON"
     },
     "view-panel": {
-      "not-found": ""
+      "not-found": "Bereich nicht gefunden"
     },
     "visualization-button": {
       "aria-label-change-visualization": "Visualisierung ändern",
@@ -5650,8 +7002,6 @@
       "load": "Laden"
     },
     "gcom-field": {
-      "label": "Dashboards für gängige Anwendungen finden und importieren unter <1></1>",
-      "load-button": "Laden",
       "placeholder": "Grafana.com Dashboard URL oder ID",
       "validation-required": "Eine Grafana Dashboard URL oder ID ist erforderlich"
     },
@@ -5702,7 +7052,7 @@
     },
     "add-to-dashboard-form-exposed": {
       "title": {
-        "new-panel": ""
+        "new-panel": "Neues Panel"
       }
     },
     "annotation-settings-edit": {
@@ -5796,7 +7146,6 @@
       "type": "Typ"
     },
     "dashboard-preview-banner": {
-      "not-yet-saved": "Der Wert wird nicht in der Grafana-Datenbank gespeichert",
       "title-dashboard-loaded-external-repository": "Dieses Dashboard wird von einem externen Repository geladen",
       "title-error-loading-dashboard": "Fehler beim Laden des Dashboards"
     },
@@ -5806,8 +7155,7 @@
         "view-panel": "Panel anzeigen"
       },
       "title": {
-        "dashboard": "Dashboard",
-        "discard-changes-to-dashboard": "Änderungen am Dashboard verwerfen?"
+        "dashboard": "Dashboard"
       }
     },
     "dashboard-scene-page-state-manager": {
@@ -5894,7 +7242,7 @@
         "dynamically-switch-source-multiple-panels": "Dynamisches Wechseln der Datenquelle für mehrere Panels",
         "group": "Fügen Sie spontan Schlüssel zum Gruppieren hinzu",
         "hidden-constant-variable": "Eine ausgeblendete konstante Variable, nützlich für metrische Präfixe in Dashboards, die Sie teilen möchten",
-        "users-enter-arbitrary-strings-switch": "",
+        "users-enter-arbitrary-strings-switch": "Eine Variable, die ein- und ausgeschaltet werden kann",
         "users-enter-arbitrary-strings-textbox": "Nutzer können beliebige Zeichenfolgen in ein Textfeld eingeben",
         "values-are-static-and-defined-manually": "Werte sind statisch und manuell festgelegt",
         "values-fetched-source-query": "Werte werden über eine Datenquellenabfrage abgerufen",
@@ -5908,7 +7256,7 @@
         "group-by": "Gruppieren nach",
         "interval": "Intervall",
         "query": "Abfrage",
-        "switch": "",
+        "switch": "Schalter",
         "textbox": "Textfeld"
       }
     },
@@ -5965,9 +7313,7 @@
         }
       },
       "title-complete-git-hub-comment-clipboard": "Kopieren Sie einen kompletten GitHub-Kommentar in die Zwischenablage",
-      "title-get-help-with-this-panel": "Hilfe für dieses Panel erhalten",
-      "troubleshooting-docs": "Dokumente zur Fehlerbehebung",
-      "troubleshooting-request-help": "Um Hilfe bei der Fehlerbehebung anzufordern, senden Sie bitte einen Screenshot dieses Panels an den technischen Support von Grafana Labs. Der Snapshot enthält Abfrageantwortdaten und Panel-Einstellungen."
+      "title-get-help-with-this-panel": "Hilfe für dieses Panel erhalten"
     },
     "import-dashboard-form-v2": {
       "cancel": "Abbrechen",
@@ -5994,7 +7340,7 @@
         "cancel": "Abbrechen"
       },
       "render-save-button-and-error": {
-        "body-plugin-dashboard": "",
+        "body-plugin-dashboard": "Ihre Änderungen gehen beim Aktualisieren des Plugins verloren. Verwenden Sie <strong>Speichern unter</strong>, um eine benutzerdefinierte Version zu erstellen.",
         "title-failed-to-save-dashboard": "Dashboard konnte nicht gespeichert werden",
         "title-plugin-dashboard": "Plugin-Dashboard",
         "title-someone-else-has-updated-this-dashboard": "Eine andere Person hat dieses Dashboard aktualisiert",
@@ -6003,16 +7349,16 @@
       "save-and-overwrite": "'Speichern und überschreiben'"
     },
     "library-viz-panel-info": {
-      "last-edited": "",
+      "last-edited": "{{timeAgo}} von <person />",
       "usage-count_one": "Verwendet bei {{count}} Dashboards",
       "usage-count_other": "Verwendet bei {{count}} Dashboards"
     },
     "managed-badge": {
-      "kubectl": "",
-      "plugin": "",
-      "provisioned": "",
-      "repository": "",
-      "terraform": ""
+      "kubectl": "Verwaltet von: Kubectl",
+      "plugin": "Verwaltet von: Plugin {{id}}",
+      "provisioned": "Bereitgestellt",
+      "repository": "Verwaltet von: Repository {{title}}",
+      "terraform": "Verwaltet von: Terraform"
     },
     "move-provisioned-dashboard-form": {
       "api-error": "Dashboard konnte nicht verschoben werden",
@@ -6020,7 +7366,7 @@
       "current-file-not-found": "Die aktuelle Dashboard-Datei konnte nicht gefunden werden",
       "drawer-title": "Bereitgestelltes Dashboard verschieben",
       "file-load-error": "Fehler beim Laden des Dashboards",
-      "loading-dashboard-data": "",
+      "loading-dashboard-data": "Dashboard-Daten werden geladen",
       "move-action": "Dashboard verschieben",
       "move-read-only-message": "Dieses Dashboard kann nicht direkt von Grafana aus verschoben werden, da das Repository schreibgeschützt ist. Um dieses Dashboard zu verschieben, verschieben Sie die Datei bitte in Ihrem Git-Repository.",
       "moving": "Wird verschoben ...",
@@ -6064,7 +7410,7 @@
     },
     "panel-data-queries-tab-rendered": {
       "add-query": "Abfrage hinzufügen",
-      "expression": ""
+      "expression": "Ausdruck"
     },
     "panel-data-transformations-tab": {
       "tab-label": "Transformationen"
@@ -6122,7 +7468,7 @@
       "query": "Abfrage"
     },
     "query-variable-editor-form": {
-      "description-examples": "",
+      "description-examples": "Benannte Erfassungsgruppen können verwendet werden, um den Anzeigetext und den Wert zu trennen ( <1>siehe Beispiele</1> ).",
       "description-optional": "Optional, wenn Sie einen Teil eines Reihennamens oder eines metrischen Knotensegments extrahieren möchten.",
       "label-data-source": "Datenquelle",
       "label-static-options-sort": "Sortierung der statischen Optionen",
@@ -6183,7 +7529,7 @@
       "label-message": "Nachricht",
       "placeholder-describe-changes-optional": "Fügen Sie eine Notiz hinzu, um Ihre Änderungen zu beschreiben (optional).",
       "render-footer": {
-        "body-plugin-dashboard": "",
+        "body-plugin-dashboard": "Ihre Änderungen gehen beim Aktualisieren des Plugins verloren. Verwenden Sie <strong>Speichern unter</strong>, um eine benutzerdefinierte Version zu erstellen.",
         "no-changes-to-save": "Keine Änderungen speicherbar",
         "title-failed-to-save-dashboard": "Dashboard konnte nicht gespeichert werden",
         "title-plugin-dashboard": "Plugin-Dashboard",
@@ -6201,32 +7547,30 @@
       "save-timerange-label-update-default-time-range": "Standard-Zeitbereich aktualisieren",
       "save-variables-description-current-values-default": "Macht die aktuellen Werte zum neuen Standard",
       "save-variables-label-update-default-variable-values": "Standard-Variablenwerte aktualisieren",
-      "show-variables-warning-alert-body": "",
-      "show-variables-warning-alert-title": ""
+      "show-variables-warning-alert-body": "Einige Variablen konnten nicht geladen werden. Wenn Sie „Standardwerte der Variablen aktualisieren“ aktiviert lassen, werden die aktuellen (fehlerhaften) Werte zu den Dashboard-Standardwerten. Sie können trotzdem speichern oder die Option deaktivieren, um das Speichern dieser (fehlerhaften) Werte zu vermeiden.",
+      "show-variables-warning-alert-title": "Variablenabfragen fehlgeschlagen"
     },
     "save-library-viz-panel-modal": {
+      "affected-dashboards_one": "Dieses Update wirkt sich auf <1>{{count}} Dashboards aus.</1> Die folgenden Dashboards, die das Panel nutzen, sind betroffen:",
+      "affected-dashboards_other": "Dieses Update wirkt sich auf <1>{{count}} Dashboards aus.</1> Die folgenden Dashboards, die das Panel nutzen, sind betroffen:",
       "cancel": "Abbrechen",
       "dashboard-name": "Dashboard-Name",
       "discard": "Verwerfen",
       "loading-connected-dashboards": "Verbundene Dashboards werden geladen …",
       "placeholder-search-affected-dashboards": "Betroffene Dashboards suchen",
-      "update-all": "Alles aktualisieren",
-      "affected-dashboards_one": "Dieses Update wirkt sich auf <1>{{count}} Dashboards aus.</1> Die folgenden Dashboards, die das Panel nutzen, sind betroffen:",
-      "affected-dashboards_other": "Dieses Update wirkt sich auf <1>{{count}} Dashboards aus.</1> Die folgenden Dashboards, die das Panel nutzen, sind betroffen:"
+      "update-all": "Alles aktualisieren"
     },
     "save-provisioned-dashboard-form": {
       "api-error": "Fehler beim Speichern des Dashboards",
       "cancel": "Abbrechen",
-      "cannot-be-saved": "Dieses Dashboard kann nicht über die Grafana-Benutzeroberfläche gespeichert werden, da es von einer anderen Quelle bereitgestellt wurde. Kopieren Sie JSON oder speichern Sie es unten in einer Datei. Anschließend können Sie Ihr Dashboard in der Bereitstellungsquelle aktualisieren.",
       "copy-json-to-clipboard": "JSON in die Zwischenablage kopieren",
-      "file-path": "",
+      "file-path": "<strong>Dateipfad:</strong> {{filePath}}",
       "label-description": "Beschreibung",
       "label-target-folder": "Zielordner",
       "label-title": "Titel",
       "save": "Speichern",
       "save-json-to-file": "JSON in Datei speichern",
       "saving": "Wird gespeichert …",
-      "see-docs": "Weitere Informationen zur Bereitstellung finden Sie in der <2>Dokumentation</2>.",
       "title-required": "Dashboard-Titel ist erforderlich",
       "title-same-as-folder": "Der Dashboard-Name darf nicht mit dem Ordnernamen identisch sein",
       "title-validation-failed": "Die Validierung des Dashboard-Titels ist fehlgeschlagen."
@@ -6261,16 +7605,16 @@
       }
     },
     "switch-variable-form": {
-      "disabled-value": "",
-      "disabled-value-description": "",
-      "disabled-value-placeholder": "",
-      "enabled-value": "",
-      "enabled-value-description": "",
-      "enabled-value-placeholder": "",
-      "same-values-error": "",
-      "switch-options": "",
-      "value-pair-type": "",
-      "value-pair-type-description": ""
+      "disabled-value": "Deaktivierter Wert",
+      "disabled-value-description": "Wert, wenn der Schalter deaktiviert ist",
+      "disabled-value-placeholder": "z. B. Aus, Deaktiviert, Inaktiv",
+      "enabled-value": "Aktivierter Wert",
+      "enabled-value-description": "Wert, wenn der Schalter aktiviert ist",
+      "enabled-value-placeholder": "z. B. Ein, Aktiviert, Aktiv",
+      "same-values-error": "Aktivierte und deaktivierte Werte dürfen nicht identisch sein",
+      "switch-options": "Schalteroptionen",
+      "value-pair-type": "Wertpaartyp",
+      "value-pair-type-description": "Wählen Sie den Werttyp für die Schalterzustände"
     },
     "text-box-variable": {
       "name-default-value": "Standardwert"
@@ -6281,6 +7625,9 @@
     },
     "textbox-variable-form": {
       "label-value": "Wert"
+    },
+    "title": {
+      "discard-changes-to-dashboard": "Änderungen am Dashboard verwerfen?"
     },
     "title-field-label": {
       "title": "Titel"
@@ -6326,7 +7673,7 @@
       "content-variable-referenced-other-variables-dashboard": "Diese Variable wird von anderen Variablen oder Dashboards referenziert."
     },
     "variable-controls": {
-      "add-variable": ""
+      "add-variable": "Hinzufügen"
     },
     "variable-editor-form": {
       "aria-label-variable-editor-form": "Variablen-Editor-Formular",
@@ -6389,8 +7736,8 @@
     },
     "version-history-comparison": {
       "label-view-json-diff": "JSON-Diff anzeigen",
-      "new-version-updated": "",
-      "old-version-updated": ""
+      "new-version-updated": "<strong>Version {{version}}</strong> wurde von {{editor}} {{timeAgo}} aktualisiert",
+      "old-version-updated": "<strong>Version {{version}}</strong> wurde von {{editor}} {{timeAgo}} aktualisiert"
     },
     "version-history-header": {
       "compare-versions": "Vergleich von {{baseVersion}} <3></3> {{newVersion}}",
@@ -6468,7 +7815,7 @@
     "provisioned-delete-modal": {
       "confirm-button": "OK",
       "text-1": "Dieses Dashboard wird von der Grafana-Bereitstellung verwaltet und kann nicht gelöscht werden. Entfernen Sie das Dashboard aus der Konfigurationsdatei, um es zu löschen.",
-      "text-2": "",
+      "text-2": "Weitere Informationen zum Provisioning finden Sie in der Grafana-Dokumentation.",
       "text-3": "Dateipfad: {{provisionedId}}",
       "text-link": "Zur Dokumentationsseite gehen",
       "title": "Das bereitgestellte Dashboard kann nicht gelöscht werden"
@@ -6495,7 +7842,7 @@
   },
   "dashboards": {
     "panel-queries": {
-      "add-from-saved-queries": ""
+      "add-from-saved-queries": "Von gespeicherten Abfragen hinzufügen"
     },
     "settings": {
       "variables": {
@@ -6546,7 +7893,7 @@
   },
   "data-source-testing-status-page": {
     "error-more-details-link": "Klicken Sie <2>hier</2>, um mehr über diesen Fehler zu erfahren.",
-    "success-more-details-links": ""
+    "success-more-details-links": "Als Nächstes können Sie mit der Visualisierung von Daten beginnen, indem Sie ein <2>Dashboard erstellen</2> oder Daten in der <5>Explore-Ansicht</5> abfragen."
   },
   "data-sources": {
     "datasource-add-button": {
@@ -6642,20 +7989,17 @@
       "test": "Test"
     },
     "cloud-info-box": {
-      "body-alert": "",
+      "body-alert": "Oder sparen Sie sich den Aufwand und erhalten Sie {{mainDS}} (und {{extraDS}}) als vollständig verwaltete, skalierbare und gehostete Datenquellen von Grafana Labs mit dem <6>lebenslang kostenlosen Grafana Cloud Plan</6> .",
       "title-alert": "Konfigurieren Sie unten Ihre {{mainDS}} Datenquelle"
     },
     "dashboards-table": {
       "aria-label-delete-dashboard": "Dashboard löschen",
       "import": "Importieren"
     },
-    "data-source-categories": {
-      "find-more-data-source-plugins": "Weitere Datenquellen-Plugins finden"
-    },
     "data-source-load-error": {
       "back": "Zurück",
       "delete": "Löschen",
-      "not-found": ""
+      "not-found": "Datenquelle nicht gefunden"
     },
     "data-source-missing-rights-message": {
       "title-missing-rights": "Fehlende Rechte"
@@ -6723,7 +8067,7 @@
         "service-now-integration-and-data-source": "ServiceNow-Integration und -Datenquelle",
         "signal-fx-integration-and-datasource": "SignalFx-Integration und -Datenquelle",
         "snowflake-integration-and-data-source": "Snowflake-Integration und -Datenquelle",
-        "solarwinds-datasource": "",
+        "solarwinds-datasource": "SolarWinds-Datenquelle",
         "sumo-logic-integration-and-datasource": "SumoLogic-Integration und -Datenquelle",
         "visualize-and-explore-dynatrace-data": "Dynatrace-Daten visualisieren und untersuchen",
         "visualize-and-explore-oracle-sql": "Oracle SQL visualisieren und untersuchen",
@@ -6770,18 +8114,18 @@
       "no-events-yet": "Bisher keine Ereignisse"
     },
     "render-info-viewer": {
-      "data-counter": "",
+      "data-counter": "Daten: {{numDataChanges}}",
       "elapsed-time": "Zeit: {{elapsed}} ms",
       "field": "Feld",
       "last": "Zuletzt",
-      "render-counter": "",
-      "schema-counter": "",
+      "render-counter": "Rendern: {{numRenders}}",
+      "schema-counter": "Schema: {{numSchemaChanges}}",
       "title-reset-counters": "Zähler zurücksetzen",
       "tooltip-step-back": "Schritt zurück",
       "type": "Typ"
     },
     "state-view": {
-      "current-value": "",
+      "current-value": "Aktueller Wert: {{currentValue}}",
       "label-state-name": "Statusname"
     }
   },
@@ -6900,7 +8244,7 @@
       "duplicate-value-mapping-aria-label-duplicate-value-mapping": "Zuordnung doppelter Werte",
       "duplicate-value-mapping-tooltip-duplicate": "Duplikat",
       "placeholder-exact-value-to-match": "Exakter Wert zur Übereinstimmung",
-      "placeholder-from": "",
+      "placeholder-from": "Ab",
       "placeholder-optional-display-text": "Optionaler Anzeigetext",
       "placeholder-regular-expression": "Regulärer Ausdruck",
       "placeholder-to": "Bis",
@@ -7192,7 +8536,7 @@
       "fields": "Felder",
       "reset": "Zurücksetzen",
       "selected-fields": "Ausgewählte Felder",
-      "suggested-fields": ""
+      "suggested-fields": "Vorgeschlagen"
     },
     "logs-table-wrap": {
       "aria-label-select-query-by-name": "Abfrage nach Name auswählen",
@@ -7229,7 +8573,7 @@
       },
       "footer": {
         "learn-more": "Mehr erfahren",
-        "pro-tip-define-sources-through-configuration-files": ""
+        "pro-tip-define-sources-through-configuration-files": "Profi-Tipp: Sie können Datenquellen auch über Konfigurationsdateien definieren."
       }
     },
     "pane": {
@@ -7291,6 +8635,10 @@
       "query-deleted": "Abfrage gelöscht"
     },
     "rich-history-queries-tab": {
+      "displaying-partial-queries_one": "Zeigt {{ count }} Abfrage",
+      "displaying-partial-queries_other": "Zeigt {{ count }} Abfragen",
+      "displaying-queries_one": "{{ count }} Abfrage",
+      "displaying-queries_other": "{{ count }} Abfragen",
       "filter-aria-label": "Filterabfragen nach Datenquelle(n)",
       "filter-history": "Filterverlauf",
       "filter-placeholder": "Filterabfragen nach Datenquelle(n)",
@@ -7300,14 +8648,9 @@
       "search-placeholder": "Suchabfragen",
       "showing-queries": "Zeige {{ shown }} von {{ total }} <0>Mehr laden</0>",
       "sort-aria-label": "Abfragen sortieren",
-      "sort-placeholder": "Abfragen sortieren nach",
-      "displaying-partial-queries_one": "",
-      "displaying-partial-queries_other": "",
-      "displaying-queries_one": "",
-      "displaying-queries_other": ""
+      "sort-placeholder": "Abfragen sortieren nach"
     },
     "rich-history-settings-tab": {
-      "alert-info": "Grafana hält Einträge bis {{optionLabel}}. Markierte Einträge werden nicht gelöscht.",
       "change-default-tab": "Ändern Sie den aktiven Standard-Tab von „Abfragehistorie“ zu „Markiert“",
       "clear-history-info": "Lösche den gesamten Abfrageverlauf dauerhaft.",
       "clear-query-history": "Abfrageverlauf löschen",
@@ -7626,8 +8969,8 @@
     },
     "math": {
       "available-math-functions": "Verfügbare mathematische Funktionen",
-      "run-math-operations": "",
-      "tooltip-footer": "",
+      "run-math-operations": "Mathematische Operationen für eine oder mehrere Abfragen ausführen. Sie referenzieren die Abfrage über {{refExample}}, z. B. {{ref1}}, {{ref2}}, {{ref3}} usw.<br/>Beispiel: <12>{{example}}</12>",
+      "tooltip-footer": "Siehe unsere zusätzliche Dokumentation zu <2>Mathematische Ausdrücke</2> .",
       "tooltip-title": "Mathematik-Operator",
       "tooltip-trigger": "Ausdruck"
     },
@@ -7672,10 +9015,10 @@
   },
   "folders": {
     "api": {
-      "folder-delete-error-provisioned": "",
+      "folder-delete-error-provisioned": "Bereitgestellter Ordner kann nicht gelöscht werden. Um ihn zu entfernen, löschen Sie ihn aus dem Repository und synchronisieren Sie, um die Änderungen anzuwenden.",
       "folder-deleted-success": "Ordner gelöscht",
-      "folder-move-error-provisioned": "",
-      "folder-moved-success": ""
+      "folder-move-error-provisioned": "Bereitgestellter Ordner kann nicht verschoben werden. Um ihn zu verschieben, verschieben Sie ihn im Repository und synchronisieren Sie, um die Änderungen anzuwenden.",
+      "folder-moved-success": "Ordner verschoben"
     },
     "get-loading-nav": {
       "main": {
@@ -7711,7 +9054,7 @@
   },
   "gauge": {
     "category-gauge": "Anzeige",
-    "category-radial-bar": "",
+    "category-radial-bar": "Anzeige",
     "description-min-height": "Minimale Zeilenhöhe (horizontale Ausrichtung)",
     "description-min-width": "Minimale Spaltenbreite (vertikale Ausrichtung)",
     "description-neutral": "Leer lassen, um Min. als neutralen Punkt zu verwenden",
@@ -7728,7 +9071,7 @@
     "name-show-threshold-labels": "Schwellenwert-Labels anzeigen",
     "name-show-threshold-markers": "Schwellenwert-Markierungen anzeigen",
     "placeholder-neutral": "auto",
-    "threshold": ""
+    "threshold": "Schwellenwert {{value}}"
   },
   "gen-ai": {
     "apply-suggestion": "Anwenden",
@@ -8053,26 +9396,26 @@
           "todaySoFar": "Heute bisher",
           "yesterday": "Gestern"
         },
-        "lastNDays_one": "",
-        "lastNDays_other": "",
-        "lastNHours_one": "",
-        "lastNHours_other": "",
-        "lastNMinutes_one": "",
-        "lastNMinutes_other": "",
-        "lastNMonths_one": "",
-        "lastNMonths_other": "",
-        "lastNYears_one": "",
-        "lastNYears_other": "",
-        "nextNDays_one": "",
-        "nextNDays_other": "",
-        "nextNHours_one": "",
-        "nextNHours_other": "",
-        "nextNMinutes_one": "",
-        "nextNMinutes_other": "",
-        "nextNMonths_one": "",
-        "nextNMonths_other": "",
-        "nextNYears_one": "",
-        "nextNYears_other": ""
+        "lastNDays_one": "Letzter {{count}} Tag",
+        "lastNDays_other": "Letzte {{count}} Tage",
+        "lastNHours_one": "Letzte {{count}} Stunde",
+        "lastNHours_other": "Letzte {{count}} Stunden",
+        "lastNMinutes_one": "Letzte {{count}} Minute",
+        "lastNMinutes_other": "Letzte {{count}} Minuten",
+        "lastNMonths_one": "Letzter {{count}} Monat",
+        "lastNMonths_other": "Letzte {{count}} Monate",
+        "lastNYears_one": "Letztes {{count}} Jahr",
+        "lastNYears_other": "Letzte {{count}} Jahre",
+        "nextNDays_one": "Nächster {{count}} Tag",
+        "nextNDays_other": "Nächste {{count}} Tage",
+        "nextNHours_one": "Nächste {{count}} Stunde",
+        "nextNHours_other": "Nächste {{count}} Stunden",
+        "nextNMinutes_one": "Nächste {{count}} Minute",
+        "nextNMinutes_other": "Nächste {{count}} Minuten",
+        "nextNMonths_one": "Nächster {{count}} Monat",
+        "nextNMonths_other": "Nächste {{count}} Monate",
+        "nextNYears_one": "Nächstes {{count}} Jahr",
+        "nextNYears_other": "Nächste {{count}} Jahre"
       }
     },
     "valueFormats": {
@@ -8499,10 +9842,10 @@
         "action-title": "Titel",
         "action-title-placeholder": "Titel der Aktion",
         "action-variables": "Variable",
-        "connection": "",
-        "connection-direct-description": "",
-        "connection-direct-label": "",
-        "connection-placeholder": "",
+        "connection": "Verbindung",
+        "connection-direct-description": "Anfrage direkt über den Browser senden",
+        "connection-direct-label": "Direkt vom Browser",
+        "connection-placeholder": "Verbindung auswählen",
         "one-click-description": "Der Ein-Klick-Modus kann nur für einen Link oder eine Aktion gleichzeitig aktiviert werden"
       }
     },
@@ -8665,7 +10008,7 @@
     },
     "data-source-http-settings": {
       "access-help": "Hilfe <1></1>",
-      "access-help-details": "",
+      "access-help-details": "Der Zugriffsmodus steuert, wie Anfragen an die Datenquelle verarbeitet werden. <strong><i>Server</i></strong> sollte bevorzugt werden, wenn nichts anderes angegeben ist.",
       "access-help-title": "Hilfe öffnen",
       "access-label": "Zugang",
       "allowed-cookies": "Erlaubte Cookies ",
@@ -8782,7 +10125,7 @@
       "close": "Schließen"
     },
     "error-boundary": {
-      "title": ""
+      "title": "Ein unerwarteter Fehler ist aufgetreten"
     },
     "feature-badge": {
       "experimental": "Experimentell",
@@ -8890,7 +10233,7 @@
       "tooltip-show": "Passwort anzeigen"
     },
     "range-slider": {
-      "drag-handle-aria-label": ""
+      "drag-handle-aria-label": "Verwenden Sie die Pfeiltasten, um den Wert zu ändern"
     },
     "row-expander": {
       "aria-label-expand": "Zeile ausklappen",
@@ -8921,7 +10264,7 @@
       "y-axis-usage": "Rechte y-Achse verwenden"
     },
     "slider": {
-      "drag-handle-aria-label": ""
+      "drag-handle-aria-label": "Verwenden Sie die Pfeiltasten, um den Wert zu ändern"
     },
     "spinner": {
       "aria-label": "Wird geladen"
@@ -8936,7 +10279,7 @@
       "cell-inspect": "Wert prüfen",
       "cell-inspect-tooltip": "Wert prüfen",
       "copy": "In Zwischenablage kopieren",
-      "csv-counts": "",
+      "csv-counts": "Zeilen:{{rows}}, Spalten:{{columns}}",
       "csv-placeholder": "CSV hier eingeben …",
       "filter-placeholder": "Filterwerte",
       "filter-popup-apply": "Ok",
@@ -8948,7 +10291,7 @@
       "filter-popup-match-case": "Groß-/Kleinschreibung beachten",
       "footer": {
         "reducer": {
-          "count": ""
+          "count": "Anzahl"
         }
       },
       "inspect-drawer-title": "Wert prüfen",
@@ -9181,8 +10524,8 @@
       "make-time-range-permanent": "Zeitspanne absolut/dauerhaft machen",
       "move-time-range-back": "Zeitspanne zurück bewegen",
       "move-time-range-forward": "Zeitbereich nach vorne verschieben",
-      "open-alerting": "",
-      "open-assistant": "",
+      "open-alerting": "Zu Alarmierungen wechseln",
+      "open-assistant": "Assistenten öffnen",
       "open-search": "Suche öffnen",
       "open-share-embed-drawer": "Panel-Integration teilen",
       "open-share-link-drawer": "Panel-Link teilen",
@@ -9221,6 +10564,11 @@
     "name-line-width": "Linienbreite",
     "name-stacking": "Stapeln"
   },
+  "insight-finder": {
+    "main-settings": {
+      "view-manage-config": "Ihre Konfiguration anzeigen und verwalten"
+    }
+  },
   "inspector": {
     "inspect-data-tab": {
       "loading": "Wird geladen",
@@ -9244,12 +10592,12 @@
       "refresh": "Aktualisieren"
     },
     "query-inspector": {
-      "query-inspector": "Abfrage-Inspektor",
-      "text-loading-query-inspector": "Abfrageinspektor wird geladen ...",
       "count-frames_one": "{{count}} Frames, ",
       "count-frames_other": "{{count}} Frames, ",
       "count-rows_one": "{{count}} Zeilen",
-      "count-rows_other": "{{count}} Zeilen"
+      "count-rows_other": "{{count}} Zeilen",
+      "query-inspector": "Abfrage-Inspektor",
+      "text-loading-query-inspector": "Abfrageinspektor wird geladen ..."
     }
   },
   "invites": {
@@ -9384,7 +10732,7 @@
       "error-fetching": "Fehler beim Abrufen der LDAP-Einstellungen",
       "error-saving": "Fehler beim Speichern der LDAP-Einstellungen",
       "error-validate-form": "Fehler beim Überprüfen der LDAP-Einstellungen",
-      "feature-flag-disabled": "",
+      "feature-flag-disabled": "Diese Seite ist nur zugänglich, wenn das <strong>ssoSettingsLDAP</strong> Feature-Flag aktiviert ist.",
       "saved": "LDAP-Einstellungen gespeichert"
     },
     "bind-dn": {
@@ -9400,7 +10748,7 @@
       "discard-button": "Verwerfen",
       "save-and-enable-button": "Speichern und aktivieren",
       "save-button": "Speichern",
-      "test-button": ""
+      "test-button": "Test"
     },
     "documentation": "Dokumentation",
     "host": {
@@ -9425,7 +10773,7 @@
       "label": "Suchbasis-DNS",
       "placeholder": "Beispiel: dc=grafana,dc=org"
     },
-    "subtitle": "",
+    "subtitle": "Die LDAP-Integration in Grafana ermöglicht Ihren Grafana-Benutzern die Anmeldung mit ihren LDAP-Anmeldedaten. Erfahren Sie mehr in unserer <2><0>Dokumentation</0></2> .",
     "title": "Grundeinstellungen"
   },
   "library-panel": {
@@ -9469,7 +10817,7 @@
       "dashboard-name": "Dashboard-Name"
     },
     "library-panel-info": {
-      "last-edited": "",
+      "last-edited": "Zuletzt bearbeitet am {{timeAgo}} von <person />",
       "usage-count_one": "Verwendet bei {{count}} Dashboards",
       "usage-count_other": "Verwendet bei {{count}} Dashboards"
     },
@@ -9481,15 +10829,15 @@
     },
     "loading-panel-text": "Bibliotheks-Panel wird geladen",
     "modal": {
+      "body_one": "Dieses Fenster wird in {{count}} Dashboard verwendet. Bitte wählen Sie aus, in welchem Dashboard Sie das Fenster sehen möchten:",
+      "body_other": "Dieses Fenster wird in {{count}} Dashboards verwendet. Bitte wählen Sie aus, in welchem Dashboard Sie das Fenster sehen möchten:",
       "button-cancel": "Abbrechen",
       "button-view-panel1": "Fenster in {{label}} anzeigen...",
       "button-view-panel2": "Fenster im Dashboard anzeigen...",
       "panel-not-linked": "Fenster ist nicht mit einem Dashboard verbunden. Fügen Sie das Fenster einem Dashboard hinzu und versuchen Sie es erneut.",
       "select-no-options-message": "Keine Dashboards gefunden",
       "select-placeholder": "Tippen, um nach Dashboard zu suchen",
-      "title": "Fenster im Dashboard anzeigen",
-      "body_one": "Dieses Fenster wird in {{count}} Dashboard verwendet. Bitte wählen Sie aus, in welchem Dashboard Sie das Fenster sehen möchten:",
-      "body_other": "Dieses Fenster wird in {{count}} Dashboards verwendet. Bitte wählen Sie aus, in welchem Dashboard Sie das Fenster sehen möchten:"
+      "title": "Fenster im Dashboard anzeigen"
     },
     "panel-library-options-group": {
       "create-new-library-panel": "Neues Bibliotheks-Panel erstellen"
@@ -9504,10 +10852,10 @@
       "dashboard-name": "Dashboard-Name",
       "discard": "Verwerfen",
       "loading-connected-dashboards": "Verbundene Dashboards werden geladen …",
-      "placeholder-search-affected-dashboards": "Betroffene Dashboards suchen",
-      "update-all": "Alles aktualisieren",
       "num-affected_one": "Dieses Update wirkt sich auf <1>{{count}} Dashboards aus.</1>",
-      "num-affected_other": "Dieses Update wirkt sich auf <1>{{count}} Dashboards aus.</1>"
+      "num-affected_other": "Dieses Update wirkt sich auf <1>{{count}} Dashboards aus.</1>",
+      "placeholder-search-affected-dashboards": "Betroffene Dashboards suchen",
+      "update-all": "Alles aktualisieren"
     }
   },
   "link": {
@@ -9523,7 +10871,7 @@
     },
     "share-panel": {
       "config-description": "Erstellen Sie einen personalisierten, direkten Link, um Ihr Panel innerhalb Ihrer Organisation mit den folgenden Anpassungseinstellungen zu teilen:",
-      "copy-image-link": "",
+      "copy-image-link": "Bildlink kopieren",
       "download-image": "Bild herunterladen",
       "render-image": "Bild erstellen"
     }
@@ -9609,27 +10957,27 @@
       "label-signature": "Signatur"
     },
     "description-enable-infinite-scrolling": "Experimentell. Fordern Sie weitere Ergebnisse an, indem Sie zum Ende der Logs-Liste scrollen.",
-    "description-enable-logs-highlighting": "",
+    "description-enable-logs-highlighting": "Verwenden Sie ein vordefiniertes Farbschema, um relevante Teile der Logzeilen hervorzuheben.",
     "description-show-controls": "Anzeige von Steuerelementen für den Sprung zur letzten oder ersten Log-Linie und Filtern nach Log-Ebene",
-    "description-show-log-attributes": "",
+    "description-show-log-attributes": "Experimentell. Wenn OTel-Logs angezeigt werden, fügen Sie ein zusätzliches Anzeigefeld mit relevanten Schlüssel-Wert-Paaren aus Labels und Metadaten hinzu.",
     "field-selector": {
-      "aria-label-drag-and-drop-icon": "",
-      "clear-button": "",
-      "collapse": "",
-      "expand": "",
-      "label-title": "",
-      "placeholder-search-fields-by-name": "",
-      "title-drag-and-drop-to-reorder": ""
+      "aria-label-drag-and-drop-icon": "Ziehen-und-Ablegen-Symbol",
+      "clear-button": "Löschen",
+      "collapse": "Seitenleiste einklappen",
+      "expand": "Seitenleiste ausklappen",
+      "label-title": "{{fieldName}} erscheint in {{percentage}}% der Logzeilen",
+      "placeholder-search-fields-by-name": "Felder nach Name suchen",
+      "title-drag-and-drop-to-reorder": "Ziehen und Ablegen zum Neuordnen"
     },
     "fields": {
       "type": {
         "loki": {
-          "indexed-label_one": "",
-          "indexed-label_other": "",
-          "parsedl-label_one": "",
-          "parsedl-label_other": "",
-          "structured-metadata_one": "",
-          "structured-metadata_other": ""
+          "indexed-label_one": "Indiziertes Label",
+          "indexed-label_other": "Indiziertes Label",
+          "parsedl-label_one": "Geparstes Feld",
+          "parsedl-label_other": "Geparstes Feld",
+          "structured-metadata_one": "Strukturierte Metadaten",
+          "structured-metadata_other": "Strukturierte Metadaten"
         }
       }
     },
@@ -9708,15 +11056,15 @@
       "fields-section": "Felder",
       "hide-log-line": "Log-Linie ausblenden",
       "inline-mode": "Inline anzeigen",
-      "link-value-tooltip": "",
+      "link-value-tooltip": "Link-Wert",
       "links-section": "Links",
-      "log-attributes-field": "",
+      "log-attributes-field": "OTel-Attribute",
       "log-line-field": "Log-Zeile",
       "log-line-section": "Log-Linie",
       "move-displayed-field-down": "Nach unten",
       "move-displayed-field-up": "Nach oben",
       "no-details": "Keine anzuzeigenden Felder.",
-      "open-assistant": "",
+      "open-assistant": "Logzeile im Assistenten erklären",
       "pin-line": "Log anheften",
       "remove-displayed-field": "Feld entfernen",
       "remove-log": "Log entfernen",
@@ -9729,11 +11077,11 @@
       "show-log-line": "Log-Linie anzeigen",
       "sidebar-mode": "Rechts verankern",
       "trace": {
-        "error-message": "",
-        "error-tooltip": "",
-        "loading-message": ""
+        "error-message": "Trace konnte nicht abgerufen werden.",
+        "error-tooltip": "Der Trace wurde möglicherweise gesampelt oder ist vorübergehend nicht verfügbar.",
+        "loading-message": "Trace wird geladen..."
       },
-      "trace-section": "",
+      "trace-section": "Trace",
       "unpin-line": "Log nicht mehr anheften"
     },
     "log-line-menu": {
@@ -9742,8 +11090,8 @@
       "hide-details": "Logdetails anzeigen",
       "icon-label": "Protokollmenü",
       "log-line": "Log-Zeile",
-      "log-line-explainer": "",
-      "open-assistant": "",
+      "log-line-explainer": "Logzeile prägnant erklären",
+      "open-assistant": "Logzeile im Assistenten erklären",
       "pin-to-outline": "Protokoll anheften",
       "show-context": "Kontext anzeigen",
       "show-details": "Logdetails ausblenden",
@@ -9774,7 +11122,7 @@
       "tooltip-unpin-line": "Zeile lösen"
     },
     "log-row-message": {
-      "ellipsis": "",
+      "ellipsis": "…",
       "more": "mehr",
       "see-details": "Protokolldetails anzeigen",
       "tooltip-error": "Fehler: {{errorMessage}}"
@@ -9801,7 +11149,7 @@
       }
     },
     "logs-controls": {
-      "collapse": "",
+      "collapse": "Einklappen",
       "deduplication": "Deduplizierung",
       "disable-prettify-json": "JSON-Logs einklappen",
       "display-level-all": "Alle Ebenen",
@@ -9812,38 +11160,38 @@
         "txt": "txt"
       },
       "escape-newlines": "Falsch dargestellte Zeilenumbrüche und Tab-Sequenzen in Log-Zeilen korrigieren",
-      "expand": "",
-      "filter-levels": "",
-      "font-large": "",
-      "font-small": "",
+      "expand": "Ausklappen",
+      "filter-levels": "Ebenen filtern",
+      "font-large": "Große Schrift einstellen",
+      "font-small": "Kleine Schrift einstellen",
       "hide-search": "Suche schließen",
       "hide-timestamps": "Zeitstempel ausblenden",
       "hide-unique-labels": "Eindeutige Labels ausblenden",
       "label": {
-        "collapse": "",
-        "disable-highlighting": "",
-        "enable-highlighting": "",
-        "escape-newlines": "",
-        "expand": ""
+        "collapse": "Erweitert",
+        "disable-highlighting": "Text hervorheben",
+        "enable-highlighting": "Klartext",
+        "escape-newlines": "Zeilenumbrüche maskieren",
+        "expand": "Eingeklappt"
       },
       "labels": {
-        "font-large": "",
-        "font-small": "",
-        "hide-search": "",
-        "newest-first": "",
-        "oldest-first": "",
-        "show-search": ""
+        "font-large": "Große Schrift",
+        "font-small": "Kleine Schrift",
+        "hide-search": "Suche schließen",
+        "newest-first": "Neueste Logs zuerst",
+        "oldest-first": "Älteste Logs zuerst",
+        "show-search": "Logs suchen"
       },
       "line-wrapping": {
-        "enable": "",
-        "enable-prettify": "",
-        "hide": "",
+        "enable": "Zeilenumbruch aktivieren",
+        "enable-prettify": "Zeilenumbruch und JSON-Formatierung aktivieren",
+        "hide": "Zeilenumbruch deaktivieren",
         "state": {
-          "hide": "",
-          "json": "",
-          "wrap": ""
+          "hide": "Umbruch deaktiviert",
+          "json": "JSON umbrechen",
+          "wrap": "Zeilen umbrechen"
         },
-        "tooltip": ""
+        "tooltip": "Zeilenumbruch festlegen"
       },
       "newest-first": "Sortiert nach neuesten Logs zuerst – klicken Sie, um die ältesten zuerst anzuzeigen",
       "oldest-first": "Sortiert nach ältesten Logs zuerst – klicken Sie, um die neuesten zuerst anzuzeigen",
@@ -9857,20 +11205,20 @@
       "show-timestamps": "Zeitstempel anzeigen",
       "show-unique-labels": "Eindeutige Labels anzeigen",
       "timestamp": {
-        "hide": "",
-        "label": "",
-        "label-hide": "",
-        "label-ms": "",
-        "label-ns": "",
-        "milliseconds": "",
-        "nanoseconds": "",
-        "tooltip": ""
+        "hide": "Zeitstempel ausblenden",
+        "label": "Protokollzeitstempel",
+        "label-hide": "Zeitstempel ausblenden",
+        "label-ms": "Millisekunden anzeigen",
+        "label-ns": "Nanosekunden anzeigen",
+        "milliseconds": "Millisekunden-Zeitstempel anzeigen",
+        "nanoseconds": "Nanosekunden-Zeitstempel anzeigen",
+        "tooltip": "Zeitstempelformat einstellen"
       },
       "tooltip": {
-        "disable-highlighting": "",
-        "download": "",
-        "enable-highlighting": "",
-        "filter-level": ""
+        "disable-highlighting": "Hervorhebung deaktivieren",
+        "download": "Herunterladen",
+        "enable-highlighting": "Hervorhebung aktivieren",
+        "filter-level": "Protokollergebnisse nach Schweregrad filtern"
       },
       "unwrap-lines": "Zeilenumbruch aufheben",
       "wrap-lines": "Zeilen umbrechen"
@@ -9889,14 +11237,14 @@
     },
     "name-common-labels": "Allgemeine Labels",
     "name-deduplication": "Deduplizierung",
-    "name-details-mode": "",
+    "name-details-mode": "Modus des Protokolldetailbereichs",
     "name-details-options": {
       "label-inline": "Inline",
       "label-sidebar": "Seitenleiste"
     },
     "name-enable-infinite-scrolling": "Unbegrenztes Scrollen aktivieren",
     "name-enable-log-details": "Log-Details aktivieren",
-    "name-enable-logs-highlighting": "",
+    "name-enable-logs-highlighting": "Protokollhervorhebung aktivieren",
     "name-font-size": "Schriftgröße",
     "name-order": "Reihenfolge",
     "name-prettify-json": "JSON formatieren",
@@ -9917,7 +11265,7 @@
       "line-contains": "„Als Zeile hinzufügen“ enthält Filter",
       "line-contains-not": "„Als Zeile hinzufügen“ enthält keinen Filter"
     },
-    "show-log-attributes": "",
+    "show-log-attributes": "Protokollattribute für OTel-Protokolle anzeigen",
     "timestamp-format": "Zeitstempelauflösung",
     "un-themed-log-details": {
       "aria-label-data-links": "Datenlinks",
@@ -9971,9 +11319,6 @@
       "title-delete": "Löschen"
     },
     "unthemed-dashboard-import": {
-      "subTitle": {
-        "import-dashboard-from-file-or-grafanacom": "Dashboard aus Datei oder von Grafana.com importieren"
-      },
       "text": {
         "import-dashboard": "Dashboard importieren"
       }
@@ -10170,7 +11515,7 @@
     },
     "resource-table": {
       "dashboard-load-error": "Dashboard kann nicht geladen werden",
-      "error-library-element-sub": "",
+      "error-library-element-sub": "Bibliothekselement {{uid}}",
       "error-library-element-title": "Bibliothekselement kann nicht geladen werden",
       "unknown-datasource-title": "Datenquelle {{datasourceUID}}",
       "unknown-datasource-type": "Unbekannte Datenquelle"
@@ -10333,7 +11678,6 @@
       "title": "Benutzer und Zugriff"
     },
     "config-general": {
-      "subtitle": "Standardeinstellungen in Grafana verwalten",
       "title": "Allgemein"
     },
     "config-plugins": {
@@ -10375,7 +11719,7 @@
       "title": "Datenquellen"
     },
     "databases": {
-      "title": ""
+      "title": "Datenbank"
     },
     "datasources": {
       "subtitle": "Füge Datenquellen hinzu und konfiguriere sie",
@@ -10509,7 +11853,7 @@
       "title": "Profile"
     },
     "recently-deleted": {
-      "subtitle": "",
+      "subtitle": "Gelöschte Dashboards werden bis zu 12 Monate aufbewahrt oder bis die Verlaufsgrenze von 1000 Dashboards erreicht ist.",
       "title": "Kürzlich gelöscht"
     },
     "recorded-queries": {
@@ -10602,10 +11946,10 @@
     "help": {
       "aria-label": "Hilfe",
       "interactive-learning": {
-        "close-tooltip": "",
-        "open-tooltip": ""
+        "close-tooltip": "Interaktives Lernen, Hilfe und Dokumentation schließen",
+        "open-tooltip": "Interaktives Lernen, Hilfe und Dokumentation öffnen"
       },
-      "tooltip": ""
+      "tooltip": "Hilfe und nützliche Links erhalten"
     },
     "invite-user": {
       "invite-button": "Einladen",
@@ -10703,9 +12047,9 @@
       "aria-label-layered-layout-performance-warning": "Leistungswarnung für geschichtetes Layout",
       "aria-label-nodes-hidden-warning": "Warnung bei ausgeblendeten Knoten",
       "computing-layout": "Layout berechnen",
-      "no-data": "Keine Daten",
       "hidden-nodes_one": "<0></0> {{count}} Knoten sind aus Leistungsgründen ausgeblendet.",
       "hidden-nodes_other": "<0></0> {{count}} Knoten sind aus Leistungsgründen ausgeblendet.",
+      "no-data": "Keine Daten",
       "processed-nodes_one": "<0></0> Das geschichtete Layout kann mit {{count}} Knoten langsam sein.",
       "processed-nodes_other": "<0></0> Das geschichtete Layout kann mit {{count}} Knoten langsam sein."
     },
@@ -10724,10 +12068,6 @@
     }
   },
   "notifications": {
-    "empty-state": {
-      "description": "Benachrichtigungen, die Sie erhalten haben, werden hier angezeigt",
-      "title": "Sie sind auf dem neuesten Stand!"
-    },
     "starred-dashboard": "Dashboard markiert",
     "stored-notifications": {
       "dismiss-notifications": "Benachrichtigungen verwerfen",
@@ -10757,9 +12097,6 @@
       "get-all-option-editors": {
         "description-time-zone": "Auswahl der Zeitzone",
         "name-time-zone": "Zeitzone"
-      },
-      "standard-field-condigs": {
-        "category-data-links": "Datenlinks und Aktionen"
       },
       "standard-field-configs": {
         "category": "Standardoptionen",
@@ -10809,8 +12146,7 @@
     },
     "org-profile": {
       "label-organization-name": "Organisationsname",
-      "label-organization-profile": "Organisationsprofil",
-      "update-organization-name": "Organisationsnamen aktualisieren"
+      "label-organization-profile": "Organisationsprofil"
     },
     "select-org-page": {
       "description": "Sie wurden zu einer anderen Organisation eingeladen! Bitte wählen Sie, welche Organisation Sie jetzt nutzen möchten. Sie können dies jederzeit zu einem späteren Zeitpunkt ändern."
@@ -10823,10 +12159,10 @@
       "placeholder-optional": "(optional)",
       "role": "Rolle",
       "submit": "Absenden",
-      "tooltip": ""
+      "tooltip": "Sie können jetzt die Option „Keine Basisrolle“ auswählen und Berechtigungen für Ihre individuellen Anforderungen hinzufügen. Weitere Informationen finden Sie in <1>unserer Dokumentation</1>."
     },
     "user-invite-page": {
-      "sub-title": "",
+      "sub-title": "Einladung senden oder bestehenden Grafana-Benutzer zur Organisation hinzufügen. <1> {{orgName}}</1>",
       "text": {
         "invite-user": "Nutzer einladen"
       }
@@ -10843,10 +12179,10 @@
   },
   "panel": {
     "dashlist": {
-      "empty-state-message": "",
-      "recently-viewed-dashboards": "",
-      "search": "",
-      "starred-dashboards": ""
+      "empty-state-message": "Keine Dashboard-Gruppen konfiguriert",
+      "recently-viewed-dashboards": "Zuletzt angesehene Dashboards",
+      "search": "Suche",
+      "starred-dashboards": "Favorisierte Dashboards"
     },
     "get-calculation-value-data-links-variable-suggestions": {
       "value-calc-var": {
@@ -10898,7 +12234,7 @@
       "replace-library-panel": "Bibliotheks-Panel ersetzen",
       "share": "Teilen",
       "show-legend": "Legende anzeigen",
-      "time-settings": "",
+      "time-settings": "Zeiteinstellungen",
       "unlink-library-panel": "Verknüpfung mit der Bibliotheksleiste aufheben",
       "view": "Anzeigen"
     },
@@ -10916,7 +12252,7 @@
       "switch-to-table": "Zur Tabelle wechseln"
     },
     "panel-plugin-error": {
-      "text-load-error": "",
+      "text-load-error": "Überprüfen Sie die Serverstartprotokolle für weitere Informationen. <br/>Wenn dieses Plugin von Git geladen wurde, stellen Sie sicher, dass es kompiliert wurde.",
       "title-load-error": "Fehler beim Laden: {{panelId}}",
       "title-not-found": "Panel-Plugin nicht gefunden: {{id}}"
     },
@@ -11080,7 +12416,6 @@
       "label-search": "Suche",
       "label-state": "Status",
       "label-type": "Typ",
-      "subtitle": "Erweitern Sie die Nutzererfahrung mit Grafana mit Panel-Plugins und Apps. Weitere Datenquellen finden Sie unter <2>Verbindungen</2>.",
       "tooltip-filter-disabled": "Dieser Filter wurde deaktiviert, da der Grafana-Server nicht auf grafana.com zugreifen kann"
     },
     "catalog": {
@@ -11110,7 +12445,7 @@
     },
     "details": {
       "connections-tab": {
-        "description": ""
+        "description": "Für {{pluginName}} sind derzeit folgende Datenquellen konfiguriert. Klicken Sie auf eine Kachel, um die Konfigurationsdetails anzuzeigen. Alle Ihre Datenquellenverbindungen finden Sie unter <4><5>Verbindungen</5> - <8>Datenquellen</8>.</4>"
       },
       "disabled-error": {
         "angular-deprecation-link": "Erfahren Sie mehr über die Einstellung von Angular",
@@ -11127,18 +12462,18 @@
       },
       "labels": {
         "contactGrafanaLabs": "Grafana Labs kontaktieren",
-        "customLinks": "",
+        "customLinks": "Benutzerdefinierte Links",
         "customLinksTooltip": "Diese Links werden vom Plugin-Entwickler bereitgestellt, um zusätzliche entwicklerspezifische Ressourcen und Informationen anzubieten",
         "dependencies": "Abhängigkeiten",
         "documentation": "Dokumentation",
         "downloads": "Downloads",
-        "from": "",
+        "from": "Ab",
         "installedVersion": "Installierte Version",
         "latestReleaseDate": "Neuestes Release-Datum:",
         "latestVersion": "Aktuelle Version",
         "license": "Lizenz",
         "raiseAnIssue": "Ein Problem melden",
-        "reportAbuse": "",
+        "reportAbuse": "Ein Anliegen melden",
         "reportAbuseTooltip": "Melden Sie Probleme im Zusammenhang mit bösartigen oder schädlichen Plugins direkt an Grafana Labs.",
         "repository": "Repository",
         "signature": "Unterschrift",
@@ -11148,8 +12483,8 @@
       "modal": {
         "cancel": "Abbrechen",
         "copyEmail": "E-Mail-Adresse kopieren",
-        "description": "",
-        "node": "",
+        "description": "Diese Funktion dient zum Melden von böswilligem oder schädlichem Verhalten in Plugins. Bei Plugin-bezogenen Anliegen senden Sie uns bitte eine E-Mail an:",
+        "node": "Hinweis: Für allgemeine Plugin-Probleme wie Fehler oder Funktionsanfragen kontaktieren Sie bitte den Plugin-Autor über die angegebenen Links.",
         "title": "Ein Plugin-Problem melden"
       }
     },
@@ -11217,7 +12552,7 @@
       "message": "Alle Plugins sind auf dem neuesten Stand"
     },
     "not-found-plugin": {
-      "body-plugin-not-found": "",
+      "body-plugin-not-found": "Dieses Plugin wurde nicht gefunden. Bitte überprüfen Sie, ob die URL korrekt ist, oder <br/>gehen Sie zum <3>Plugin-Katalog</3>.",
       "title-plugin-not-found": "Plugin nicht gefunden"
     },
     "plugin-actions": {
@@ -11278,9 +12613,6 @@
     },
     "plugin-signature-details-badge": {
       "signed-by": "Signiert von: {{signatureOrg}}"
-    },
-    "plugin-update-available-badge": {
-      "update-available": "Update verfügbar!"
     },
     "plugin-usage": {
       "body-missing-feature-toggle-panel-title-search": "Die Plugin-Nutzung erfordert den neuen Suchindex, damit die Nutzung Dashboard-übergreifend festgestellt werden kann. Bitte aktivieren Sie den Funktionsschalter",
@@ -11363,24 +12695,24 @@
     "save-or-delete-resource-shared-fields": {
       "comment-placeholder-describe-changes-optional": "Fügen Sie eine Notiz hinzu, um Ihre Änderungen zu beschreiben (optional)",
       "description-branch-name-in-git-hub": "Branch-Name in GitHub",
-      "description-file-path": "",
-      "description-folder-path": "",
-      "description-inside-repository": "",
+      "description-file-path": "Dateipfad im Repository (.json oder .yaml)",
+      "description-folder-path": "Ordnerpfad im Repository",
+      "description-inside-repository": "Option für automatische Aktualisierung",
       "label-branch": "Branch",
       "label-comment": "Kommentar",
       "label-path": "Pfad",
       "label-workflow": "Workflow",
-      "placeholder-branch": "",
-      "placeholder-new-branch": "",
-      "suffix-configured-branch": "",
-      "suffix-last-used": "",
-      "suffix-pr-branch": ""
+      "placeholder-branch": "Branch-Namen auswählen oder eingeben",
+      "placeholder-new-branch": "Neuen Branch-Namen eingeben",
+      "suffix-configured-branch": "Konfigurierter Branch",
+      "suffix-last-used": "Letzter Branch",
+      "suffix-pr-branch": "Pull-Request-Branch"
     }
   },
   "provisioned-resource-preview-banner": {
     "preview-banner": {
       "behind-branch-text": "Diese Ressource ist hinter dem Branch in {{repoType}}.",
-      "branch-text": "",
+      "branch-text": "Branch:",
       "not-saved": "Die übrigen Nutzer von Grafana in Ihrem Unternehmen sehen weiterhin die aktuelle Version, die im konfigurierten Standard-Branch gespeichert ist, bis dieser Branch zusammengeführt wird",
       "open-in-repo-button": "Öffnen in {{repoType}}",
       "open-pull-request-in-repo": "Pull-Request öffnen in {{repoType}}",
@@ -11425,20 +12757,20 @@
       "url-required": "Repository-URL erforderlich"
     },
     "bootstrap-step": {
+      "dashboards-count_one": "{{count}} Dashboard",
+      "dashboards-count_other": "{{count}} Dashboard",
       "description-clear-repository-connection": "Fügen Sie einen eindeutigen Namen für diese Repository-Verbindung hinzu",
       "empty": "Leer",
       "error-field-required": "Dieses Feld ist erforderlich.",
-      "external-storage-label": "",
-      "label-display-name": "Anzeigename",
-      "placeholder-my-repository-connection": "Meine Repository-Verbindung",
-      "text-loading-resource-information": "Ressourceninformationen werden geladen ...",
-      "unmanaged-resources-label": "",
-      "dashboards-count_one": "{{count}} Dashboard",
-      "dashboards-count_other": "{{count}} Dashboard",
+      "external-storage-label": "Externer Speicher",
       "files-count_one": "{{count}} Dateien",
       "files-count_other": "{{count}} Dateien",
       "folders-count_one": "{{count}} Ordner",
-      "folders-count_other": "{{count}} Ordner"
+      "folders-count_other": "{{count}} Ordner",
+      "label-display-name": "Anzeigename",
+      "placeholder-my-repository-connection": "Meine Repository-Verbindung",
+      "text-loading-resource-information": "Ressourceninformationen werden geladen ...",
+      "unmanaged-resources-label": "Nicht verwaltete Ressourcen"
     },
     "check-repository": {
       "check": "Überprüfen"
@@ -11454,7 +12786,7 @@
       "description-enabled": "Sobald das automatische Abrufen aktiviert ist, kann das Ziel nicht mehr geändert werden.",
       "description-read-only": "Ressourcen können über Grafana nicht geändert werden.",
       "description-title": "Ein menschenlesbarer Name für die Konfiguration",
-      "error-fetch-branches": "",
+      "error-fetch-branches": "Abrufen der Branches fehlgeschlagen",
       "error-required": "Dieses Feld ist erforderlich.",
       "error-save-repository": "Speichern der Repository-Einstellungen fehlgeschlagen",
       "label-automatic-pulling": "Automatisches Pulling",
@@ -11480,9 +12812,9 @@
     },
     "connect-repository-button": {
       "configure": "Konfigurieren",
-      "instance-fully-managed-tooltip": "",
-      "repository-limit-reached-tooltip_one": "",
-      "repository-limit-reached-tooltip_other": ""
+      "instance-fully-managed-tooltip": "Die Konfiguration ist deaktiviert, da diese Instanz vollständig verwaltet wird",
+      "repository-limit-reached-tooltip_one": "Repository-Limit erreicht: {{count}}",
+      "repository-limit-reached-tooltip_other": "Repository-Limit erreicht: {{count}}"
     },
     "delete-repository-button": {
       "button-delete": "Löschen",
@@ -11528,7 +12860,7 @@
       "actions": {
         "set-up-required-feature-toggles": "Benötigte Funktionsschalter einrichten"
       },
-      "learn-more-documentation": "",
+      "learn-more-documentation": "Möchten Sie mehr erfahren? Siehe unsere <2>Dokumentation</2>.",
       "manage-dashboards-provision-updates-automatically": "Verwalten Sie Dashboards als Code in Git und stellen Sie Updates automatisch bereit",
       "manage-your-dashboards-with-remote-provisioning": "Erste Schritte mit Git Sync",
       "store-dashboards-in-version-controlled-storage": "Speichern Sie Dashboards im versionskontrollierten Speicher für eine bessere Organisation und Verlaufsverfolgung"
@@ -11565,13 +12897,13 @@
       "label-sync-interval": "Synchronisierungsintervall (Sekunden)"
     },
     "folder-repository-list": {
+      "all-resources-managed_one": "Alle {{count}} Ressource wird verwaltet",
+      "all-resources-managed_other": "Alle {{count}} Ressourcen werden verwaltet",
       "no-results-matching-your-query": "Keine passenden Ergebnisse zu Ihrer Abfrage",
-      "partial-managed": "",
+      "partial-managed": "{{managedCount}}/{{resourceCount}} Ressourcen werden durch Git-Synchronisierung verwaltet.",
       "placeholder-search": "Suche",
-      "all-resources-managed_one": "",
-      "all-resources-managed_other": "",
-      "unmanaged-resources_one": "",
-      "unmanaged-resources_other": ""
+      "unmanaged-resources_one": "{{count}} Ressource wird nicht durch Git-Synchronisierung verwaltet.",
+      "unmanaged-resources_other": "{{count}} Ressourcen werden nicht durch Git-Synchronisierung verwaltet."
     },
     "get-default-values": {
       "title": {
@@ -11676,14 +13008,14 @@
       "title-legacy-storage-detected": "Veralteter Speicher erkannt"
     },
     "http-utils": {
-      "access-denied": "",
-      "authentication-failed": "",
-      "http-error": "",
-      "request-failed": "",
-      "resource-not-found": "",
-      "unsupported-repository-type": ""
+      "access-denied": "Zugriff verweigert. Bitte überprüfen Sie Ihre Token-Berechtigungen.",
+      "authentication-failed": "Authentifizierung fehlgeschlagen. Bitte überprüfen Sie Ihr Zugriffstoken.",
+      "http-error": "HTTP {{status}}: {{statusText}}",
+      "request-failed": "Anfrage fehlgeschlagen",
+      "resource-not-found": "Ressource nicht gefunden. Bitte überprüfen Sie die URL oder das Repository.",
+      "unsupported-repository-type": "Nicht unterstützter Repository-Typ: {{repositoryType}}"
     },
-    "inline-secure-values-warning": "",
+    "inline-secure-values-warning": "Sie müssen Ihre Zugriffstoken aufgrund eines Systemupdates erneut speichern",
     "job-status": {
       "label-view-details": "Details anzeigen",
       "loading-finished-job": "Fertiger Auftrag wird geladen …",
@@ -11720,18 +13052,18 @@
     "provisioning-wizard": {
       "on-submit": {
         "title": {
-          "repository-connection-failed": "",
-          "repository-request-failed": ""
+          "repository-connection-failed": "Repository-Verbindung fehlgeschlagen",
+          "repository-request-failed": "Repository-Anfrage fehlgeschlagen"
         }
       }
     },
-    "read-only-local-tooltip": "",
-    "read-only-remote-tooltip": "",
+    "read-only-local-tooltip": "Diese Ressource ist schreibgeschützt und wird über Dateiprovisionierung bereitgestellt. Um Änderungen vorzunehmen, aktualisieren Sie das verbundene Repository. Um die Einstellungen zu ändern, gehen Sie zu Administration > Provisioning > Repositories.",
+    "read-only-remote-tooltip": "Diese Ressource ist schreibgeschützt und wird über Git bereitgestellt. Um Änderungen vorzunehmen, aktualisieren Sie das verbundene Repository. Um die Einstellungen zu ändern, gehen Sie zu Administration > Provisioning > Repositories.",
     "recent-jobs": {
       "active-jobs": "Aktive Aufträge",
       "column-action": "Aktion",
       "column-duration": "Dauer",
-      "column-job-id": "",
+      "column-job-id": "Job-ID",
       "column-message": "Nachricht",
       "column-started": "Gestartet",
       "column-status": "Status",
@@ -11764,7 +13096,7 @@
     },
     "repository-overview": {
       "checked": "Geprüft:",
-      "finished": "",
+      "finished": "Letzter erfolgreicher Abruf:",
       "health": "Zustand",
       "healthy": "Guter Zustand",
       "job-id": "Auftrags-ID:",
@@ -11834,7 +13166,7 @@
         "removed-from-repo-test-ui": "von der Repo-Test-UI entfernt",
         "updated-from-repo-test-ui": "von der Repo-Test-UI aktualisiert"
       },
-      "read-only-repo-tooltip": "",
+      "read-only-repo-tooltip": "Dies ist ein schreibgeschütztes Repository",
       "repository": "Repository",
       "tab-info": {
         "label": {
@@ -11852,7 +13184,7 @@
     },
     "shared": {
       "progress-bar": {
-        "aria-label": ""
+        "aria-label": "Fortschrittsbalken"
       }
     },
     "sidebar-item": {
@@ -11861,15 +13193,15 @@
       "label-pending-step": "Ausstehender Schritt"
     },
     "status-badge": {
-      "automatic-pulling-disabled": "",
-      "deleting": "",
-      "error": "",
-      "pending": "",
-      "pulling": "",
-      "unknown": "",
-      "up-to-date": "",
-      "waiting-for-health-check": "",
-      "warning": ""
+      "automatic-pulling-disabled": "Automatischer Abruf deaktiviert",
+      "deleting": "Löschen",
+      "error": "Fehler",
+      "pending": "Ausstehend",
+      "pulling": "Abrufen",
+      "unknown": "Unbekannt",
+      "up-to-date": "Aktuell",
+      "waiting-for-health-check": "Warten auf den Start des Health-Checks",
+      "warning": "Warnung"
     },
     "success-title-default": "Erfolg",
     "sync-job": {
@@ -11887,9 +13219,9 @@
       "tooltip-unhealthy-repository": "Ein fehlerhaftes Repository kann nicht abgerufen werden"
     },
     "synchronize-step": {
-      "repository-error": "",
-      "repository-error-message": "",
-      "repository-unhealthy": "",
+      "repository-error": "Repository-Fehler",
+      "repository-error-message": "Repository-Status kann nicht überprüft werden. Bitte überprüfen Sie die Repository-Konfiguration und versuchen Sie es erneut.",
+      "repository-unhealthy": "Das Repository kann nicht synchronisiert werden. Brechen Sie die Provisionierung ab und versuchen Sie es erneut, sobald das Problem behoben wurde. Details siehe unten.",
       "synchronization-description": "Commits für jeden historischen Wert erfassen",
       "synchronization-options": "Synchronisierungsoptionen"
     },
@@ -11913,12 +13245,12 @@
       "alert-point-3": "Die Dauer dieses Prozesses hängt von der Anzahl der betroffenen Ressourcen ab.",
       "alert-point-4": "Administratoren von Enterprise-Instanzen können Nutzern gegenüber ein Ankündigungsbanner anzeigen. Schritt-für-Schritt-Anweisungen finden Sie in <2>dieser Anleitung</2>.",
       "alert-title": "Wichtig: Es gehen keine Daten oder Konfigurationen verloren, aber die Dashboards sind für einige Minuten vorübergehend nicht verfügbar.",
-      "button-cancel": "",
-      "button-cancelling": "",
+      "button-cancel": "Abbrechen",
+      "button-cancelling": "Abbrechen ...",
       "button-next": "Fertigstellen",
       "button-start": "Synchronisierung starten",
-      "check-status-button": "",
-      "check-status-message": "",
+      "check-status-button": "Repository-Status überprüfen",
+      "check-status-message": "Repository wird verbunden, Synchronisierung ist bald bereit.",
       "discard-modal": {
         "body": "Dadurch wird die Repository-Konfiguration gelöscht und Sie verlieren alle Fortschritte. Sind Sie sicher, dass Sie Ihre Änderungen verwerfen möchten?",
         "confirm": "Ja, verwerfen",
@@ -11942,11 +13274,11 @@
       "button-previous": "Zurück",
       "button-submitting": "Übertragen …",
       "error-instance-repository-exists": "Das Instanz-Repository existiert bereits",
-      "error-save-repository-setting": ""
+      "error-save-repository-setting": "Speichern der Repository-Einstellung fehlgeschlagen"
     },
     "workflow-options-label": {
-      "push-to-a-new-branch": "",
-      "push-to-existing-branch": ""
+      "push-to-a-new-branch": "In neuen Branch pushen",
+      "push-to-existing-branch": "In einen bestehenden Branch pushen"
     }
   },
   "public-dashboard": {
@@ -12048,7 +13380,7 @@
       "annotations-show-text": "Anmerkungen = anzeigen",
       "time-range-picker-disabled-text": "Zeitraumauswahl = deaktiviert",
       "time-range-picker-enabled-text": "Zeitraumauswahl = aktiviert",
-      "time-range-text": ""
+      "time-range-text": "Zeitbereich ="
     },
     "share": {
       "success-delete": "Ihr Dashboard kann nicht mehr geteilt werden"
@@ -12087,7 +13419,7 @@
       "revoke-user-access-modal-desc-line1": "Sind Sie sicher, dass Sie den Zugriff für {{email}} widerrufen möchten?"
     },
     "delete-user-shared-dashboards-modal": {
-      "revoke-user-access-modal-desc-line2": ""
+      "revoke-user-access-modal-desc-line2": "Diese Aktion widerruft sofort den Zugriff von {{email}} auf alle freigegebenen Dashboards."
     },
     "modal": {
       "shared-dashboard-modal-title": "Freigegebene Dashboards"
@@ -12168,24 +13500,24 @@
   },
   "radialbar": {
     "config": {
-      "bar-width": "",
+      "bar-width": "Balkenbreite",
       "effects": {
-        "bar-glow": "",
-        "center-glow": "",
-        "rounded-bars": "",
-        "spotlight": ""
+        "bar-glow": "Balkenleuchten",
+        "center-glow": "Zentrales Leuchten",
+        "rounded-bars": "Abgerundete Balken",
+        "spotlight": "Spotlight"
       },
-      "gradient": "",
-      "gradient-auto": "",
-      "gradient-none": "",
-      "segment-count": "",
-      "segment-spacing": "",
-      "shape": "",
-      "shape-circle": "",
-      "shape-gauge": "",
-      "sparkline": "",
-      "threshold-labels": "",
-      "threshold-markers": ""
+      "gradient": "Farbverlauf",
+      "gradient-auto": "Auto",
+      "gradient-none": "Keine",
+      "segment-count": "Segmente",
+      "segment-spacing": "Segmentabstand",
+      "shape": "Form",
+      "shape-circle": "Kreis",
+      "shape-gauge": "Anzeige",
+      "sparkline": "Sparkline anzeigen",
+      "threshold-labels": "Schwellenwert-Labels anzeigen",
+      "threshold-markers": "Schwellenwerte anzeigen"
     }
   },
   "recently-deleted": {
@@ -12198,13 +13530,13 @@
       "no-search-result": "Keine Ergebnisse für deine Abfrage gefunden"
     },
     "restore-modal": {
+      "folder-picker-text_one": "Bitte wählen Sie einen Ordner, in den Ihr Dashboard wiederhergestellt wird.",
+      "folder-picker-text_other": "Bitte wählen Sie einen Ordner, in den Ihre Dashboards wiederhergestellt werden.",
       "restore-button": "Wiederherstellen",
       "restore-loading": "Wird wiederhergestellt …",
-      "title": "Dashboards wiederherstellen",
-      "folder-picker-text_one": "",
-      "folder-picker-text_other": "",
-      "text_one": "",
-      "text_other": ""
+      "text_one": "Diese Aktion stellt {{numberOfDashboards}} Dashboard wieder her.",
+      "text_other": "Diese Aktion stellt {{numberOfDashboards}} Dashboards wieder her.",
+      "title": "Dashboards wiederherstellen"
     }
   },
   "recentlyDeleted": {
@@ -12224,8 +13556,8 @@
       "duration-selected": "Aktualisierungszeitintervall mit aktuellem Intervall {{durationAriaLabel}} ausgewählt"
     },
     "auto-option": {
-      "aria-label": "",
-      "label": ""
+      "aria-label": "Option für automatische Aktualisierung",
+      "label": "Automatisch"
     },
     "live-option": {
       "aria-label": "Live-Streaming einschalten",
@@ -12256,7 +13588,7 @@
     },
     "menu": {
       "clear-button": "Alles löschen",
-      "tooltip": ""
+      "tooltip": "Sie können jetzt die Option „Keine Basisrolle“ auswählen und Berechtigungen für Ihre benutzerdefinierten Anforderungen hinzufügen. Weitere Informationen finden Sie in <1>unserer Dokumentation</1>."
     },
     "menu-aria-label": "Rollenauswahlmenü",
     "menu-group-option-aria-label": "Rollenauswahloption",
@@ -12266,7 +13598,7 @@
     },
     "sub-menu-aria-label": "Rollenauswahl-Untermenü",
     "title": {
-      "description": ""
+      "description": "Weisen Sie Benutzern Rollen zu, um eine detaillierte Kontrolle über den Zugriff auf Grafanas Funktionen und Ressourcen zu gewährleisten. Erfahren Sie mehr in unserer <2>Dokumentation</2>."
     }
   },
   "role-picker-drawer": {
@@ -12312,7 +13644,7 @@
     "selector": {
       "apply": "Anwenden",
       "cancel": "Abbrechen",
-      "error-title": "",
+      "error-title": "Ein unerwarteter Fehler ist aufgetreten",
       "input": {
         "placeholder": "Bereiche auswählen …",
         "removeAll": "Alle Bereiche entfernen"
@@ -12338,7 +13670,8 @@
       "sort-placeholder": "Sortieren",
       "starred": "Hervorgehoben",
       "view-as-folders": "Nach Ordnern anzeigen",
-      "view-as-list": "Als Liste anzeigen"
+      "view-as-list": "Als Liste anzeigen",
+      "view-layout": "Layout anzeigen"
     },
     "bluge-searcher": {
       "opts": {
@@ -12387,7 +13720,7 @@
   },
   "select": {
     "select-menu": {
-      "selected-count": ""
+      "selected-count": "Ausgewählt"
     }
   },
   "service-account-create-page": {
@@ -12486,7 +13819,7 @@
       "aria-label-role": "Rolle"
     },
     "service-account-tokens-table": {
-      "aria-label-delete-button": "",
+      "aria-label-delete-button": "Dienstkontotoken {{key}} löschen",
       "created": "Erstellt",
       "expires": "Läuft ab",
       "last-used-at": "Zuletzt verwendet am",
@@ -12494,6 +13827,8 @@
     },
     "service-accounts-list-page-unconnected": {
       "add-service-account": "Dienstkonto hinzufügen",
+      "body-delete_one": "Sind Sie sicher, dass Sie {{serviceAccountName}} und {{count}} zugehörige Token löschen möchten?",
+      "body-delete_other": "Sind Sie sicher, dass Sie {{serviceAccountName}} und {{count}} zugehörige Token löschen möchten?",
       "body-delete-with-tokens": "Sind Sie sicher, dass Sie {{serviceAccountName}} löschen möchten?",
       "body-disable-service-account": "Sind Sie sicher, dass Sie „{{accountToDisable}}“ deaktivieren möchten?",
       "confirmText-delete": "Löschen",
@@ -12501,9 +13836,7 @@
       "placeholder-search-service-account-by-name": "Dienstkonto nach Namen suchen",
       "sub-title": "Dienstkonten und ihre Token können für die Authentifizierung gegenüber der Grafana-API verwendet werden. Erfahren Sie mehr in unserer <2>Dokumentation.</2>",
       "title-delete-service-account": "Dienstkonto löschen",
-      "title-disable-service-account": "Dienstkonto deaktivieren",
-      "body-delete_one": "Sind Sie sicher, dass Sie {{serviceAccountName}} und {{count}} zugehörige Token löschen möchten?",
-      "body-delete_other": "Sind Sie sicher, dass Sie {{serviceAccountName}} und {{count}} zugehörige Token löschen möchten?"
+      "title-disable-service-account": "Dienstkonto deaktivieren"
     },
     "token-expiration": {
       "content-this-token-has-expired": "Dieser Token ist abgelaufen",
@@ -12574,7 +13907,7 @@
       "info-text": "Erstelle einen direkten Link zu diesem Dashboard oder Panel mit den folgenden angepassten Optionen.",
       "link-url": "Link-URL",
       "render-alert": "Bild-Render-Plug-in nicht installiert",
-      "render-instructions": "",
+      "render-instructions": "Um ein Bild zu rendern, müssen Sie das <2>Grafana Image Renderer-Plugin</2> installieren. Bitte wenden Sie sich an Ihren Grafana-Administrator, um das Plugin zu installieren.",
       "rendered-image": "Direktlink zum gerenderten Bild",
       "save-alert": "Dashboard nicht gespeichert",
       "save-dashboard": "Um ein Panel-Bild zu rendern, muss zuerst das Dashboard gespeichert werden.",
@@ -12598,7 +13931,7 @@
       "info-text-1": "Ein Schnappschuss ist eine Möglichkeit, ein interaktives Dashboard sofort öffentlich zu teilen. Beim Erstellen entfernen wir sensible Daten wie Abfragen (Metriken, Vorlagen und Anmerkungen) und Panel-Links, sodass nur die sichtbaren Metrikdaten und die in dein Dashboard eingebetteten Seriennamen angezeigt werden.",
       "info-text-2": "Beachte, dass dein Schnappschuss <1>für jeden sichtbar ist</1>, der den Link hat und auf die URL zugreifen kann. Teile Schnappschüsse daher mit Bedacht.",
       "local-button": "Snapshot veröffentlichen",
-      "mistake-message": "",
+      "mistake-message": "Haben Sie einen Fehler gemacht?",
       "name": "Name des Schnappschusses",
       "timeout": "Timeout (Sekunden)",
       "timeout-description": "Wenn die Erfassung deiner Dashboard-Metriken lange dauert, musst du ggf. den Timeout-Wert anpassen.",
@@ -12722,7 +14055,7 @@
       "theme-label": "UI-Design",
       "week-start-label": "Wochenbeginn"
     },
-    "save": "",
+    "save": "Einstellungen speichern",
     "theme": {
       "default-label": "Standard",
       "experimental": "Experimentell"
@@ -12787,7 +14120,6 @@
       "deleted-alert": "Snapshot gelöscht. Es kann eine Stunde dauern, bis er aus den CDN-Caches gelöscht wird.",
       "expiration-label": "Läuft ab in",
       "info-alert": "Bei einem Grafana-Dashboard-Snapshort wird ein Dashboard öffentlich geteilt, während gleichzeitig sensible Daten wie Abfragen und Panel-Links entfernt werden, sodass nur sichtbare Metriken und Seriennamen verbleiben. Jeder, der Zugang zu dem Link hat, kann auf den Snapshot zugreifen.",
-      "learn-more-button": "Mehr erfahren",
       "local-button": "Snapshot veröffentlichen",
       "name-label": "Name des Schnappschusses",
       "new-snapshot-button": "Neuer Snapshot",
@@ -12820,8 +14152,8 @@
     "view-explanation": "Erklärung anzeigen"
   },
   "stars": {
-    "mark-as-starred": "",
-    "unmark-as-starred": ""
+    "mark-as-starred": "„{{title}}“ als Favorit markieren",
+    "unmark-as-starred": "„{{title}}“ als Favorit entfernen"
   },
   "stat": {
     "add-orientation-option": {
@@ -13006,10 +14338,10 @@
     "description-calculation": "Wählen Sie eine Reduktionsfunktion/Berechnung",
     "description-cell-value-inspect": "Zellwertprüfung in einem modalen Fenster aktivieren",
     "description-column-filter": "Aktiviert/deaktiviert Feldfilter in der Tabelle",
-    "description-frozen-columns": "",
+    "description-frozen-columns": "Spalten werden von der linken Seite der Tabelle eingefroren",
     "description-min-column-width": "Die Mindestbreite für die automatische Größenänderung der Spalte",
-    "description-styling-from-field": "",
-    "description-tooltip-from-field": "",
+    "description-styling-from-field": "Ein Feld, das JSON-Objekte mit CSS-Eigenschaften enthält",
+    "description-tooltip-from-field": "Eine Zelle aus einem Feld (ausgeblendet oder sichtbar) in einem Tooltip rendern",
     "image-cell-options-editor": {
       "description-alt-text": "Alternativer Text, der angezeigt wird, wenn ein Bild nicht angezeigt werden kann, oder für Nutzer, die einen Screenreader verwenden",
       "description-title-text": "Text, der angezeigt wird, wenn über dem Bild der Mauszeiger bewegt wird",
@@ -13033,25 +14365,25 @@
     "name-column-alignment": "Spaltenausrichtung",
     "name-column-filter": "Spaltenfilter",
     "name-column-width": "Spaltenbreite",
-    "name-enable-pagination": "",
-    "name-frozen-columns": "",
+    "name-enable-pagination": "Paginierung aktivieren",
+    "name-frozen-columns": "Eingefrorene Spalten",
     "name-hide-in-table": "In Tabelle ausblenden",
-    "name-max-height": "",
+    "name-max-height": "Maximale Zeilenhöhe",
     "name-min-column-width": "Minimale Spaltenbreite",
     "name-show-table-header": "Tabellenüberschirft anzeigen",
-    "name-styling-from-field": "",
-    "name-tooltip-from-field": "",
-    "name-tooltip-placement": "",
+    "name-styling-from-field": "Formatierung aus Feld",
+    "name-tooltip-from-field": "Tooltip aus Feld",
+    "name-tooltip-placement": "Tooltip-Platzierung",
     "name-wrap-header-text": "Kopfzeilentext umbrechen",
-    "name-wrap-text": "",
+    "name-wrap-text": "Text umbrechen",
     "placeholder-column-width": "auto",
-    "placeholder-max-height": "",
+    "placeholder-max-height": "keine",
     "tooltip-placement-options": {
-      "label-auto": "",
-      "label-bottom": "",
-      "label-left": "",
-      "label-right": "",
-      "label-top": ""
+      "label-auto": "Auto",
+      "label-bottom": "Unten",
+      "label-left": "Links",
+      "label-right": "Rechts",
+      "label-top": "Oben"
     }
   },
   "tag-filter": {
@@ -13059,8 +14391,7 @@
     "loading": "Wird geladen ...",
     "no-tags": "Keine Tags gefunden",
     "placeholder": "Nach Tag filtern",
-    "select-aria-label": "Tag-Filter",
-    "tag-option-label": "Tag-Option"
+    "select-aria-label": "Tag-Filter"
   },
   "team-picker": {
     "noOptionsMessage-no-teams-found": "Keine Teams gefunden",
@@ -13124,13 +14455,13 @@
       "placeholder-search-teams": "Teams suchen"
     },
     "team-settings": {
-      "description-email": "",
+      "description-email": "Dies ist optional und wird primär dazu verwendet, das Team-Profilbild (über den Gravatar-Dienst) festzulegen.",
       "label-email": "E-Mail-Adresse",
       "label-name": "Name",
       "label-numerical-identifier": "Numerischer Identifikator",
       "label-role": "Rolle",
       "label-team-details": "Angaben zum Team",
-      "save": ""
+      "save": "Teamdetails speichern"
     },
     "team-sync-upgrade-content": {
       "description": "Team Sync erleichtert Ihnen die Verwaltung des Nutzerzugriffs in Grafana, da die Grafana-Teams und die Berechtigungen jedes Nutzers sofort auf der Grundlage seiner Single-Sign-On-Gruppenmitgliedschaft aktualisiert werden, und nicht, wenn sich die Nutzer anmelden"
@@ -13150,8 +14481,8 @@
     "name-show-mini-map": "Minikarte anzeigen"
   },
   "theme-playground": {
-    "label-base-theme": "",
-    "title": ""
+    "label-base-theme": "Basisthema",
+    "title": "Themen-Spielwiese"
   },
   "theme-preview": {
     "breadcrumbs": {
@@ -13164,12 +14495,12 @@
     }
   },
   "time-period": {
-    "1_day": "",
-    "1_hour": "",
-    "12_hours": "",
-    "30_days": "",
-    "6_hours": "",
-    "7_days": ""
+    "1_day": "1 Tag",
+    "1_hour": "1 Stunde",
+    "12_hours": "12 Stunden",
+    "30_days": "30 Tage",
+    "6_hours": "6 Stunden",
+    "7_days": "7 Tage"
   },
   "time-picker": {
     "absolute": {
@@ -13190,6 +14521,8 @@
       "filter-placeholder": "Schnellbereiche suchen"
     },
     "copy-paste": {
+      "aria-label-copy": "Zeitraum in Zwischenablage kopieren",
+      "aria-label-paste": "Zeitraum einfügen",
       "copy-success-message": "Zeitraum in Zwischenablage kopiert",
       "default-error-message": "{{error}} ist kein gültiger Zeitraum",
       "default-error-title": "Ungültiger Zeitraum",
@@ -13218,14 +14551,14 @@
       "forwards-time-aria-label": "Zeitbereich nach vorne verschieben",
       "to": "bis",
       "zoom-out-button": "Zeitbereich verkleinern",
-      "zoom-out-tooltip": ""
+      "zoom-out-tooltip": "Zeitbereich herauszoomen <br/>STRG+Z"
     },
     "time-range": {
       "apply": "Zeitbereich anwenden",
       "aria-role": "Zeitbereichauswahl",
       "default-title": "Zeitbereiche",
       "example-title": "Zeitbereiche-Beispiel",
-      "from-label": "",
+      "from-label": "Ab",
       "from-to": "{{timeOptionFrom}} bis {{timeOptionTo}}",
       "specify": "Zeitbereich angeben",
       "submit-button-label": "TimePicker-Schaltfläche „Absenden“",
@@ -13343,7 +14676,7 @@
   },
   "transformations": {
     "empty": {
-      "add-transformation-body": "",
+      "add-transformation-body": "Transformationen ermöglichen es, Daten auf verschiedene Weisen zu ändern, bevor Ihre Visualisierung angezeigt wird.<br/>Dazu gehören das Zusammenführen von Daten, das Umbenennen von Feldern, das Durchführen von Berechnungen, das Formatieren von Daten für die Anzeige und vieles mehr.",
       "add-transformation-header": "Daten transformieren beginnen"
     }
   },
@@ -13610,7 +14943,7 @@
       "label-format": "Format",
       "label-set-timezone": "Zeitzone festlegen",
       "label-time-field": "Zeitfeld",
-      "tooltip-format": "",
+      "tooltip-format": "Das Ausgabeformat für das Feld, das als <2>Moment.js-Formatzeichenfolge</2> angegeben ist.",
       "tooltip-timezone-manually": "Stellen Sie die Zeitzone des Datums manuell ein"
     },
     "format-time-transformer-editor": {
@@ -13911,10 +15244,10 @@
         }
       }
     },
-    "query-validation-message": "",
+    "query-validation-message": "Eine oder mehrere Abfragen konnten keine Felder zurückgeben. Diese Transformation kann nur Felder aus Abfragen referenzieren, die ein erfolgreiches und sichtbares Ergebnis liefern.",
     "range-matcher-editor": {
       "and": "und",
-      "placeholder-from": "",
+      "placeholder-from": "Ab",
       "placeholder-to": "Bis"
     },
     "reduce-row-options-editor": {
@@ -14167,7 +15500,6 @@
   "user-orgs": {
     "current-org-button": "Aktuell",
     "name-column": "Name",
-    "role-column": "Rolle",
     "select-org-button": "Organisation auswählen",
     "title": "Organisationen"
   },
@@ -14204,14 +15536,14 @@
     "empty-state": {
       "message": "Keine Benutzer gefunden"
     },
+    "loading": "Benutzer werden geladen...",
     "token-revoked-modal": {
-      "auto-revoked": "",
-      "resume-message": "",
+      "auto-revoked": "Ihr Sitzungstoken wurde automatisch widerrufen, da Sie <strong>die maximale Anzahl von {{numSessions}} gleichzeitigen Sitzungen</strong> für Ihr Konto erreicht haben.",
+      "resume-message": "<strong>Um Ihre Sitzung fortzusetzen, melden Sie sich erneut an.</strong> Wenden Sie sich an Ihren Administrator oder besuchen Sie die Lizenzseite, um Ihr Kontingent zu überprüfen, wenn Sie wiederholt automatisch abgemeldet werden.",
       "sign-in": "Anmelden",
       "title-you-have-been-automatically-signed-out": "Sie wurden automatisch abgemeldet"
     },
     "users-action-bar-unconnected": {
-      "invite": "Einladen",
       "options": {
         "label": {
           "users": "Benutzer"
@@ -14299,9 +15631,6 @@
     "no-unknowns": {
       "no-renamed-or-missing-variables-found": "Keine umbenannten oder fehlenden Variablen gefunden."
     },
-    "picker-renderer": {
-      "couldnt-load-variable": "Variable konnte nicht geladen werden"
-    },
     "query-variable-refresh-select": {
       "description-update-values-variable": "Wann die Werte dieser Variable aktualisiert werden sollen",
       "label-refresh": "Aktualisieren"
@@ -14330,13 +15659,13 @@
       "description-values-variable": "So sortieren Sie statische Optionen mit Abfrageergebnissen"
     },
     "static-options": {
-      "add-option-button-label": "",
-      "drag-and-drop": "",
-      "label-header": "",
-      "label-placeholder": "",
-      "remove-option-button-label": "",
-      "value-header": "",
-      "value-placeholder": ""
+      "add-option-button-label": "Neue Option hinzufügen",
+      "drag-and-drop": "Ziehen und Ablegen zum Neuordnen",
+      "label-header": "Anzeigetext",
+      "label-placeholder": "Standard ist Wert",
+      "remove-option-button-label": "Option entfernen",
+      "value-header": "Wert",
+      "value-placeholder": "Wert"
     },
     "text-box-variable-editor": {
       "name-default-value": "Standardwert",

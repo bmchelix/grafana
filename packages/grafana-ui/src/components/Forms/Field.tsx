@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css';
-import { HTMLAttributes } from 'react';
 import * as React from 'react';
+import { HTMLAttributes } from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
 
@@ -41,6 +41,8 @@ export interface FieldProps extends HTMLAttributes<HTMLDivElement> {
   htmlFor?: string;
   /** Remove the bottom margin */
   noMargin?: boolean;
+  //BMC Code : Accessibility Change (Added aria-describedby prop)
+  'aria-describedby'?: string;
 }
 
 /**
@@ -64,12 +66,16 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       validationMessageHorizontalOverflow,
       htmlFor,
       noMargin,
+      //BMC Code : Accessibility Change (Added aria-describedby prop)
+      'aria-describedby': describedBy,
       ...otherProps
     }: FieldProps,
     ref
   ) => {
     const styles = useStyles2(getFieldStyles, noMargin);
     const inputId = htmlFor ?? getChildId(children);
+    //BMC Code : Accessibility Change (Next line)
+    const errorId = describedBy ?? `${inputId}-error`;
 
     const labelElement =
       typeof label === 'string' ? (
@@ -92,18 +98,21 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
                 [styles.validationMessageHorizontalOverflow]: !!validationMessageHorizontalOverflow,
               })}
             >
-              <FieldValidationMessage>{error}</FieldValidationMessage>
+              <FieldValidationMessage errorId={errorId}>{error}</FieldValidationMessage>
             </div>
           )}
         </div>
 
         {invalid && error && horizontal && (
           <div
+            //BMC Code : Accessibility Change (Next Line: added id attribute)
+            id={errorId}
             className={cx(styles.fieldValidationWrapper, styles.fieldValidationWrapperHorizontal, {
               [styles.validationMessageHorizontalOverflow]: !!validationMessageHorizontalOverflow,
             })}
           >
-            <FieldValidationMessage>{error}</FieldValidationMessage>
+            {/* BMC Code : Accessibility Change (Next Line: added errorId prop) */}
+            <FieldValidationMessage errorId={errorId}>{error}</FieldValidationMessage>
           </div>
         )}
       </div>

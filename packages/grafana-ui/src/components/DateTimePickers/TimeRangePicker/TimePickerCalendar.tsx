@@ -20,7 +20,8 @@ export const getStyles = (theme: GrafanaTheme2, isReversed = false) => {
     container: css({
       top: 0,
       position: 'absolute',
-      [`${isReversed ? 'left' : 'right'}`]: '546px', // lmao
+      // BMC code change
+      [`${isReversed ? 'left' : 'right'}`]: '650px', // lmao
     }),
 
     modalContainer: css({
@@ -100,7 +101,8 @@ function TimePickerCalendar(props: TimePickerCalendarProps) {
 
   const calendar = (
     <section
-      className={styles.calendar}
+      // BMC code: inline change
+      className={styles.calendar + ' override'}
       ref={ref}
       {...overlayProps}
       {...dialogProps}
@@ -114,7 +116,8 @@ function TimePickerCalendar(props: TimePickerCalendarProps) {
 
   if (!showInModal) {
     return (
-      <FocusScope contain restoreFocus autoFocus>
+      // BMC Accessibility: Removed restoreFocus to avoid conflict with manual focus restoration in TimeRangeContent
+      <FocusScope contain autoFocus>
         <div className={styles.container}>{calendar}</div>
       </FocusScope>
     );
@@ -124,7 +127,8 @@ function TimePickerCalendar(props: TimePickerCalendarProps) {
     <OverlayContainer>
       <div className={modalBackdrop} />
 
-      <FocusScope contain autoFocus restoreFocus>
+      {/* BMC Accessibility: Removed restoreFocus to avoid conflict with manual focus restoration in TimeRangeContent */}
+      <FocusScope contain autoFocus>
         <div className={styles.modal}>
           <div className={styles.modalContainer}>{calendar}</div>
         </div>

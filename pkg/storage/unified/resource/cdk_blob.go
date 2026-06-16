@@ -3,10 +3,10 @@ package resource
 import (
 	"bytes"
 	"context"
-	"crypto/md5"
 	"encoding/hex"
 	"fmt"
 	"mime"
+	"os"
 	"strings"
 	"time"
 
@@ -167,13 +167,22 @@ func (s *cdkBlobSupport) PutResourceBlob(ctx context.Context, req *resourcepb.Pu
 	}
 	rsp.Size = attrs.Size
 
-	// Set the MD5 hash if missing
-	if len(attrs.MD5) == 0 {
-		h := md5.New()
+	// Compute content hash for the blob response.
+	// In FIPS mode, always use SHA-256 (FIPS-approved) regardless of what the
+	// cloud provider returns. In non-FIPS mode, prefer the provider-supplied
+	// MD5 for backward compatibility with S3 Content-MD5 conventions.
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		h := NewBlobHasher() // SHA-256
 		_, _ = h.Write(req.Value)
-		attrs.MD5 = h.Sum(nil)
+		rsp.Hash = hex.EncodeToString(h.Sum(nil))
+	} else {
+		if len(attrs.MD5) == 0 {
+			h := NewBlobHasher() // MD5
+			_, _ = h.Write(req.Value)
+			attrs.MD5 = h.Sum(nil)
+		}
+		rsp.Hash = hex.EncodeToString(attrs.MD5[:])
 	}
-	rsp.Hash = hex.EncodeToString(attrs.MD5[:])
 	return rsp, err
 }
 

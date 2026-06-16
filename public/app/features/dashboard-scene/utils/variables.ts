@@ -8,14 +8,19 @@ import {
   GroupByVariable,
   IntervalVariable,
   QueryVariable,
+  SceneObject,
   SceneVariable,
   SceneVariableSet,
   ScopesVariable,
   SwitchVariable,
   TextBoxVariable,
 } from '@grafana/scenes';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { DashboardModel } from 'app/features/dashboard/state/DashboardModel';
 
+import { QueryVariableBMC } from '../bmc/variables/QueryVariableBMC';
+import { DatePickerVariable } from '../bmc/variables/datepicker/DatePickerVariable';
+import { OptimizeVariable } from '../bmc/variables/optimize/OptimizeVariable';
 import { SnapshotVariable } from '../serialization/custom-variables/SnapshotVariable';
 
 import { getCurrentValueForOldIntervalModel, getIntervalsFromQueryString } from './utils';
@@ -150,7 +155,8 @@ export function createSceneVariableFromVariableModel(variable: TypedVariableMode
       filters,
       baseFilters: variable.baseFilters ?? [],
       defaultKeys: variable.defaultKeys,
-      allowCustomValue: variable.allowCustomValue,
+      // BMC code: allowCustomValue default to false
+      allowCustomValue: variable.allowCustomValue ?? false,
       useQueriesAsFilterForOptions: true,
       layout: config.featureToggles.newFiltersUI ? 'combobox' : undefined,
       supportsMultiValueOperators: Boolean(
@@ -172,11 +178,13 @@ export function createSceneVariableFromVariableModel(variable: TypedVariableMode
       defaultToAll: Boolean(variable.includeAll),
       skipUrlSync: variable.skipUrlSync,
       hide: variable.hide,
-      allowCustomValue: variable.allowCustomValue,
+      // BMC code: allowCustomValue default to false
+      allowCustomValue: variable.allowCustomValue ?? false,
     });
     // Query variable
   } else if (variable.type === 'query') {
-    return new QueryVariable({
+    // BMC Change: Use QueryVariableBMC for BMC specific query variable
+    return new QueryVariableBMC({
       ...commonProperties,
       value: variable.current?.value ?? '',
       text: variable.current?.text ?? '',
@@ -193,12 +201,17 @@ export function createSceneVariableFromVariableModel(variable: TypedVariableMode
       skipUrlSync: variable.skipUrlSync,
       hide: variable.hide,
       definition: variable.definition,
-      allowCustomValue: variable.allowCustomValue,
+      // BMC code: allowCustomValue default to false
+      allowCustomValue: variable.allowCustomValue ?? false,
       staticOptions: variable.staticOptions?.map((option) => ({
         label: String(option.text),
         value: String(option.value),
       })),
       staticOptionsOrder: variable.staticOptionsOrder,
+      // BMC Change: Below all props
+      discardForAll: variable.discardForAll,
+      bmcVarCache: variable.bmcVarCache,
+      // BMC Change: Ends
     });
     // Datasource variable
   } else if (variable.type === 'datasource') {
@@ -215,7 +228,8 @@ export function createSceneVariableFromVariableModel(variable: TypedVariableMode
       isMulti: variable.multi,
       hide: variable.hide,
       defaultOptionEnabled: variable.current?.value === DEFAULT_DATASOURCE && variable.current?.text === 'default',
-      allowCustomValue: variable.allowCustomValue,
+      // BMC code: allowCustomValue default to false
+      allowCustomValue: variable.allowCustomValue ?? false,
     });
     // Interval variable
   } else if (variable.type === 'interval') {
@@ -271,7 +285,8 @@ export function createSceneVariableFromVariableModel(variable: TypedVariableMode
       // @ts-expect-error
       defaultOptions: variable.options,
       defaultValue: variable.defaultValue,
-      allowCustomValue: variable.allowCustomValue,
+      // BMC code: allowCustomValue default to false
+      allowCustomValue: variable.allowCustomValue ?? false,
     });
     // Switch variable
     // In the old variable model we are storing the enabled and disabled values in the options:
@@ -292,7 +307,53 @@ export function createSceneVariableFromVariableModel(variable: TypedVariableMode
       skipUrlSync: variable.skipUrlSync,
       hide: variable.hide,
     });
-  } else {
+  }
+  // BMC code: Added datepicker and optimize variables support
+  else if (variable.type === 'datepicker') {
+    return new DatePickerVariable({
+      ...commonProperties,
+      value: Array.isArray(variable.current?.value)
+        ? (variable.current?.value[0] ?? '')
+        : (variable.current?.value ?? ''),
+      skipUrlSync: variable.skipUrlSync,
+      hide: variable.hide,
+    });
+  } else if (variable.type === 'optimizepicker') {
+    // Check feature flag before creating optimize variable
+    const optimizeDomainPickerEnabled = getFeatureStatus('opt_domain_picker');
+    if (!optimizeDomainPickerEnabled) {
+      throw new Error('Optimize variable is not enabled');
+    }
+    return new OptimizeVariable({
+      ...commonProperties,
+      value: Array.isArray(variable.current?.value)
+        ? variable.current?.value
+        : variable.current?.value
+          ? [variable.current?.value]
+          : [],
+      skipUrlSync: variable.skipUrlSync,
+      hide: variable.hide,
+      filterondescendant: variable.filterondescendant,
+    });
+  }
+  // BMC code: end
+  else {
     throw new Error(`Scenes: Unsupported variable type ${variable.type}`);
   }
+}
+
+// BMC Change: Next function
+export function isVariableSet(variable: SceneObject): variable is SceneVariable {
+  return (
+    variable instanceof AdHocFiltersVariable ||
+    variable instanceof ConstantVariable ||
+    variable instanceof CustomVariable ||
+    variable instanceof DataSourceVariable ||
+    variable instanceof GroupByVariable ||
+    variable instanceof IntervalVariable ||
+    variable instanceof QueryVariable ||
+    variable instanceof DatePickerVariable ||
+    variable instanceof OptimizeVariable ||
+    variable instanceof TextBoxVariable
+  );
 }

@@ -218,6 +218,8 @@ export enum PluginExtensionPoints {
   LogsViewResourceAttributes = 'grafana/logsview/resource-attributes',
   AppChrome = 'grafana/app/chrome/v1',
   ExtensionSidebar = 'grafana/extension-sidebar/v0-alpha',
+  // BMC: InsightFinder navbar action extension point
+  BmcInsightFinderNavbarActions = 'grafana/bmc/insight-finder/navbar-actions',
 }
 
 // Don't use directly in a plugin!

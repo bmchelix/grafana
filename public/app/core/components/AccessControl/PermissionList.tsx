@@ -33,8 +33,10 @@ export const PermissionList = ({ title, items, compareKey, permissionLevels, can
       // Determine which permission to keep for display
       // If the same permission has been applied more than once (i.e. one copy is ready kept)
       if (item.actions.length === keep[key].actions.length) {
+        // BMC code - prefer managed (direct) over inherited so it matches existing behavior of before Grafana 12.3.x
         // replace the kept permission if it is managed and this item is not (i.e. it is inherited or provisioned)
-        if (keep[key].isManaged && !item.isManaged) {
+        // if (keep[key].isManaged && !item.isManaged) {
+        if (!keep[key].isManaged && item.isManaged) {
           keep[key] = item;
         }
       }

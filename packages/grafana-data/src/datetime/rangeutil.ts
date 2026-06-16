@@ -1,11 +1,11 @@
 import { formatDateRange, t } from '@grafana/i18n';
 
-import { RawTimeRange, TimeRange, TimeZone, IntervalValues, RelativeTimeRange, TimeOption } from '../types/time';
+import { IntervalValues, RawTimeRange, RelativeTimeRange, TimeOption, TimeRange, TimeZone } from '../types/time';
 import { getFeatureToggle } from '../utils/featureToggles';
 
 import * as dateMath from './datemath';
-import { timeZoneAbbrevation, dateTimeFormat, dateTimeFormatTimeAgo, toIANATimezone } from './formatter';
-import { isDateTime, DateTime, dateTime } from './moment_wrapper';
+import { dateTimeFormat, dateTimeFormatTimeAgo, timeZoneAbbrevation, toIANATimezone } from './formatter';
+import { DateTime, dateTime, isDateTime } from './moment_wrapper';
 import { dateTimeParse } from './parser';
 
 const spans: { [key: string]: { display: string; section?: number } } = {
@@ -403,7 +403,8 @@ export function describeTextRange(expr: string): TimeOption {
       }
     }
   } else {
-    opt.display = opt.from + ' to ' + opt.to;
+    // BMC Change: Next line : Localized the display string
+    opt.display = opt.from + ` ${t('time-picker.range-picker.to', 'to')} ` + opt.to;
     opt.invalid = true;
   }
 
@@ -440,12 +441,15 @@ export function describeTimeRange(range: RawTimeRange, timeZone?: TimeZone, quic
 
   const options = { timeZone };
 
+  // BMC Change: Next line : Localized the display string
+  const localizedTo = ` ${t('time-picker.range-picker.to', 'to')} `;
   if (isDateTime(range.from) && isDateTime(range.to)) {
     const fromDate = range.from.toDate();
     const toDate = range.to.toDate();
 
     if (!getFeatureToggle('localeFormatPreference')) {
-      return dateTimeFormat(range.from, options) + ' to ' + dateTimeFormat(range.to, options);
+      // BMC Change: Next line : Localized the display string
+      return dateTimeFormat(range.from, { ...options }) + localizedTo + dateTimeFormat(range.to, { ...options });
     }
 
     const hasSeconds = fromDate.getSeconds() !== 0 || toDate.getSeconds() !== 0;
@@ -462,20 +466,26 @@ export function describeTimeRange(range: RawTimeRange, timeZone?: TimeZone, quic
   // Could we use formatRangeToParts and replace the 'other side' with the ago formatting?
   if (isDateTime(range.from)) {
     const parsed = dateMath.parse(range.to, true, 'utc');
-    return parsed ? dateTimeFormat(range.from, options) + ' to ' + dateTimeFormatTimeAgo(parsed, options) : '';
+    return parsed
+      ? // BMC Change: Next line : Localized the display string
+        dateTimeFormat(range.from, { ...options }) + localizedTo + dateTimeFormatTimeAgo(parsed, options)
+      : '';
   }
 
   if (isDateTime(range.to)) {
     const parsed = dateMath.parse(range.from, false, 'utc');
-    return parsed ? dateTimeFormatTimeAgo(parsed, options) + ' to ' + dateTimeFormat(range.to, options) : '';
+    return parsed
+      ? // BMC Change: Next line : Localized the display string
+        dateTimeFormatTimeAgo(parsed, options) + localizedTo + dateTimeFormat(range.to, { ...options })
+      : '';
   }
 
   if (range.to.toString() === 'now') {
     const res = describeTextRange(range.from);
     return res.display;
   }
-
-  return range.from.toString() + ' to ' + range.to.toString();
+  // BMC Change: Next line : Localized the display string
+  return range.from.toString() + localizedTo + range.to.toString();
 }
 
 export const isValidTimeSpan = (value: string) => {

@@ -16,6 +16,7 @@ import { DataSourceCard } from './DataSourceCard';
 import { INTERACTION_EVENT_NAME, INTERACTION_ITEM } from './DataSourcePicker';
 import { getDataSourceCompareFn, isDataSourceMatch } from './utils';
 
+
 /**
  * Component props description for the {@link DataSourceList}
  *
@@ -76,15 +77,21 @@ export function DataSourceList(props: DataSourceListProps) {
   );
 
   const [recentlyUsedDataSources, pushRecentlyUsedDataSource] = useRecentlyUsedDataSources();
-  const favoriteDataSources = useFavoriteDatasources();
 
-  const filteredDataSources = props.filter ? dataSources.filter(props.filter) : dataSources;
+  const favoriteDataSources = useFavoriteDatasources();
+  // BMC code start // Hide ServiceNow datasource from the list for 26.2
+  let filteredDataSources = props.filter ? dataSources.filter(props.filter) : dataSources;
+  const DS_BMC_SERVICENOW = 'servicenow';
+  filteredDataSources = filteredDataSources.filter((ds) => ds.meta?.name?.toLowerCase() !== DS_BMC_SERVICENOW );
+  // BMC code end
 
   return (
     <div
       ref={containerRef}
       className={cx(className, styles.container)}
       data-testid={selectors.components.DataSourcePicker.dataSourceList}
+      // BMC Code : Accessibility Change ( Next line )
+      id="data-source-suggestion-box"
     >
       {filteredDataSources.length === 0 && (
         <EmptyState className={styles.emptyState} onClickCTA={onClickEmptyStateCTA} />

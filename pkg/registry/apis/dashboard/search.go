@@ -20,6 +20,8 @@ import (
 
 	dashboardv0alpha1 "github.com/grafana/grafana/apps/dashboard/pkg/apis/dashboard/v0alpha1"
 	folders "github.com/grafana/grafana/apps/folder/pkg/apis/folder/v1beta1"
+	"github.com/grafana/grafana/pkg/api/bmc/external"
+	"github.com/grafana/grafana/pkg/api/bmc/localization"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/services/apiserver/builder"
@@ -169,6 +171,17 @@ func (s *SearchHandler) GetAPIRoutes(defs map[string]common.OpenAPIDefinition) *
 										Schema:      spec.BoolProperty(),
 									},
 								},
+								// BMC code: start
+								{
+									ParameterProps: spec3.ParameterProps{
+										Name:        "lang",
+										In:          "query",
+										Description: "locale for localized search (e.g. en-US, fr-FR) when bhd-localization is enabled",
+										Required:    false,
+										Schema:      spec.StringProperty(),
+									},
+								},
+								// BMC code: end
 							},
 							Responses: &spec3.Responses{
 								ResponsesProps: spec3.ResponsesProps{
@@ -295,6 +308,13 @@ func (s *SearchHandler) DoSearch(w http.ResponseWriter, r *http.Request) {
 		Page:    int64(page), // for modes 0-2 (legacy)
 		Explain: queryParams.Has("explain") && queryParams.Get("explain") != "false",
 	}
+	// BMC code: pass lang for localized search when FeatureFlagBHDLocalization is enabled
+	if lang := queryParams.Get("lang"); lang != "" && searchRequest.Query != "" {
+		if localization.IsSupportedLocale(localization.Locale(lang)) && external.FeatureFlagBHDLocalization.EnabledForOrg(user.GetOrgID(), user.GetIsGrafanaAdmin()) {
+			searchRequest.Lang = lang
+		}
+	}
+	// BMC code: end
 	fields := []string{"title", "folder", "tags", "description", "manager.kind", "manager.id"}
 	if queryParams.Has("field") {
 		// add fields to search and exclude duplicates

@@ -113,6 +113,12 @@ export class GeneralSettingsEditView
     this._dashboard.setState({ editable: value });
   };
 
+  // BMC Change: Starts
+  public onMultilingualPdfToggle = () => {
+    this._dashboard.setState({ multilingualPdf: !this._dashboard.state.multilingualPdf });
+  };
+  // BMC Change: Ends
+
   public onTimeZoneChange = (value: TimeZone) => {
     this.getTimeRange().setState({
       timeZone: value,
@@ -198,7 +204,8 @@ export class GeneralSettingsEditView
 function GeneralSettingsEditViewComponent({ model }: SceneComponentProps<GeneralSettingsEditView>) {
   const dashboard = model.getDashboard();
   const { navModel, pageNav } = useDashboardEditPageNav(dashboard, model.getUrlKey());
-  const { title, description, tags, meta, editable } = dashboard.useState();
+  // BMC code: added multilingualPdf in destructuring
+  const { title, description, tags, meta, editable, multilingualPdf } = dashboard.useState();
   const { showMoveModal, moveModalProps } = model.useState();
   const { sync: graphTooltip } = model.getCursorSync()?.useState() || {};
   const { timeZone, weekStart, UNSAFE_nowDelay: nowDelay } = model.getTimeRange().useState();
@@ -303,6 +310,17 @@ function GeneralSettingsEditViewComponent({ model }: SceneComponentProps<General
             )}
           >
             <RadioButtonGroup value={editable} options={EDITABLE_OPTIONS} onChange={model.onEditableChange} />
+          </Field>
+          {/* BMC Change */}
+          <Field
+            noMargin
+            label={t('bmc.dashboard-settings.general.multilingual-pdf', 'Multiligual PDF')}
+            description={t(
+              'bmc.dashboard-settings.general.multilingual-pdf-description',
+              'Enable multilingual PDF generation for simple layout PDF reports'
+            )}
+          >
+            <Switch id="multilingual-pdfs-toggle" value={!!multilingualPdf} onChange={model.onMultilingualPdfToggle} />
           </Field>
         </Box>
 
