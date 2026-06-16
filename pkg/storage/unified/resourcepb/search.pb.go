@@ -7,11 +7,12 @@
 package resourcepb
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -165,10 +166,12 @@ type ResourceSearchRequest struct {
 	// the return fields (empty will return everything)
 	Fields []string `protobuf:"bytes,8,rep,name=fields,proto3" json:"fields,omitempty"`
 	// explain each result (added to the each row)
-	Explain       bool  `protobuf:"varint,9,opt,name=explain,proto3" json:"explain,omitempty"`
-	IsDeleted     bool  `protobuf:"varint,10,opt,name=is_deleted,json=isDeleted,proto3" json:"is_deleted,omitempty"`
-	Page          int64 `protobuf:"varint,11,opt,name=page,proto3" json:"page,omitempty"`
-	Permission    int64 `protobuf:"varint,12,opt,name=permission,proto3" json:"permission,omitempty"`
+	Explain    bool  `protobuf:"varint,9,opt,name=explain,proto3" json:"explain,omitempty"`
+	IsDeleted  bool  `protobuf:"varint,10,opt,name=is_deleted,json=isDeleted,proto3" json:"is_deleted,omitempty"`
+	Page       int64 `protobuf:"varint,11,opt,name=page,proto3" json:"page,omitempty"`
+	Permission int64 `protobuf:"varint,12,opt,name=permission,proto3" json:"permission,omitempty"`
+	// BMC: locale for bhd_localization (e.g. en-US, fr-FR) when FeatureFlagBHDLocalization is enabled
+	Lang          string `protobuf:"bytes,13,opt,name=lang,proto3" json:"lang,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -285,6 +288,14 @@ func (x *ResourceSearchRequest) GetPermission() int64 {
 		return x.Permission
 	}
 	return 0
+}
+
+// BMC code: next method
+func (x *ResourceSearchRequest) GetLang() string {
+	if x != nil {
+		return x.Lang
+	}
+	return ""
 }
 
 type ResourceSearchResponse struct {

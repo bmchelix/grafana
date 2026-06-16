@@ -5,6 +5,7 @@ import { FormEvent, MouseEvent, useState } from 'react';
 
 import { dateTime, getDefaultTimeRange, GrafanaTheme2, TimeRange, TimeZone } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
+import { t } from '@grafana/i18n';
 
 import { useStyles2 } from '../../themes/ThemeContext';
 import { Icon } from '../Icon/Icon';
@@ -49,7 +50,7 @@ export const TimeRangeInput = ({
   weekStart,
   hideTimeZone = true,
   timeZone = 'browser',
-  placeholder = 'Select time range',
+  placeholder = t('bmcgrafana.grafana-ui.date-time-pickers.time-range-input-text', 'Select time range'),
   isReversed = true,
   hideQuickRanges = false,
   disabled = false,
@@ -57,7 +58,6 @@ export const TimeRangeInput = ({
 }: TimeRangeInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const styles = useStyles2(getStyles, disabled);
-
   const onOpen = (event: FormEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();

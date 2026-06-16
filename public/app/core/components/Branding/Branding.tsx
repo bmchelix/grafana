@@ -2,7 +2,7 @@ import { css, cx } from '@emotion/css';
 import { FC } from 'react';
 
 import { colorManipulator } from '@grafana/data';
-import { useTheme2 } from '@grafana/ui';
+import { Icon, useTheme2 } from '@grafana/ui';
 import g8LoginDarkSvg from 'img/g8_login_dark.svg';
 import g8LoginLightSvg from 'img/g8_login_light.svg';
 import grafanaIconSvg from 'img/grafana_icon.svg';
@@ -49,7 +49,8 @@ const LoginBackground: FC<BrandComponentProps> = ({ className, children }) => {
 };
 
 const MenuLogo: FC<BrandComponentProps> = ({ className }) => {
-  return <img className={className} src={grafanaIconSvg} alt="Grafana" />;
+  // BMC code - next line
+  return <Icon className={className} name="bmc-home" size="xl" />;
 };
 
 const LoginBoxBackground = () => {
@@ -65,8 +66,10 @@ export class Branding {
   static LoginBackground = LoginBackground;
   static MenuLogo = MenuLogo;
   static LoginBoxBackground = LoginBoxBackground;
-  static AppTitle = 'Grafana';
-  static LoginTitle = 'Welcome to Grafana';
+  // BMC code - inline change
+  static AppTitle = 'BMC Helix Dashboards';
+  static LoginTitle = 'Welcome to BMC Helix Dashboards';
+  // End
   static HideEdition = false;
   static GetLoginSubTitle = (): null | string => {
     return null;

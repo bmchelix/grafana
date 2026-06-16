@@ -11,15 +11,15 @@ import {
 } from '@grafana/scenes';
 import { DataSourceRef } from '@grafana/schema/dist/esm/index.gen';
 import {
-  Spec as DashboardV2Spec,
   AutoGridLayoutItemKind,
-  RowsLayoutRowKind,
+  Spec as DashboardV2Spec,
+  DataQueryKind,
   LibraryPanelKind,
   PanelKind,
   PanelQueryKind,
   QueryVariableKind,
+  RowsLayoutRowKind,
   TabsLayoutTabKind,
-  DataQueryKind,
 } from '@grafana/schema/dist/esm/schema/dashboard/v2';
 import { MIXED_DATASOURCE_NAME } from 'app/plugins/datasource/mixed/MixedDataSource';
 

@@ -182,8 +182,8 @@ type FileStorage interface {
 	// List lists only files without content by default
 	List(ctx context.Context, folderPath string, paging *Paging, options *ListOptions) (*ListResponse, error)
 
-	CreateFolder(ctx context.Context, path string) error
 	DeleteFolder(ctx context.Context, path string, options *DeleteFolderOptions) error
+	CreateFolder(ctx context.Context, path string) error
 
 	close() error
 }

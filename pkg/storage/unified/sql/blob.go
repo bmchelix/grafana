@@ -2,7 +2,6 @@ package sql
 
 import (
 	"context"
-	"crypto/md5"
 	"encoding/hex"
 	"fmt"
 	"net/http"
@@ -36,7 +35,8 @@ func (b *backend) PutResourceBlob(ctx context.Context, req *resourcepb.PutBlobRe
 		}, nil
 	}
 
-	hasher := md5.New() // same as s3
+	// Use SHA-256 in FIPS mode, MD5 otherwise (backward compat with S3)
+	hasher := resource.NewBlobHasher()
 	_, err := hasher.Write(req.Value)
 	if err != nil {
 		return nil, err

@@ -27,7 +27,7 @@
     },
     "permissions": {
       "add-label": "Ajouter une autorisation",
-      "loading": "",
+      "loading": "Chargement des autorisations...",
       "no-permissions": "Il n'y a aucune autorisation",
       "permissions-change-warning": "Cette action modifiera les autorisations pour ce dossier et tous ses descendants. Au total, elle affectera :",
       "role": "Rôle",
@@ -108,7 +108,7 @@
       "dismiss": "Ignorer",
       "heading": "Authentification Enterprise",
       "learn-more-link": "En savoir plus",
-      "text": ""
+      "text": "Gérez les utilisateurs, les équipes et les autorisations automatiquement avec <strong>SAML</strong>, <strong>SCIM</strong>, <strong>LDAP</strong> et <strong>RBAC</strong> — disponible dans Grafana Cloud et Enterprise."
     },
     "feature-listing": {
       "title-auditing": "Auditer",
@@ -137,11 +137,11 @@
       "title": "Obtenir Grafana Enterprise"
     },
     "ldap": {
-      "debug-subtitle": "",
-      "debug-title": "",
+      "debug-subtitle": "Vérifiez votre configuration LDAP et de mappage des utilisateurs.",
+      "debug-title": "Diagnostics LDAP",
       "test-mapping-heading": "Tester le mappage des utilisateurs",
       "test-mapping-run-button": "Exécuter",
-      "text-loading-ldap-status": ""
+      "text-loading-ldap-status": "Chargement de l'état LDAP..."
     },
     "ldap-connection-status": {
       "columns": {
@@ -209,7 +209,7 @@
       "title-delete": "Supprimer"
     },
     "orgs": {
-      "delete-body": "",
+      "delete-body": "Voulez-vous vraiment supprimer '{{deleteOrgName}}'?<br/><5>Tous les tableaux de bord de cette organisation seront supprimés !</5>",
       "id-header": "ID",
       "name-header": "Nom",
       "new-org-button": "Nouvelle organisation"
@@ -2090,6 +2090,8 @@
         },
         "inherited": "Hérité",
         "mute-time": "Mis en sourdine quand",
+        "n-instances_one": "instance",
+        "n-instances_other": "instance",
         "timingOptions": {
           "groupInterval": {
             "description": "Combien de temps attendre avant d'envoyer une notification concernant les nouvelles alertes ajoutées à un groupe d'alertes pour lequel une notification initiale a déjà été envoyée.",
@@ -2103,10 +2105,10 @@
             "description": "Fréquence à laquelle les notifications sont envoyées si le groupe d'alertes n'a pas changé depuis la dernière notification.",
             "label": "Répété tous les <1></1>"
           }
-        },
-        "n-instances_one": "instance",
-        "n-instances_other": "instance"
+        }
       },
+      "n-more-policies_one": "",
+      "n-more-policies_other": "",
       "new-child": "Nouvelle politique enfant",
       "new-policy": "Ajouter une nouvelle politique",
       "no-matchers": "Aucun correspondant",
@@ -2126,9 +2128,7 @@
         },
         "suffix": "Actualisez la page, puis réessayez.",
         "title": "Échec lors de l’ajout ou de la mise à jour de la politique de notification"
-      },
-      "n-more-policies_one": "",
-      "n-more-policies_other": ""
+      }
     },
     "policy": {
       "label-new-child-policy": "Nouvelle politique enfant",
@@ -2226,6 +2226,13 @@
     },
     "receiver-metadata-badge": {
       "aria-label-open-external-link": "Ouvrir le lien externe"
+    },
+    "receivers": {
+      "protected": {
+        "field": {
+          "description": "This field is protected and can only be edited by users with elevated permissions"
+        }
+      }
     },
     "receivers-section": {
       "button-more": "Plus",
@@ -2329,9 +2336,9 @@
       "label-tenant-sources": "Sources du locataire"
     },
     "rule-details-matching-instances": {
-      "showing-count": "Affichage de {{visibleItems}} sur {{totalItems}} instances",
       "button-show-all_one": "Afficher toutes les {{totalItems}} instances d’alerte",
-      "button-show-all_other": "Afficher toutes les {{totalItems}} instances d’alerte"
+      "button-show-all_other": "Afficher toutes les {{totalItems}} instances d’alerte",
+      "showing-count": "Affichage de {{visibleItems}} sur {{totalItems}} instances"
     },
     "rule-editor": {
       "get-content": {
@@ -2498,16 +2505,16 @@
       "unknown-rule-type": "Type de règle inconnu"
     },
     "rule-list-errors": {
+      "button-errors_one": "{{count}} erreurs",
+      "button-errors_other": "{{count}} erreurs",
       "cloud-rulessource-errors-title-errors-loading-rules": "Erreurs lors du chargement des règles",
       "failed-to-load-grafana-rules-config": "Échec du chargement de la configuration des règles Grafana :",
       "failed-to-load-grafana-rules-state": "Échec du chargement de l’état des règles Grafana :",
       "failed-to-load-rules-config": "Échec du chargement de la configuration des règles depuis <2>{{dataSource}}</2>",
       "failed-to-load-rules-state": "Échec du chargement de l’état des règles depuis <2>{{dataSource}}</2>",
-      "unknown-error": "Erreur inconnue.",
-      "button-errors_one": "{{count}} erreurs",
-      "button-errors_other": "{{count}} erreurs",
       "more-errors_one": "{{count}} erreurs supplémentaires",
-      "more-errors_other": "{{count}} erreurs supplémentaires"
+      "more-errors_other": "{{count}} erreurs supplémentaires",
+      "unknown-error": "Erreur inconnue."
     },
     "rule-list-v1": {
       "collapse-all": "Tout réduire",
@@ -2535,15 +2542,15 @@
       }
     },
     "rule-stats": {
+      "error_one": "{{count}} erreurs",
+      "error_other": "{{count}} erreurs",
       "firing": "{{alertingStats}} en cours de déclenchement",
       "inactive": "{{normalStats}} normale",
       "nodata": "{{nodataStats}} sans donnée",
       "paused": "{{normalStats}} normale ({{pausedStats}} suspendue)",
       "pending": "{{pendingStats}} en attente",
       "recording": "{{recordingStats}} enregistrement",
-      "recovering": "{{recoveringStats}} en cours de récupération",
-      "error_one": "{{count}} erreurs",
-      "error_other": "{{count}} erreurs"
+      "recovering": "{{recoveringStats}} en cours de récupération"
     },
     "rule-time-range-label": {
       "relative": "",
@@ -3160,7 +3167,7 @@
       "no-annotations-found": "Aucune annotation trouvée"
     },
     "annotation-list-item": {
-      "tooltip-created-by": ""
+      "tooltip-created-by": "Créé par :<br/>{{email}}"
     },
     "category-annotation-query": "Requête d’annotation",
     "category-display": "Affichage",
@@ -3193,12 +3200,12 @@
     "annotation-field-mapper": {
       "annotation": "Annotation",
       "first-value": "Première valeur",
-      "from": "",
+      "from": "De",
       "noOptionsMessage-unknown-field-names": "Noms de champs inconnus"
     },
     "empty-state": {
       "button-title": "Ajouter une requête d'annotation",
-      "info-box-content": "",
+      "info-box-content": "<p> Les annotations permettent d'intégrer les données d'événement dans vos graphiques. Elles sont visualisées sous forme de lignes verticales et d'icônes sur tous les panneaux de graphique. Lorsque vous survolez une icône d'annotation, vous pouvez obtenir le texte et les balises de l'événement. Vous pouvez ajouter des événements d'annotation directement depuis Grafana en maintenant les touches CTRL ou CMD enfoncées et en cliquant sur le graphique (ou en faisant glisser une région). Ceux-ci seront stockés dans la base de données d'annotations de Grafana. </p>",
       "info-box-content-2": "Consultez la <2>documentation sur les annotations</2> pour en savoir plus.",
       "title": "Aucune requête d'annotation personnalisée n'a encore été ajoutée"
     },
@@ -3236,7 +3243,7 @@
       "auth-settings": "Paramètres d’authentification"
     },
     "auth-drawer-unconneced": {
-      "subtitle": ""
+      "subtitle": "Configurez les paramètres d'authentification. Pour en savoir plus, consultez notre <2>documentation</2>."
     },
     "auth-drawer-unconnected": {
       "advanced-auth": "Authentification avancée",
@@ -3270,7 +3277,7 @@
       "allowed-organizations-description": "Liste des organisations séparées par des virgules ou des espaces. L’utilisateur doit être membre\nd’au moins une organisation pour se connecter.",
       "allowed-organizations-label": "Organisations autorisées",
       "allowed-organizations-placeholder": "Saisissez les organisations (my-team, myteam...) et appuyez sur Entrée pour ajouter",
-      "api-url-description": "",
+      "api-url-description": "Le point de terminaison des informations utilisateur de votre fournisseur OAuth2. Les informations renvoyées par ce point de terminaison doivent être compatibles avec <2>OpenID UserInfo</2>.",
       "api-url-required": "Ce champ doit être une URL valide s’il est défini.",
       "auth-style-description": "Il détermine comment « {{ clientIDLabel }} » et « {{ clientSecretLabel }} » sont envoyés au fournisseur Oauth2. La valeur par défaut est AutoDetect.",
       "auth-style-label": "Style d’authentification",
@@ -3287,7 +3294,7 @@
       "define-allowed-teams-ids-label": "Définir les ID des équipes autorisées",
       "display-name-description": "Sera affiché sur la page de connexion comme « Se connecter avec... ». Utile si vous utilisez plusieurs fournisseurs d’identité ou protocoles SSO.",
       "display-name-label": "Pseudo",
-      "domain-hint-description": "",
+      "domain-hint-description": "Paramètre pour indiquer le domaine de l'utilisateur dans le locataire Entra ID et simplifier le processus de connexion.",
       "domain-hint-label": "Indice de domaine",
       "domain-hint-valid-domain": "Ce champ doit contenir un domaine valide.",
       "email-attribute-name-description": "Nom de la clé à utiliser pour la recherche d’e-mail de l’utilisateur dans la carte d’attributs du jeton d’identification OAuth2.",
@@ -3415,7 +3422,7 @@
     }
   },
   "auth-config-auth-config-page-unconnected": {
-    "subtitle": ""
+    "subtitle": "Gérez vos paramètres d'authentification et configurez l'authentification unique. Pour en savoir plus, consultez notre <2>documentation</2>."
   },
   "bar-chart": {
     "warn": {
@@ -3514,6 +3521,1352 @@
       "label-value-color": "Couleur de la valeur"
     }
   },
+  "bmc": {
+    "admin": {
+      "users": {
+        "search-label": "Rechercher un utilisateur par identifiant, e-mail ou nom"
+      }
+    },
+    "browse-dashboards": {
+      "action": {
+        "move-folder-tooltip": "Les dossiers ne peuvent pas être déplacés"
+      }
+    },
+    "bulk-operations": {
+      "cancel": "Annuler",
+      "datsource-not-found": "Aucune source de données de type {{pluginName}} n’a été trouvée",
+      "import": {
+        "import-all-failed": "Impossible d’importer tous les tableaux de bord",
+        "no-import": "Aucun tableau de bord importé"
+      },
+      "import-all": "Tout importer",
+      "import-failed": "Impossible d’importer les tableaux de bord suivants",
+      "import-success": "Tous les tableaux de bord ont été importés avec succès",
+      "options": "Options",
+      "select-datasource": "Sélectionner une source de données {{pluginName}}",
+      "set-parameters": "définir les paramètres obligatoires pour les tableaux de bord sélectionnés",
+      "specify-constant": "Spécifiez une constante de chaîne"
+    },
+    "calc-fields": {
+      "a-z": "A-Z",
+      "aggregated": "Agrégées",
+      "all": "Tout",
+      "clone": "Cloner",
+      "confirm-delete": "Voulez-vous supprimer les champs calculés sélectionnés ?",
+      "connection-error": "La connectivité à BMC Helix ITSM n’est pas configurée.",
+      "custom": "Personnalisé",
+      "delete": "Supprimer",
+      "details": "Détails du champ calculé",
+      "edit": "Modifier",
+      "edit-field": "Modifier le champ calculé",
+      "eg": "par ex.",
+      "failed": "Impossible de récupérer les champs calculés",
+      "failure": "Échec",
+      "filter-by-type": "Filtrer par type (par défaut Tous)",
+      "form-name": "Nom du formulaire",
+      "is-aggregate": "Agréger",
+      "is-aggregate-description": "Activez cette option si votre requête inclut des fonctions d’agrégation.",
+      "module": "Module",
+      "module-name": "Nom du module",
+      "name": "Nom",
+      "name-placeholder": "Entrer le nom du champ calculé",
+      "new-field": "Nouveau champ calculé",
+      "no-calc-fields": "Vous n’avez pas encore créé de champs calculés.",
+      "not-found": "Aucun champ calculé correspondant à votre requête n’a été trouvé.",
+      "ootb": "Clés en main",
+      "query-info": "La requête doit être une requête à colonne unique",
+      "query-not-validated": "Requête non validée",
+      "save": "Enregistrer",
+      "search-by-name": "Rechercher les champs calculés par nom",
+      "search-items": "Rechercher des éléments",
+      "select-form": "Sélectionner un formulaire",
+      "select-module": "Sélectionner un module",
+      "sort-asc": "Alphabétique (A-Z)",
+      "sort-asc-descripton": "Trier les résultats par ordre alphabétique croissant",
+      "sort-dsc": "Alphabétique (Z-A)",
+      "sort-dsc-descripton": "Trier les résultats par ordre alphabétique décroissant",
+      "sort-options": "Options de tri",
+      "sort-placeholder": "Trier (par défaut {{label}})",
+      "sql-label": "SQL",
+      "sql-query": "Requête SQL",
+      "subtitle": "Créer et gérer des champs calculés pour le service ITSM",
+      "title": "Champs calculés",
+      "unknown-failure": "Erreur inconnue",
+      "update": "Mettre à jour",
+      "validate": "Valider",
+      "validation-success": "Requête validée avec succès"
+    },
+    "common": {
+      "cancel": "Annuler",
+      "dashboards": "Tableaux de bord",
+      "delete": "Supprimer",
+      "download": "Télécharger",
+      "edit": "Modifier",
+      "loading": "Chargement...",
+      "name": "Nom",
+      "save": "Enregistrer",
+      "type": "Type"
+    },
+    "content-localization": "Code de langue non valide : {{langCode}}",
+    "dashboard": {
+      "toolbar": {
+        "manage-reports": "Gérer les rapports planifiés",
+        "reset-filters": "Réinitialiser les filtres",
+        "reset-filters-failure": "Impossible de réinitialiser les valeurs du filtre.",
+        "save-filters": "Enregistrer les filtres",
+        "save-filters-failure": "Impossible d’enregistrer les valeurs du filtre.",
+        "save-filters-success": "Les valeurs du filtre ont été enregistrées avec succès."
+      }
+    },
+    "dashboard-import": {
+      "import-text": "Importer",
+      "overwrite": "Remplacer",
+      "panel-import": "Importation de volet",
+      "panel-import-alert": "L’importation comporte un volet {{vqb}}. Veuillez le réexporter depuis l’environnement souhaité, sinon une intervention manuelle sera requise pour sélectionner la vue.",
+      "sub-title": "Importer le tableau de bord depuis un fichier ou via le fichier json du tableau de bord"
+    },
+    "dashboard-scene": {
+      "get-editable-variables": {
+        "description": {
+          "optimize-variable-description": "Définir une variable d'optimisation, où les utilisateurs peuvent sélectionner des types de requête d'optimisation."
+        },
+        "name": {
+          "datepicker": "Plage de dates",
+          "optimizepicker": "Variable d'optimisation"
+        }
+      },
+      "text": {
+        "discard-changes-to-dashboard": "Vous avez des modifications non enregistrées sur ce tableau de bord. Voulez-vous vraiment les annuler ?"
+      }
+    },
+    "dashboard-settings": {
+      "general": {
+        "multilingual-pdf": "PDF multilingue",
+        "multilingual-pdf-description": "Activer la génération de PDF multilingues pour des rapports PDF à mise en page simple"
+      }
+    },
+    "date-picker": {
+      "description": "Définissez une variable de plage de dates qui permette aux utilisateurs de sélectionner n’importe quelle plage de dates",
+      "name": "Plage de dates"
+    },
+    "error-page": {
+      "bmc-support": "Support BMC",
+      "description": "Cette page a pu être supprimée, son nom a pu être modifié ou elle est temporairement indisponible.",
+      "go-back": "Retourner à la",
+      "home-page": "Page d'accueil",
+      "or-contact": "ou contacter",
+      "title": "Oups... nous n'avons pas pu charger cette page."
+    },
+    "explore": {
+      "total-result-count-aria-live_one": "{{ count }} requête chargée",
+      "total-result-count-aria-live_other": "{{ count }} requêtes chargées"
+    },
+    "export": {
+      "csvdelimiter": "Délimiteur",
+      "fail": "Échec de l’exportation :",
+      "failed-dashboards": "Tableaux de bord ayant échoué",
+      "field-enclosure": "Boîtier du champ",
+      "generation-failed": "Impossible de générer le rapport. Réessayez plus tard",
+      "grid": "Grille",
+      "hide-header": "Masquer l'en-tête",
+      "landscape": "Paysage",
+      "layout": "Disposition",
+      "newline": "Nouveau format de ligne",
+      "orientation": "Orientation",
+      "portrait": "Portrait",
+      "reduce-selection": "Réduisez les valeurs des variables sélectionnées pour {{variableQuery}} et réessayez plus tard",
+      "save-as": "Enregistrer {{target}} comme {{type}}",
+      "select-report-type-aria": "Sélectionner le type de rapport",
+      "select-report-type-placeholder": "Sélectionner un type de rapport",
+      "simple": "Simple",
+      "success": "Rapport généré avec succès",
+      "successful": "Exportation réussie :",
+      "tableScaling": "Mise à l’échelle du tableau",
+      "type": "Type",
+      "view": "Affichage"
+    },
+    "features-list": {
+      "date-function-resolution-for-service-management": "Résolution des fonctions de date pour Gestion des services",
+      "enable-insight-finder": "Activer Insight Finder",
+      "enable-ootb-views-for-visual-query-builder": "Activer les vues clés en main OOTB pour Visual Query Builder",
+      "export-complete-table-in-pdf": "Exporter le tableau complet au format PDF",
+      "skip-ootb-dashboards-during-upgrade": "Ignorer les tableaux de bord clés en main OOTB pendant la mise à niveau",
+      "skip-ootb-dashboards-during-upgrade-confirm-dialog": {
+        "confirm-button": "Activer",
+        "desc": "Supprimer les dossiers des tableaux de bord clés en main non nécessaires avant d’activer cette fonction",
+        "title": "Activer/désactiver la fonction"
+      },
+      "snapshot": "Instantané"
+    },
+    "inspector": {
+      "stats": {
+        "statistics": "Statistiques",
+        "value": "Valeur"
+      }
+    },
+    "key-selector": {
+      "no-results": "Aucune clé correspondante trouvée"
+    },
+    "load-blank-dashoard": {
+      "loading-label": "Chargement...",
+      "no-data": "Aucune donnée",
+      "refresh-label": "Actualiser le tableau de bord pour récupérer les données"
+    },
+    "manage-dashboards": {
+      "drop-click": "Glissez-déposez ici ou cliquez pour parcourir",
+      "import-failed": "Échec de l’importation",
+      "serialization-failed": "JSON -> Échec de la sérialisation JS",
+      "upload-json": "Télécharger les fichiers JSON du tableau de bord"
+    },
+    "manage-locales": {
+      "cancel": "Annuler",
+      "dashboards": {
+        "add": "Ajouter",
+        "add-key": "Ajouter une nouvelle clé",
+        "dashboard-name": "Nom du tableau de bord",
+        "enter-key": "Saisir une clé",
+        "enter-value": "Saisir une valeur",
+        "key-text": "Clé",
+        "key-validation": "Seuls les caractères alphanumériques sont autorisés",
+        "no-empty-key": "La clé ne peut pas être vide",
+        "validation": {
+          "default-value-required": "La valeur par défaut est requise",
+          "key-required": "La clé est requise"
+        },
+        "value-text": "Valeur"
+      },
+      "export": "Exporter",
+      "folders": {
+        "folder-title": "Titre du dossier"
+      },
+      "global": {
+        "subtitle": "Créer et gérer des clés globales pour la localisation",
+        "title": "Gestion de la localisation"
+      },
+      "global-keys-text": "Clés globales",
+      "import": "Importer",
+      "local-keys-text": "Clés locales",
+      "localization-title": "Localisation",
+      "new-key": "Nouvelle clé",
+      "save": "Enregistrer",
+      "search-keys": "Recherche de clés…",
+      "title": "Gérer les paramètres régionaux"
+    },
+    "nav": {
+      "apps": {
+        "insight-finder": {
+          "configure-views-subtitle": "Afficher et gérer vos vues",
+          "configure-views-title": "Insight Finder - Configurer les vues",
+          "home": "Insight Finder",
+          "settings-title": "Paramètres Insight Finder"
+        },
+        "reports": {
+          "history": "Historique",
+          "manage-ownership": "Gérer l’appartenance",
+          "settings": "Paramètres"
+        }
+      },
+      "reports-scheduler": "Planification de rapports",
+      "rms": {
+        "subtitle": "Application permettant de créer et de modifier des vues pour Visual Query Builder",
+        "title": "Reporting Metadata Studio"
+      },
+      "roles": {
+        "subtitle": "Gérer les rôles dans une organisation",
+        "title": "Rôles"
+      }
+    },
+    "notification": {
+      "error": {
+        "bhd-00004": "Impossible de récupérer les champs calculés",
+        "bhd-00005": "Impossible de créer le champ calculé",
+        "bhd-00006": "Impossible de supprimer le champ calculé",
+        "bhd-00007": "Impossible de modifier le champ calculé",
+        "bhd-00008": "Impossible de mettre à jour les tableaux de bord",
+        "bhd-00009": "Impossible de supprimer le champ du ou des tableaux de bord",
+        "bhd-00010": "Données utiles de la demande incorrectes lors de la création d’un champ calculé",
+        "bhd-00011": "Données utiles de la demande incorrectes lors de la suppression du champ calculé",
+        "bhd-00012": "Données utiles de la demande incorrectes lors de la modification du champ calculé",
+        "bhd-00013": "Le nom du champ calculé est déjà pris. Veuillez renseigner un autre nom.",
+        "bhd-00102": "Données de la demande erronées lors de la définition des informations utilisateur IMS",
+        "bhd-00103": "Données de la demande erronées lors de la mise à jour des préférences de l’utilisateur",
+        "bhd-00104": "Données de la demande erronées lors de mise à jour des préférences de l’entreprise",
+        "bhd-00105": "Échec de l’analyse du corps",
+        "bhd-00106": "Thème non valide lors de la mise à jour des préférences",
+        "bhd-00107": "Tableau de bord introuvable",
+        "bhd-00108": "Erreur interne du serveur",
+        "bhd-00109": "Impossible d’obtenir les préférences",
+        "bhd-00110": "Impossible d’enregistrer les préférences",
+        "bhd-00111": "Impossible de mettre à jour les préférences de l’utilisateur",
+        "bhd-00201": "L’identifiant n’est pas valide",
+        "bhd-00202": "Données de la demande erronées lors de la création du dossier",
+        "bhd-00203": "Données de la demande erronées lors de la mise à jour du dossier",
+        "bhd-00204": "Données de la demande erronées lors du déplacement du dossier",
+        "bhd-00205": "Données de la demande erronées lors de la mise à jour des autorisations du dossier",
+        "bhd-00206": "Les autorisations d’équipe et d’utilisateur ne peuvent pas avoir de rôle associé",
+        "bhd-00207": "Les autorisations ne peuvent pas avoir à la fois un utilisateur et une équipe",
+        "bhd-00208": "Le titre du dossier ne peut pas être vide",
+        "bhd-00209": "Le tableau de bord ne peut pas être transformé en dossier",
+        "bhd-00210": "L’UID contient des caractères interdits",
+        "bhd-00211": "L’UID est trop long : 40 caractères maximum",
+        "bhd-00212": "Le dossier n’a pas pu être supprimé, car il contient des éléments de bibliothèque en cours d’utilisation",
+        "bhd-00213": "Accès refusé",
+        "bhd-00214": "Pour utiliser ce service, vous devez activer la fonctionnalité de dossier imbriqué.",
+        "bhd-00215": "Dossier introuvable",
+        "bhd-00216": "Un dossier du même nom existe déjà à l’emplacement actuel",
+        "bhd-00217": "Un dossier/tableau de bord avec le même UID existe déjà",
+        "bhd-00218": "Le dossier a été modifié par quelqu’un d’autre",
+        "bhd-00219": "Impossible de déplacer le dossier",
+        "bhd-00220": "Une erreur est survenue avec l’API du dossier",
+        "bhd-00221": "Impossible d’obtenir les autorisations du dossier",
+        "bhd-00222": "Impossible de vérifier les autorisations du dossier",
+        "bhd-00223": "Impossible de créer les autorisations",
+        "bhd-00301": "Utilisez le point de terminaison des dossiers pour supprimer des dossiers.",
+        "bhd-00302": "L’élément dashboardId n’est pas valide",
+        "bhd-00303": "Données de la demande erronées lors de la restauration de la version du tableau de bord",
+        "bhd-00304": "Données de la demande erronées lors de la restauration du tableau de bord supprimé",
+        "bhd-00305": "Données de la demande erronées lors du calcul de la différence du tableau de bord",
+        "bhd-00306": "Données de la demande erronées lors de la création ou de la mise à jour du tableau de bord",
+        "bhd-00307": "Utilisez le point de terminaison des dossiers pour enregistrer les dossiers.",
+        "bhd-00308": "Le tableau de bord provisionné ne peut pas être supprimé",
+        "bhd-00309": "Quota atteint",
+        "bhd-00310": "Accès refusé à ce tableau de bord",
+        "bhd-00311": "Tableau de bord introuvable",
+        "bhd-00312": "Dossier introuvable",
+        "bhd-00313": "Version du tableau de bord introuvable",
+        "bhd-00314": "Erreur lors de la récupération des tableaux de bord publics",
+        "bhd-00315": "Erreur lors du chargement du tableau de bord : les données du tableau de bord ne sont pas valides",
+        "bhd-00316": "Erreur lors de la vérification si le tableau de bord a été marqué d’une étoile par l’utilisateur",
+        "bhd-00317": "Impossible de lire le dossier du tableau de bord",
+        "bhd-00318": "Erreur lors de la vérification si le tableau de bord est provisionné",
+        "bhd-00319": "Impossible de supprimer le tableau de bord",
+        "bhd-00320": "Impossible d’obtenir le quota",
+        "bhd-00321": "Impossible de calculer la différence",
+        "bhd-00322": "Erreur lors de la connexion aux volets de la bibliothèque",
+        "bhd-00323": "Impossible de mettre à jour les autorisations",
+        "bhd-00324": "Erreur lors de la vérification des autorisations du tableau de bord",
+        "bhd-00325": "Impossible d’obtenir les autorisations du tableau de bord",
+        "bhd-00326": "Impossible d’obtenir les préférences",
+        "bhd-00327": "Impossible de charger la page d’accueil du tableau de bord",
+        "bhd-00328": "Impossible de restaurer le tableau de bord",
+        "bhd-00331": "Données de la demande erronées lors de la mise à jour des autorisations du tableau de bord",
+        "bhd-00401": "Données de la demande erronées lors de la création d’un nouvel élément de bibliothèque",
+        "bhd-00402": "Données de la demande erronées lors de la mise à jour d’un élément de bibliothèque existant",
+        "bhd-00403": "Autorisations insuffisantes pour accéder au volet de la bibliothèque",
+        "bhd-00404": "Impossible d’obtenir le dossier",
+        "bhd-00405": "Impossible de créer l’élément de bibliothèque",
+        "bhd-00406": "Impossible de supprimer l’élément de bibliothèque",
+        "bhd-00407": "Impossible d’évaluer les autorisations",
+        "bhd-00408": "Impossible d’obtenir les éléments de bibliothèque",
+        "bhd-00409": "Impossible d’obtenir l’élément de bibliothèque",
+        "bhd-00410": "Impossible d’évaluer les autorisations du volet de la bibliothèque",
+        "bhd-00411": "Impossible d’obtenir les connexions",
+        "bhd-00412": "Impossible de mettre à jour l’élément de bibliothèque",
+        "bhd-00414": "L’élément de bibliothèque portant ce nom ou cet UID existe déjà",
+        "bhd-00415": "L’élément de bibliothèque n’a pas pu être trouvé",
+        "bhd-00416": "La connexion à l’élément de bibliothèque n’a pas pu être trouvée",
+        "bhd-00417": "Dossier introuvable",
+        "bhd-00418": "L’élément de bibliothèque a été modifié par quelqu’un d’autre",
+        "bhd-00419": "Accès refusé au dossier",
+        "bhd-00420": "L’élément de bibliothèque a des connexions",
+        "bhd-00421": "L’UID contient des caractères interdits",
+        "bhd-00422": "L’UID est trop long : 40 caractères maximum",
+        "bhd-00501": "L’élément OrgID ne correspond pas",
+        "bhd-00502": "Accès refusé à cet instantané",
+        "bhd-00503": "La clé de l’instantané est vide",
+        "bhd-00504": "Instantané du tableau de bord introuvable",
+        "bhd-00505": "Instantané introuvable",
+        "bhd-00506": "Impossible d’obtenir l’instantané du tableau de bord",
+        "bhd-00507": "Impossible de supprimer l’instantané du tableau de bord",
+        "bhd-00508": "Impossible de supprimer le tableau de bord externe",
+        "bhd-00509": "Erreur lors de la vérification des autorisations pour l’instantané",
+        "bhd-00510": "La recherche a échoué",
+        "bhd-00601": "Introuvable",
+        "bhd-00602": "Erreur interne du serveur",
+        "bhd-00604": "Non autorisé – l’ancien jeton est vide",
+        "bhd-00605": "Échec de l’authentification",
+        "bhd-00606": "Non autorisé",
+        "bhd-00701": "userId n’est pas valide",
+        "bhd-00702": "Nom de l’organisation pris",
+        "bhd-00703": "données de demande incorrectes",
+        "bhd-00704": "données de demande incorrectes lors de la mise à jour de l’organisation actuelle",
+        "bhd-00705": "données de demande incorrectes lors de la mise à jour de l’adresse de l’organisation actuelle",
+        "bhd-00706": "données de demande incorrectes lors de l’ajout d’un nouvel utilisateur à l’organisation actuelle",
+        "bhd-00707": "données de demande incorrectes lors de la mise à jour des utilisateurs de l’organisation",
+        "bhd-00708": "données de demande incorrectes lors de la mise à jour de l’organisation",
+        "bhd-00709": "données de demande incorrectes lors de la mise à jour de l’adresse de l’organisation",
+        "bhd-00710": "données de demande incorrectes lors de la création de l’organisation",
+        "bhd-00711": "données de demande incorrectes lors de la mise à jour d’un utilisateur donné",
+        "bhd-00712": "données de demande incorrectes lors de l’ajout d’une invitation à l’organisation",
+        "bhd-00713": "données de demande incorrectes lors de l’ajout d’une configuration personnalisée",
+        "bhd-00714": "Rôle non valide spécifié",
+        "bhd-00715": "orgId est non valide",
+        "bhd-00716": "Impossible de modifier le rôle afin qu’il ne reste plus aucun administrateur de l’organisation",
+        "bhd-00717": "Impossible de retirer le dernier administrateur de l’organisation",
+        "bhd-00718": "Impossible de supprimer l’organisation pour l’utilisateur actuel",
+        "bhd-00719": "Impossible d’inviter un utilisateur externe lorsque la connexion est désactivée.",
+        "bhd-00720": "URL non valide",
+        "bhd-00721": "Impossible d’attribuer un rôle plus élevé que le rôle de l’utilisateur",
+        "bhd-00722": "Seuls les utilisateurs peuvent créer des organisations",
+        "bhd-00723": "Autorisation refusée : vous n’êtes pas autorisé à ajouter un utilisateur existant à cette organisation",
+        "bhd-00724": "Organisation introuvable",
+        "bhd-00725": "Utilisateur introuvable",
+        "bhd-00726": "Échec de la suppression de l’organisation. ID introuvable",
+        "bhd-00727": "L’utilisateur est déjà un membre de cette organisation",
+        "bhd-00728": "Échec de la récupération de l’organisation",
+        "bhd-00729": "échec de la récupération du quota",
+        "bhd-00730": "Échec de la mise à jour de l’organisation",
+        "bhd-00731": "Échec de la mise à jour de l’adresse de l’organisation",
+        "bhd-00732": "Échec de la récupération des utilisateurs pour l’organisation actuelle",
+        "bhd-00733": "Impossible d’ajouter l’utilisateur à l’organisation",
+        "bhd-00734": "Échec de la récupération des utilisateurs pour l’organisation",
+        "bhd-00735": "Échec de la récupération des informations d’authentification de l’utilisateur",
+        "bhd-00736": "Échec de la mise à jour de l’utilisateur de l’organisation",
+        "bhd-00737": "Échec de la suppression de l’utilisateur de l’organisation",
+        "bhd-00738": "Échec de la mise à jour des quotas de l’organisation",
+        "bhd-00739": "Échec de la recherche des organisations",
+        "bhd-00740": "Échec de l’analyse de l’ID utilisateur",
+        "bhd-00741": "Échec de la récupération des invitations depuis la base de données",
+        "bhd-00742": "Échec de la consultation de la base de données pour vérifier l’existence d’un utilisateur",
+        "bhd-00743": "Impossible d’évaluer les autorisations",
+        "bhd-00744": "Impossible de générer une chaîne aléatoire",
+        "bhd-00745": "Échec de l’enregistrement de l’invitation dans la base de données",
+        "bhd-00746": "Échec de l’envoi d’une invitation par e-mail",
+        "bhd-00747": "Échec de la mise à jour de l’invitation avec les informations envoyées par e-mail",
+        "bhd-00748": "Échec de la mise à jour du statut de l’invitation",
+        "bhd-00761": "Erreur lors de la création de l’utilisateur de l’organisation",
+        "bhd-00762": "Échec de l’envoi d’un e-mail invited_to_org",
+        "bhd-00763": "SMTP non configuré, vérifiez la section [smtp] de votre fichier de configuration grafana.ini.",
+        "bhd-00764": "Échec de la création de l’organisation",
+        "bhd-00765": "données de demande incorrectes lors de l’ajout d’un nouvel utilisateur à l’organisation actuelle",
+        "bhd-00801": "« action » et « actionPrefix » sont des options mutuellement exclusives",
+        "bhd-00802": "au moins une option doit être fournie",
+        "bhd-00803": "namespacedId non valide",
+        "bhd-00804": "impossible de récupérer les autorisations de l’utilisateur de l’organisation",
+        "bhd-00805": "Échec de la récupération des autorisations",
+        "bhd-00806": "données de demande incorrectes : ",
+        "bhd-00807": "données de demande incorrectes lors de la configuration des autorisations de ressources pour un utilisateur",
+        "bhd-00808": "données de demande incorrectes lors de la configuration des autorisations de ressources pour une équipe",
+        "bhd-00809": "données de demande incorrectes lors de la configuration des autorisations de ressources pour un rôle intégré",
+        "bhd-00901": "données de demande incorrectes lors de la création d’une source de données",
+        "bhd-00902": "données de demande incorrectes lors de la mise à jour d’une source de données existante par son ID séquentiel",
+        "bhd-00903": "données de demande incorrectes lors de la mise à jour d’une source de données existante",
+        "bhd-00904": "Échec de l’ajout d’une source de données",
+        "bhd-00905": "L’identifiant n’est pas valide",
+        "bhd-00906": "ID de source de données valide manquant",
+        "bhd-00907": "Erreur de validation, URL non valide",
+        "bhd-00908": "L’UID n’est pas valide",
+        "bhd-00909": "UID de la source de données manquant",
+        "bhd-00910": "Nom de la source de données valide manquant",
+        "bhd-00911": "ID de la source de données manquant",
+        "bhd-00912": "Source de données introuvable",
+        "bhd-00913": "Vous ne disposez pas des autorisations nécessaires pour mettre à jour la source de données",
+        "bhd-00914": "Vous aurez besoin d’autorisations supplémentaires pour effectuer cette action. Autorisations nécessaires : datasources.permissions:write",
+        "bhd-00915": "Impossible de mettre à jour la source de données en lecture seule",
+        "bhd-00916": "Impossible de supprimer la source de données en lecture seule",
+        "bhd-00917": "Vous ne disposez pas des autorisations nécessaires pour supprimer la source de données",
+        "bhd-00918": "Accès à la source de données refusé",
+        "bhd-00919": "Accès refusé",
+        "bhd-00920": "La source de données a déjà été mise à jour par quelqu’un d’autre. Veuillez actualiser et réessayer",
+        "bhd-00921": "Échec de la consultation des sources de données",
+        "bhd-00922": "Échec de la consultation de la source de données",
+        "bhd-00923": "Échec de l’ajout d’une source de données : ",
+        "bhd-00924": "Échec de la suppression de la source de données : ",
+        "bhd-00925": "Échec de l’ajout d’une source de données",
+        "bhd-00926": "Échec de la mise à jour de la source de données",
+        "bhd-00927": "Échec de la mise à jour de la source de données : ",
+        "bhd-00928": "Échec de la suppression de la source de données :",
+        "bhd-00929": "Impossible de charger les métadonnées de la source de données",
+        "bhd-00930": "Impossible de récupérer le contexte du plug-in",
+        "bhd-00931": "Échec de la demande du plug-in",
+        "bhd-00932": "Échec de la désérialisation de la réponse détaillée du plug-in dorsal",
+        "bhd-00936": "données de demande incorrectes lors de l’ajout de la corrélation",
+        "bhd-00937": "Au moins un intitulé, une description ou une configuration est obligatoire",
+        "bhd-00938": "données de demande incorrectes lors de la mise à jour d’une corrélation",
+        "bhd-00939": "La corrélation ne peut être uniquement modifiée via l’approvisionnement",
+        "bhd-00940": "Aucune corrélation trouvée",
+        "bhd-00941": "Source de la source de données introuvable",
+        "bhd-00942": "Corrélation introuvable",
+        "bhd-00943": "Échec de la récupération des corrélations",
+        "bhd-00944": "Échec de l’ajout d’une corrélation",
+        "bhd-00945": "Échec de la récupération de la corrélation",
+        "bhd-00946": "Échec de la suppression de la corrélation",
+        "bhd-00947": "Échec de la mise à jour de la corrélation",
+        "bhd-01001": "données de demande incorrectes lors de l’ajout d’une nouvelle requête à l’historique des requêtes",
+        "bhd-01002": "données de demande incorrectes lors de la mise à jour des commentaires pour la requête dans l’historique des requêtes",
+        "bhd-01003": "Requête dans l’historique des requêtes introuvable",
+        "bhd-01004": "Échec de la création d’un historique des requêtes",
+        "bhd-01005": "Échec de la récupération de l’historique des requêtes",
+        "bhd-01006": "Échec de la suppression de la requête de l’historique des requêtes",
+        "bhd-01007": "Échec de l’ajout d’une requête aux favoris dans l’historique des requêtes",
+        "bhd-01008": "Échec de la suppression des favoris d’une requête dans l’historique des requêtes",
+        "bhd-01009": "Échec de la mise à jour du commentaire de la requête dans l’historique des requêtes",
+        "bhd-01011": "Échec de la suppression de l’historique des requêtes",
+        "bhd-01012": "Échec de l’ajout de l’historique des requêtes aux favoris",
+        "bhd-01013": "Échec de la suppression des favoris de l’historique des requêtes",
+        "bhd-01014": "Échec de la mise à jour du commentaire de la requête dans l’historique des requêtes",
+        "bhd-01101": "données de demande incorrectes lors de l’installation du plug-in",
+        "bhd-01102": "données de demande incorrectes lors de la mise à jour de la configuration du plug-in",
+        "bhd-01103": "Accès refusé",
+        "bhd-01104": "Impossible d’installer ou de changer un plug-in principal",
+        "bhd-01105": "Impossible de désinstaller un plug-in principal",
+        "bhd-01106": "Plug-in introuvable, aucun Plug-in installé avec cet ID",
+        "bhd-01107": "Plug-in non installé",
+        "bhd-01108": "le fichier n’existe pas",
+        "bhd-01109": "Plug-in déjà installé",
+        "bhd-01110": "Échec de la récupération de la liste des plug-ins",
+        "bhd-01111": "Impossible d’obtenir le fichier de démarquage",
+        "bhd-01112": "Échec de la récupération des paramètres du plug-in",
+        "bhd-01113": "Échec de la désérialisation de la réponse détaillée du plug-in dorsal",
+        "bhd-01114": "Échec de l’installation du plug-in",
+        "bhd-01115": "Échec de la désinstallation du plug-in",
+        "bhd-01116": "Échec de la récupération des tableaux de bord du plug-in",
+        "bhd-01117": "Échec de la mise à jour des paramètres du plug-in",
+        "bhd-01201": "données de demande incorrectes lors de la suppression de plusieurs annotations",
+        "bhd-01202": "données de demande incorrectes lors de la création d’une annotation",
+        "bhd-01203": "données de demande incorrectes lors de la mise à jour d’une annotation",
+        "bhd-01204": "données de demande incorrectes lors de la création d’une annotation au format Graphite",
+        "bhd-01205": "annotationId n’est pas valide",
+        "bhd-01206": "Échec de l’enregistrement de l’annotation Graphite",
+        "bhd-01207": "UID du tableau de bord non valide dans la demande d’annotation",
+        "bhd-01208": "Accès refusé pour supprimer en masse les annotations",
+        "bhd-01209": "Accès refusé pour enregistrer l’annotation",
+        "bhd-01210": "Annotation introuvable",
+        "bhd-01211": "Erreur lors de la vérification des autorisations d’annotation",
+        "bhd-01212": "Échec de la suppression des annotations",
+        "bhd-01213": "Échec de la suppression de l’annotation",
+        "bhd-01214": "Échec de l’enregistrement de l’annotation",
+        "bhd-01215": "Échec de la mise à jour de l’annotation",
+        "bhd-01216": "Impossible de trouver les balises d’annotation",
+        "bhd-01217": "Impossible de trouver l’annotation",
+        "bhd-01218": "Échec de récupération des annotations",
+        "bhd-01219": "Annotations supprimées",
+        "bhd-01301": "données de demande incorrectes",
+        "bhd-01302": "opération non valide",
+        "bhd-01303": "valeur et son type non valides",
+        "bhd-01304": "Corps de demande non valide",
+        "bhd-01305": "Format JSON non valide",
+        "bhd-01306": "ID utilisateur non valide",
+        "bhd-01307": "Nom du rôle manquant",
+        "bhd-01308": "Vous ne pouvez pas mettre à jour le rôle du système.",
+        "bhd-01309": "Vous ne pouvez pas supprimer le rôle du système.",
+        "bhd-01310": "Ce rôle est associé à des utilisateurs. Avant de supprimer ce rôle, supprimez toutes les associations.",
+        "bhd-01311": "Ce rôle est associé à des équipes. Avant de supprimer ce rôle, supprimez toutes les associations.",
+        "bhd-01312": "ID du rôle non valide",
+        "bhd-01313": "Échec de la validation de l’ID du rôle",
+        "bhd-01314": "ID du rôle non valide",
+        "bhd-01315": "Données utiles non valides",
+        "bhd-01316": "userId n’est pas valide",
+        "bhd-01317": "ID utilisateur non valide",
+        "bhd-01318": "teamId non valide",
+        "bhd-01319": "L’équipe n’existe pas.",
+        "bhd-01320": "L’utilisateur n’a pas assez d’autorisations.",
+        "bhd-01321": "IMS_JWT non valide",
+        "bhd-01322": "En-tête d’autorisation manquant ou vide",
+        "bhd-01323": "IMS_JWT non valide ou incorrect",
+        "bhd-01324": "Aucun rôle attribué à l’utilisateur.",
+        "bhd-01325": "Ce rôle n’a pas l’autorisation de récupérer les tableaux de bord.",
+        "bhd-01326": "Accès non autorisé »",
+        "bhd-01327": "Rôle introuvable",
+        "bhd-01328": "Le nom du rôle créé existe déjà.",
+        "bhd-01329": "Échec de la récupération des tableaux de bord",
+        "bhd-01330": "Échec de la récupération de la liste de vues",
+        "bhd-01331": "Échec de la récupération des données personnalisées",
+        "bhd-01332": "Échec de la suppression des données personnalisées",
+        "bhd-01334": "Erreur lors de la vérification des autorisations",
+        "bhd-01335": "Échec de la récupération des rôles.",
+        "bhd-01336": "Erreur lors de création d’une requête de tableau de bord pour l’administrateur",
+        "bhd-01337": "Erreur lors de création d’une requête de tableau de bord",
+        "bhd-01338": "Erreur interne du serveur",
+        "bhd-01339": "Échec de la récupération du rôle",
+        "bhd-01340": "Échec de la mise à jour du rôle",
+        "bhd-01341": "Échec de la suppression du rôle",
+        "bhd-01342": "Échec de la recherche des rôles",
+        "bhd-01343": "Échec de la mise à jour du rôle des utilisateurs",
+        "bhd-01344": "Échec de la mise à jour du rôle des équipes",
+        "bhd-01345": "Échec de la récupération de la liste des autorisations",
+        "bhd-01346": "Échec de la mise à jour de la liste des autorisations",
+        "bhd-01347": "Échec de la recherche des utilisateurs",
+        "bhd-01348": "Échec de l’ajout du mappage d’un rôle d’utilisateur.",
+        "bhd-01349": "Échec de la suppression du mappage d’un rôle d’utilisateur.",
+        "bhd-01350": "Échec de l’ajout d’un rôle d’une équipe",
+        "bhd-01351": "Échec de la suppression d’un rôle d’une équipe",
+        "bhd-01352": "erreur inattendue",
+        "bhd-01364": "Enregistrement introuvable",
+        "bhd-01365": "Échec de la création du rôle",
+        "bhd-01366": "Échec de la recherche des équipes",
+        "bhd-01367": "ID de l’équipe non valide",
+        "bhd-01401": "données de demande incorrectes lors de la mise à jour de la liste de lecture",
+        "bhd-01402": "données de demande incorrectes lors de la création de la liste de lecture",
+        "bhd-01403": "La recherche a échoué",
+        "bhd-01404": "Liste de lecture introuvable",
+        "bhd-01405": "Échec de la suppression de la liste de lecture",
+        "bhd-01406": "Échec de l’enregistrement de la liste de lecture",
+        "bhd-01407": "Échec du chargement de la liste de lecture",
+        "bhd-01408": "Échec de la création de la liste de lecture",
+        "bhd-01501": "ID non valide",
+        "bhd-01502": "données de demande incorrectes",
+        "bhd-01503": "ID de tâche non valide",
+        "bhd-01504": "données de demande incorrectes lors de la création d’un rapport",
+        "bhd-01505": "Des destinataires sont obligatoires",
+        "bhd-01506": "Échec de la restriction du domaine",
+        "bhd-01507": "Expression cron non valide",
+        "bhd-01508": "données de demande incorrectes lors de la mise à jour du rapport",
+        "bhd-01509": "ID du rapport non valide",
+        "bhd-01510": "La restriction aux domaines internes a échoué",
+        "bhd-01511": "Aucun rapport à supprimer",
+        "bhd-01512": "données utiles de la demande incorrectes lors de la configuration des paramètres FTP",
+        "bhd-01513": "données utiles de la demande incorrectes lors de la modification des configurations FTP",
+        "bhd-01514": "données utiles de la demande incorrectes lors de la configuration des paramètres FTP par défaut",
+        "bhd-01515": "données de demande incorrectes lors de l’envoi de l’e-mail",
+        "bhd-01516": "données de demande incorrectes lors de l’exécution d’un rapport",
+        "bhd-01517": "L’ID n’est pas spécifié",
+        "bhd-01518": "données de demande incorrectes lors de la désactivation du planificateur de rapports",
+        "bhd-01519": "la liste du planificateur de rapports est vide",
+        "bhd-01520": "un planificateur de rapports du même nom existe déjà",
+        "bhd-01521": "veuillez remplir les données obligatoires",
+        "bhd-01522": "impossible de modifier le tableau de bord pour le planificateur de rapports existant",
+        "bhd-01523": "détails du locataire du rapport introuvable",
+        "bhd-01524": "données de demande incorrectes lors de la configuration des paramètres du rapport de la charte graphique",
+        "bhd-01525": "Image de logo non valide. Uniquement les extensions suivantes sont autorisées : .png, .jpg, .jpeg",
+        "bhd-01526": "URL de l’image non valide. Uniquement les extensions suivantes sont autorisées : .png, .jpg, .jpeg",
+        "bhd-01527": "URL du logo non valide",
+        "bhd-01528": "URL de pied de page non valide",
+        "bhd-01529": "données de demande incorrectes lors de la mise à jour ou de la création des détails du locataire",
+        "bhd-01530": "Le rapport n’est pas dans le stockage",
+        "bhd-01531": "Le fichier n’est pas disponible dans le stockage",
+        "bhd-01532": "Certains destinataires ne sont pas des utilisateurs internes",
+        "bhd-01533": "le planificateur de rapports n’existe pas",
+        "bhd-01534": "la limite du planificateur de rapports est dépassée",
+        "bhd-01535": "Échec de la récupération de la configuration FTP précédente",
+        "bhd-01537": "données de demande incorrectes lors de la suppression du planificateur de rapports",
+        "bhd-01538": "données de demande incorrectes lors de l’activation du planificateur de rapports",
+        "bhd-01539": "Certains destinataires BCC ne sont pas des utilisateurs internes",
+        "bhd-01540": "Certains destinataires ne sont pas dans la liste blanche",
+        "bhd-01541": "Certains destinataires BCC ne sont pas dans la liste blanche",
+        "bhd-01542": "Échec de la récupération des rapports",
+        "bhd-01543": "La configuration FTP existe déjà",
+        "bhd-01544": "Échec de l’ajout de la configuration FTP",
+        "bhd-01545": "Échec de la mise à jour de la configuration FTP",
+        "bhd-01546": "données de demande incorrectes lors de l’obtention de l’aperçu",
+        "bhd-01547": "La suppression de la configuration FTP par défaut n’est pas autorisée !",
+        "bhd-01548": "FTP est utilisé dans le planificateur de rapports",
+        "bhd-01549": "Échec de la suppression de la configuration FTP",
+        "bhd-01550": "Échec de la suppression des planificateurs de rapports pour l’organisation",
+        "bhd-01551": "Échec de la désactivation des planificateurs de rapports pour l’organisation",
+        "bhd-01552": "Échec de la connexion au serveur FTP",
+        "bhd-01601": "données de demande incorrectes lors de la mise à jour d’un utilisateur connecté",
+        "bhd-01602": "Il n’est pas possible de modifier l’e-mail lorsque le proxy d’authentification utilise la propriété du courriel",
+        "bhd-01603": "Il n’est pas possible de modifier le nom d’utilisateur lorsque le proxy d’authentification utilise la propriété du nom d’utilisateur",
+        "bhd-01604": "L’adresse e-mail n’est pas valide",
+        "bhd-01605": "L’identifiant n’est pas valide",
+        "bhd-01606": "Seuls les utilisateurs et les comptes de service peuvent mettre les tableaux de bord en favoris",
+        "bhd-01607": "UID du tableau de bord non valide",
+        "bhd-01608": "orgId est non valide",
+        "bhd-01609": "Seuls les utilisateurs et les comptes de service peuvent récupérer les tableaux de bord mis en favoris",
+        "bhd-01610": "données de demande incorrectes lors de la modification du mot de passe pour l’utilisateur",
+        "bhd-01611": "données de demande incorrectes lors de la révocation du jeton d’authentification",
+        "bhd-01612": "données de demande incorrectes lors de la mise à jour de l’utilisateur",
+        "bhd-01613": "Organisation non valide",
+        "bhd-01614": "entité non autorisée à révoquer les jetons",
+        "bhd-01615": "entité non autorisée à récupérer les jetons",
+        "bhd-01616": "Point de terminaison uniquement disponible pour les utilisateurs",
+        "bhd-01617": "La mise à jour entraînerait un conflit de connexion utilisateur",
+        "bhd-01618": "Échec de l’obtention des utilisateurs",
+        "bhd-01620": "Échec de l’obtention des organisations de l’utilisateur",
+        "bhd-01621": "Échec de l’obtention des favoris de l’utilisateur",
+        "bhd-01622": "Échec de la récupération des tableaux de bord",
+        "bhd-01623": "Échec de la mise en favoris du tableau de bord",
+        "bhd-01624": "Échec de la suppression des favoris du tableau de bord",
+        "bhd-01625": "Échec du changement de mot de passe de l’utilisateur",
+        "bhd-01626": "Échec de l’obtention des quotas de l’organisation",
+        "bhd-01627": "Échec de la mise à jour de l’identifiant d’aide",
+        "bhd-01628": "Échec de la génération de la vérification par e-mail",
+        "bhd-01629": "échec de l’analyse de l’ID utilisateur",
+        "bhd-01630": "Échec de l’obtention des équipes de l’utilisateur",
+        "bhd-01631": "Échec de la mise à jour de l’utilisateur",
+        "bhd-01632": "Échec de l’analyse de l’ID utilisateur",
+        "bhd-01640": "utilisateur introuvable",
+        "bhd-01641": "Jeton d’authentification de l’utilisateur introuvable",
+        "bhd-01642": "Échec de la modification de l’organisation active",
+        "bhd-01643": "Échec de la révocation du jeton d’authentification de l’utilisateur",
+        "bhd-01644": "Échec de l’obtention du jeton d’authentification de l’utilisateur",
+        "bhd-01645": "Impossible de révoquer le jeton d’authentification de l’utilisateur actif",
+        "bhd-01701": "données de demande incorrectes lors de la création d’un nouvel utilisateur",
+        "bhd-01702": "données de demande incorrectes lors de la révocation du jeton d’authentification pour l’utilisateur",
+        "bhd-01703": "données de demande incorrectes lors de la configuration des autorisations pour l’utilisateur",
+        "bhd-01704": "données de demande incorrectes lors de la configuration du mot de passe pour l’utilisateur",
+        "bhd-01705": "Le mot de passe est manquant ou trop court",
+        "bhd-01706": "L’identifiant n’est pas valide",
+        "bhd-01707": "Vous ne pouvez pas vous déconnecter vous-même",
+        "bhd-01708": "impossible de supprimer le dernier administrateur grafana",
+        "bhd-01709": "Utilisateur introuvable",
+        "bhd-01710": "Impossible de réinitialiser le mot de passe lorsque le formulaire de connexion est désactivé",
+        "bhd-01711": "Impossible de changer le rôle de l’administrateur Grafana pour un utilisateur synchronisé en externe",
+        "bhd-01712": "Échec de l’autorisation des paramètres",
+        "bhd-01713": "L’utilisateur a un identifiant ou une adresse e-mail qui entre en conflit avec ceux d’un autre utilisateur Veuillez contacter l’administrateur serveur",
+        "bhd-01714": "Échec de l’obtention des statistiques de l’administrateur depuis la base de données",
+        "bhd-01715": "Échec de l’obtention des statistiques anonymes depuis la base de données",
+        "bhd-01716": "Échec du rechiffrement des clés de données",
+        "bhd-01717": "Échec de la rotation des clés de données",
+        "bhd-01718": "échec de la création d’un utilisateur",
+        "bhd-01719": "Impossible de lire l’utilisateur depuis la base de données",
+        "bhd-01720": "Échec de la mise à jour du mot de passe de l’utilisateur",
+        "bhd-01721": "Échec de la mise à jour des autorisations de l’utilisateur",
+        "bhd-01722": "Échec de la suppression de l’utilisateur",
+        "bhd-01723": "Impossible de désactiver l’utilisateur externe",
+        "bhd-01724": "Échec de la désactivation de l’utilisateur",
+        "bhd-01725": "Impossible d’activer l’utilisateur externe",
+        "bhd-01726": "Échec de l’activation de l’utilisateur",
+        "bhd-01727": "Échec de l’obtention des utilisateurs",
+        "bhd-01728": "Échec de l’obtention des jetons d’authentification de l’utilisateur",
+        "bhd-01729": "Échec de la déconnexion de l’utilisateur",
+        "bhd-01730": "Mot de passe de l’utilisateur mis à jour, mais impossible de révoquer les sessions de l’utilisateur",
+        "bhd-01740": "Échec de rechiffrement des secrets",
+        "bhd-01741": "Échec de la mise à jour des quotas de l’organisation",
+        "bhd-01742": "Échec de la restauration des secrets",
+        "bhd-01746": "Échec du rechargement de la configuration des plug-ins"
+      },
+      "success": {
+        "bhd-00001": "Les champs ont été modifiés",
+        "bhd-00002": "Le ou les champs ont été supprimés",
+        "bhd-00003": "Le champ a été créé",
+        "bhd-00101": "Les préférences ont été mises à jour",
+        "bhd-00224": "Le dossier a été supprimé",
+        "bhd-00225": "Les autorisations du dossier ont été mises à jour",
+        "bhd-00329": "Les autorisations du tableau de bord ont été mises à jour",
+        "bhd-00330": "Les modifications ont été diffusées à l’élément d’écoute GitOps",
+        "bhd-00413": "L’élément de bibliothèque a été supprimé",
+        "bhd-00511": "L’instantané a été supprimé La suppression des caches CDN peut prendre jusqu’à une heure.",
+        "bhd-00607": "Connecté",
+        "bhd-00749": "Organisation mise à jour",
+        "bhd-00750": "Adresse mise à jour",
+        "bhd-00751": "Utilisateur ajouté à l’organisation",
+        "bhd-00752": "Utilisateur de l’organisation mis à jour",
+        "bhd-00753": "Quota de l’organisation mis à jour",
+        "bhd-00754": "Utilisateur supprimé",
+        "bhd-00755": "Organisation supprimée",
+        "bhd-00756": "Organisation créée",
+        "bhd-00757": "Invitation révoquée",
+        "bhd-00758": "Configuration mise à jour",
+        "bhd-00759": "La configuration est définie sur les paramètres par défaut",
+        "bhd-00760": "Utilisateur supprimé de l’organisation",
+        "bhd-00810": "Autorisations mises à jour",
+        "bhd-00811": "Autorisation mise à jour",
+        "bhd-00812": "Autorisation supprimée",
+        "bhd-00933": "Source de données ajoutée",
+        "bhd-00934": "Source de données mise à jour",
+        "bhd-00935": "Source de donnée supprimée",
+        "bhd-00948": "Corrélation créée",
+        "bhd-00949": "Corrélation supprimée",
+        "bhd-00950": "Corrélation mise à jour",
+        "bhd-01010": "Requête supprimée",
+        "bhd-01118": "Paramètres du plug-in mis à jour",
+        "bhd-01220": "Annotation ajoutée",
+        "bhd-01221": "Annotation mise à jour",
+        "bhd-01222": "Annotation corrigée",
+        "bhd-01223": "Annotation Graphite ajoutée",
+        "bhd-01224": "Annotation supprimée",
+        "bhd-01353": "Pas encore implémenté",
+        "bhd-01354": "Données personnalisées supprimées",
+        "bhd-01355": "OK",
+        "bhd-01356": "Accès autorisé »",
+        "bhd-01357": "Autorisations mises à jour",
+        "bhd-01358": "Mappage du rôle d’utilisateur ajouté.",
+        "bhd-01359": "Mappage du rôle d’utilisateur supprimé pour tous les rôles.",
+        "bhd-01361": "Rôle d’équipe ajouté.",
+        "bhd-01362": "Rôle d’équipe supprimé.",
+        "bhd-01363": "Paramètre régional mis à jour avec succès",
+        "bhd-01553": "Rapport créé avec succès",
+        "bhd-01554": "Rapport mis à jour avec succès",
+        "bhd-01555": "Rapport supprimé avec succès",
+        "bhd-01556": "Rapports supprimés avec succès",
+        "bhd-01557": "Utilisateur supprimé avec succès des rapports.",
+        "bhd-01558": "Configuration FTP enregistrée avec succès",
+        "bhd-01559": "Configuration FTP mise à jour avec succès",
+        "bhd-01560": "FTP configuré par défaut",
+        "bhd-01561": "Configuration FTP supprimée avec succès",
+        "bhd-01562": "Planificateurs de rapports supprimés/désactivés avec succès.",
+        "bhd-01563": "Rapport activé avec succès",
+        "bhd-01564": "Rapports activés avec succès",
+        "bhd-01565": "Rapport désactivé avec succès",
+        "bhd-01566": "Rapports désactivés avec succès",
+        "bhd-01567": "La stratégie de marque du rapport est mise à jour avec succès.",
+        "bhd-01568": "La stratégie de marque du rapport est définie par défaut.",
+        "bhd-01569": "Mis à jour.",
+        "bhd-01570": "Supprimé.",
+        "bhd-01571": "Exécuté avec succès",
+        "bhd-01633": "Organisation active modifiée",
+        "bhd-01634": "Tableau de bord mis en favoris !",
+        "bhd-01635": "Tableau de bord supprimé des favoris",
+        "bhd-01636": "Mot de passe de l’utilisateur modifié",
+        "bhd-01637": "Identifiant d’aide défini",
+        "bhd-01638": "Utilisateur mis à jour",
+        "bhd-01639": "E-mail envoyé pour vérification",
+        "bhd-01646": "Jeton d’authentification de l’utilisateur révoqué",
+        "bhd-01731": "Mot de passe de l’utilisateur mis à jour",
+        "bhd-01732": "Autorisations de l’utilisateur mises à jour",
+        "bhd-01733": "Utilisateur supprimé",
+        "bhd-01734": "Utilisateur désactivé",
+        "bhd-01735": "Utilisateur activé",
+        "bhd-01736": "Utilisateur déconnecté",
+        "bhd-01737": "Utilisateur créé",
+        "bhd-01748": "Quota de l’organisation mis à jour",
+        "bhd-01753": "Configuration des tableaux de bord rechargée",
+        "bhd-01754": "Configuration des plug-ins rechargée",
+        "bhd-01755": "Configuration des sources de données rechargée",
+        "bhd-01756": "Configuration d’alerte rechargée"
+      }
+    },
+    "notifications": {
+      "dashboard": {
+        "imported": "Tableau de bord importé",
+        "panel-not-found": "Volet introuvable",
+        "restored": "Tableau de bord restauré",
+        "restored-failed": "Échec de la restauration du tableau de bord",
+        "restored-version": "Restauré depuis la version {{version}}",
+        "restored-version-failed": "Échec de la restauration depuis la version {{restoredversion}}"
+      },
+      "error": {
+        "error-text": "Erreur",
+        "failed-validation": "Échec de la validation",
+        "generate-link": "Erreur lors de la génération du lien raccourci",
+        "http-error": "Erreur HTTP {{msg}}",
+        "unknown-error": "Erreur inconnue"
+      },
+      "folder": {
+        "created": "Dossier créé",
+        "failed-creation": "Échec de la création du dossier"
+      },
+      "settings": {
+        "saved": "Paramètres enregistrés",
+        "saved-failed": "Échec de l’enregistrement des paramètres"
+      },
+      "success": {
+        "copied-link": "Lien raccourci copié dans le presse-papiers",
+        "success-text": "Réussite"
+      }
+    },
+    "org-custom-config": {
+      "community": "Communauté",
+      "documentation": "Documentation",
+      "errors": {
+        "query-type-mandatory": "Au moins un type de requête doit être activé"
+      },
+      "support": "Support",
+      "video": "Vidéo"
+    },
+    "panel": {
+      "bmc-video": {
+        "enter-video": "Saisir la vidéo incorporée",
+        "invalid-url": "URL non valide",
+        "url": "URL de la vidéo"
+      },
+      "bmc-welcome": {
+        "communities": "Communautés",
+        "community-description": "Description de la communauté",
+        "default-community-description": "Connexion. Partage. Découverte. Participez à des discussions avec vos pairs et des experts en produits et solutions BMC.",
+        "default-documentation-description": "Parcourez la documentation produit pour comprendre toutes les fonctionnalités de Reporting et comment les utiliser.",
+        "default-video-description": "Consultez des vidéos pratiques, des présentations et des démos des produits et solutions BMC sur le canal YouTube de BMC.",
+        "documentation": "Documentation",
+        "documentation-description": "Description de la documentation",
+        "logo-title": "Logo BMC Helix",
+        "video-description": "Description de la vidéo",
+        "videos": "Vidéos"
+      }
+    },
+    "playlist": {
+      "empty": "La playlist est vide. Ajoutez des tableaux de bord ci-dessous.",
+      "items-changed_one": "Les éléments de la playlist ont été modifiés. Il y a maintenant {{count}} tableau de bord dans la playlist.",
+      "items-changed_other": "Les éléments de la playlist ont été modifiés. Il y a maintenant {{count}} tableaux de bord dans la playlist."
+    },
+    "query": {
+      "query-name-label": "Nom de la requête :"
+    },
+    "rbac": {
+      "common": {
+        "all": "Tout",
+        "assigned": "Attribué",
+        "menu": "Menu",
+        "name": "Nom"
+      },
+      "permissions": {
+        "admin": {
+          "datasource-manage": "Gérer les sources de données",
+          "datasource-manage-desc": "peut gérer les sources de données",
+          "reports-manage": "Gérer le planificateur de rapports",
+          "reports-manage-desc": "peut gérer tous les rapports",
+          "title": "Administration"
+        },
+        "calc-fields": {
+          "create-desc": "peut créer ou mettre à jour des champs calculés",
+          "view-desc": "peut afficher des champs calculés"
+        },
+        "common": {
+          "create": "Créer",
+          "view": "Affichage"
+        },
+        "dashboards": {
+          "create-desc": "peut créer des tableaux de bord",
+          "download-desc": "peut télécharger un tableau de bord au format pdf/xlsx/csv",
+          "view-desc": "peut afficher les tableaux de bord autorisés"
+        },
+        "datasource": {
+          "explore": "Explorer",
+          "explore-desc": "peut utiliser le mode Explorer pour les sources de données"
+        },
+        "datasources": {
+          "title": "Sources de données"
+        },
+        "drawer-title": "{{name}} - Autorisations",
+        "folders": {
+          "create-desc": "peut créer des dossiers",
+          "title": "Dossiers",
+          "view-desc": "peut afficher les dossiers autorisés"
+        },
+        "insightfinder": {
+          "access": "Accès",
+          "access-desc-tooltip": "peut accéder à Insight Finder",
+          "dashboards-create": "Créer des tableaux de bord",
+          "dashboards-create-desc": "peut créer des tableaux de bord via Insight Finder",
+          "title": "Insight Finder"
+        },
+        "reports": {
+          "access": "Accès",
+          "access-desc": "peut afficher et créer des rapports",
+          "history-read": "Afficher l’historique",
+          "history-read-desc": "peut afficher une section d’historique des rapports",
+          "recipients-dash-access": "Destinataires dynamiques",
+          "recipients-dash-access-desc": "Possibilité d’ajouter dynamiquement des destinataires à partir du tableau de bord dans le calendrier",
+          "settings-read": "Afficher les paramètres",
+          "settings-read-desc": "peut afficher les paramètres des rapports",
+          "title": "Rapports"
+        },
+        "servicemanagement-querytypes": {
+          "sql": "SQL",
+          "sql-desc": "peut modifier la requête SQL",
+          "title": "Types de requête Gestion des services"
+        },
+        "subtitle": "Liste des autorisations"
+      },
+      "roles": {
+        "actions": "Actions",
+        "create": "Créer",
+        "custom": "Personnalisé",
+        "delete": "Supprimer le rôle",
+        "delete-confirmation": "Voulez-vous vraiment supprimer ce rôle ?",
+        "delete-role": "Supprimer le rôle",
+        "description": "Description",
+        "edit": "Modifier le rôle",
+        "manage-permissions": "Gérer les autorisations",
+        "manage-teams": "Gérer les équipes",
+        "manage-users": "Gérer les utilisateurs",
+        "name-required": "Le nom du rôle est obligatoire",
+        "new": "Nouveau rôle",
+        "search": "Rechercher des rôles",
+        "system": "Système",
+        "update": "Mettre à jour"
+      },
+      "teams": {
+        "assigned-count_one": "{{count}} équipe attribuée",
+        "assigned-count_other": "{{count}} équipes attribuées",
+        "drawer-title": "{{name}} - Équipes",
+        "none-assigned": "Aucune équipe attribuée",
+        "none-found": "Aucune équipe trouvée",
+        "search": "Rechercher le nom de l’équipe"
+      },
+      "users": {
+        "assigned-count_one": "{{count}} utilisateur attribué",
+        "assigned-count_other": "{{count}} utilisateurs attribués",
+        "drawer-title": "{{roleName}} - Utilisateurs",
+        "email": "E-mail",
+        "login": "Connexion",
+        "none-assigned": "Aucun utilisateur attribué",
+        "none-found": "Aucun utilisateur trouvé"
+      }
+    },
+    "rms": {
+      "description": "Reporting Metadata Studio est une application Windows basée sur Pentaho Metadata Editor. Elle permet de créer des vues personnalisées ou de modifier une copie d’une vue clés en main. Pour plus d’informations, consultez la documentation en ligne.",
+      "download": {
+        "error": "Échec du téléchargement"
+      },
+      "headers": {
+        "env-details": "Détails de l’environnement"
+      }
+    },
+    "search": {
+      "comfirm-export": "Voulez-vous exporter les {{dashCount}} tableaux de bord sélectionnés ?",
+      "export": "Exporter",
+      "export-status": "Statut de l’exportation"
+    },
+    "share-modal": {
+      "loading": "Chargement en cours",
+      "theme-picker": {
+        "current-theme": "Thème actuel",
+        "dark-theme": "Thème sombre",
+        "light-theme": "Thème clair"
+      }
+    },
+    "shared-preferences": {
+      "datetime-format": {
+        "description": "Cette opération modifiera le format temporel par défaut utilisé dans les tableaux de bord, les volets et les rapports.",
+        "label": "Format de date/heure"
+      },
+      "fields": {
+        "apply-admins": "Appliquer aux administrateurs",
+        "enabled-query-types": "Gérer les types de requête Gestion des services",
+        "query-type-label": "Type de requête",
+        "query-type-placeholder": "Choisir un type de requête"
+      },
+      "query-type": {
+        "form": "Formulaire",
+        "sql": "SQL",
+        "vqb": "Générateur de requêtes visuel"
+      }
+    },
+    "tag-filter": {
+      "remove-tag": "Supprimer le tag {{label}}"
+    },
+    "toggle-feature": {
+      "manage-features": "Gérer les fonctionnalités du tableau de bord"
+    },
+    "transformers": {
+      "adv-functions": {
+        "against-field": "Nom du champ de référence",
+        "alias": "Pseudonyme",
+        "field-name": "Nom du champ",
+        "function-name": "Nom de la fonction",
+        "percentage": "Pourcentage",
+        "percentile-placeholder": "valeur du centile",
+        "percentile-value": "Valeur du centile",
+        "previous-row": "Ligne précédente",
+        "previous-row-placeholder": "Ligne précédente",
+        "rank-placeholder": "Classement",
+        "rank-value": "Valeur de classement"
+      },
+      "dynamic-fields": {
+        "add-aria": "Ajouter un champ à nettoyer",
+        "add-button": "Ajouter un champ",
+        "field-label": "Champ",
+        "format-as": "Mettre en forme le champ dynamique en tant que",
+        "remove-aria": "Supprimer le transformateur de type de champ de formatage de champs dynamiques"
+      },
+      "sanitize": {
+        "add-aria": "Ajouter un champ à nettoyer",
+        "add-button": "Ajouter un champ",
+        "field-label": "Champ",
+        "remove-aria": "Supprimer le transformateur de type de champ de nettoyage"
+      }
+    },
+    "variables": {
+      "more-values": "... Plus de valeurs",
+      "optimize": {
+        "close-search-panel": "Clotûre",
+        "deselect-all": "Désélectionner tout",
+        "loading": "Chargement en cours...",
+        "no-domain-selected": "Aucun domaine sélectionné",
+        "no-items": "Aucun objet",
+        "remove-item": "Supprimer l'élément",
+        "search": "Rechercher",
+        "selected": "sélectionné",
+        "selected-domains": "Domaines sélectionnés",
+        "type-to-search": "Tapez pour rechercher"
+      },
+      "query-editor": {
+        "continue": "Continuer",
+        "enable-editor": "Activer l’éditeur de requêtes",
+        "enable-variable-caching": "Activer la mise en cache des variables",
+        "modal-close-confirmation": "La requête actuelle sera perdue. Voulez-vous continuer ?",
+        "modal-close-title": "Modifications non enregistrées",
+        "query-text": "Requête",
+        "service-management-note": "Remarque : applicable uniquement au type de requête Gestion des services.",
+        "variable-caching": {
+          "dependant-error": "La mise en cache pour les variables dépendantes de la plage horaire n’est pas autorisée",
+          "modal-close-title": "Mise en cache des variables",
+          "modal-disable-confirmation": "Voulez-vous désactiver la mise en cache pour la variable ?",
+          "modal-enable-additional-text-1": "La mise en cache de la variable sera effacée pour tous les utilisateurs si vous modifiez la requête.",
+          "modal-enable-confirmation": "Voulez-vous activer la mise en cache pour la variable ?",
+          "service-management-error": "La mise en cache n’est prise en charge que pour les requêtes de gestion des services",
+          "time-dependant-warning": "La mise en cache n'est pas autorisée pour les variables dépendantes du temps."
+        }
+      },
+      "refresh-aria": "Actualiser {{name}}",
+      "refresh-tooltip": "Actualiser cette variable",
+      "refresh-variable-aria": "Actualiser {{name}}",
+      "variable-caching": {
+        "cache-delete-success": "Cache supprimé avec succès pour la variable {{variableName}}"
+      }
+    },
+    "welcome": {
+      "dashboards": "Tableaux de bord"
+    }
+  },
+  "bmcgrafana": {
+    "command-palette": {
+      "search-box": {
+        "aria-label": "Rechercher ou aller à…"
+      }
+    },
+    "dashboard": {
+      "panel-copied": "Volet copié. Cliquez sur l’icône **Ajouter un volet** pour coller.",
+      "picker": {
+        "placeholder": "Sélectionner un tableau de bord"
+      },
+      "remove-panel": {
+        "confirm-button-text": "Supprimer"
+      }
+    },
+    "dashboard-import": {
+      "datasource-validation": "Une source de données est obligatoire",
+      "name-validation-text": "Un nom est obligatoire",
+      "needs-value": "nécessite une valeur",
+      "select-view": "Sélectionner une vue",
+      "view-selection-tooltip": "Ne pas modifier la vue présélectionnée",
+      "view-selection-validation": "Vous devez sélectionner une vue"
+    },
+    "dashboard-scene": {
+      "dashboard-preview-banner": {
+        "not-yet-saved": "La valeur n'est pas enregistrée dans la base de données BMC Helix Dashboard."
+      },
+      "help-wizard": {
+        "troubleshooting-request-help": "Pour demander de l'aide au dépannage, envoyez un instantané de ce panneau au support technique de BMC Helix Dashboards. L'instantané contient les données de réponse de la requête et les paramètres du panneau."
+      },
+      "save-provisioned-dashboard-form": {
+        "cannot-be-saved": "Ce tableau de bord ne peut pas être enregistré depuis l'interface utilisateur de BMC Helix Dashboards car il a été provisionné depuis une autre source. Copiez le JSON ou enregistrez-le dans un fichier ci-dessous, puis vous pourrez mettre à jour votre tableau de bord dans la source de provisionnement."
+      }
+    },
+    "dashboards": {
+      "edit-panel": {
+        "actual": "Réelle",
+        "actual-description": "Appliquer la même taille que sur le tableau de bord",
+        "axis": {
+          "grid-lines": {
+            "auto-text": "Auto"
+          }
+        },
+        "discard": "Abandonner",
+        "fill": "Remplir",
+        "fill-description": "Utiliser tout l’espace disponible",
+        "panel-options": {
+          "link-editor": {
+            "url-placeholder": "http://your-grafana.com/d/000000010/annotations"
+          }
+        },
+        "query": {
+          "empty-query-edit-warning": "Un nom de requête vide n’est pas autorisé",
+          "query-already-exist-warning": "Le nom de la requête existe déjà",
+          "query-options": {
+            "min-interval-placeholder": "0 limite"
+          }
+        }
+      },
+      "save-dashboard": {
+        "error": "Erreur lors de l’enregistrement du tableau de bord",
+        "errors": {
+          "dash-folder-same-name": "Le nom du tableau de bord ne peut pas être identique à celui du dossier",
+          "dash-name-invalid": "Le nom du tableau de bord n’est pas valide"
+        }
+      },
+      "settings": {
+        "annotation": {
+          "edit-form": {
+            "new-annotation": "Nouvelle annotation"
+          }
+        },
+        "links": {
+          "description-edit-link": "Modifier un lien spécifique de votre tableau de bord",
+          "description-new-link": "Créer un nouveau lien sur votre tableau de bord",
+          "title-edit-link": "Modifier le lien",
+          "title-new-link": "Nouveau lien"
+        },
+        "variables": {
+          "editor": {
+            "exlude-variable": "Exclure la variable",
+            "exlude-variable-desc": "Sélectionnez cette option pour exclure la variable de la requête",
+            "select-variable-type": {
+              "ad-hoc-filters": {
+                "name": "Filtres Ad-hoc"
+              },
+              "constant": {
+                "description": "Définissez une variable constante masquée, utile pour les préfixes de métrique dans les tableaux de bord que vous souhaitez partager.",
+                "name": "Constante"
+              },
+              "custom": {
+                "name": "Personnalisé"
+              },
+              "data-source": {
+                "description": "Permet de changer la source de données de manière dynamique pour plusieurs volets.",
+                "name": "Source de données"
+              },
+              "interval": {
+                "name": "Intervalle"
+              },
+              "query": {
+                "name": "Requête"
+              },
+              "textbox": {
+                "description": "Définir une variable de zone de texte où les utilisateurs peuvent entrer toute chaîne arbitraire",
+                "name": "Zone de texte"
+              }
+            },
+            "types": {
+              "ad-hoc": {
+                "data-source-placeholder": "Sélectionner une source de données"
+              },
+              "date-range": {
+                "title": "Sélectionner l’intervalle temporel"
+              },
+              "query": {
+                "refresh-options": {
+                  "on-dash-load": "Lors du chargement du tableau de bord",
+                  "on-time-change": "Lors du changement d’intervalle temporel"
+                }
+              }
+            }
+          }
+        },
+        "versions": {
+          "loading-msgs": {
+            "changes": "Récupération des changements&hellip;",
+            "history-list": "Récupération de la liste d’historique&hellip;",
+            "more-entries": "Récupération d’entrées supplémentaires&hellip;"
+          }
+        }
+      }
+    },
+    "datesource": {
+      "configuration": {
+        "sort-asc": "Trier par A–Z",
+        "sort-desc": "Trier par Z–A"
+      }
+    },
+    "explore": {
+      "no-data": "Aucune donnée",
+      "query-added-announcement": "Nouvelle ligne de requête ajoutée. {{queryCount}}",
+      "rich-history-settings-tab": {
+        "alert-info": "BMC Helix Dashboards conservera les entrées jusqu'à {{optionLabel}}. Les entrées étoilées ne seront pas supprimées."
+      },
+      "to-dashboard": {
+        "panel-to-dashboard": "Ajouter un volet au tableau de bord",
+        "to-existing-dashboard-title": "Ajouter un volet au tableau de bord existant",
+        "to-new-dashboard-title": "Ajouter un volet au nouveau tableau de bord"
+      }
+    },
+    "file-drop-zone": {
+      "accepted-file-types-prefix": "Types de fichiers acceptés",
+      "file-invalid-type-prefix": "Le type de fichier doit être l’un des suivants",
+      "max-file-size": "Taille maximale du fichier"
+    },
+    "grafana-data": {
+      "timezone": {
+        "browser-time": "Heure du navigateur",
+        "coord-universal-time": "Heure UTC",
+        "local-browser-time": "Heure du navigateur local"
+      },
+      "valueFormats": {
+        "categories": {
+          "misc": {
+            "formats": {
+              "european": "Format européen (Obsolète)"
+            }
+          }
+        }
+      }
+    },
+    "grafana-ui": {
+      "date-time-pickers": {
+        "time-range-input-text": "Sélectionner l’intervalle temporel"
+      },
+      "fieldValidationMessage": {
+        "warning": "Avertissement"
+      },
+      "file-dropzone": {
+        "bulk-limit-error": "Sélectionnez jusqu'à {{maxFiles}} tableaux de bord uniquement"
+      },
+      "icon": {
+        "information": "informations"
+      },
+      "inlineLabel": {
+        "info": "Infos"
+      },
+      "table": {
+        "filter-placeholder": "Filtrer les valeurs"
+      },
+      "week-start-picker": {
+        "weekStarts-label-browser": "Navigateur"
+      }
+    },
+    "import": {
+      "view-label": "Vue : {{index}}"
+    },
+    "library-panels": {
+      "delete": {
+        "cannot-delete-text": "Impossible de supprimer ce volet de bibliothèque parce qu’il est connecté à {{message}} tableau(x) de bord. Supprimez le volet de bibliothèque des tableaux de bord répertoriés ci-dessous et réessayez."
+      },
+      "modal": {
+        "select-aria-label": "Commencez à taper pour rechercher le tableau de bord"
+      }
+    },
+    "manage-dashboards": {
+      "specify-constant": "Spécifiez une constante de chaîne"
+    },
+    "nav": {
+      "config-general": {
+        "subtitle": "Gérer les préférences et les paramètres par défaut pour l'ensemble de BMC Helix Dashboards"
+      }
+    },
+    "notifications": {
+      "empty-state": {
+        "description": "Les notifications que vous avez reçues apparaîtront ici",
+        "title": "Vous êtes à jour!"
+      },
+      "live": {
+        "dismissed": {
+          "multiple_one": "{{count}} notification ignorée",
+          "multiple_other": "{{count}} notifications ignorées",
+          "single": "1 notification ignorée"
+        }
+      },
+      "stored-notifications": {
+        "select-all": "Sélectionner toutes les notifications"
+      }
+    },
+    "options-ui": {
+      "registry": {
+        "standard-field-condigs": {
+          "category-data-links": "Données de liaison"
+        }
+      }
+    },
+    "page-loader": {
+      "text": "Chargement en cours"
+    },
+    "panel-message": {
+      "refresh-dashboard": "Actualiser le tableau de bord pour récupérer les données"
+    },
+    "plugins": {
+      "browse": {
+        "subtitle": "{{value}} Étendez l'expérience Helix Dashboards avec des plugins de panneau et des applications. Pour trouver plus de sources de données, accédez à <3>Connexions</3>."
+      }
+    },
+    "search-inputs": {
+      "name-type": "Rechercher par nom ou type"
+    },
+    "team-permissions": {
+      "add-member": "Ajouter un membre",
+      "no-members-message": "Cette équipe ne comporte aucun membre ou vous ne disposez pas des autorisations nécessaires pour répertorier les membres actuels."
+    },
+    "users-and-access": {
+      "headers": {
+        "email-text": "E-mail",
+        "last-active-text": "Dernière session active",
+        "login-text": "Connexion",
+        "members-text": "Membres",
+        "name-text": "Nom"
+      },
+      "search-user-placeholder-text": "Rechercher un utilisateur par connexion, e-mail ou nom"
+    }
+  },
   "bookmarks-page": {
     "empty": {
       "message": "Il semble que vous n'ayez pas encore créé de signets",
@@ -3532,7 +4885,7 @@
       "delete-button": "Supprimer",
       "delete-modal-invalid-text": "Un ou plusieurs dossiers contiennent des panneaux Bibliothèque ou des règles d'alerte. Vous devez d'abord les supprimer.",
       "delete-modal-invalid-title": "Impossible de supprimer le dossier",
-      "delete-modal-restore-dashboards-text": "",
+      "delete-modal-restore-dashboards-text": "Cette action supprimera immédiatement les dossiers sélectionnés. Les tableaux de bord supprimés seront conservés dans l'historique pendant 12 mois maximum et pourront être restaurés par l'administrateur de votre organisation pendant cette période. L'historique est limité à 1000 tableaux de bord — les plus anciens peuvent être supprimés plus tôt si la limite est atteinte. Les dossiers ne peuvent pas être restaurés.",
       "delete-modal-text": "Cette action supprimera le contenu suivant :",
       "delete-modal-title": "Supprimer",
       "delete-provisioned-folder": "Supprimer le dossier provisionné",
@@ -3543,7 +4896,7 @@
       "move-modal-field-label": "Nom du dossier",
       "move-modal-text": "Cette action déplacera le contenu suivant :",
       "move-modal-title": "Déplacer",
-      "move-provisioned-folder": "",
+      "move-provisioned-folder": "Déplacer le dossier provisionné",
       "moving": "Déplacement...",
       "new-folder-name-required-phrase": "Vous devez saisir le nom du dossier.",
       "selected-mix-resources-modal-text": "Vous avez sélectionné à la fois des ressources provisionnées et non provisionnées. Ces deux types ne peuvent être traités simultanément. Veuillez sélectionner uniquement des ressources provisionnées ou uniquement des ressources non provisionnées, puis réessayer.",
@@ -3579,9 +4932,9 @@
       },
       "error-moving-resources": "Erreur lors du déplacement des ressources",
       "error-no-target-folder-path": "Le chemin du dossier cible est invalide ou vide ; veuillez sélectionner à nouveau.",
-      "move-total": "",
-      "move-warning": "",
-      "move-warning-tooltip": "",
+      "move-total": "Au total, cela affectera :",
+      "move-warning": "Cela déplacera les dossiers sélectionnés et leurs descendants. Les dossiers de destination disponibles dépendent des ressources sélectionnées.",
+      "move-warning-tooltip": "Vous ne pouvez déplacer les ressources provisionnées qu'au sein de leur dossier provisionné, et les ressources locales vers les dossiers locaux.",
       "target-folder": "Dossier de destination"
     },
     "counts": {
@@ -3615,7 +4968,7 @@
       "button-cancel": "Annuler",
       "button-delete": "Supprimer",
       "button-deleting": "Suppression en cours…",
-      "commit": "",
+      "commit": "Supprimer le dossier",
       "delete-warning": "Cette opération supprimera ce dossier ainsi que tous ses éléments enfants. Au total, cela concernera :",
       "success-message": "Dossier supprimé avec succès"
     },
@@ -3680,21 +5033,21 @@
       "text": "Aucun résultat n'a été trouvé pour votre requête"
     },
     "restore": {
-      "success": "",
-      "all-failed_one": "",
-      "all-failed_other": "",
-      "failed-count_one": "",
-      "failed-count_other": "",
-      "success-count_one": "",
-      "success-count_other": ""
+      "all-failed_one": "Échec de la restauration de {{count}} tableau de bord",
+      "all-failed_other": "Échec de la restauration de {{count}} tableaux de bord",
+      "failed-count_one": "{{count}} tableau de bord a échoué",
+      "failed-count_other": "{{count}} tableaux de bord ont échoué",
+      "success": "Tableaux de bord restaurés avec succès",
+      "success-count_one": "{{count}} tableau de bord restauré avec succès",
+      "success-count_other": "{{count}} tableaux de bord restaurés avec succès"
     },
     "text-this-repository-is-read-only": "Si vous avez un accès direct à la cible, copiez le JSON et collez-le à cet endroit.",
     "trash-state-manager": {
       "label": {
         "alphabetically-az": "Par ordre alphabétique (A-Z)",
         "alphabetically-za": "Par ordre alphabétique (Z-A)",
-        "deleted-newest": "",
-        "deleted-oldest": ""
+        "deleted-newest": "Supprimés (du plus récent au plus ancien)",
+        "deleted-oldest": "Supprimés (du plus ancien au plus récent)"
       }
     }
   },
@@ -4044,7 +5397,7 @@
       }
     },
     "tooltip-options": {
-      "label-disable-one-click": "",
+      "label-disable-one-click": "Désactiver pour les éléments à clic unique",
       "name-tooltip-mode": "Mode infobulle",
       "tooltip-mode-options": {
         "label-disabled": "Désactivé",
@@ -4118,7 +5471,7 @@
       "description": "Utiliser une valeur personnalisée"
     },
     "options": {
-      "loading": "",
+      "loading": "Chargement des options...",
       "no-found": "Aucune option trouvée."
     }
   },
@@ -4134,7 +5487,7 @@
     },
     "scopes": {
       "apply-selected-scopes": "Appliquer",
-      "selected-scopes-label": ""
+      "selected-scopes-label": "Portées :"
     },
     "search-box": {
       "placeholder": "Rechercher ou aller à..."
@@ -4155,7 +5508,7 @@
     "cancel": "Annuler",
     "clear": "Effacer",
     "collapse": "Réduire",
-    "disabled": "",
+    "disabled": "Désactivé",
     "edit": "Modifier",
     "help": "Aide",
     "loading": "Chargement en cours...",
@@ -4194,11 +5547,11 @@
       "go-to-advisor": "Accéder au conseiller"
     },
     "cache-feature-highlight-page": {
-      "header": "",
-      "item-1": "",
-      "item-2": "",
-      "item-3": "",
-      "title": ""
+      "header": "La mise en cache des requêtes peut améliorer les temps de chargement et réduire les coûts d'API en stockant temporairement les résultats des requêtes de source de données. Lorsque vous ou d'autres utilisateurs soumettez la même requête, les résultats proviendront du cache plutôt que de la source de données.",
+      "item-1": "Temps de chargement des tableaux de bord plus rapides, en particulier pour les tableaux de bord populaires.",
+      "item-2": "Coûts d'API réduits.",
+      "item-3": "Moins de risques que les API n'appliquent des limites de débit ou ne ralentissent les requêtes.",
+      "title": "Optimiser les requêtes avec la mise en cache des requêtes dans Grafana Cloud"
     },
     "cloud": {
       "connections-home-page": {
@@ -4208,7 +5561,7 @@
         },
         "collector": {
           "subtitle": "Gérez la configuration de Grafana Alloy (notre distribution de l’OpenTelemetry Collector)",
-          "title": ""
+          "title": "Collecteur"
         },
         "data-sources": {
           "subtitle": "Gérer vos connexions de sources de données existantes",
@@ -4249,18 +5602,18 @@
       }
     },
     "feature-highlight-page": {
-      "foot-note": "",
-      "footer": "",
-      "footer-link": "",
-      "link-button-label": ""
+      "foot-note": "Après avoir créé un compte, vous pouvez facilement <2>migrer cette instance vers Grafana Cloud</2> avec notre assistant de migration.",
+      "footer": "Créez un compte gratuit Grafana Cloud pour commencer à utiliser les autorisations de source de données. Cette fonctionnalité est également disponible avec une licence Grafana Enterprise.",
+      "footer-link": "En savoir plus sur Enterprise",
+      "link-button-label": "Créer un compte"
     },
     "insights-feature-highlight-page": {
-      "header": "",
-      "item-1": "",
-      "item-2": "",
-      "item-3": "",
-      "item-4": "",
-      "title": ""
+      "header": "Les informations d'utilisation fournissent des détails sur l'utilisation des sources de données, tels que le nombre de vues, de requêtes et d'erreurs rencontrées par les utilisateurs. Vous pouvez les utiliser pour améliorer l'expérience utilisateur et résoudre les problèmes.",
+      "item-1": "Démontrer et améliorer la valeur de votre service d'observabilité en suivant l'engagement des utilisateurs",
+      "item-2": "Maintenir Grafana performant en identifiant et en corrigeant les sources de données lentes ou sujettes aux erreurs",
+      "item-3": "Nettoyer votre instance en trouvant et en supprimant les sources de données inutilisées",
+      "item-4": "Examiner les informations d'utilisation individuelles des sources de données d'un coup d'œil dans l'interface utilisateur, trier les résultats de recherche par utilisation et erreurs, ou approfondir les journaux d'utilisation détaillés",
+      "title": "Comprendre l'utilisation de vos sources de données avec Grafana Cloud"
     },
     "new-data-source-page": {
       "subTitle": {
@@ -4277,7 +5630,7 @@
       "okay": "Ok"
     },
     "not-found-datasource": {
-      "body": ""
+      "body": "Vous avez peut-être mal saisi l'URL ou le plugin avec l'ID <1></1> est indisponible.<br/>Pour afficher la liste des sources de données disponibles, veuillez <5>cliquer ici</5>."
     },
     "oss": {
       "connections-home-page": {
@@ -4293,11 +5646,11 @@
       }
     },
     "permissions-feature-highlight-page": {
-      "header": "",
-      "item-1": "",
-      "item-2": "",
-      "item-3": "",
-      "title": ""
+      "header": "Avec les autorisations de source de données, vous pouvez protéger les données sensibles en limitant l'accès à cette source de données à des utilisateurs, des équipes et des rôles spécifiques.",
+      "item-1": "Protéger les données sensibles, telles que les journaux de sécurité, les bases de données de production et les informations personnellement identifiables",
+      "item-2": "Simplifier l'expérience des utilisateurs en masquant les sources de données dont ils n'ont pas besoin",
+      "item-3": "Partager l'accès à Grafana plus librement, en sachant que les utilisateurs ne verront pas involontairement de données sensibles",
+      "title": "Sécuriser l'accès aux données avec les autorisations de source de données dans Grafana Cloud"
     },
     "search": {
       "aria-label-search-all": "Rechercher tout",
@@ -4320,8 +5673,8 @@
     "versionHistory": {
       "comparison": {
         "header": {
-          "hide-json-diff": "",
-          "show-json-diff": "",
+          "hide-json-diff": "Masquer le diff JSON",
+          "show-json-diff": "Afficher le diff JSON",
           "text": "Version {{version}} mise à jour par {{createdBy}} ({{ageString}}) {{message}}"
         },
         "select": "Sélectionnez deux versions pour commencer la comparaison"
@@ -4348,7 +5701,7 @@
       "label-label": "Étiquette",
       "label-placeholder": "par exemple les traces Tempo",
       "label-required": "Ce champ est obligatoire.",
-      "sub-text": "",
+      "sub-text": "<p>Définissez le texte qui décrira la corrélation.</p>",
       "title": "Définir l'étiquette de corrélation (étape 1 sur 3)"
     },
     "configure-correlation-target-form": {
@@ -4392,7 +5745,7 @@
     },
     "source-form": {
       "control-required": "Ce champ est obligatoire.",
-      "description": "",
+      "description": "Un point de données doit fournir des valeurs à toutes les variables sous forme de champs ou de sortie de transformations pour que le bouton de corrélation apparaisse dans la visualisation.<br/>Remarque : toutes les variables n'ont pas besoin d'être explicitement définies ci-dessous. Une transformation telle que <4>logfmt</4> créera des variables pour chaque paire clé/valeur.",
       "description-external-pre": "Vous avez utilisé les variables suivantes dans l'URL cible :",
       "description-query-pre": "Vous avez utilisé les variables suivantes dans la requête cible :",
       "external-title": "Configurer la source de données qui utilisera l'URL (étape 3 sur 3)",
@@ -4404,12 +5757,12 @@
       "results-required": "Ce champ est obligatoire.",
       "source-description": "Les résultats de la source de données source sélectionnée ont des liens affichés dans le panneau",
       "source-label": "Source",
-      "sub-text": ""
+      "sub-text": "<p> Définissez la source de données qui affichera la corrélation et quelles données remplaceront les variables précédemment définies. </p>"
     },
     "sub-title": "Définissez comment les données issues de différentes sources se relient entre elles. Pour en savoir plus, consultez la <2>documentation</2>",
     "target-form": {
       "control-rules": "Ce champ est obligatoire.",
-      "sub-text": "",
+      "sub-text": "<p> Définissez à quoi la corrélation se liera. Avec le type de requête, une requête s'exécutera lorsque l'on cliquera sur la corrélation. Avec le type externe, cliquer sur la corrélation ouvrira une URL. </p>",
       "target-description-external": "Spécifiez l'URL qui s'ouvrira lorsque vous cliquerez sur le lien",
       "target-description-query": "Spécifiez quelle source de données est requêtée lorsque vous cliquez sur le lien",
       "target-label": "Cible",
@@ -4528,8 +5881,8 @@
     },
     "canvas-actions": {
       "add-panel": "Ajouter un panneau",
-      "disabled-nested-grouping": "",
-      "disabled-nested-tabs": "",
+      "disabled-nested-grouping": "Le regroupement est limité à 2 niveaux",
+      "disabled-nested-tabs": "Les onglets ne peuvent pas être imbriqués dans d'autres onglets",
       "group-into-row": "Grouper en ligne",
       "group-into-tab": "Grouper dans un onglet",
       "group-panels": "Grouper les panneaux",
@@ -4539,8 +5892,8 @@
       "paste-row": "Coller la ligne",
       "paste-tab": "Coller l’onglet",
       "un-group-panels": "Dissocier",
-      "ungroup-rows": "",
-      "ungroup-tabs": ""
+      "ungroup-rows": "Dégrouper les lignes",
+      "ungroup-tabs": "Dégrouper les onglets"
     },
     "conditional-rendering": {
       "conditions": {
@@ -4598,33 +5951,33 @@
           "value": "Valeur"
         },
         "wrapper": {
-          "delete-condition": "",
-          "unsupported-object-type": ""
+          "delete-condition": "Supprimer la condition",
+          "unsupported-object-type": "Cette condition n'est pas prise en charge par l'élément, elle sera donc ignorée."
         }
       },
       "editor": {
-        "info": "",
-        "learn-more": "",
-        "not-supported-for-custom-grid": "",
-        "unsupported-object-type": ""
+        "info": "Définissez des règles pour contrôler la visibilité de {{type}} en faisant correspondre toutes ou une partie des règles.",
+        "learn-more": "En savoir plus",
+        "not-supported-for-custom-grid": "Les règles d'affichage/masquage ne sont pas prises en charge pour les panneaux dans la mise en page de panneau personnalisée. Modifiez la mise en page de panneau en grille automatique pour activer cette fonctionnalité.",
+        "unsupported-object-type": "Le rendu conditionnel n'est pas pris en charge pour ce type d'élément"
       },
       "overlay": {
-        "tooltip": ""
+        "tooltip": "L'élément est masqué par les règles d'affichage/masquage."
       },
       "root": {
         "title": "Afficher / masquer les règles"
       }
     },
     "confirm-plugin-dashboard-save-modal": {
-      "body-plugin-dashboard": "",
+      "body-plugin-dashboard": "Vos modifications seront perdues lors de la mise à jour du plug-in.<br/><2>Utilisez <strong>Enregistrer sous</strong> pour créer une version personnalisée.</2>",
       "cancel": "Annuler",
       "overwrite": "Écraser",
       "title-plugin-dashboard": "Tableau de bord du plugin"
     },
     "controls": {
       "menu": {
-        "aria-label": "",
-        "title": ""
+        "aria-label": "Actualisation automatique",
+        "title": "Actualisation automatique"
       }
     },
     "dash-nav": {
@@ -4642,7 +5995,7 @@
     },
     "dashboard-links-menu": {
       "aria-label-dashboard-name": "Tableau de bord {{dashboardName}}",
-      "label-no-dashboards-found": ""
+      "label-no-dashboards-found": "Aucun tableau de bord trouvé"
     },
     "dashboard-loading": {
       "cancel-loading-dashboard": "Annuler le chargement du tableau de bord"
@@ -4745,16 +6098,16 @@
       "move": "Déplacer {{typeName}}",
       "panel-background": "Modifier l’arrière-plan du panneau",
       "panel-description": "Modifier la description du panneau",
-      "panel-edit": "",
+      "panel-edit": "Modifications du panneau",
       "panel-max-repeats-per-row": "Nombre maximal de répétitions par ligne",
       "panel-repeat-direction": "Répéter la direction",
       "panel-repeat-variable": "Répéter le panneau selon",
       "panel-title": "Modifier le titre du panneau",
       "paste-panel": "Coller le panneau",
       "remove": "Supprimer {{typeName}}",
-      "row-title": "",
+      "row-title": "Modifier le titre de la ligne",
       "switch-layout": "Changer la disposition",
-      "tab-title": ""
+      "tab-title": "Modifier le titre de l'onglet"
     },
     "edit-pane": {
       "elements": {
@@ -4784,8 +6137,8 @@
       },
       "variable": {
         "custom-options": {
-          "close": "",
-          "modal-title": "",
+          "close": "Clotûre",
+          "modal-title": "Variable personnalisée",
           "values": "Valeurs séparées par une virgule"
         },
         "datasource-options": {
@@ -4833,13 +6186,13 @@
       "add-visualization-body": "Sélectionnez une source de données, puis examinez et visualisez vos données avec des graphiques, des statistiques et des tableaux ou créez des listes, des markdowns et d'autres widgets.",
       "add-visualization-button": "Ajouter une visualisation",
       "add-visualization-header": "Commencez votre nouveau tableau de bord en ajoutant une visualisation",
-      "import-a-dashboard-body": "",
+      "import-a-dashboard-body": "Importez des tableaux de bord à partir de fichiers ou de <2>grafana.com</2>.",
       "import-a-dashboard-header": "Importer un tableau de bord",
       "import-dashboard-button": "Importer un tableau de bord",
-      "show-less-dashboards": "",
-      "show-more-dashboards": "",
-      "start-with-suggested-dashboards": "",
-      "use-template-button": ""
+      "show-less-dashboards": "Afficher moins",
+      "show-more-dashboards": "Afficher plus",
+      "start-with-suggested-dashboards": "Commencer avec un tableau de bord prédéfini de votre source de données",
+      "use-template-button": "Utiliser ce tableau de bord"
     },
     "errors": {
       "failed-to-load": "Échec du chargement du tableau de bord"
@@ -5008,8 +6361,8 @@
       "download-logs": "Télécharger les journaux",
       "download-service": "Télécharger le graphique de service",
       "download-traces": "Télécharger les traces",
-      "excel-compatibility-mode-description": "",
-      "excel-compatibility-mode-label": "",
+      "excel-compatibility-mode-description": "Génère un fichier CSV compatible avec la plupart des versions d'Excel",
+      "excel-compatibility-mode-label": "Télécharger pour Excel",
       "formatted": "Données formatées",
       "formatted-data-description": "Les données du tableau sont formatées avec les options définies dans les onglets Champ et Remplacer.",
       "formatted-data-label": "Données formatées",
@@ -5052,7 +6405,7 @@
       }
     },
     "layout": {
-      "cancel": "",
+      "cancel": "Annuler",
       "common": {
         "copy": "Copier",
         "copy-or-duplicate": "Copier ou dupliquer",
@@ -5063,9 +6416,9 @@
         "panel-layout": "Disposition des panneaux",
         "panel-layout-disabled": "Sélectionnez une ligne ou un onglet pour modifier les options de disposition du panneau"
       },
-      "continue": "",
-      "ungroup-nested-text": "",
-      "ungroup-nested-title": ""
+      "continue": "Continuer",
+      "ungroup-nested-text": "Cela dégroupera tous les groupes imbriqués.",
+      "ungroup-nested-title": "Dégrouper les groupes imbriqués ?"
     },
     "legacy-dashboard-api": {
       "fetch-error": {
@@ -5134,15 +6487,15 @@
     },
     "panel": {
       "time-range-settings": {
-        "hide-time-info": "",
-        "hide-time-info-description": "",
-        "time-from": "",
-        "time-from-description": "",
-        "time-shift": "",
-        "time-shift-description": "",
-        "time-window-compare": "",
-        "time-window-compare-description": "",
-        "title": ""
+        "hide-time-info": "Masquer la plage horaire du panneau",
+        "hide-time-info-description": "Ne pas afficher la plage horaire du panneau dans l'en-tête du panneau",
+        "time-from": "Plage horaire du panneau",
+        "time-from-description": "Remplace la plage horaire du tableau de bord. Utilisez l'une des valeurs prédéfinies ou saisissez une valeur personnalisée comme 5m ou 2h.",
+        "time-shift": "Décalage de temps",
+        "time-shift-description": "Ajoute un décalage horaire par rapport à la plage horaire du tableau de bord ou du panneau. Utilisez l'une des valeurs prédéfinies ou saisissez une valeur personnalisée comme 5m ou 2h.",
+        "time-window-compare": "Comparaison temporelle",
+        "time-window-compare-description": "Comparer les données entre deux plages horaires",
+        "title": "Paramètres horaires du panneau"
       }
     },
     "panel-edit": {
@@ -5227,14 +6580,14 @@
       "title-row-options": "Options de ligne"
     },
     "rows-layout": {
-      "cancel": "",
-      "convert-to": "",
+      "cancel": "Annuler",
+      "convert-to": "Convertir en {{name}}",
       "delete-row-text": "La suppression de cette ligne supprimera également tous les panneaux. Voulez-vous vraiment continuer ?",
       "delete-row-title": "Supprimer la ligne ?",
       "delete-row-yes": "Supprimer",
       "description": "Groupes de panneaux à développer avec en-têtes",
       "edit": {
-        "ungroup-rows": ""
+        "ungroup-rows": "Dégrouper les lignes"
       },
       "header-hidden-tooltip": "En-tête de ligne visible uniquement en mode édition",
       "name": "Lignes",
@@ -5266,8 +6619,8 @@
       "row-warning": {
         "title-not-unique": "Ce titre n’est pas unique"
       },
-      "ungroup-convert-text": "",
-      "ungroup-convert-title": ""
+      "ungroup-convert-text": "Toutes les grilles doivent être converties au même type et les positions seront perdues.",
+      "ungroup-convert-title": "Convertir les grilles mixtes ?"
     },
     "save-dashboard": {
       "message-dashboard-saved": "Tableau de bord enregistré"
@@ -5304,8 +6657,8 @@
       "title-provisioned": "Tableau de bord provisionné"
     },
     "save-dashboard-error-proxy": {
-      "body-name-exists": "",
-      "body-version-mismatch": "",
+      "body-name-exists": "Un tableau de bord portant le même nom existe déjà dans le dossier sélectionné.<br/><2>Souhaitez-vous tout de même enregistrer ce tableau de bord ?</2>",
+      "body-version-mismatch": "Quelqu'un d'autre a mis à jour ce tableau de bord.<br/><2>Souhaitez-vous tout de même enregistrer ce tableau de bord ?</2>",
       "confirmText-save-and-overwrite": "Enregistrer et écraser",
       "title-name-exists": "Conflits",
       "title-version-mismatch": "Conflits"
@@ -5323,12 +6676,11 @@
       "cancel": "Annuler",
       "cannot-be-saved": "Ce tableau de bord ne peut pas être enregistré à partir de l’interface utilisateur Grafana, car il a été mis en service à partir d’une autre source. Copiez le JSON ou enregistrez-le dans un fichier ci-dessous, puis vous pourrez mettre à jour votre tableau de bord dans la source de mise en service.",
       "copy-json-to-clipboard": "Copier JSON dans le presse-papiers",
-      "file-path": "",
-      "save-json-to-file": "Enregistrer le fichier JSON",
-      "see-docs": "Consultez la <2>documentation</2> pour en savoir plus sur la mise en service."
+      "file-path": "<strong>Chemin du fichier :</strong> {{filePath}}",
+      "save-json-to-file": "Enregistrer le fichier JSON"
     },
     "search-panel": {
-      "no-match": ""
+      "no-match": "Aucun panneau ne correspond"
     },
     "share-public-dashboard-loader": {
       "loading-configuration": "Chargement de la configuration"
@@ -5358,7 +6710,7 @@
       "delete-tab-yes": "Supprimer",
       "description": "Organiser les panneaux dans des onglets horizontaux",
       "edit": {
-        "ungroup-tabs": ""
+        "ungroup-tabs": "Dégrouper les onglets"
       },
       "name": "Onglets",
       "tab": {
@@ -5492,10 +6844,10 @@
       "save-library-panel": "Enregistrer le panneau de la bibliothèque",
       "settings": "Paramètres du tableau de bord",
       "share-button": "Partager",
-      "star-add-error": "",
-      "star-added": "",
-      "star-remove-error": "",
-      "star-removed": "",
+      "star-add-error": "Échec de l'ajout aux favoris",
+      "star-added": "Ajouté aux favoris",
+      "star-remove-error": "Échec de la suppression des favoris",
+      "star-removed": "Supprimé des favoris",
       "unlink-library-panel": "Dissocier le panneau de la bibliothèque",
       "unmark-favorite": "Supprimer des favoris"
     },
@@ -5522,7 +6874,7 @@
     "transformation-picker": {
       "info": "Les transformations vous permettent de joindre, calculer, réorganiser, masquer et renommer les résultats de votre requête avant qu’ils ne soient visualisés.",
       "info-graph-not-suitable": "De nombreuses transformations ne conviennent pas si vous utilisez la visualisation Graphique, car elle ne prend actuellement en charge que les données de séries chronologiques.",
-      "info-switch-to-table": "",
+      "info-switch-to-table": "Il peut être utile de basculer vers la visualisation Tableau pour comprendre ce qu'une transformation effectue.",
       "placeholder-search-for-transformation": "Rechercher une transformation",
       "read-more": "En savoir plus",
       "title-transformations": "Transformations"
@@ -5588,8 +6940,8 @@
     "version-history-comparison": {
       "button-restore": "Restaurer la version {{version}}",
       "label-view-json-diff": "Afficher les différences du JSON",
-      "new-updated-by": "",
-      "old-updated-by": ""
+      "new-updated-by": "**Version {{version}}** mise à jour par {{editor}} {{timeAgo}}",
+      "old-updated-by": "**Version {{version}}** mise à jour par {{editor}} {{timeAgo}}"
     },
     "version-history-table": {
       "aria-label-toggle-selection": "Basculer la sélection de la version {{version}}",
@@ -5604,7 +6956,7 @@
       "title-json": "JSON"
     },
     "view-panel": {
-      "not-found": ""
+      "not-found": "Volet introuvable"
     },
     "visualization-button": {
       "aria-label-change-visualization": "Modifier la visualisation",
@@ -5650,8 +7002,6 @@
       "load": "Charger"
     },
     "gcom-field": {
-      "label": "Trouvez et importez des tableaux de bord pour les applications courantes sur <1></1>",
-      "load-button": "Charger",
       "placeholder": "URL ou ID du tableau de bord Grafana.com",
       "validation-required": "Vous devez renseigner une URL ou un ID de tableau de bord Grafana"
     },
@@ -5702,7 +7052,7 @@
     },
     "add-to-dashboard-form-exposed": {
       "title": {
-        "new-panel": ""
+        "new-panel": "Nouveau panneau"
       }
     },
     "annotation-settings-edit": {
@@ -5796,7 +7146,6 @@
       "type": "Type"
     },
     "dashboard-preview-banner": {
-      "not-yet-saved": "La valeur n'est pas enregistrée dans la base de données Grafana",
       "title-dashboard-loaded-external-repository": "Ce tableau de bord est chargé à partir d'un référentiel externe",
       "title-error-loading-dashboard": "Erreur lors du chargement du tableau de bord"
     },
@@ -5806,8 +7155,7 @@
         "view-panel": "Afficher le panneau"
       },
       "title": {
-        "dashboard": "Tableau de bord",
-        "discard-changes-to-dashboard": "Abandonner les modifications apportées au tableau de bord ?"
+        "dashboard": "Tableau de bord"
       }
     },
     "dashboard-scene-page-state-manager": {
@@ -5894,7 +7242,7 @@
         "dynamically-switch-source-multiple-panels": "Changer dynamiquement la source de données pour plusieurs panneaux",
         "group": "Ajouter des clés de regroupement à la volée",
         "hidden-constant-variable": "Une variable constante masquée, utile pour les préfixes de métriques dans des tableaux de bord à partager",
-        "users-enter-arbitrary-strings-switch": "",
+        "users-enter-arbitrary-strings-switch": "Une variable qui peut être activée et désactivée",
         "users-enter-arbitrary-strings-textbox": "Les utilisateurs peuvent saisir des chaînes de caractères libres dans un champ de texte",
         "values-are-static-and-defined-manually": "Les valeurs sont statiques et définies manuellement",
         "values-fetched-source-query": "Les valeurs sont récupérées à partir d’une requête de source de données",
@@ -5908,7 +7256,7 @@
         "group-by": "Regrouper par",
         "interval": "Intervalle",
         "query": "Requête",
-        "switch": "",
+        "switch": "Commutateur",
         "textbox": "Zone de texte"
       }
     },
@@ -5965,9 +7313,7 @@
         }
       },
       "title-complete-git-hub-comment-clipboard": "Copier un commentaire GitHub complet dans le presse-papiers",
-      "title-get-help-with-this-panel": "Obtenir de l’aide sur ce panneau",
-      "troubleshooting-docs": "Documents de dépannage",
-      "troubleshooting-request-help": "Pour demander une aide au dépannage, envoyez un instantané de ce tableau de bord à l'assistance technique de Grafana Labs. L'instantané contient les données de réponse de la requête et les paramètres du tableau de bord."
+      "title-get-help-with-this-panel": "Obtenir de l’aide sur ce panneau"
     },
     "import-dashboard-form-v2": {
       "cancel": "Annuler",
@@ -5994,7 +7340,7 @@
         "cancel": "Annuler"
       },
       "render-save-button-and-error": {
-        "body-plugin-dashboard": "",
+        "body-plugin-dashboard": "Vos modifications seront perdues lors de la mise à jour du plug-in. Utilisez **Enregistrer sous** pour créer une version personnalisée.",
         "title-failed-to-save-dashboard": "Échec de l’enregistrement du tableau de bord",
         "title-plugin-dashboard": "Tableau de bord du plugin",
         "title-someone-else-has-updated-this-dashboard": "Quelqu’un d’autre a mis à jour ce tableau de bord",
@@ -6003,16 +7349,16 @@
       "save-and-overwrite": "« Enregistrer et écraser »"
     },
     "library-viz-panel-info": {
-      "last-edited": "",
+      "last-edited": "{{timeAgo}} par <person />",
       "usage-count_one": "Utilisé sur {{count}} tableaux de bord",
       "usage-count_other": "Utilisé sur {{count}} tableaux de bord"
     },
     "managed-badge": {
-      "kubectl": "",
-      "plugin": "",
-      "provisioned": "",
-      "repository": "",
-      "terraform": ""
+      "kubectl": "Géré par : Kubectl",
+      "plugin": "Géré par : Plug-in {{id}}",
+      "provisioned": "Mis en service",
+      "repository": "Géré par : Dépôt {{title}}",
+      "terraform": "Géré par : Terraform"
     },
     "move-provisioned-dashboard-form": {
       "api-error": "Échec du déplacement du tableau de bord",
@@ -6020,7 +7366,7 @@
       "current-file-not-found": "Le fichier du tableau de bord actuel est introuvable",
       "drawer-title": "Déplacer un tableau de bord provisionné",
       "file-load-error": "Erreur lors du chargement du tableau de bord",
-      "loading-dashboard-data": "",
+      "loading-dashboard-data": "Chargement des données du tableau de bord",
       "move-action": "Déplacer le tableau de bord",
       "move-read-only-message": "Ce tableau de bord ne peut pas être déplacé directement depuis Grafana, car le dépôt est en lecture seule. Pour déplacer ce tableau de bord, déplacez le fichier directement dans votre dépôt Git.",
       "moving": "Déplacement en cours…",
@@ -6064,7 +7410,7 @@
     },
     "panel-data-queries-tab-rendered": {
       "add-query": "Ajouter une requête",
-      "expression": ""
+      "expression": "Expression"
     },
     "panel-data-transformations-tab": {
       "tab-label": "Transformations"
@@ -6122,7 +7468,7 @@
       "query": "Requête"
     },
     "query-variable-editor-form": {
-      "description-examples": "",
+      "description-examples": "Les groupes de capture nommés peuvent être utilisés pour séparer le texte d'affichage et la valeur ( <1>voir les exemples</1> ).",
       "description-optional": "Facultatif, si vous souhaitez extraire une partie d’un nom de série ou d’un segment de nœud de métrique.",
       "label-data-source": "Source de données",
       "label-static-options-sort": "Tri des options statiques",
@@ -6183,7 +7529,7 @@
       "label-message": "Message",
       "placeholder-describe-changes-optional": "Ajoutez une note pour décrire vos modifications (facultatif).",
       "render-footer": {
-        "body-plugin-dashboard": "",
+        "body-plugin-dashboard": "Vos modifications seront perdues lors de la mise à jour du plug-in. Utilisez **Enregistrer sous** pour créer une version personnalisée.",
         "no-changes-to-save": "Aucun changement à enregistrer",
         "title-failed-to-save-dashboard": "Échec de l’enregistrement du tableau de bord",
         "title-plugin-dashboard": "Tableau de bord du plugin",
@@ -6201,32 +7547,30 @@
       "save-timerange-label-update-default-time-range": "Mettre à jour la plage temporelle par défaut",
       "save-variables-description-current-values-default": "Les valeurs actuelles deviendront les nouvelles valeurs par défaut",
       "save-variables-label-update-default-variable-values": "Mettre à jour les valeurs des variables par défaut",
-      "show-variables-warning-alert-body": "",
-      "show-variables-warning-alert-title": ""
+      "show-variables-warning-alert-body": "Certaines variables n'ont pas pu être chargées. Si vous laissez la case « Mettre à jour les valeurs par défaut des variables » cochée, les valeurs actuelles (échouées) deviendront les valeurs par défaut du tableau de bord. Vous pouvez enregistrer quand même ou décocher l'option pour éviter de stocker ces valeurs (échouées).",
+      "show-variables-warning-alert-title": "Les requêtes de variables ont échoué"
     },
     "save-library-viz-panel-modal": {
+      "affected-dashboards_one": "Cette mise à jour affectera <1>{{count}} tableaux de bord.</1> Les tableaux de bord suivants utilisant le panneau seront affectés :",
+      "affected-dashboards_other": "Cette mise à jour affectera <1>{{count}} tableaux de bord.</1> Les tableaux de bord suivants utilisant le panneau seront affectés :",
       "cancel": "Annuler",
       "dashboard-name": "Nom du tableau de bord",
       "discard": "Abandonner",
       "loading-connected-dashboards": "Chargement des tableaux de bord connectés...",
       "placeholder-search-affected-dashboards": "Rechercher les tableaux de bord concernés",
-      "update-all": "Tout mettre à jour",
-      "affected-dashboards_one": "Cette mise à jour affectera <1>{{count}} tableaux de bord.</1> Les tableaux de bord suivants utilisant le panneau seront affectés :",
-      "affected-dashboards_other": "Cette mise à jour affectera <1>{{count}} tableaux de bord.</1> Les tableaux de bord suivants utilisant le panneau seront affectés :"
+      "update-all": "Tout mettre à jour"
     },
     "save-provisioned-dashboard-form": {
       "api-error": "Erreur d'enregistrement du tableau de bord",
       "cancel": "Annuler",
-      "cannot-be-saved": "Ce tableau de bord ne peut pas être enregistré à partir de l’interface utilisateur Grafana, car il a été mis en service à partir d’une autre source. Copiez le JSON ou enregistrez-le dans un fichier ci-dessous, puis vous pourrez mettre à jour votre tableau de bord dans la source de mise en service.",
       "copy-json-to-clipboard": "Copier JSON dans le presse-papiers",
-      "file-path": "",
+      "file-path": "<strong>Chemin du fichier :</strong> {{filePath}}",
       "label-description": "Description",
       "label-target-folder": "Dossier cible",
       "label-title": "Titre",
       "save": "Enregistrer",
       "save-json-to-file": "Enregistrer le fichier JSON",
       "saving": "Enregistrement en cours...",
-      "see-docs": "Consultez la <2>documentation</2> pour en savoir plus sur la mise en service.",
       "title-required": "Le titre du tableau de bord est requis",
       "title-same-as-folder": "Le nom du tableau de bord ne peut pas être le même que le nom du dossier",
       "title-validation-failed": "La validation du titre du tableau de bord a échoué."
@@ -6261,16 +7605,16 @@
       }
     },
     "switch-variable-form": {
-      "disabled-value": "",
-      "disabled-value-description": "",
-      "disabled-value-placeholder": "",
-      "enabled-value": "",
-      "enabled-value-description": "",
-      "enabled-value-placeholder": "",
-      "same-values-error": "",
-      "switch-options": "",
-      "value-pair-type": "",
-      "value-pair-type-description": ""
+      "disabled-value": "Valeur désactivée",
+      "disabled-value-description": "Valeur lorsque le commutateur est désactivé",
+      "disabled-value-placeholder": "Ex. : Désactivé, Inactif",
+      "enabled-value": "Valeur activée",
+      "enabled-value-description": "Valeur lorsque le commutateur est activé",
+      "enabled-value-placeholder": "Ex. : Activé, Actif",
+      "same-values-error": "Les valeurs activée et désactivée ne peuvent pas être identiques",
+      "switch-options": "Options du commutateur",
+      "value-pair-type": "Type de paire de valeurs",
+      "value-pair-type-description": "Choisissez le type de valeurs pour les états du commutateur"
     },
     "text-box-variable": {
       "name-default-value": "Valeur par défaut"
@@ -6281,6 +7625,9 @@
     },
     "textbox-variable-form": {
       "label-value": "Valeur"
+    },
+    "title": {
+      "discard-changes-to-dashboard": "Annuler les modifications du tableau de bord ?"
     },
     "title-field-label": {
       "title": "Titre"
@@ -6326,7 +7673,7 @@
       "content-variable-referenced-other-variables-dashboard": "Cette variable est référencée par d’autres variables ou d’autres tableaux de bord."
     },
     "variable-controls": {
-      "add-variable": ""
+      "add-variable": "Ajouter"
     },
     "variable-editor-form": {
       "aria-label-variable-editor-form": "Formulaire de l’éditeur de variables",
@@ -6389,8 +7736,8 @@
     },
     "version-history-comparison": {
       "label-view-json-diff": "Afficher les différences du JSON",
-      "new-version-updated": "",
-      "old-version-updated": ""
+      "new-version-updated": "<strong>Version {{version}}</strong> mise à jour par {{editor}} {{timeAgo}}",
+      "old-version-updated": "<strong>Version {{version}}</strong> mise à jour par {{editor}} {{timeAgo}}"
     },
     "version-history-header": {
       "compare-versions": "Comparaison {{baseVersion}} <3></3> {{newVersion}}",
@@ -6468,7 +7815,7 @@
     "provisioned-delete-modal": {
       "confirm-button": "OK",
       "text-1": "Ce tableau de bord est géré par la mise en service Grafana et ne peut pas être supprimé. Supprimez le tableau de bord du fichier de configuration pour le supprimer.",
-      "text-2": "",
+      "text-2": "Consultez la documentation Grafana pour plus d'informations sur le provisionnement.",
       "text-3": "Chemin du fichier : {{provisionedId}}",
       "text-link": "Aller à la page des documents",
       "title": "Impossible de supprimer le tableau de bord mis en service"
@@ -6495,7 +7842,7 @@
   },
   "dashboards": {
     "panel-queries": {
-      "add-from-saved-queries": ""
+      "add-from-saved-queries": "Ajouter depuis les requêtes sauvegardées"
     },
     "settings": {
       "variables": {
@@ -6546,7 +7893,7 @@
   },
   "data-source-testing-status-page": {
     "error-more-details-link": "Cliquez <2>ici</2> pour en savoir plus sur cette erreur.",
-    "success-more-details-links": ""
+    "success-more-details-links": "Ensuite, vous pouvez commencer à visualiser les données en <2>créant un tableau de bord</2>, ou en interrogeant les données dans la <5>vue d'exploration</5>."
   },
   "data-sources": {
     "datasource-add-button": {
@@ -6642,20 +7989,17 @@
       "test": "Test"
     },
     "cloud-info-box": {
-      "body-alert": "",
+      "body-alert": "Ou évitez les efforts et obtenez {{mainDS}} (et {{extraDS}}) comme sources de données entièrement gérées, évolutives et hébergées de Grafana Labs avec l'<6>offre Grafana Cloud gratuite à vie</6>.",
       "title-alert": "Configurer la source de données {{mainDS}} ci-dessous"
     },
     "dashboards-table": {
       "aria-label-delete-dashboard": "Supprimer le tableau de bord",
       "import": "Importer"
     },
-    "data-source-categories": {
-      "find-more-data-source-plugins": "Trouver plus de plugins de source de données"
-    },
     "data-source-load-error": {
       "back": "Précédent",
       "delete": "Supprimer",
-      "not-found": ""
+      "not-found": "Source de données introuvable"
     },
     "data-source-missing-rights-message": {
       "title-missing-rights": "Droits manquants"
@@ -6723,7 +8067,7 @@
         "service-now-integration-and-data-source": "Intégration et source de données ServiceNow",
         "signal-fx-integration-and-datasource": "Intégration et source de données SignalFx",
         "snowflake-integration-and-data-source": "Intégration et source de données Snowflake",
-        "solarwinds-datasource": "",
+        "solarwinds-datasource": "Source de données SolarWinds",
         "sumo-logic-integration-and-datasource": "Intégration et source de données SumoLogic",
         "visualize-and-explore-dynatrace-data": "Visualiser et explorer les données Dynatrace",
         "visualize-and-explore-oracle-sql": "Visualiser et explorer Oracle SQL",
@@ -6770,18 +8114,18 @@
       "no-events-yet": "Pas encore d’événements"
     },
     "render-info-viewer": {
-      "data-counter": "",
+      "data-counter": "Données : {{numDataChanges}}",
       "elapsed-time": "Temps : {{elapsed}} ms",
       "field": "Champ",
       "last": "Dernier",
-      "render-counter": "",
-      "schema-counter": "",
+      "render-counter": "Rendu : {{numRenders}}",
+      "schema-counter": "Schéma : {{numSchemaChanges}}",
       "title-reset-counters": "Réinitialiser les compteurs",
       "tooltip-step-back": "Étape précédente",
       "type": "Type"
     },
     "state-view": {
-      "current-value": "",
+      "current-value": "Valeur actuelle : {{currentValue}}",
       "label-state-name": "Nom de l’état"
     }
   },
@@ -6900,7 +8244,7 @@
       "duplicate-value-mapping-aria-label-duplicate-value-mapping": "Dupliquer le mappage de valeur",
       "duplicate-value-mapping-tooltip-duplicate": "Dupliquer",
       "placeholder-exact-value-to-match": "Valeur exacte à faire correspondre",
-      "placeholder-from": "",
+      "placeholder-from": "De",
       "placeholder-optional-display-text": "Texte d’affichage facultatif",
       "placeholder-regular-expression": "Expression régulière",
       "placeholder-to": "À",
@@ -7192,7 +8536,7 @@
       "fields": "Champs",
       "reset": "Réinitialiser",
       "selected-fields": "Champs sélectionnés",
-      "suggested-fields": ""
+      "suggested-fields": "Suggérés"
     },
     "logs-table-wrap": {
       "aria-label-select-query-by-name": "Sélectionner la requête par son nom",
@@ -7229,7 +8573,7 @@
       },
       "footer": {
         "learn-more": "En savoir plus",
-        "pro-tip-define-sources-through-configuration-files": ""
+        "pro-tip-define-sources-through-configuration-files": "Conseil de pro : Vous pouvez également définir des sources de données via des fichiers de configuration."
       }
     },
     "pane": {
@@ -7291,6 +8635,10 @@
       "query-deleted": "Requête supprimée"
     },
     "rich-history-queries-tab": {
+      "displaying-partial-queries_one": "Affichage de {{ count }} requête",
+      "displaying-partial-queries_other": "Affichage de {{ count }} requêtes",
+      "displaying-queries_one": "{{ count }} requête",
+      "displaying-queries_other": "{{ count }} requêtes",
       "filter-aria-label": "Filtrer les requêtes pour la ou les sources de données",
       "filter-history": "Filtrer l'historique",
       "filter-placeholder": "Filtrer les requêtes pour la ou les sources de données",
@@ -7300,14 +8648,9 @@
       "search-placeholder": "Rechercher des requêtes",
       "showing-queries": "Affichage de {{ shown }} sur {{ total }} <0>Charger plus</0>",
       "sort-aria-label": "Trier les requêtes",
-      "sort-placeholder": "Trier les requêtes par",
-      "displaying-partial-queries_one": "",
-      "displaying-partial-queries_other": "",
-      "displaying-queries_one": "",
-      "displaying-queries_other": ""
+      "sort-placeholder": "Trier les requêtes par"
     },
     "rich-history-settings-tab": {
-      "alert-info": "Grafana gardera les entrées jusqu'à {{optionLabel}}. Les entrées en favori ne seront pas supprimées.",
       "change-default-tab": "Changer l'onglet actif par défaut « Historique des requêtes » en « Favorites »",
       "clear-history-info": "Supprimer définitivement tout votre historique des requêtes.",
       "clear-query-history": "Effacer l'historique des requêtes",
@@ -7626,8 +8969,8 @@
     },
     "math": {
       "available-math-functions": "Fonctions mathématiques disponibles",
-      "run-math-operations": "",
-      "tooltip-footer": "",
+      "run-math-operations": "Exécutez des opérations mathématiques sur une ou plusieurs requêtes. Vous référencez la requête par {{refExample}} c.-à-d. {{ref1}}, {{ref2}}, {{ref3}} etc.<br/>Exemple : <12>{{example}}</12>",
+      "tooltip-footer": "Consultez notre documentation complémentaire sur <2>les expressions mathématiques</2>.",
       "tooltip-title": "Opérateur mathématique",
       "tooltip-trigger": "Expression"
     },
@@ -7672,10 +9015,10 @@
   },
   "folders": {
     "api": {
-      "folder-delete-error-provisioned": "",
+      "folder-delete-error-provisioned": "Impossible de supprimer le dossier provisionné. Pour le supprimer, supprimez-le du référentiel et synchronisez pour appliquer les modifications.",
       "folder-deleted-success": "Dossier supprimé",
-      "folder-move-error-provisioned": "",
-      "folder-moved-success": ""
+      "folder-move-error-provisioned": "Impossible de déplacer le dossier provisionné. Pour le déplacer, déplacez-le dans le référentiel et synchronisez pour appliquer les modifications.",
+      "folder-moved-success": "Dossier déplacé"
     },
     "get-loading-nav": {
       "main": {
@@ -7711,7 +9054,7 @@
   },
   "gauge": {
     "category-gauge": "Jauge",
-    "category-radial-bar": "",
+    "category-radial-bar": "Jauge",
     "description-min-height": "Hauteur minimale des lignes (orientation horizontale)",
     "description-min-width": "Largeur minimale des colonnes (orientation verticale)",
     "description-neutral": "Laisser vide pour utiliser le minimum comme point neutre",
@@ -7728,7 +9071,7 @@
     "name-show-threshold-labels": "Afficher les étiquettes de seuil",
     "name-show-threshold-markers": "Afficher les marqueurs de seuil",
     "placeholder-neutral": "auto",
-    "threshold": ""
+    "threshold": "Seuil {{value}}"
   },
   "gen-ai": {
     "apply-suggestion": "Appliquer",
@@ -8053,26 +9396,26 @@
           "todaySoFar": "Aujourd’hui (jusqu’à présent)",
           "yesterday": "Hier"
         },
-        "lastNDays_one": "",
-        "lastNDays_other": "",
-        "lastNHours_one": "",
-        "lastNHours_other": "",
-        "lastNMinutes_one": "",
-        "lastNMinutes_other": "",
-        "lastNMonths_one": "",
-        "lastNMonths_other": "",
-        "lastNYears_one": "",
-        "lastNYears_other": "",
-        "nextNDays_one": "",
-        "nextNDays_other": "",
-        "nextNHours_one": "",
-        "nextNHours_other": "",
-        "nextNMinutes_one": "",
-        "nextNMinutes_other": "",
-        "nextNMonths_one": "",
-        "nextNMonths_other": "",
-        "nextNYears_one": "",
-        "nextNYears_other": ""
+        "lastNDays_one": "Dernier {{count}} jour",
+        "lastNDays_other": "Derniers {{count}} jours",
+        "lastNHours_one": "Dernière {{count}} heure",
+        "lastNHours_other": "Dernières {{count}} heures",
+        "lastNMinutes_one": "Dernière {{count}} minute",
+        "lastNMinutes_other": "Dernières {{count}} minutes",
+        "lastNMonths_one": "Dernier {{count}} mois",
+        "lastNMonths_other": "Derniers {{count}} mois",
+        "lastNYears_one": "Dernière {{count}} année",
+        "lastNYears_other": "Dernières {{count}} années",
+        "nextNDays_one": "Prochain {{count}} jour",
+        "nextNDays_other": "Prochains {{count}} jours",
+        "nextNHours_one": "Prochaine {{count}} heure",
+        "nextNHours_other": "Prochaines {{count}} heures",
+        "nextNMinutes_one": "Prochaine {{count}} minute",
+        "nextNMinutes_other": "Prochaines {{count}} minutes",
+        "nextNMonths_one": "Prochain {{count}} mois",
+        "nextNMonths_other": "Prochains {{count}} mois",
+        "nextNYears_one": "Prochaine {{count}} année",
+        "nextNYears_other": "Prochaines {{count}} années"
       }
     },
     "valueFormats": {
@@ -8499,10 +9842,10 @@
         "action-title": "Titre",
         "action-title-placeholder": "Titre de l'action",
         "action-variables": "Variables",
-        "connection": "",
-        "connection-direct-description": "",
-        "connection-direct-label": "",
-        "connection-placeholder": "",
+        "connection": "Connexion",
+        "connection-direct-description": "Effectuer la requête directement depuis le navigateur",
+        "connection-direct-label": "Directement depuis le navigateur",
+        "connection-placeholder": "Sélectionner une connexion",
         "one-click-description": "Un seul lien ou une seule action peut avoir un clic activé à la fois"
       }
     },
@@ -8665,7 +10008,7 @@
     },
     "data-source-http-settings": {
       "access-help": "Aide <1></1>",
-      "access-help-details": "",
+      "access-help-details": "Le mode d'accès contrôle la manière dont les requêtes vers la source de données seront traitées. Le mode <strong><i>Serveur</i></strong> doit être privilégié sauf indication contraire.",
       "access-help-title": "Aide d'accès",
       "access-label": "Accès",
       "allowed-cookies": "Cookies autorisés",
@@ -8782,7 +10125,7 @@
       "close": "Fermer"
     },
     "error-boundary": {
-      "title": ""
+      "title": "Une erreur inattendue s’est produite"
     },
     "feature-badge": {
       "experimental": "Expérimental",
@@ -8890,7 +10233,7 @@
       "tooltip-show": "Afficher le mot de passe"
     },
     "range-slider": {
-      "drag-handle-aria-label": ""
+      "drag-handle-aria-label": "Utiliser les touches fléchées pour modifier la valeur"
     },
     "row-expander": {
       "aria-label-expand": "Développer la ligne",
@@ -8921,7 +10264,7 @@
       "y-axis-usage": "Utiliser l'axe y droit"
     },
     "slider": {
-      "drag-handle-aria-label": ""
+      "drag-handle-aria-label": "Utiliser les touches fléchées pour modifier la valeur"
     },
     "spinner": {
       "aria-label": "Chargement en cours"
@@ -8936,7 +10279,7 @@
       "cell-inspect": "Inspecter la valeur",
       "cell-inspect-tooltip": "Inspecter la valeur",
       "copy": "Copier dans le presse-papier",
-      "csv-counts": "",
+      "csv-counts": "Lignes : {{rows}}, Colonnes : {{columns}}",
       "csv-placeholder": "Saisir le CSV ici…",
       "filter-placeholder": "Filtrer les valeurs",
       "filter-popup-apply": "Ok",
@@ -8948,7 +10291,7 @@
       "filter-popup-match-case": "Respecter la casse",
       "footer": {
         "reducer": {
-          "count": ""
+          "count": "Nombre"
         }
       },
       "inspect-drawer-title": "Inspecter la valeur",
@@ -9181,8 +10524,8 @@
       "make-time-range-permanent": "Rendre l'intervalle de temps absolu/permanent",
       "move-time-range-back": "Reculer la plage de temps",
       "move-time-range-forward": "Avancer la plage de temps",
-      "open-alerting": "",
-      "open-assistant": "",
+      "open-alerting": "Accéder aux alertes",
+      "open-assistant": "Ouvrir l'assistant",
       "open-search": "Ouvrir la recherche",
       "open-share-embed-drawer": "Partager l’intégration du panneau",
       "open-share-link-drawer": "Partager le lien du panneau",
@@ -9221,6 +10564,11 @@
     "name-line-width": "Épaisseur de ligne",
     "name-stacking": "Empilement"
   },
+  "insight-finder": {
+    "main-settings": {
+      "view-manage-config": "Afficher et gérer votre configuration"
+    }
+  },
   "inspector": {
     "inspect-data-tab": {
       "loading": "Chargement en cours",
@@ -9244,12 +10592,12 @@
       "refresh": "Actualiser"
     },
     "query-inspector": {
-      "query-inspector": "Inspecteur de requête",
-      "text-loading-query-inspector": "Chargement de l’inspecteur de requête...",
       "count-frames_one": "{{count}} cadres, ",
       "count-frames_other": "{{count}} cadres, ",
       "count-rows_one": "{{count}} lignes",
-      "count-rows_other": "{{count}} lignes"
+      "count-rows_other": "{{count}} lignes",
+      "query-inspector": "Inspecteur de requête",
+      "text-loading-query-inspector": "Chargement de l’inspecteur de requête..."
     }
   },
   "invites": {
@@ -9384,7 +10732,7 @@
       "error-fetching": "Erreur lors de la récupération des paramètres LDAP",
       "error-saving": "Erreur lors de l'enregistrement des paramètres LDAP",
       "error-validate-form": "Erreur lors de la validation des paramètres LDAP",
-      "feature-flag-disabled": "",
+      "feature-flag-disabled": "Cette page n'est accessible qu'en activant l'indicateur de fonctionnalité <strong>ssoSettingsLDAP</strong>.",
       "saved": "Paramètres LDAP enregistrés"
     },
     "bind-dn": {
@@ -9400,7 +10748,7 @@
       "discard-button": "Abandonner",
       "save-and-enable-button": "Enregistrer et activer",
       "save-button": "Enregistrer",
-      "test-button": ""
+      "test-button": "Test"
     },
     "documentation": "documentation",
     "host": {
@@ -9425,7 +10773,7 @@
       "label": "Rechercher dans la base DNS",
       "placeholder": "exemple : dc=grafana,dc=org"
     },
-    "subtitle": "",
+    "subtitle": "L'intégration LDAP dans Grafana permet à vos utilisateurs Grafana de se connecter avec leurs identifiants LDAP. Pour en savoir plus, consultez notre <2><0>documentation</0></2> .",
     "title": "Paramètres de base"
   },
   "library-panel": {
@@ -9469,7 +10817,7 @@
       "dashboard-name": "Nom du tableau de bord"
     },
     "library-panel-info": {
-      "last-edited": "",
+      "last-edited": "Dernière modification le {{timeAgo}} par <person />",
       "usage-count_one": "Utilisé sur {{count}} tableaux de bord",
       "usage-count_other": "Utilisé sur {{count}} tableaux de bord"
     },
@@ -9481,15 +10829,15 @@
     },
     "loading-panel-text": "Chargement du panneau de la bibliothèque",
     "modal": {
+      "body_one": "Ce panneau est utilisé dans {{count}} tableau de bord. Choisissez dans quel tableau de bord le panneau sera affiché :",
+      "body_other": "Ce panneau est utilisé dans {{count}} tableau de bord. Choisissez dans quel tableau de bord le panneau sera affiché :",
       "button-cancel": "Annuler",
       "button-view-panel1": "Voir le panneau dans {{label}}...",
       "button-view-panel2": "Voir le panneau dans le tableau de bord...",
       "panel-not-linked": "Le panneau n'est pas lié à un tableau de bord. Ajoutez le panneau à un tableau de bord et réessayez.",
       "select-no-options-message": "Aucun tableau de bord trouvé",
       "select-placeholder": "Commencez à taper pour rechercher le tableau de bord",
-      "title": "Voir le panneau dans le tableau de bord",
-      "body_one": "Ce panneau est utilisé dans {{count}} tableau de bord. Choisissez dans quel tableau de bord le panneau sera affiché :",
-      "body_other": "Ce panneau est utilisé dans {{count}} tableau de bord. Choisissez dans quel tableau de bord le panneau sera affiché :"
+      "title": "Voir le panneau dans le tableau de bord"
     },
     "panel-library-options-group": {
       "create-new-library-panel": "Créer un nouveau panneau de bibliothèque"
@@ -9504,10 +10852,10 @@
       "dashboard-name": "Nom du tableau de bord",
       "discard": "Abandonner",
       "loading-connected-dashboards": "Chargement des tableaux de bord connectés...",
-      "placeholder-search-affected-dashboards": "Rechercher les tableaux de bord concernés",
-      "update-all": "Tout mettre à jour",
       "num-affected_one": "Cette mise à jour affectera <1>{{count}} tableaux de bord.</1>",
-      "num-affected_other": "Cette mise à jour affectera <1>{{count}} tableaux de bord.</1>"
+      "num-affected_other": "Cette mise à jour affectera <1>{{count}} tableaux de bord.</1>",
+      "placeholder-search-affected-dashboards": "Rechercher les tableaux de bord concernés",
+      "update-all": "Tout mettre à jour"
     }
   },
   "link": {
@@ -9523,7 +10871,7 @@
     },
     "share-panel": {
       "config-description": "Créez un lien direct personnalisé pour partager votre panneau au sein de votre organisation, avec les paramètres de personnalisation suivants :",
-      "copy-image-link": "",
+      "copy-image-link": "Copier le lien de l'image",
       "download-image": "Télécharger l'image",
       "render-image": "Générer l'image"
     }
@@ -9609,27 +10957,27 @@
       "label-signature": "Signature"
     },
     "description-enable-infinite-scrolling": "Expérimental. Obtenez plus de résultats en faisant défiler jusqu’en bas de la liste des logs.",
-    "description-enable-logs-highlighting": "",
+    "description-enable-logs-highlighting": "Utiliser un schéma de couleurs prédéfini pour mettre en surbrillance les parties pertinentes des lignes de journal",
     "description-show-controls": "Afficher les contrôles pour accéder à la première ou à la dernière ligne du log et filtrer par niveau de log",
-    "description-show-log-attributes": "",
+    "description-show-log-attributes": "Expérimental. Lorsque les journaux OTel sont affichés, ajoute un champ d'affichage supplémentaire avec les paires clé-valeur pertinentes provenant des étiquettes et des métadonnées.",
     "field-selector": {
-      "aria-label-drag-and-drop-icon": "",
-      "clear-button": "",
-      "collapse": "",
-      "expand": "",
-      "label-title": "",
-      "placeholder-search-fields-by-name": "",
-      "title-drag-and-drop-to-reorder": ""
+      "aria-label-drag-and-drop-icon": "Icône de glisser-déposer",
+      "clear-button": "Effacer",
+      "collapse": "Réduire la barre latérale",
+      "expand": "Développer la barre latérale",
+      "label-title": "{{fieldName}} apparaît dans {{percentage}} % des lignes de journal",
+      "placeholder-search-fields-by-name": "Rechercher des champs par nom",
+      "title-drag-and-drop-to-reorder": "Glisser et déposer pour réorganiser"
     },
     "fields": {
       "type": {
         "loki": {
-          "indexed-label_one": "",
-          "indexed-label_other": "",
-          "parsedl-label_one": "",
-          "parsedl-label_other": "",
-          "structured-metadata_one": "",
-          "structured-metadata_other": ""
+          "indexed-label_one": "Étiquette indexée",
+          "indexed-label_other": "Étiquette indexée",
+          "parsedl-label_one": "Champ analysé",
+          "parsedl-label_other": "Champ analysé",
+          "structured-metadata_one": "Métadonnées structurées",
+          "structured-metadata_other": "Métadonnées structurées"
         }
       }
     },
@@ -9708,15 +11056,15 @@
       "fields-section": "Champs",
       "hide-log-line": "Masquer cette ligne de log",
       "inline-mode": "Afficher en ligne",
-      "link-value-tooltip": "",
+      "link-value-tooltip": "Valeur de lien",
       "links-section": "Liens",
-      "log-attributes-field": "",
+      "log-attributes-field": "Attributs OTel",
       "log-line-field": "Ligne de journal",
       "log-line-section": "Ligne de log",
       "move-displayed-field-down": "Déplacer vers le bas",
       "move-displayed-field-up": "Déplacer vers le haut",
       "no-details": "Aucun champ à afficher.",
-      "open-assistant": "",
+      "open-assistant": "Expliquer la ligne de journal dans l'Assistant",
       "pin-line": "Épingler ce log",
       "remove-displayed-field": "Supprimer le champ",
       "remove-log": "Supprimer le journal",
@@ -9729,11 +11077,11 @@
       "show-log-line": "Afficher la ligne de log",
       "sidebar-mode": "Ancrer à droite",
       "trace": {
-        "error-message": "",
-        "error-tooltip": "",
-        "loading-message": ""
+        "error-message": "Impossible de récupérer la trace.",
+        "error-tooltip": "La trace pourrait avoir été échantillonnée ou être temporairement indisponible.",
+        "loading-message": "Chargement de la trace..."
       },
-      "trace-section": "",
+      "trace-section": "Trace",
       "unpin-line": "Désépingler ce log"
     },
     "log-line-menu": {
@@ -9742,8 +11090,8 @@
       "hide-details": "Afficher les détails du journal",
       "icon-label": "Menu du journal",
       "log-line": "Ligne de journal",
-      "log-line-explainer": "",
-      "open-assistant": "",
+      "log-line-explainer": "Expliquer la ligne de journal de manière concise",
+      "open-assistant": "Expliquer la ligne de journal dans l'Assistant",
       "pin-to-outline": "Épingler le journal",
       "show-context": "Afficher le contexte",
       "show-details": "Masquer les détails du journal",
@@ -9774,7 +11122,7 @@
       "tooltip-unpin-line": "Désépingler la ligne"
     },
     "log-row-message": {
-      "ellipsis": "",
+      "ellipsis": "…",
       "more": "plus",
       "see-details": "Voir les détails du journal",
       "tooltip-error": "Erreur : {{errorMessage}}"
@@ -9801,7 +11149,7 @@
       }
     },
     "logs-controls": {
-      "collapse": "",
+      "collapse": "Réduire",
       "deduplication": "Déduplication",
       "disable-prettify-json": "Réduire les journaux JSON",
       "display-level-all": "Tous les niveaux",
@@ -9812,38 +11160,38 @@
         "txt": "txt"
       },
       "escape-newlines": "Correction des séquences de sauts de ligne et de tabulations incorrectement échappées dans les lignes du journal",
-      "expand": "",
-      "filter-levels": "",
-      "font-large": "",
-      "font-small": "",
+      "expand": "Développer",
+      "filter-levels": "Filtrer les niveaux",
+      "font-large": "Définir une grande police",
+      "font-small": "Définir une petite police",
       "hide-search": "Fermer la recherche",
       "hide-timestamps": "Masquer les horodatages",
       "hide-unique-labels": "Masquer les étiquettes uniques",
       "label": {
-        "collapse": "",
-        "disable-highlighting": "",
-        "enable-highlighting": "",
-        "escape-newlines": "",
-        "expand": ""
+        "collapse": "Développé",
+        "disable-highlighting": "Mettre le texte en surbrillance",
+        "enable-highlighting": "Texte brut",
+        "escape-newlines": "Échapper les retours à la ligne",
+        "expand": "Réduit"
       },
       "labels": {
-        "font-large": "",
-        "font-small": "",
-        "hide-search": "",
-        "newest-first": "",
-        "oldest-first": "",
-        "show-search": ""
+        "font-large": "Grande police",
+        "font-small": "Petite police",
+        "hide-search": "Fermer la recherche",
+        "newest-first": "Journaux les plus récents en premier",
+        "oldest-first": "Journaux les plus anciens en premier",
+        "show-search": "Rechercher dans les journaux"
       },
       "line-wrapping": {
-        "enable": "",
-        "enable-prettify": "",
-        "hide": "",
+        "enable": "Activer le retour à la ligne",
+        "enable-prettify": "Activer le retour à la ligne et mettre en forme le JSON",
+        "hide": "Désactiver le retour à la ligne",
         "state": {
-          "hide": "",
-          "json": "",
-          "wrap": ""
+          "hide": "Retour à la ligne désactivé",
+          "json": "Retour à la ligne JSON",
+          "wrap": "Enrouler les lignes"
         },
-        "tooltip": ""
+        "tooltip": "Définir le retour à la ligne"
       },
       "newest-first": "Trié par les journaux les plus récents en premier - Cliquez pour afficher les plus anciens en premier",
       "oldest-first": "Trié par les journaux les plus anciens en premier - Cliquez pour afficher les plus récents en premier",
@@ -9857,20 +11205,20 @@
       "show-timestamps": "Afficher les horodatages",
       "show-unique-labels": "Afficher les étiquettes uniques",
       "timestamp": {
-        "hide": "",
-        "label": "",
-        "label-hide": "",
-        "label-ms": "",
-        "label-ns": "",
-        "milliseconds": "",
-        "nanoseconds": "",
-        "tooltip": ""
+        "hide": "Masquer les horodatages",
+        "label": "Horodatages des journaux",
+        "label-hide": "Masquer les horodatages",
+        "label-ms": "Afficher les ms",
+        "label-ns": "Afficher les ns",
+        "milliseconds": "Afficher les horodatages en millisecondes",
+        "nanoseconds": "Afficher les horodatages en nanosecondes",
+        "tooltip": "Définir le format de l'horodatage"
       },
       "tooltip": {
-        "disable-highlighting": "",
-        "download": "",
-        "enable-highlighting": "",
-        "filter-level": ""
+        "disable-highlighting": "Désactiver la mise en surbrillance",
+        "download": "Télécharger",
+        "enable-highlighting": "Activer la mise en surbrillance",
+        "filter-level": "Filtrer les résultats des journaux par niveau"
       },
       "unwrap-lines": "Dérouler les lignes",
       "wrap-lines": "Enrouler les lignes"
@@ -9889,14 +11237,14 @@
     },
     "name-common-labels": "Étiquettes communes",
     "name-deduplication": "Déduplication",
-    "name-details-mode": "",
+    "name-details-mode": "Mode du panneau de détails des journaux",
     "name-details-options": {
       "label-inline": "En ligne",
       "label-sidebar": "Barre latérale"
     },
     "name-enable-infinite-scrolling": "Activer le défilement infini",
     "name-enable-log-details": "Activer les détails du log",
-    "name-enable-logs-highlighting": "",
+    "name-enable-logs-highlighting": "Activer la mise en surbrillance des journaux",
     "name-font-size": "Taille de la police",
     "name-order": "Ordre",
     "name-prettify-json": "Embellir le JSON",
@@ -9917,7 +11265,7 @@
       "line-contains": "Ajouter car la ligne contient un filtre",
       "line-contains-not": "Ajouter car la ligne ne contient pas de filtre"
     },
-    "show-log-attributes": "",
+    "show-log-attributes": "Afficher les attributs de journal pour les journaux OTel",
     "timestamp-format": "Résolution des horodatages",
     "un-themed-log-details": {
       "aria-label-data-links": "Données de liaison",
@@ -9971,9 +11319,6 @@
       "title-delete": "Supprimer"
     },
     "unthemed-dashboard-import": {
-      "subTitle": {
-        "import-dashboard-from-file-or-grafanacom": "Importer le tableau de bord depuis un fichier ou Grafana.com"
-      },
       "text": {
         "import-dashboard": "Importer un tableau de bord"
       }
@@ -10170,7 +11515,7 @@
     },
     "resource-table": {
       "dashboard-load-error": "Impossible de charger le tableau de bord",
-      "error-library-element-sub": "",
+      "error-library-element-sub": "Élément de bibliothèque {{uid}}",
       "error-library-element-title": "Impossible de charger l'élément de bibliothèque",
       "unknown-datasource-title": "Source de données {{datasourceUID}}",
       "unknown-datasource-type": "Source de données inconnue"
@@ -10333,7 +11678,6 @@
       "title": "Utilisateurs et droits d'accès"
     },
     "config-general": {
-      "subtitle": "Gérer les préférences et paramètres par défaut dans Grafana",
       "title": "Général"
     },
     "config-plugins": {
@@ -10375,7 +11719,7 @@
       "title": "Sources de données"
     },
     "databases": {
-      "title": ""
+      "title": "Base de données"
     },
     "datasources": {
       "subtitle": "Ajouter et configurer des sources de données",
@@ -10509,7 +11853,7 @@
       "title": "Profils"
     },
     "recently-deleted": {
-      "subtitle": "",
+      "subtitle": "Les tableaux de bord supprimés sont conservés pendant une durée maximale de 12 mois ou jusqu'à ce que la limite d'historique de 1000 tableaux de bord soit atteinte.",
       "title": "Récemment supprimé"
     },
     "recorded-queries": {
@@ -10602,10 +11946,10 @@
     "help": {
       "aria-label": "Aide",
       "interactive-learning": {
-        "close-tooltip": "",
-        "open-tooltip": ""
+        "close-tooltip": "Fermer l'apprentissage interactif, l'aide et la documentation",
+        "open-tooltip": "Ouvrir l'apprentissage interactif, l'aide et la documentation"
       },
-      "tooltip": ""
+      "tooltip": "Obtenir de l'aide et des liens utiles"
     },
     "invite-user": {
       "invite-button": "Inviter",
@@ -10703,9 +12047,9 @@
       "aria-label-layered-layout-performance-warning": "Avertissement de performance de disposition en couches",
       "aria-label-nodes-hidden-warning": "Avertissement de nœuds cachés",
       "computing-layout": "Calcul de la disposition",
-      "no-data": "Aucune donnée",
       "hidden-nodes_one": "<0></0> {{count}} nœuds sont masqués pour des raisons de performances.",
       "hidden-nodes_other": "<0></0> {{count}} nœuds sont masqués pour des raisons de performances.",
+      "no-data": "Aucune donnée",
       "processed-nodes_one": "<0></0> La disposition en couches peut être lente avec {{count}} nœuds.",
       "processed-nodes_other": "<0></0> La disposition en couches peut être lente avec {{count}} nœuds."
     },
@@ -10724,10 +12068,6 @@
     }
   },
   "notifications": {
-    "empty-state": {
-      "description": "Les notifications que vous avez reçues apparaîtront ici",
-      "title": "Vous avez tout compris !"
-    },
     "starred-dashboard": "Tableau de bord favori",
     "stored-notifications": {
       "dismiss-notifications": "Ignorer les notifications",
@@ -10757,9 +12097,6 @@
       "get-all-option-editors": {
         "description-time-zone": "Sélection du fuseau horaire",
         "name-time-zone": "Fuseau horaire"
-      },
-      "standard-field-condigs": {
-        "category-data-links": "Liens de données et actions"
       },
       "standard-field-configs": {
         "category": "Options standard",
@@ -10809,8 +12146,7 @@
     },
     "org-profile": {
       "label-organization-name": "Nom de l’organisation",
-      "label-organization-profile": "Profil de l’organisation",
-      "update-organization-name": "Mettre à jour le nom de l’organisation"
+      "label-organization-profile": "Profil de l’organisation"
     },
     "select-org-page": {
       "description": "Vous avez été invité à rejoindre une autre organisation ! Veuillez sélectionner l’organisation que vous souhaitez utiliser pour le moment. Vous pourrez modifier cela à tout moment."
@@ -10823,10 +12159,10 @@
       "placeholder-optional": "(facultatif)",
       "role": "Rôle",
       "submit": "Envoyer",
-      "tooltip": ""
+      "tooltip": "Vous pouvez maintenant sélectionner l'option « Aucun rôle de base » et ajouter des autorisations selon vos besoins personnalisés. Vous trouverez plus d'informations dans <1>notre documentation</1>."
     },
     "user-invite-page": {
-      "sub-title": "",
+      "sub-title": "Envoyer une invitation ou ajouter un utilisateur Grafana existant à l'organisation. <1> {{orgName}}</1>",
       "text": {
         "invite-user": "Inviter un utilisateur"
       }
@@ -10843,10 +12179,10 @@
   },
   "panel": {
     "dashlist": {
-      "empty-state-message": "",
-      "recently-viewed-dashboards": "",
-      "search": "",
-      "starred-dashboards": ""
+      "empty-state-message": "Aucun groupe de tableaux de bord configuré",
+      "recently-viewed-dashboards": "Tableaux de bord consultés récemment",
+      "search": "Rechercher",
+      "starred-dashboards": "Tableaux de bord favoris"
     },
     "get-calculation-value-data-links-variable-suggestions": {
       "value-calc-var": {
@@ -10898,7 +12234,7 @@
       "replace-library-panel": "Remplacer le panneau de bibliothèque",
       "share": "Partager",
       "show-legend": "Afficher la légende",
-      "time-settings": "",
+      "time-settings": "Paramètres de temps",
       "unlink-library-panel": "Dissocier le panneau de la bibliothèque",
       "view": "Afficher"
     },
@@ -10916,7 +12252,7 @@
       "switch-to-table": "Affichage tabulaire"
     },
     "panel-plugin-error": {
-      "text-load-error": "",
+      "text-load-error": "Vérifiez les journaux de démarrage du serveur pour plus d'informations. <br/>Si ce plugin a été chargé depuis Git, alors assurez-vous qu'il a été compilé.",
       "title-load-error": "Erreur lors du chargement : {{panelId}}",
       "title-not-found": "Plugin de panneau introuvable : {{id}}"
     },
@@ -11080,7 +12416,6 @@
       "label-search": "Rechercher",
       "label-state": "État",
       "label-type": "Type",
-      "subtitle": "Développez l’expérience Grafana avec des plugins de panneau et des applications. Pour trouver plus de sources de données, accédez à <2>Connexions</2>.",
       "tooltip-filter-disabled": "Ce filtre a été désactivé car le serveur Grafana ne peut pas accéder à grafana.com"
     },
     "catalog": {
@@ -11110,7 +12445,7 @@
     },
     "details": {
       "connections-tab": {
-        "description": ""
+        "description": "Vous avez actuellement les sources de données suivantes configurées pour {{pluginName}}. Cliquez sur une tuile pour afficher les détails de la configuration. Vous pouvez trouver toutes vos connexions de sources de données dans <4><5>Connexions</5> - <8>Sources de données</8>.</4>"
       },
       "disabled-error": {
         "angular-deprecation-link": "En savoir plus sur la dépréciation Angular",
@@ -11127,18 +12462,18 @@
       },
       "labels": {
         "contactGrafanaLabs": "Contacter Grafana Labs",
-        "customLinks": "",
+        "customLinks": "Liens personnalisés",
         "customLinksTooltip": "Ces liens sont fournis par le développeur du plugin pour offrir des ressources et des informations supplémentaires spécifiques au développeur",
         "dependencies": "Dépendances",
         "documentation": "Documentation",
         "downloads": "Téléchargements",
-        "from": "",
+        "from": "De",
         "installedVersion": "Version installée",
         "latestReleaseDate": "Dernière date de sortie :",
         "latestVersion": "Dernière version",
         "license": "Licence",
         "raiseAnIssue": "Signaler un problème",
-        "reportAbuse": "",
+        "reportAbuse": "Signaler un problème",
         "reportAbuseTooltip": "Signalez les problèmes liés à des plugins malveillants ou nuisibles directement à Grafana Labs.",
         "repository": "Référentiel",
         "signature": "Signature",
@@ -11148,8 +12483,8 @@
       "modal": {
         "cancel": "Annuler",
         "copyEmail": "Copier l'adresse e-mail",
-        "description": "",
-        "node": "",
+        "description": "Cette fonctionnalité permet de signaler tout comportement malveillant ou nuisible au sein des plugins. Pour toute préoccupation concernant un plugin, envoyez-nous un e-mail à l'adresse suivante :",
+        "node": "Remarque : Pour les problèmes généraux liés aux plugins, tels que les bugs ou les demandes de fonctionnalités, veuillez contacter l'auteur du plugin en utilisant les liens fournis.",
         "title": "Signaler un problème de plugin"
       }
     },
@@ -11217,7 +12552,7 @@
       "message": "Tous les plugins sont à jour"
     },
     "not-found-plugin": {
-      "body-plugin-not-found": "",
+      "body-plugin-not-found": "Ce plugin est introuvable. Veuillez vérifier que l'URL est correcte ou <br/>accéder au <3>catalogue de plugins</3>.",
       "title-plugin-not-found": "Plugin introuvable"
     },
     "plugin-actions": {
@@ -11278,9 +12613,6 @@
     },
     "plugin-signature-details-badge": {
       "signed-by": "Signé par : {{signatureOrg}}"
-    },
-    "plugin-update-available-badge": {
-      "update-available": "Mise à jour disponible !"
     },
     "plugin-usage": {
       "body-missing-feature-toggle-panel-title-search": "L’utilisation du plugin nécessite le nouvel index de recherche pour trouver l’utilisation dans les tableaux de bord. Veuillez activer le basculement de fonctionnalité",
@@ -11363,24 +12695,24 @@
     "save-or-delete-resource-shared-fields": {
       "comment-placeholder-describe-changes-optional": "Ajouter une note pour décrire vos modifications (facultatif)",
       "description-branch-name-in-git-hub": "Nom de la branche dans GitHub",
-      "description-file-path": "",
-      "description-folder-path": "",
-      "description-inside-repository": "",
+      "description-file-path": "Chemin du fichier dans le référentiel (.json ou .yaml)",
+      "description-folder-path": "Chemin du dossier dans le référentiel",
+      "description-inside-repository": "Actualisation automatique",
       "label-branch": "Branche",
       "label-comment": "Commentaire",
       "label-path": "Chemin d’accès",
       "label-workflow": "Workflow",
-      "placeholder-branch": "",
-      "placeholder-new-branch": "",
-      "suffix-configured-branch": "",
-      "suffix-last-used": "",
-      "suffix-pr-branch": ""
+      "placeholder-branch": "Sélectionner ou saisir le nom de la branche",
+      "placeholder-new-branch": "Saisir le nom de la nouvelle branche",
+      "suffix-configured-branch": "Branche configurée",
+      "suffix-last-used": "Dernière branche",
+      "suffix-pr-branch": "Branche de la demande d'extraction"
     }
   },
   "provisioned-resource-preview-banner": {
     "preview-banner": {
       "behind-branch-text": "Cette ressource est en retard par rapport à la branche dans {{repoType}}.",
-      "branch-text": "",
+      "branch-text": "Branche :",
       "not-saved": "Les autres utilisateurs Grafana de votre entreprise verront toujours la version actuelle enregistrée sur la branche par défaut configurée, jusqu’à ce que cette branche soit fusionnée",
       "open-in-repo-button": "Ouvrir dans {{repoType}}",
       "open-pull-request-in-repo": "Ouvrir une demande de tirage dans {{repoType}}",
@@ -11425,20 +12757,20 @@
       "url-required": "L’URL du dépôt est requise"
     },
     "bootstrap-step": {
+      "dashboards-count_one": "{{count}} tableau de bord",
+      "dashboards-count_other": "{{count}} tableau de bord",
       "description-clear-repository-connection": "Ajoutez un nom clair pour cette connexion de référentiel",
       "empty": "Vide",
       "error-field-required": "Ce champ est obligatoire.",
-      "external-storage-label": "",
-      "label-display-name": "Pseudo",
-      "placeholder-my-repository-connection": "Ma connexion au référentiel",
-      "text-loading-resource-information": "Chargement des informations sur les ressources...",
-      "unmanaged-resources-label": "",
-      "dashboards-count_one": "{{count}} tableau de bord",
-      "dashboards-count_other": "{{count}} tableau de bord",
+      "external-storage-label": "Stockage externe",
       "files-count_one": "{{count}} fichiers",
       "files-count_other": "{{count}} fichiers",
       "folders-count_one": "{{count}} dossier",
-      "folders-count_other": "{{count}} dossier"
+      "folders-count_other": "{{count}} dossier",
+      "label-display-name": "Pseudo",
+      "placeholder-my-repository-connection": "Ma connexion au référentiel",
+      "text-loading-resource-information": "Chargement des informations sur les ressources...",
+      "unmanaged-resources-label": "Ressources non gérées"
     },
     "check-repository": {
       "check": "Vérifier"
@@ -11454,7 +12786,7 @@
       "description-enabled": "Une fois que la fusion automatique est activée, la cible ne peut pas être modifiée.",
       "description-read-only": "Les ressources ne peuvent pas être modifiées via Grafana.",
       "description-title": "Un nom lisible par l’utilisateur pour la configuration",
-      "error-fetch-branches": "",
+      "error-fetch-branches": "Échec de la récupération des branches",
       "error-required": "Ce champ est obligatoire.",
       "error-save-repository": "Échec de l’enregistrement des paramètres du référentiel",
       "label-automatic-pulling": "Fusion automatique",
@@ -11480,9 +12812,9 @@
     },
     "connect-repository-button": {
       "configure": "Configurer",
-      "instance-fully-managed-tooltip": "",
-      "repository-limit-reached-tooltip_one": "",
-      "repository-limit-reached-tooltip_other": ""
+      "instance-fully-managed-tooltip": "La configuration est désactivée car cette instance est entièrement gérée",
+      "repository-limit-reached-tooltip_one": "Limite de référentiels atteinte {{count}}",
+      "repository-limit-reached-tooltip_other": "Limite de référentiels atteinte {{count}}"
     },
     "delete-repository-button": {
       "button-delete": "Supprimer",
@@ -11528,7 +12860,7 @@
       "actions": {
         "set-up-required-feature-toggles": "Configurer les basculements de fonctionnalité requis"
       },
-      "learn-more-documentation": "",
+      "learn-more-documentation": "Vous voulez en savoir plus ? Consultez notre <2>documentation</2>.",
       "manage-dashboards-provision-updates-automatically": "Gérez les tableaux de bord as code sur Git et approvisionnez automatiquement les mises à jour",
       "manage-your-dashboards-with-remote-provisioning": "Commencer avec Git Sync",
       "store-dashboards-in-version-controlled-storage": "Stockez les tableaux de bord dans un espace de stockage à gestion des versions pour une meilleure organisation et un meilleur suivi de l’historique"
@@ -11565,13 +12897,13 @@
       "label-sync-interval": "Intervalle de synchronisation (secondes)"
     },
     "folder-repository-list": {
+      "all-resources-managed_one": "La ressource ({{count}}) est entièrement gérée",
+      "all-resources-managed_other": "Toutes les {{count}} ressources sont gérées",
       "no-results-matching-your-query": "Aucun résultat ne correspond à votre requête",
-      "partial-managed": "",
+      "partial-managed": "{{managedCount}}/{{resourceCount}} ressources gérées par la synchronisation Git.",
       "placeholder-search": "Rechercher",
-      "all-resources-managed_one": "",
-      "all-resources-managed_other": "",
-      "unmanaged-resources_one": "",
-      "unmanaged-resources_other": ""
+      "unmanaged-resources_one": "La ressource ({{count}}) n'est pas gérée par la synchronisation Git.",
+      "unmanaged-resources_other": "{{count}} ressources ne sont pas gérées par la synchronisation Git."
     },
     "get-default-values": {
       "title": {
@@ -11676,14 +13008,14 @@
       "title-legacy-storage-detected": "Stockage hérité détecté"
     },
     "http-utils": {
-      "access-denied": "",
-      "authentication-failed": "",
-      "http-error": "",
-      "request-failed": "",
-      "resource-not-found": "",
-      "unsupported-repository-type": ""
+      "access-denied": "Accès refusé. Veuillez vérifier les autorisations de votre jeton.",
+      "authentication-failed": "Échec de l'authentification. Veuillez vérifier votre jeton d'accès.",
+      "http-error": "HTTP {{status}} : {{statusText}}",
+      "request-failed": "La requête a échoué",
+      "resource-not-found": "Ressource introuvable. Veuillez vérifier l'URL ou le référentiel.",
+      "unsupported-repository-type": "Type de référentiel non pris en charge : {{repositoryType}}"
     },
-    "inline-secure-values-warning": "",
+    "inline-secure-values-warning": "Vous devez enregistrer à nouveau vos jetons d'accès en raison d'une mise à jour du système",
     "job-status": {
       "label-view-details": "Afficher les détails",
       "loading-finished-job": "Chargement de mission terminée…",
@@ -11720,18 +13052,18 @@
     "provisioning-wizard": {
       "on-submit": {
         "title": {
-          "repository-connection-failed": "",
-          "repository-request-failed": ""
+          "repository-connection-failed": "Échec de la connexion au référentiel",
+          "repository-request-failed": "Échec de la requête du référentiel"
         }
       }
     },
-    "read-only-local-tooltip": "",
-    "read-only-remote-tooltip": "",
+    "read-only-local-tooltip": "Cette ressource est en lecture seule et est provisionnée via le provisionnement de fichiers. Pour apporter des modifications, mettez à jour le référentiel connecté. Pour modifier les paramètres, accédez à Administration > Provisionnement > Référentiels.",
+    "read-only-remote-tooltip": "Cette ressource est en lecture seule et est provisionnée via Git. Pour apporter des modifications, mettez à jour le référentiel connecté. Pour modifier les paramètres, accédez à Administration > Provisionnement > Référentiels.",
     "recent-jobs": {
       "active-jobs": "missions actives",
       "column-action": "Action",
       "column-duration": "Durée",
-      "column-job-id": "",
+      "column-job-id": "ID de tâche",
       "column-message": "Message",
       "column-started": "Démarré",
       "column-status": "Statut",
@@ -11764,7 +13096,7 @@
     },
     "repository-overview": {
       "checked": "Vérifié :",
-      "finished": "",
+      "finished": "Dernière extraction réussie :",
       "health": "Santé",
       "healthy": "Sain",
       "job-id": "ID de mission :",
@@ -11834,7 +13166,7 @@
         "removed-from-repo-test-ui": "supprimé de l’interface utilisateur de test de référentiel",
         "updated-from-repo-test-ui": "mis à jour à partir de l’interface utilisateur de test de référentiel"
       },
-      "read-only-repo-tooltip": "",
+      "read-only-repo-tooltip": "Ce référentiel est en lecture seule",
       "repository": "Référentiel",
       "tab-info": {
         "label": {
@@ -11852,7 +13184,7 @@
     },
     "shared": {
       "progress-bar": {
-        "aria-label": ""
+        "aria-label": "Barre de progression"
       }
     },
     "sidebar-item": {
@@ -11861,15 +13193,15 @@
       "label-pending-step": "Étape en attente"
     },
     "status-badge": {
-      "automatic-pulling-disabled": "",
-      "deleting": "",
-      "error": "",
-      "pending": "",
-      "pulling": "",
-      "unknown": "",
-      "up-to-date": "",
-      "waiting-for-health-check": "",
-      "warning": ""
+      "automatic-pulling-disabled": "Extraction automatique désactivée",
+      "deleting": "Suppression en cours",
+      "error": "Erreur",
+      "pending": "En attente",
+      "pulling": "Extraction en cours",
+      "unknown": "Inconnu",
+      "up-to-date": "À jour",
+      "waiting-for-health-check": "En attente de l'exécution de la vérification de l'état de santé",
+      "warning": "Avertissement"
     },
     "success-title-default": "Succès",
     "sync-job": {
@@ -11887,9 +13219,9 @@
       "tooltip-unhealthy-repository": "Impossible de fusionner un référentiel en mauvais état"
     },
     "synchronize-step": {
-      "repository-error": "",
-      "repository-error-message": "",
-      "repository-unhealthy": "",
+      "repository-error": "Erreur de référentiel",
+      "repository-error-message": "Impossible de vérifier l'état du référentiel. Veuillez vérifier la configuration du référentiel et réessayer.",
+      "repository-unhealthy": "Le référentiel ne peut pas être synchronisé. Annulez le provisionnement et réessayez une fois le problème résolu. Voir les détails ci-dessous.",
       "synchronization-description": "Inclure les commits pour chaque valeur historique",
       "synchronization-options": "Options de synchronisation"
     },
@@ -11913,12 +13245,12 @@
       "alert-point-3": "La durée de ce processus dépend du nombre de ressources impliquées.",
       "alert-point-4": "Les administrateurs d’instances d’entreprise peuvent afficher une bannière d’annonce aux utilisateurs. Consultez <2>ce guide</2> pour obtenir des instructions étape par étape.",
       "alert-title": "Important : aucune donnée ou configuration ne sera perdue, mais les tableaux de bord seront temporairement indisponibles pendant quelques minutes.",
-      "button-cancel": "",
-      "button-cancelling": "",
+      "button-cancel": "Annuler",
+      "button-cancelling": "Annulation...",
       "button-next": "Terminer",
       "button-start": "Commencer la synchronisation",
-      "check-status-button": "",
-      "check-status-message": "",
+      "check-status-button": "Vérifier l'état du référentiel",
+      "check-status-message": "Connexion au référentiel en cours, la synchronisation sera bientôt prête.",
       "discard-modal": {
         "body": "Cette action supprimera la configuration du dépôt et vous perdrez toutes vos modifications. Voulez-vous vraiment annuler vos modifications ?",
         "confirm": "Oui, annuler",
@@ -11942,11 +13274,11 @@
       "button-previous": "Précédent",
       "button-submitting": "Envoi…",
       "error-instance-repository-exists": "Le référentiel d’instances existe déjà",
-      "error-save-repository-setting": ""
+      "error-save-repository-setting": "Échec de l'enregistrement du paramètre du référentiel"
     },
     "workflow-options-label": {
-      "push-to-a-new-branch": "",
-      "push-to-existing-branch": ""
+      "push-to-a-new-branch": "Pousser vers une nouvelle branche",
+      "push-to-existing-branch": "Pousser vers une branche existante"
     }
   },
   "public-dashboard": {
@@ -12048,7 +13380,7 @@
       "annotations-show-text": "Annotations = montrer",
       "time-range-picker-disabled-text": "Sélecteur de plage de temps = désactivé",
       "time-range-picker-enabled-text": "Sélecteur de plage de temps = activé",
-      "time-range-text": ""
+      "time-range-text": "Plage de temps ="
     },
     "share": {
       "success-delete": "Votre tableau de bord n'est plus partageable"
@@ -12087,7 +13419,7 @@
       "revoke-user-access-modal-desc-line1": "Souhaitez-vous vraiment retirer l'accès pour {{email}} ?"
     },
     "delete-user-shared-dashboards-modal": {
-      "revoke-user-access-modal-desc-line2": ""
+      "revoke-user-access-modal-desc-line2": "Cette action révoquera immédiatement l'accès de {{email}} à tous les tableaux de bord partagés."
     },
     "modal": {
       "shared-dashboard-modal-title": "Tableaux de bord partagés"
@@ -12168,24 +13500,24 @@
   },
   "radialbar": {
     "config": {
-      "bar-width": "",
+      "bar-width": "Largeur de barre",
       "effects": {
-        "bar-glow": "",
-        "center-glow": "",
-        "rounded-bars": "",
-        "spotlight": ""
+        "bar-glow": "Lueur de la barre",
+        "center-glow": "Lueur centrale",
+        "rounded-bars": "Barres arrondies",
+        "spotlight": "Projecteur"
       },
-      "gradient": "",
-      "gradient-auto": "",
-      "gradient-none": "",
-      "segment-count": "",
-      "segment-spacing": "",
-      "shape": "",
-      "shape-circle": "",
-      "shape-gauge": "",
-      "sparkline": "",
-      "threshold-labels": "",
-      "threshold-markers": ""
+      "gradient": "Dégradé",
+      "gradient-auto": "Auto",
+      "gradient-none": "Aucun",
+      "segment-count": "Segments",
+      "segment-spacing": "Espacement des segments",
+      "shape": "Forme",
+      "shape-circle": "Cercle",
+      "shape-gauge": "Jauge",
+      "sparkline": "Afficher le mini-graphique",
+      "threshold-labels": "Afficher les étiquettes de seuil",
+      "threshold-markers": "Afficher les seuils"
     }
   },
   "recently-deleted": {
@@ -12198,13 +13530,13 @@
       "no-search-result": "Aucun résultat n'a été trouvé pour votre requête"
     },
     "restore-modal": {
+      "folder-picker-text_one": "Veuillez choisir un dossier où votre tableau de bord sera restauré.",
+      "folder-picker-text_other": "Veuillez choisir un dossier où vos tableaux de bord seront restaurés.",
       "restore-button": "Restaurer",
       "restore-loading": "Restauration...",
-      "title": "Restaurer les tableaux de bord",
-      "folder-picker-text_one": "",
-      "folder-picker-text_other": "",
-      "text_one": "",
-      "text_other": ""
+      "text_one": "Cette action va restaurer {{numberOfDashboards}} tableau de bord.",
+      "text_other": "Cette action va restaurer {{numberOfDashboards}} tableaux de bord.",
+      "title": "Restaurer les tableaux de bord"
     }
   },
   "recentlyDeleted": {
@@ -12224,8 +13556,8 @@
       "duration-selected": "Choisir l'intervalle de temps d'actualisation avec l'intervalle actuel {{durationAriaLabel}} sélectionné"
     },
     "auto-option": {
-      "aria-label": "",
-      "label": ""
+      "aria-label": "Actualisation automatique",
+      "label": "Automatique"
     },
     "live-option": {
       "aria-label": "Activer la diffusion en direct",
@@ -12256,7 +13588,7 @@
     },
     "menu": {
       "clear-button": "Tout effacer",
-      "tooltip": ""
+      "tooltip": "Vous pouvez maintenant sélectionner l'option « Aucun rôle de base » et ajouter des autorisations selon vos besoins personnalisés. Vous trouverez plus d'informations dans <1>notre documentation</1> ."
     },
     "menu-aria-label": "Menu du sélecteur de rôle",
     "menu-group-option-aria-label": "Option du sélecteur de rôle",
@@ -12266,7 +13598,7 @@
     },
     "sub-menu-aria-label": "Sous-menu du sélecteur de rôle",
     "title": {
-      "description": ""
+      "description": "Attribuez des rôles aux utilisateurs pour assurer un contrôle granulaire sur l'accès aux fonctionnalités et aux ressources de Grafana. Découvrez-en davantage dans <2>notre documentation</2> ."
     }
   },
   "role-picker-drawer": {
@@ -12312,7 +13644,7 @@
     "selector": {
       "apply": "Appliquer",
       "cancel": "Annuler",
-      "error-title": "",
+      "error-title": "Une erreur inattendue s’est produite",
       "input": {
         "placeholder": "Sélectionner les portées...",
         "removeAll": "Supprimer toutes les portées"
@@ -12338,7 +13670,8 @@
       "sort-placeholder": "Trier",
       "starred": "Favoris",
       "view-as-folders": "Voir par dossier",
-      "view-as-list": "Voir en tant que liste"
+      "view-as-list": "Voir en tant que liste",
+      "view-layout": "Afficher la présentation"
     },
     "bluge-searcher": {
       "opts": {
@@ -12387,7 +13720,7 @@
   },
   "select": {
     "select-menu": {
-      "selected-count": ""
+      "selected-count": "Sélectionnés"
     }
   },
   "service-account-create-page": {
@@ -12486,7 +13819,7 @@
       "aria-label-role": "Rôle"
     },
     "service-account-tokens-table": {
-      "aria-label-delete-button": "",
+      "aria-label-delete-button": "Supprimer le jeton de compte de service {{key}}",
       "created": "Créé",
       "expires": "Expire",
       "last-used-at": "Dernière utilisation le",
@@ -12494,6 +13827,8 @@
     },
     "service-accounts-list-page-unconnected": {
       "add-service-account": "Ajouter un compte de service",
+      "body-delete_one": "Voulez-vous vraiment supprimer {{serviceAccountName}} et les {{count}} tokens associés ?",
+      "body-delete_other": "Voulez-vous vraiment supprimer {{serviceAccountName}} et les {{count}} tokens associés ?",
       "body-delete-with-tokens": "Voulez-vous vraiment supprimer {{serviceAccountName}} ?",
       "body-disable-service-account": "Voulez-vous vraiment désactiver « {{accountToDisable}} » ?",
       "confirmText-delete": "Supprimer",
@@ -12501,9 +13836,7 @@
       "placeholder-search-service-account-by-name": "Rechercher un compte de service par son nom",
       "sub-title": "Les comptes de service et leurs jetons peuvent être utilisés pour s’authentifier auprès de l’API Grafana. Pour en savoir plus, consultez notre <2>documentation.</2>",
       "title-delete-service-account": "Supprimer le compte de service",
-      "title-disable-service-account": "Désactiver le compte de service",
-      "body-delete_one": "Voulez-vous vraiment supprimer {{serviceAccountName}} et les {{count}} tokens associés ?",
-      "body-delete_other": "Voulez-vous vraiment supprimer {{serviceAccountName}} et les {{count}} tokens associés ?"
+      "title-disable-service-account": "Désactiver le compte de service"
     },
     "token-expiration": {
       "content-this-token-has-expired": "Ce jeton a expiré",
@@ -12574,7 +13907,7 @@
       "info-text": "Créez un lien direct vers ce tableau de bord ou ce panneau, personnalisé avec les options ci-dessous.",
       "link-url": "Lien URL",
       "render-alert": "Plugin de rendu d'image non installé",
-      "render-instructions": "",
+      "render-instructions": "Pour rendre une image, vous devez installer le <2>plugin de rendu d'images Grafana</2>. Veuillez contacter votre administrateur Grafana pour installer le plugin.",
       "rendered-image": "Lien direct vers l'image dont il faut améliorer le rendu",
       "save-alert": "Le tableau de bord n'est pas enregistré",
       "save-dashboard": "Pour améliorer le rendu d'une image de panneau, vous devez d'abord enregistrer le tableau de bord.",
@@ -12598,7 +13931,7 @@
       "info-text-1": "Un instantané est un moyen instantané de partager publiquement un tableau de bord interactif. Lors de la création, nous supprimons les données sensibles telles que les requêtes (métrique, modèle et annotation) et les liens du panneau, pour ne laisser que les métriques visibles et les noms de séries intégrés dans votre tableau de bord.",
       "info-text-2": "N'oubliez pas que votre instantané <1>peut être consulté par une personne</1> qui dispose du lien et qui peut accéder à l'URL. Partagez judicieusement.",
       "local-button": "Publier un instantané",
-      "mistake-message": "",
+      "mistake-message": "Avez-vous fait une erreur ?",
       "name": "Nom de l'instantané",
       "timeout": "Délai d’expiration (secondes)",
       "timeout-description": "Vous devrez peut-être configurer la valeur du délai d'expiration si la collecte des métriques de votre tableau de bord prend beaucoup de temps.",
@@ -12722,7 +14055,7 @@
       "theme-label": "Thème de l'interface utilisateur",
       "week-start-label": "Début de la semaine"
     },
-    "save": "",
+    "save": "Enregistrer les préférences",
     "theme": {
       "default-label": "Par défaut",
       "experimental": "Expérimental"
@@ -12787,7 +14120,6 @@
       "deleted-alert": "Instantané supprimé. Cela peut prendre une heure pour être effacé des caches CDN.",
       "expiration-label": "Expire dans",
       "info-alert": "Un instantané de tableau de bord Grafana partage publiquement un tableau de bord tout en supprimant les données sensibles telles que les requêtes et les liens de panneau, ne laissant que les indicateurs visibles et les noms de séries. Toute personne possédant le lien peut accéder à l'instantané.",
-      "learn-more-button": "En savoir plus",
       "local-button": "Publier l'instantané",
       "name-label": "Nom de l'instantané",
       "new-snapshot-button": "Nouvel instantané",
@@ -12820,8 +14152,8 @@
     "view-explanation": "Voir l’explication"
   },
   "stars": {
-    "mark-as-starred": "",
-    "unmark-as-starred": ""
+    "mark-as-starred": "Marquer « {{title}} » comme favori",
+    "unmark-as-starred": "Retirer « {{title}} » des favoris"
   },
   "stat": {
     "add-orientation-option": {
@@ -13006,10 +14338,10 @@
     "description-calculation": "Choisissez une fonction de réduction ou de calcul",
     "description-cell-value-inspect": "Activer l’inspection de la valeur de cellule dans une fenêtre modale",
     "description-column-filter": "Active ou désactive les filtres de champ dans le tableau",
-    "description-frozen-columns": "",
+    "description-frozen-columns": "Les colonnes sont figées depuis le côté gauche du tableau",
     "description-min-column-width": "La largeur minimale pour le redimensionnement automatique des colonnes",
-    "description-styling-from-field": "",
-    "description-tooltip-from-field": "",
+    "description-styling-from-field": "Un champ contenant des objets JSON avec des propriétés CSS",
+    "description-tooltip-from-field": "Affiche une cellule à partir d'un champ (masqué ou visible) dans une infobulle",
     "image-cell-options-editor": {
       "description-alt-text": "Texte alternatif qui sera affiché si une image ne peut pas être affichée ou pour les utilisateurs qui utilisent un lecteur d’écran",
       "description-title-text": "Texte qui sera affiché lorsque l’image est survolée par un curseur",
@@ -13033,25 +14365,25 @@
     "name-column-alignment": "Alignement de la colonne",
     "name-column-filter": "Filtre de colonne",
     "name-column-width": "Largeur de colonne",
-    "name-enable-pagination": "",
-    "name-frozen-columns": "",
+    "name-enable-pagination": "Activer la pagination",
+    "name-frozen-columns": "Colonnes figées",
     "name-hide-in-table": "Masquer dans le tableau",
-    "name-max-height": "",
+    "name-max-height": "Hauteur maximale de ligne",
     "name-min-column-width": "Largeur minimale de colonne",
     "name-show-table-header": "Afficher l’en-tête du tableau",
-    "name-styling-from-field": "",
-    "name-tooltip-from-field": "",
-    "name-tooltip-placement": "",
+    "name-styling-from-field": "Style depuis le champ",
+    "name-tooltip-from-field": "Infobulle depuis le champ",
+    "name-tooltip-placement": "Position de l'infobulle",
     "name-wrap-header-text": "Retour à la ligne dans l’en-tête",
-    "name-wrap-text": "",
+    "name-wrap-text": "Retour à la ligne automatique",
     "placeholder-column-width": "auto",
-    "placeholder-max-height": "",
+    "placeholder-max-height": "aucune",
     "tooltip-placement-options": {
-      "label-auto": "",
-      "label-bottom": "",
-      "label-left": "",
-      "label-right": "",
-      "label-top": ""
+      "label-auto": "Auto",
+      "label-bottom": "Bas",
+      "label-left": "Gauche",
+      "label-right": "Droite",
+      "label-top": "Haut"
     }
   },
   "tag-filter": {
@@ -13059,8 +14391,7 @@
     "loading": "Chargement en cours...",
     "no-tags": "Aucune balise trouvée",
     "placeholder": "Filtrer par balise",
-    "select-aria-label": "Filtre de balise",
-    "tag-option-label": "Option de balise"
+    "select-aria-label": "Filtre de balise"
   },
   "team-picker": {
     "noOptionsMessage-no-teams-found": "Aucune équipe trouvée",
@@ -13124,13 +14455,13 @@
       "placeholder-search-teams": "Rechercher les équipes"
     },
     "team-settings": {
-      "description-email": "",
+      "description-email": "C'est facultatif et est principalement utilisé pour définir l'avatar du profil de l'équipe (via le service Gravatar).",
       "label-email": "Adresse e-mail",
       "label-name": "Nom",
       "label-numerical-identifier": "Identificateur numérique",
       "label-role": "Rôle",
       "label-team-details": "Détails de l’équipe",
-      "save": ""
+      "save": "Enregistrer les détails de l'équipe"
     },
     "team-sync-upgrade-content": {
       "description": "La synchronisation d’équipe vous permet de gérer plus facilement l’accès des utilisateurs à Grafana, en mettant immédiatement à jour les équipes et les autorisations Grafana de chaque utilisateur en fonction de leur appartenance à un groupe d’authentification unique, plutôt que lorsque les utilisateurs se connectent"
@@ -13150,8 +14481,8 @@
     "name-show-mini-map": "Afficher la mini-carte"
   },
   "theme-playground": {
-    "label-base-theme": "",
-    "title": ""
+    "label-base-theme": "Thème de base",
+    "title": "Atelier des thèmes"
   },
   "theme-preview": {
     "breadcrumbs": {
@@ -13164,12 +14495,12 @@
     }
   },
   "time-period": {
-    "1_day": "",
-    "1_hour": "",
-    "12_hours": "",
-    "30_days": "",
-    "6_hours": "",
-    "7_days": ""
+    "1_day": "1 jour",
+    "1_hour": "1 heure",
+    "12_hours": "12 heures",
+    "30_days": "30 jours",
+    "6_hours": "6 heures",
+    "7_days": "7 jours"
   },
   "time-picker": {
     "absolute": {
@@ -13190,6 +14521,8 @@
       "filter-placeholder": "Rechercher dans les plages rapides"
     },
     "copy-paste": {
+      "aria-label-copy": "Copier l'intervalle de temps dans le presse-papiers",
+      "aria-label-paste": "Coller l'intervalle de temps",
       "copy-success-message": "Intervalle de temps copié dans le presse-papiers",
       "default-error-message": "{{error}} n'est pas un intervalle de temps valide",
       "default-error-title": "Intervalle de temps invalide",
@@ -13218,14 +14551,14 @@
       "forwards-time-aria-label": "Avancer la plage de temps",
       "to": "à",
       "zoom-out-button": "Dézoomer la plage de temps",
-      "zoom-out-tooltip": ""
+      "zoom-out-tooltip": "Dézoomer la plage horaire <br/>CTRL+Z"
     },
     "time-range": {
       "apply": "Appliquer la plage temporelle",
       "aria-role": "Sélection de la plage de temps",
       "default-title": "Plages de temps",
       "example-title": "Exemple de plages de temps",
-      "from-label": "",
+      "from-label": "De",
       "from-to": "{{timeOptionFrom}} à {{timeOptionTo}}",
       "specify": "Spécifier la plage de temps",
       "submit-button-label": "Bouton d'envoi TimePicker",
@@ -13343,7 +14676,7 @@
   },
   "transformations": {
     "empty": {
-      "add-transformation-body": "",
+      "add-transformation-body": "Les transformations permettent de modifier les données de diverses manières avant l'affichage de votre visualisation.<br/>Cela inclut la jointure de données, le renommage de champs, la réalisation de calculs, le formatage des données pour l'affichage, et bien plus encore.",
       "add-transformation-header": "Commencer la transformation des données"
     }
   },
@@ -13610,7 +14943,7 @@
       "label-format": "Format",
       "label-set-timezone": "Définir le fuseau horaire",
       "label-time-field": "Champ horaire",
-      "tooltip-format": "",
+      "tooltip-format": "Le format de sortie pour le champ spécifié comme une <2>chaîne de format Moment.js</2>.",
       "tooltip-timezone-manually": "Définir manuellement le fuseau horaire de la date"
     },
     "format-time-transformer-editor": {
@@ -13911,10 +15244,10 @@
         }
       }
     },
-    "query-validation-message": "",
+    "query-validation-message": "Une ou plusieurs requêtes n'ont pas réussi à renvoyer de champs. Cette transformation ne peut référencer que des champs provenant de requêtes avec un résultat réussi et visible.",
     "range-matcher-editor": {
       "and": "et",
-      "placeholder-from": "",
+      "placeholder-from": "De",
       "placeholder-to": "À"
     },
     "reduce-row-options-editor": {
@@ -14167,7 +15500,6 @@
   "user-orgs": {
     "current-org-button": "Actuel",
     "name-column": "Nom",
-    "role-column": "Rôle",
     "select-org-button": "Sélectionner une organisation",
     "title": "Organisations"
   },
@@ -14204,14 +15536,14 @@
     "empty-state": {
       "message": "Aucun utilisateur trouvé"
     },
+    "loading": "Chargement des utilisateurs...",
     "token-revoked-modal": {
-      "auto-revoked": "",
-      "resume-message": "",
+      "auto-revoked": "Votre jeton de session a été révoqué automatiquement car vous avez atteint <strong>le nombre maximal de {{numSessions}} sessions simultanées</strong> pour votre compte.",
+      "resume-message": "<strong>Pour reprendre votre session, connectez-vous de nouveau.</strong> Contactez votre administrateur ou consultez la page des licences pour vérifier votre quota si vous êtes déconnecté automatiquement de manière répétée.",
       "sign-in": "Se connecter",
       "title-you-have-been-automatically-signed-out": "Vous avez été automatiquement déconnecté"
     },
     "users-action-bar-unconnected": {
-      "invite": "Inviter",
       "options": {
         "label": {
           "users": "Utilisateurs"
@@ -14299,9 +15631,6 @@
     "no-unknowns": {
       "no-renamed-or-missing-variables-found": "Aucune variable renommée ou manquante n’a été trouvée."
     },
-    "picker-renderer": {
-      "couldnt-load-variable": "Impossible de charger la variable"
-    },
     "query-variable-refresh-select": {
       "description-update-values-variable": "Quand mettre à jour les valeurs de cette variable",
       "label-refresh": "Actualiser"
@@ -14330,13 +15659,13 @@
       "description-values-variable": "Comment trier les options statiques avec les résultats de la requête"
     },
     "static-options": {
-      "add-option-button-label": "",
-      "drag-and-drop": "",
-      "label-header": "",
-      "label-placeholder": "",
-      "remove-option-button-label": "",
-      "value-header": "",
-      "value-placeholder": ""
+      "add-option-button-label": "Ajouter une nouvelle option",
+      "drag-and-drop": "Glisser et déposer pour réorganiser",
+      "label-header": "Afficher le texte",
+      "label-placeholder": "Par défaut, le libellé est la valeur",
+      "remove-option-button-label": "Supprimer l'option",
+      "value-header": "Valeur",
+      "value-placeholder": "Valeur"
     },
     "text-box-variable-editor": {
       "name-default-value": "Valeur par défaut",

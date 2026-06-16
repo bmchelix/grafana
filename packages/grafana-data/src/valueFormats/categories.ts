@@ -1,14 +1,15 @@
 import { t } from '@grafana/i18n';
 
-import { toHex, sci, toHex0x, toPercent, toPercentUnit } from './arithmeticFormatters';
+import { sci, toHex, toHex0x, toPercent, toPercentUnit } from './arithmeticFormatters';
 import {
   dateTimeAsIso,
   dateTimeAsIsoNoDateIfToday,
   dateTimeAsUS,
   dateTimeAsUSNoDateIfToday,
+  dateTimeFromNow,
+  dateTimeSystemFormatter,
   getDateTimeAsLocalFormat,
   getDateTimeAsLocalFormatNoDateIfToday,
-  dateTimeFromNow,
   toClockMilliseconds,
   toClockSeconds,
   toDays,
@@ -23,17 +24,18 @@ import {
   toNanoSeconds,
   toSeconds,
   toTimeTicks,
-  dateTimeSystemFormatter,
 } from './dateTimeFormatters';
 import { binaryPrefix, currency, SIPrefix } from './symbolFormatters';
 import {
+  booleanValueFormatter,
+  //BMC Code : Next line
+  europeanFormat,
   locale,
   scaledUnits,
   simpleCountUnit,
+  stringFormater,
   toFixedUnit,
   ValueFormatCategory,
-  stringFormater,
-  booleanValueFormatter,
 } from './valueFormats';
 
 export const getCategories = (): ValueFormatCategory[] => [
@@ -104,6 +106,15 @@ export const getCategories = (): ValueFormatCategory[] => [
         name: t('grafana-data.valueFormats.categories.misc.formats.name-locale', 'Locale format'),
         id: 'locale',
         fn: locale,
+      },
+      // BMC Code : Next block
+      {
+        name: t(
+          'bmcgrafana.grafana-data.valueFormats.categories.misc.formats.european',
+          'European format (Deprecated)'
+        ),
+        id: 'european',
+        fn: europeanFormat,
       },
       {
         name: t('grafana-data.valueFormats.categories.misc.formats.name-pixels', 'Pixels'),

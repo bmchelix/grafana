@@ -3,13 +3,14 @@ import { css } from '@emotion/css';
 import {
   CoreApp,
   GrafanaTheme2,
+  LoadingState,
   PanelDataSummary,
-  VisualizationSuggestionsBuilder,
   VisualizationSuggestion,
+  VisualizationSuggestionsBuilder,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { t, Trans } from '@grafana/i18n';
-import { PanelDataErrorViewProps, locationService } from '@grafana/runtime';
+import { locationService, PanelDataErrorViewProps } from '@grafana/runtime';
 import { VizPanel } from '@grafana/scenes';
 import { usePanelContext, useStyles2 } from '@grafana/ui';
 import { CardButton } from 'app/core/components/CardButton';
@@ -130,8 +131,11 @@ function getMessageFor(
   if (message) {
     return message;
   }
-
   if (!data.series || data.series.length === 0 || data.series.every((frame) => frame.length === 0)) {
+    // BMC change: next if block
+    if (data.state === LoadingState.RefreshToLoad) {
+      return t('bmcgrafana.panel-message.refresh-dashboard', 'Refresh dashboard to fetch data');
+    }
     return fieldConfig?.defaults.noValue ?? t('panel.panel-data-error-view.no-value.default', 'No data');
   }
 

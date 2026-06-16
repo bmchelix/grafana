@@ -10,6 +10,7 @@ import (
 	"github.com/grafana/grafana/pkg/api/dtos"
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
+	"github.com/grafana/grafana/pkg/bhdcodes"
 	"github.com/grafana/grafana/pkg/services/accesscontrol"
 	"github.com/grafana/grafana/pkg/services/annotations"
 	contextmodel "github.com/grafana/grafana/pkg/services/contexthandler/model"
@@ -103,7 +104,8 @@ func (e *AnnotationError) Error() string {
 func (hs *HTTPServer) PostAnnotation(c *contextmodel.ReqContext) response.Response {
 	cmd := dtos.PostAnnotationsCmd{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while creating annotation", err)
 	}
 
 	// overwrite dashboardId when dashboardUID is not empty
@@ -166,6 +168,8 @@ func (hs *HTTPServer) PostAnnotation(c *contextmodel.ReqContext) response.Respon
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message": "Annotation added",
 		"id":      startID,
+		// BMC code change
+		"bhdCode": bhdcodes.AnnotationCreated,
 	})
 }
 
@@ -192,7 +196,8 @@ func formatGraphiteAnnotation(what string, data string) string {
 func (hs *HTTPServer) PostGraphiteAnnotation(c *contextmodel.ReqContext) response.Response {
 	cmd := dtos.PostGraphiteAnnotationsCmd{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while creating annotation in Graphite format", err)
 	}
 	if cmd.What == "" {
 		err := &AnnotationError{"what field should not be empty"}
@@ -240,6 +245,8 @@ func (hs *HTTPServer) PostGraphiteAnnotation(c *contextmodel.ReqContext) respons
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message": "Graphite annotation added",
 		"id":      item.ID,
+		// BMC code change
+		"bhdCode": bhdcodes.GraphiteAnnotationCreated,
 	})
 }
 
@@ -258,7 +265,8 @@ func (hs *HTTPServer) PostGraphiteAnnotation(c *contextmodel.ReqContext) respons
 func (hs *HTTPServer) UpdateAnnotation(c *contextmodel.ReqContext) response.Response {
 	cmd := dtos.UpdateAnnotationsCmd{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while updating annotation", err)
 	}
 
 	annotationID, err := strconv.ParseInt(web.Params(c.Req)[":annotationId"], 10, 64)
@@ -317,7 +325,8 @@ func (hs *HTTPServer) UpdateAnnotation(c *contextmodel.ReqContext) response.Resp
 func (hs *HTTPServer) PatchAnnotation(c *contextmodel.ReqContext) response.Response {
 	cmd := dtos.PatchAnnotationsCmd{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while updating annotation", err)
 	}
 	annotationID, err := strconv.ParseInt(web.Params(c.Req)[":annotationId"], 10, 64)
 	if err != nil {
@@ -386,7 +395,8 @@ func (hs *HTTPServer) MassDeleteAnnotations(c *contextmodel.ReqContext) response
 	cmd := dtos.MassDeleteAnnotationsCmd{}
 	err := web.Bind(c.Req, &cmd)
 	if err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while deleting multiple annotations", err)
 	}
 
 	if cmd.DashboardUID != "" {
@@ -408,7 +418,8 @@ func (hs *HTTPServer) MassDeleteAnnotations(c *contextmodel.ReqContext) response
 
 	if (cmd.DashboardId != 0 && cmd.PanelId == 0) || (cmd.PanelId != 0 && cmd.DashboardId == 0) {
 		err := &AnnotationError{message: "DashboardId and PanelId are both required for mass delete"}
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while deleting multiple annotations", err)
 	}
 
 	var deleteParams *annotations.DeleteParams

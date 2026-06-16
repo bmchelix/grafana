@@ -3,7 +3,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { useAsync } from 'react-use';
 
 import { GrafanaTheme2 } from '@grafana/data';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { reportInteraction } from '@grafana/runtime';
 import { CollapsableSection, Icon, Spinner, Stack, Tooltip, useStyles2 } from '@grafana/ui';
 
@@ -93,7 +93,6 @@ function CollapseLabel(): ReactElement {
     </h5>
   );
 }
-
 function NoUnknowns(): ReactElement {
   return (
     <span>

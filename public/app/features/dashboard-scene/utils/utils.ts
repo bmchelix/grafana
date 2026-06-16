@@ -15,6 +15,7 @@ import {
 } from '@grafana/scenes';
 import { Dashboard, Panel, RowPanel } from '@grafana/schema';
 import { createLogger } from '@grafana/ui';
+import { FEATURE_CONST, getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { initialIntervalVariableModelState } from 'app/features/variables/interval/reducer';
 
 import { DashboardDatasourceBehaviour } from '../scene/DashboardDatasourceBehaviour';
@@ -364,6 +365,19 @@ export function getLayoutManagerFor(sceneObject: SceneObject): DashboardLayoutMa
 export function getGridItemKeyForPanelId(panelId: number): string {
   return `grid-item-${panelId}`;
 }
+
+// BMC Code: Next funtion
+export function isOpenEmptyPanelsEnabled() {
+  const urlParams = new URLSearchParams(document.location.search);
+  return (
+    (!!getFeatureStatus(FEATURE_CONST.BHD_GF_OPEN_EMPTY_PANELS) && navigator.webdriver !== true) ||
+    // Force enable via URL param, can be used for automation tests
+    urlParams.get(FEATURE_CONST.BHD_GF_OPEN_EMPTY_PANELS) === '1' ||
+    // Default
+    false
+  );
+}
+// BMC Code: Ends
 
 export function useDashboard(scene: SceneObject): DashboardScene {
   return getDashboardSceneFor(scene);
