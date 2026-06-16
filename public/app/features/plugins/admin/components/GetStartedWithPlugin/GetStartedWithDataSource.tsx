@@ -1,15 +1,16 @@
-import { useCallback } from 'react';
 import * as React from 'react';
+import { useCallback } from 'react';
 
 import { DataSourcePluginMeta } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
 import { config } from '@grafana/runtime';
 import { Button } from '@grafana/ui';
 import { ROUTES } from 'app/features/connections/constants';
+import { FEATURE_CONST, getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { addDataSource } from 'app/features/datasources/state/actions';
 import { useDispatch } from 'app/types/store';
 
-import { isDataSourceEditor } from '../../permissions';
+import { isDataSourceEditor, isGrafanaAdmin } from '../../permissions';
 import { CatalogPlugin } from '../../types';
 
 type Props = {
@@ -31,13 +32,16 @@ export function GetStartedWithDataSource({ plugin }: Props): React.ReactElement 
     return null;
   }
 
+  // BMC code - next line
+  const canCreateDataSource = getFeatureStatus(FEATURE_CONST.DASHBOARDS_SSRF_FEATURE_NAME) || isGrafanaAdmin();
   const disabledButton = config.pluginAdminExternalManageEnabled && !plugin.isFullyInstalled;
 
   return (
     <Button
       variant="primary"
       onClick={onAddDataSource}
-      disabled={disabledButton}
+      // BMC Code: Next Inline
+      disabled={disabledButton || !canCreateDataSource}
       title={
         disabledButton
           ? t(

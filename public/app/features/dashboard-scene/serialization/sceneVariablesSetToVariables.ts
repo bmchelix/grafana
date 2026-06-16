@@ -1,45 +1,47 @@
 import { config } from '@grafana/runtime';
 import {
-  AdHocFilterWithLabels as SceneAdHocFilterWithLabels,
   MultiValueVariable,
+  AdHocFilterWithLabels as SceneAdHocFilterWithLabels,
+  SceneVariable,
   SceneVariables,
   sceneUtils,
-  SceneVariable,
 } from '@grafana/scenes';
 import {
-  VariableModel,
-  VariableRefresh as OldVariableRefresh,
   VariableHide as OldVariableHide,
+  VariableRefresh as OldVariableRefresh,
   VariableSort as OldVariableSort,
+  VariableModel,
 } from '@grafana/schema';
 import {
+  AdHocFilterWithLabels,
   AdhocVariableKind,
   ConstantVariableKind,
   CustomVariableKind,
   DataQueryKind,
   DatasourceVariableKind,
+  GroupByVariableKind,
   IntervalVariableKind,
   QueryVariableKind,
+  SwitchVariableKind,
   TextVariableKind,
-  GroupByVariableKind,
-  defaultVariableHide,
   VariableOption,
   defaultDataQueryKind,
-  AdHocFilterWithLabels,
-  SwitchVariableKind,
+  defaultVariableHide,
 } from '@grafana/schema/dist/esm/schema/dashboard/v2';
 import { getDefaultDatasource } from 'app/features/dashboard/api/ResponseTransformers';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 
+import { isDateRangeVariable, isOptimizeVariable } from '../settings/variables/utils';
 import { getIntervalsQueryFromNewIntervalModel } from '../utils/utils';
 
 import { DSReferencesMapping } from './DashboardSceneSerializer';
 import { getDataSourceForQuery } from './layoutSerializers/utils';
 import { getDataQueryKind, getDataQuerySpec, getElementDatasource } from './transformSceneToSaveModelSchemaV2';
 import {
-  transformVariableRefreshToEnum,
-  transformVariableHideToEnum,
-  transformSortVariableToEnum,
   LEGACY_STRING_VALUE_KEY,
+  transformSortVariableToEnum,
+  transformVariableHideToEnum,
+  transformVariableRefreshToEnum,
 } from './transformToV2TypesUtils';
 /**
  * Converts a SceneVariables object into an array of VariableModel objects.
@@ -95,6 +97,11 @@ export function sceneVariablesSetToVariables(set: SceneVariables, keepQueryOptio
           value: String(option.value),
         })),
         staticOptionsOrder: variable.state.staticOptionsOrder,
+        // BMC Change: Below all props
+        // @ts-expect-error
+        discardForAll: variable.state.discardForAll,
+        // @ts-expect-error
+        bmcVarCache: variable.state?.bmcVarCache,
       });
     } else if (sceneUtils.isCustomVariable(variable)) {
       variables.push({
@@ -231,7 +238,36 @@ export function sceneVariablesSetToVariables(set: SceneVariables, keepQueryOptio
       });
     } else if (variable.state.type === 'system') {
       // Not persisted
-    } else {
+    }
+    // BMC code: Added datepicker and optimize variables support
+    else if (isDateRangeVariable(variable)) {
+      const datePickerState = variable.state as any; // or as DatePickerVariableState if type is available
+      variables.push({
+        ...commonProperties,
+        current: {
+          value: datePickerState.value,
+          text: datePickerState.value,
+        },
+        query: datePickerState.value,
+      });
+    } else if (isOptimizeVariable(variable)) {
+      // Check feature flag before serializing optimize variable
+      const optimizeDomainPickerEnabled = getFeatureStatus('opt_domain_picker');
+      if (!optimizeDomainPickerEnabled) {
+        throw new Error('Optimize variable is not enabled');
+      }
+      const optimizeState = variable.state as any; // or as OptimizeVariableState if type is available
+      variables.push({
+        ...commonProperties,
+        current: {
+          value: optimizeState.value,
+          text: optimizeState.value,
+        },
+        query: optimizeState.value,
+      });
+    }
+    // BMC code: end
+    else {
       throw new Error('Unsupported variable type');
     }
   }

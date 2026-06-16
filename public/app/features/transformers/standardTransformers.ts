@@ -4,9 +4,11 @@ import { config } from '@grafana/runtime';
 import { getFilterByValueTransformRegistryItem } from './FilterByValueTransformer/FilterByValueTransformerEditor';
 import { getHeatmapTransformRegistryItem } from './calculateHeatmap/HeatmapTransformerEditor';
 import { getConfigFromQueryTransformRegistryItem } from './configFromQuery/ConfigFromQueryTransformerEditor';
+import { getAdvanceFunctionsTransformRegistryItem } from './editors/AdvanceFunctionsTransformerEditor';
 import { getCalculateFieldTransformRegistryItem } from './editors/CalculateFieldTransformerEditor/CalculateFieldTransformerEditor';
 import { getConcatenateTransformRegistryItem } from './editors/ConcatenateTransformerEditor';
 import { getConvertFieldTypeTransformRegistryItem } from './editors/ConvertFieldTypeTransformerEditor';
+import { getDynamicFieldsFormatterTransformRegistryItem } from './editors/DynamicFieldsFormatterTransformerEditor';
 import { getFilterFieldsByNameTransformRegistryItem } from './editors/FilterByNameTransformerEditor';
 import { getFilterFramesByRefIdTransformRegistryItem } from './editors/FilterByRefIdTransformerEditor';
 import { getFormatStringTransformerRegistryItem } from './editors/FormatStringTransformerEditor';
@@ -22,6 +24,7 @@ import { getMergeTransformerRegistryItem } from './editors/MergeTransformerEdito
 import { getOrganizeFieldsTransformRegistryItem } from './editors/OrganizeFieldsTransformerEditor';
 import { getReduceTransformRegistryItem } from './editors/ReduceTransformerEditor';
 import { getRenameByRegexTransformRegistryItem } from './editors/RenameByRegexTransformer';
+import { getSanitizeFieldTransformRegistryItem } from './editors/SanitizeTransformerEditor';
 import { getSeriesToRowsTransformerRegistryItem } from './editors/SeriesToRowsTransformerEditor';
 import { getSortByTransformRegistryItem } from './editors/SortByTransformerEditor';
 import { getTransposeTransformerRegistryItem } from './editors/TransposeTransformerEditor';
@@ -70,5 +73,10 @@ export const getStandardTransformers = (): TransformerRegistryItem[] => {
     getFormatTimeTransformerRegistryItem(),
     getTimeSeriesTableTransformRegistryItem(),
     getTransposeTransformerRegistryItem(),
+    // BMC code - start
+    getAdvanceFunctionsTransformRegistryItem(),
+    getDynamicFieldsFormatterTransformRegistryItem(),
+    getSanitizeFieldTransformRegistryItem(),
+    // BMC code - end
   ];
 };

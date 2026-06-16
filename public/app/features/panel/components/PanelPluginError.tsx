@@ -2,11 +2,11 @@
 import { memo, ReactNode } from 'react';
 
 // Types
-import { PanelProps, PanelPlugin, PluginType, PanelPluginMeta } from '@grafana/data';
-import { Trans, t } from '@grafana/i18n';
+import { PanelPlugin, PanelPluginMeta, PanelProps, PluginType } from '@grafana/data';
+import { t, Trans } from '@grafana/i18n';
 import { Alert } from '@grafana/ui';
 import { AppNotificationSeverity } from 'app/types/appNotifications';
-import grafanaIconSvg from 'img/grafana_icon.svg';
+import appleTouchIconPng from 'img/apple-touch-icon.png';
 
 interface Props {
   title: string;
@@ -81,7 +81,8 @@ export function getPanelPluginNotFound(id: string, silent?: boolean): PanelPlugi
       links: [],
       logos: {
         large: '',
-        small: grafanaIconSvg,
+        // BMC Code - Icon change
+        small: appleTouchIconPng,
       },
       screenshots: [],
       updated: '',

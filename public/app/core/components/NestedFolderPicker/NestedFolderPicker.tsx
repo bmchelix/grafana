@@ -1,15 +1,15 @@
 import { css } from '@emotion/css';
 import { autoUpdate, flip, useClick, useDismiss, useFloating, useInteractions } from '@floating-ui/react';
 import debounce from 'debounce-promise';
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { t } from '@grafana/i18n';
 import { Alert, floatingUtils, Icon, Input, LoadingBar, Stack, Text, useStyles2 } from '@grafana/ui';
 import { useGetFolderQueryFacade } from 'app/api/clients/folder/v1beta1/hooks';
 import { getStatusFromError } from 'app/core/utils/errors';
-import { DashboardViewItemWithUIItems, DashboardsTreeItem } from 'app/features/browse-dashboards/types';
+import { DashboardsTreeItem, DashboardViewItemWithUIItems } from 'app/features/browse-dashboards/types';
 import { getGrafanaSearcher } from 'app/features/search/service/searcher';
 import { QueryResponse } from 'app/features/search/service/types';
 import { queryResultToViewItem } from 'app/features/search/service/utils';
@@ -276,6 +276,10 @@ export function NestedFolderPicker({
   });
 
   let label = selectedFolder.data?.title;
+  // BMC Change: Next if block
+  if (label) {
+    label = t(`bmc-dynamic.${selectedFolder.data?.uid}.name`, label);
+  }
   if (value === '') {
     label = t('browse-dashboards.folder-picker.root-title', 'Dashboards');
   }
@@ -367,7 +371,9 @@ export function NestedFolderPicker({
               onFolderExpand={handleFolderExpand}
               onFolderSelect={handleFolderSelect}
               idPrefix={overlayId}
-              foldersAreOpenable={!(search && searchResults)}
+              // BMC code: nested folders disabled, hide expand chevron
+              // foldersAreOpenable={!(search && searchResults)}
+              foldersAreOpenable={false}
               isItemLoaded={isItemLoaded}
               requestLoadMore={handleLoadMore}
               emptyFolders={emptyFolders}

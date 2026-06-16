@@ -4,7 +4,7 @@ import { useDebounce } from 'react-use';
 
 import { GrafanaTheme2, PanelPluginMeta, SelectableValue } from '@grafana/data';
 import { t } from '@grafana/i18n';
-import { useStyles2, Stack, FilterInput } from '@grafana/ui';
+import { FilterInput, Stack, useStyles2 } from '@grafana/ui';
 
 import { FolderFilter } from '../../../../core/components/FolderFilter/FolderFilter';
 import { PanelTypeFilter } from '../../../../core/components/PanelTypeFilter/PanelTypeFilter';
@@ -67,6 +67,11 @@ export const LibraryPanelsSearch = ({
               value={searchQuery}
               onChange={setSearchQuery}
               placeholder={t(
+                'library-panels.library-panels-search.placeholder-search-by-name-or-description',
+                'Search by name, description or folder name'
+              )}
+              //BMC Accessibility Change next 1 line : Added the aria-label
+              aria-label={t(
                 'library-panels.library-panels-search.placeholder-search-by-name-or-description',
                 'Search by name, description or folder name'
               )}
@@ -171,7 +176,15 @@ const SearchControls = memo(
           [styles.containerTight]: variant === LibraryPanelsSearchVariant.Tight,
         })}
       >
-        {showSort && <SortPicker value={sortDirection} onChange={onSortChange} filter={['alpha-asc', 'alpha-desc']} />}
+        {showSort && (
+          <SortPicker
+            // BMC Change: Next line
+            placeholder={t('search.actions.sort-placeholder', 'Sort')}
+            value={sortDirection}
+            onChange={onSortChange}
+            filter={['alpha-asc', 'alpha-desc']}
+          />
+        )}
         {(showFolderFilter || showPanelFilter) && (
           <div
             className={cx(styles.filterContainer, {

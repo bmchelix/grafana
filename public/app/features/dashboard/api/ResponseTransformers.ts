@@ -4,43 +4,43 @@ import {
   AnnotationQuery,
   DataQuery,
   DataSourceRef,
+  FieldColorModeId as FieldColorModeIdV1,
+  FieldConfigSource as FieldConfigSourceV1,
+  MappingType as MappingTypeV1,
   Panel,
   RowPanel,
+  SpecialValueMatch as SpecialValueMatchV1,
+  ThresholdsMode as ThresholdsModeV1,
   VariableModel,
   VariableType,
-  FieldConfigSource as FieldConfigSourceV1,
-  FieldColorModeId as FieldColorModeIdV1,
-  ThresholdsMode as ThresholdsModeV1,
-  MappingType as MappingTypeV1,
-  SpecialValueMatch as SpecialValueMatchV1,
 } from '@grafana/schema';
 import {
+  AdhocVariableKind,
   AnnotationQueryKind,
+  ConstantVariableKind,
+  CustomVariableKind,
   Spec as DashboardV2Spec,
   DataLink,
   DatasourceVariableKind,
   defaultSpec as defaultDashboardV2Spec,
+  defaultDataQueryKind,
   defaultFieldConfigSource,
   defaultTimeSettingsSpec,
-  PanelQueryKind,
-  QueryVariableKind,
-  TransformationKind,
   FieldColorModeId,
   FieldConfigSource,
-  ThresholdsMode,
-  SpecialValueMatch,
-  AdhocVariableKind,
-  CustomVariableKind,
-  ConstantVariableKind,
-  IntervalVariableKind,
-  TextVariableKind,
+  GridLayoutItemKind,
+  GridLayoutKind,
   GroupByVariableKind,
+  IntervalVariableKind,
   LibraryPanelKind,
   PanelKind,
-  GridLayoutItemKind,
-  defaultDataQueryKind,
+  PanelQueryKind,
+  QueryVariableKind,
   RowsLayoutRowKind,
-  GridLayoutKind,
+  SpecialValueMatch,
+  TextVariableKind,
+  ThresholdsMode,
+  TransformationKind,
 } from '@grafana/schema/dist/esm/schema/dashboard/v2';
 import { DashboardLink, DataTransformerConfig } from '@grafana/schema/src/raw/dashboard/x/dashboard_types.gen';
 import { isWeekStart, WeekStart } from '@grafana/ui';
@@ -374,11 +374,12 @@ function isRowPanel(panel: Panel | RowPanel): panel is RowPanel {
   return panel.type === 'row';
 }
 
-function getWeekStart(weekStart?: string, defaultWeekStart?: WeekStart): WeekStart | undefined {
+function getWeekStart(weekStart?: string, defaultWeekStart?: WeekStart): 'saturday' | 'sunday' | 'monday' | undefined {
   if (!weekStart || !isWeekStart(weekStart)) {
-    return defaultWeekStart;
+    const result = defaultWeekStart === 'browser' ? undefined : defaultWeekStart;
+    return result;
   }
-  return weekStart;
+  return weekStart === 'browser' ? undefined : weekStart;
 }
 
 function buildRowKind(p: RowPanel, elements: GridLayoutItemKind[]): RowsLayoutRowKind {

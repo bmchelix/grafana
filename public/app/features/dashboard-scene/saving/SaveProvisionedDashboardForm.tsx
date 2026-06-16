@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import { Trans } from '@grafana/i18n';
-import { Button, ClipboardButton, Stack, CodeEditor, Box, TextLink } from '@grafana/ui';
+import { Box, Button, ClipboardButton, CodeEditor, Stack } from '@grafana/ui';
 
 import { DashboardScene } from '../scene/DashboardScene';
 
@@ -32,11 +32,13 @@ export function SaveProvisionedDashboardForm({ dashboard, drawer, changeInfo }: 
     <div className={styles.container}>
       <Stack direction="column" gap={2} grow={1}>
         <div>
-          <Trans i18nKey="dashboard-scene.save-provisioned-dashboard-form.cannot-be-saved">
-            This dashboard cannot be saved from the Grafana UI because it has been provisioned from another source. Copy
+          {/* BMC code - replace "Grafana" with "BMC Helix Dashboards" */}
+          <Trans i18nKey="bmcgrafana.dashboard-scene.save-provisioned-dashboard-form.cannot-be-saved">
+            This dashboard cannot be saved from the BMC Helix Dashboards UI because it has been provisioned from another source. Copy
             the JSON or save it to a file below, then you can update your dashboard in the provisioning source.
           </Trans>
-          <br />
+          {/* BMC code - comment below block */}
+          {/* <br />
           <i>
             <Trans i18nKey="dashboard-scene.save-provisioned-dashboard-form.see-docs">
               See{' '}
@@ -45,7 +47,7 @@ export function SaveProvisionedDashboardForm({ dashboard, drawer, changeInfo }: 
               </TextLink>{' '}
               for more information about provisioning.
             </Trans>
-          </i>
+          </i> */}
           <br /> <br />
           <Trans
             i18nKey="dashboard-scene.save-provisioned-dashboard-form.file-path"

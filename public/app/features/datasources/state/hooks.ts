@@ -5,6 +5,7 @@ import { t } from '@grafana/i18n';
 import { cleanUpAction } from 'app/core/actions/cleanUp';
 import appEvents from 'app/core/app_events';
 import { contextSrv } from 'app/core/core';
+import { isGrafanaAdmin } from 'app/features/plugins/admin/permissions'; // BMC Code
 import { AccessControlAction } from 'app/types/accessControl';
 import { ShowConfirmModalEvent } from 'app/types/events';
 import { useDispatch, useSelector } from 'app/types/store';
@@ -14,14 +15,14 @@ import { DataSourceRights } from '../types';
 import { constructDataSourceExploreUrl } from '../utils';
 
 import {
-  initDataSourceSettings,
-  testDataSource,
-  loadDataSource,
-  loadDataSources,
-  loadDataSourcePlugins,
   addDataSource,
-  updateDataSource,
   deleteLoadedDataSource,
+  initDataSourceSettings,
+  loadDataSource,
+  loadDataSourcePlugins,
+  loadDataSources,
+  testDataSource,
+  updateDataSource,
 } from './actions';
 import { initialDataSourceSettingsState } from './reducers';
 import { getDataSource, getDataSourceMeta } from './selectors';
@@ -126,7 +127,11 @@ export const useDataSourceSettings = () => {
 
 export const useDataSourceRights = (uid: string): DataSourceRights => {
   const dataSource = useDataSource(uid);
-  const readOnly = dataSource.readOnly === true;
+  // BMC Code inline
+  // Forcefully disabling save for BMC Helix and BMC JSON API DS
+  const readOnly =
+    dataSource.readOnly === true ||
+    (['bmchelix-ade-datasource', 'json-datasource'].includes(dataSource.type) && !isGrafanaAdmin());
   const hasWriteRights = contextSrv.hasPermissionInMetadata(AccessControlAction.DataSourcesWrite, dataSource);
   const hasDeleteRights = contextSrv.hasPermissionInMetadata(AccessControlAction.DataSourcesDelete, dataSource);
 

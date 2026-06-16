@@ -67,9 +67,10 @@ export const SaveDashboardDiff = ({
       {hasMigratedToV2 && (
         <Box paddingTop={1}>
           <Alert
+            // BMC code - removed "Grafana" keyword
             title={t(
               'dashboard.save-dashboard-diff.title-because-dashboard-migrated-grafana-format',
-              'The diff is hard to read because the dashboard has been migrated to the new Grafana dashboard format'
+              'The diff is hard to read because the dashboard has been migrated to the new dashboard format'
             )}
             severity="info"
           />

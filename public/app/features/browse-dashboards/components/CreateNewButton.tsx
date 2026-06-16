@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom-v5-compat';
 
 import { locationUtil } from '@grafana/data';
+import { t } from '@grafana/i18n';
 import { config, locationService, reportInteraction } from '@grafana/runtime';
 import { Button, Drawer, Dropdown, Icon, Menu, MenuItem } from '@grafana/ui';
 import { useCreateFolder } from 'app/api/clients/folder/v1beta1/hooks';
@@ -57,10 +58,11 @@ export default function CreateNewButton({
         folder_depth: depth,
       });
 
+      //BMC change
       if (!folder.error) {
-        notifyApp.success('Folder created');
+        notifyApp.success(t('bmc.notifications.folder.created', 'Folder created'));
       } else {
-        notifyApp.error('Failed to create folder');
+        notifyApp.error(t('bmc.notifications.folder.failed-creation', 'Failed to create folder'), '', 'bhd-00610');
       }
 
       if (folder.data) {
@@ -85,7 +87,10 @@ export default function CreateNewButton({
           url={buildUrl('/dashboard/new', parentFolder?.uid)}
         />
       )}
-      {canCreateFolder && <MenuItem onClick={() => setShowNewFolderDrawer(true)} label={getNewFolderPhrase()} />}
+      {/* BMC code - hide "New folder" inside a folder since nested folders are disabled */}
+      {canCreateFolder && !parentFolder && (
+        <MenuItem onClick={() => setShowNewFolderDrawer(true)} label={getNewFolderPhrase()} />
+      )}
       {canCreateDashboard && !isProvisionedInstance && parentFolder?.managedBy !== ManagerKind.Repo && (
         <MenuItem
           label={getImportPhrase()}
@@ -108,6 +113,10 @@ export default function CreateNewButton({
           disabled={isReadOnlyRepo}
           tooltip={isReadOnlyRepo ? getReadOnlyTooltipText({ isLocal: repoType === 'local' }) : undefined}
           variant="secondary"
+          // BMC Code : Accessibility Change
+          aria-expanded={isOpen}
+          aria-haspopup="true"
+          // BMC Code : End
         >
           {getNewPhrase()}
           <Icon name={isOpen ? 'angle-up' : 'angle-down'} />

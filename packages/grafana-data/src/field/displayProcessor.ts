@@ -1,5 +1,5 @@
 // Libraries
-import { toString, toNumber as _toNumber, isEmpty, isBoolean, isArray, join } from 'lodash';
+import { isArray, isBoolean, isEmpty, join, toString } from 'lodash';
 
 // Types
 import { getFieldTypeFromValue } from '../dataframe/processDataFrame';
@@ -12,7 +12,12 @@ import { DecimalCount, DisplayProcessor, DisplayValue } from '../types/displayVa
 import { TimeZone } from '../types/time';
 import { anyToNumber } from '../utils/anyToNumber';
 import { getValueMappingResult } from '../utils/valueMappings';
-import { FormattedValue, getValueFormat, isBooleanUnit } from '../valueFormats/valueFormats';
+import {
+  convertTextToEuropeanFormat,
+  FormattedValue,
+  getValueFormat,
+  isBooleanUnit,
+} from '../valueFormats/valueFormats';
 
 import { getScaleCalculator } from './scale';
 
@@ -38,6 +43,20 @@ const timeFormats: KeyValue<boolean> = {
   dateTimeAsLocalNoDateIfToday: true,
   dateTimeFromNow: true,
 };
+
+/** BMC Change: Start
+ * Check if european format boolean switch need to be applied or not
+ * @param field
+ * @returns
+ */
+export function checkEuropeanFormatBooleanSwitch(field: Field): boolean {
+  const config = field.config ?? {};
+  if (config.unit !== 'locale' && config.europeanFormat && config.unit !== 'european') {
+    return true;
+  }
+  return false;
+}
+// BMC Change: End
 
 export function getDisplayProcessor(options?: DisplayProcessorOptions): DisplayProcessor {
   if (!options || isEmpty(options) || !options.field) {
@@ -79,6 +98,9 @@ export function getDisplayProcessor(options?: DisplayProcessorOptions): DisplayP
   const hasBoolUnit = isBooleanUnit(unit);
   const isNumType = field.type === FieldType.number;
   const isLocaleFormat = unit === 'locale';
+  // BMC Code: Start
+  const isEuropeanFormatBooleanSwitch = checkEuropeanFormatBooleanSwitch(field);
+  // BMC Code: Ends
   const canTrimTrailingDecimalZeros =
     !hasDateUnit && !hasCurrencyUnit && !hasBoolUnit && !isLocaleFormat && isNumType && config.decimals == null;
 
@@ -147,7 +169,6 @@ export function getDisplayProcessor(options?: DisplayProcessorOptions): DisplayP
 
         if (canTrimTrailingDecimalZeros && adjacentDecimals != null) {
           v = formatFunc(numeric, adjacentDecimals, null, options.timeZone, showMs);
-
           // if no explicit decimals config, we strip trailing zeros e.g. 60.00 -> 60
           // this is needed because we may have determined the minimum determined `adjacentDecimals` for y tick increments based on
           // e.g. 'seconds' field unit (0.15s, 0.20s, 0.25s), but then formatFunc decided to return milli or nanos (150, 200, 250)
@@ -157,8 +178,22 @@ export function getDisplayProcessor(options?: DisplayProcessorOptions): DisplayP
           if (!Number.isNaN(asNum)) {
             v.text = asNum + '';
           }
+
+          // BMC Code starts here
+          // DRJ71 - : Applying european formatting to changed number string retrieved from above format
+          if (v.text != null && isEuropeanFormatBooleanSwitch) {
+            v.text = convertTextToEuropeanFormat(v.text, adjacentDecimals).text;
+          }
+          // BMC Code ends here
         } else {
           v = formatFunc(numeric, config.decimals, null, options.timeZone, showMs);
+
+          // BMC Code starts here
+          // DRJ71 - : Applying european formatting to changed number string retrieved from above format
+          if (v.text != null && isEuropeanFormatBooleanSwitch) {
+            v.text = convertTextToEuropeanFormat(v.text, config.decimals).text;
+          }
+          // BMC Code ends here
         }
 
         text = v.text;

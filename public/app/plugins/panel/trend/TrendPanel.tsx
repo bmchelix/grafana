@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
 import {
-  isLikelyAscendingVector,
   DataFrame,
   FieldMatcherID,
   fieldMatchers,
   FieldType,
+  isLikelyAscendingVector,
   PanelProps,
   TimeRange,
   useDataLinksContext,
@@ -40,8 +40,13 @@ export const TrendPanel = ({
   const userCanExecuteActions = useMemo(() => canExecuteActions?.() ?? false, [canExecuteActions]);
 
   // Need to fallback to first number field if no xField is set in options otherwise panel crashes 😬
+
+  // BMC code changes start
+  // Discard changes on upgrade, fix backported from grafana https://github.com/grafana/grafana/commit/1e58747a3944619c55df36dd61b0304b879e3509 to fix Trend panel crash
   const trendXFieldName =
     options.xField ?? data.series[0]?.fields.find((field) => field.type === FieldType.number)?.name;
+  // BMC changes end
+
   const preparePlotFrameTimeless = (frames: DataFrame[], dimFields: XYFieldMatchers, timeRange?: TimeRange | null) => {
     dimFields = {
       ...dimFields,

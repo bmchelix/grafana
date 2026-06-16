@@ -5,6 +5,8 @@ import (
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
 	"github.com/grafana/grafana/pkg/services/sqlstore/migrations/accesscontrol"
 	"github.com/grafana/grafana/pkg/services/sqlstore/migrations/anonservice"
+	"github.com/grafana/grafana/pkg/services/sqlstore/migrations/bhd_localization"
+	"github.com/grafana/grafana/pkg/services/sqlstore/migrations/ootb_dashboards_metadata"
 	"github.com/grafana/grafana/pkg/services/sqlstore/migrations/externalsession"
 	"github.com/grafana/grafana/pkg/services/sqlstore/migrations/signingkeys"
 	"github.com/grafana/grafana/pkg/services/sqlstore/migrations/ssosettings"
@@ -57,6 +59,29 @@ func (oss *OSSMigrations) AddMigration(mg *Migrator) {
 	addUserAuthTokenMigrations(mg)
 	addCacheMigration(mg)
 	addShortURLMigrations(mg)
+	// BMC code
+	addReportSchedulerMigrations(mg)
+	addCustomConfigurationMigrations(mg)
+	addCalculatedFields(mg)
+	addFeatureStatusMigrations(mg)
+	addCustomPersonalizationMigrations(mg)
+	addMetaDataView(mg)
+	addMiscellaneousStoreMigrations(mg)
+	addMetadataInsightFinder(mg)
+
+	// RBAC
+	addRbacTables(mg)
+
+	// BHCO
+	addReportEventsMigrations(mg)
+
+	// content localization
+	bhd_localization.AddMigration(mg)
+
+	// OOTB dashboards metadata tracking
+	ootb_dashboards_metadata.AddMigration(mg)
+
+	// BMC code End
 	ualert.AddTablesMigrations(mg)
 	addLibraryElementsMigrations(mg)
 

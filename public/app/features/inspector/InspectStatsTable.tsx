@@ -8,6 +8,7 @@ import {
   QueryResultMetaStat,
   TimeZone,
 } from '@grafana/data';
+import { Trans } from '@grafana/i18n';
 import { useStyles2, useTheme2 } from '@grafana/ui';
 
 interface InspectStatsTableProps {
@@ -28,6 +29,18 @@ export const InspectStatsTable = ({ timeZone, name, stats }: InspectStatsTablePr
     <div className={styles.wrapper}>
       <div className={styles.heading}>{name}</div>
       <table className="filter-table width-30">
+        {/* BMC change : To add headers to the table */}
+        <thead>
+          <tr>
+            <th>
+              <Trans i18nKey="bmc.inspector.stats.statistics">Statistics</Trans>
+            </th>
+            <th style={{ textAlign: 'right' }}>
+              <Trans i18nKey="bmc.inspector.stats.value">Value</Trans>
+            </th>
+          </tr>
+        </thead>
+        {/* BMC change ends here */}
         <tbody>
           {stats.map((stat, index) => {
             return (

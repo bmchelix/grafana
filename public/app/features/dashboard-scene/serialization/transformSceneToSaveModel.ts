@@ -27,6 +27,7 @@ import {
 } from '@grafana/schema';
 import { sortedDeepCloneWithoutNulls } from 'app/core/utils/object';
 import { getPanelDataFrames } from 'app/features/dashboard/components/HelpWizard/utils';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { DASHBOARD_SCHEMA_VERSION } from 'app/features/dashboard/state/DashboardMigrator';
 import { GrafanaQueryType } from 'app/plugins/datasource/grafana/types';
 
@@ -136,7 +137,9 @@ export function transformSceneToSaveModel(scene: DashboardScene, isSnapshot = fa
     version: state.version,
     timezone: timeRange.timeZone,
     fiscalYearStartMonth: timeRange.fiscalYearStartMonth,
-    weekStart: timeRange.weekStart,
+    // BMC Change: Post v12 upgrade, empty weekstart is now set to '' instead of undefined thru API
+    // TODO: Remove this once we have a proper weekStart type in the dashboard schema
+    weekStart: timeRange.weekStart ?? '',
     tags: state.tags,
     links: state.links,
     graphTooltip,
@@ -145,6 +148,11 @@ export function transformSceneToSaveModel(scene: DashboardScene, isSnapshot = fa
     refresh: refreshPicker?.state.refresh,
     // @ts-expect-error not in dashboard schema because it's experimental
     scopeMeta: state.scopeMeta,
+
+    // BMC Change Start
+    locales: getFeatureStatus('bhd-localization') ? state.locales : undefined,
+    multilingualPdf: state.multilingualPdf,
+    // BMC Change Ends
   };
 
   return sortedDeepCloneWithoutNulls(dashboard, true);

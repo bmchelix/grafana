@@ -255,7 +255,8 @@ export function guessFieldTypeForField(field: Field): FieldType | undefined {
   }
 
   // 2. Check the first non-null value
-  for (let i = 0; i < field.values.length; i++) {
+  // BMC Change: Temp fix, until Grafana make the apt fix
+  for (let i = 0; i < field.values?.length; i++) {
     const v = field.values[i];
     if (v != null) {
       return guessFieldTypeFromValue(v);

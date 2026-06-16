@@ -3,19 +3,19 @@ import { pick } from 'lodash';
 import { useMemo } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { DataSourceInstanceSettings, RawTimeRange, GrafanaTheme2 } from '@grafana/data';
+import { DataSourceInstanceSettings, GrafanaTheme2, RawTimeRange } from '@grafana/data';
 import { Components } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { reportInteraction } from '@grafana/runtime';
 import {
+  Button,
+  ButtonGroup,
   defaultIntervals,
   PageToolbar,
   RefreshPicker,
   SetInterval,
   ToolbarButton,
-  ButtonGroup,
   useStyles2,
-  Button,
 } from '@grafana/ui';
 import { AppChromeUpdate } from 'app/core/components/AppChrome/AppChromeUpdate';
 import { DataSourcePicker } from 'app/features/datasources/components/picker/DataSourcePicker';
@@ -34,15 +34,15 @@ import { ToolbarExtensionPoint } from './extensions/ToolbarExtensionPoint';
 import { changeDatasource } from './state/datasource';
 import { changeCorrelationHelperData } from './state/explorePane';
 import {
+  changeCorrelationEditorDetails,
+  evenPaneResizeAction,
+  maximizePaneAction,
   splitClose,
   splitOpen,
-  maximizePaneAction,
-  evenPaneResizeAction,
-  changeCorrelationEditorDetails,
 } from './state/main';
 import { cancelQueries, runQueries, selectIsWaitingForData } from './state/query';
 import { isLeftPaneSelector, isSplit, selectCorrelationDetails, selectPanesEntries } from './state/selectors';
-import { syncTimes, changeRefreshInterval } from './state/time';
+import { changeRefreshInterval, syncTimes } from './state/time';
 import { LiveTailControls } from './useLiveTailControls';
 
 const getStyles = (theme: GrafanaTheme2, splitted: Boolean) => ({
@@ -326,7 +326,8 @@ export function ExploreToolbar({ exploreId, onChangeTime, onContentOutlineToogle
             onRefresh={() => onRunQuery(loading)}
             noIntervalPicker={isLive}
             primary={true}
-            width={(showSmallTimePicker ? 35 : 108) + 'px'}
+            // BMC Change: to have dynamic width for non small time picker
+            width={showSmallTimePicker ? '35px' : 'auto'}
           />,
           datasourceInstance?.meta.streaming && (
             <LiveTailControls key="liveControls" exploreId={exploreId}>

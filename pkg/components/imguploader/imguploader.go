@@ -3,6 +3,7 @@ package imguploader
 import (
 	"context"
 	"fmt"
+	"os"
 	"regexp"
 	"time"
 
@@ -33,6 +34,11 @@ var (
 )
 
 func NewImageUploader(cfg *setting.Cfg) (ImageUploader, error) {
+	// BMC code changes start - FIPS
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		return nil, fmt.Errorf("uploading images is not allowed in FIPS mode")
+	}
+	// BMC code changes end - FIPS
 	switch cfg.ImageUploadProvider {
 	case "s3":
 		s3sec, err := cfg.Raw.GetSection("external_image_storage.s3")

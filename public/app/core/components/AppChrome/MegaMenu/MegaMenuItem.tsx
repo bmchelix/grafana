@@ -1,12 +1,12 @@
 import { css, cx } from '@emotion/css';
-import { useEffect, useRef } from 'react';
 import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom-v5-compat';
 import { useLocalStorage } from 'react-use';
 
 import { FeatureState, GrafanaTheme2, NavModelItem, toIconName } from '@grafana/data';
 import { t } from '@grafana/i18n';
-import { useStyles2, Text, IconButton, Icon, Stack, FeatureBadge } from '@grafana/ui';
+import { FeatureBadge, Icon, IconButton, Stack, Text, useStyles2 } from '@grafana/ui';
 import { useGrafana } from 'app/core/context/GrafanaContext';
 
 import { Indent } from '../../Indent/Indent';
@@ -126,6 +126,8 @@ export function MegaMenuItem({ link, activeItem, level = 0, onClick, onPin, isPi
                       sectionName: link.text,
                     })
               }
+              // BMC a11y change
+              aria-expanded={sectionExpanded ? 'true' : 'false'}
               className={styles.collapseButton}
               onClick={() => setSectionExpanded(!sectionExpanded)}
               name={getIconName(Boolean(sectionExpanded))}
