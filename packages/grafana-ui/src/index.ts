@@ -121,7 +121,8 @@ export {
 } from './components/Table/types';
 
 export { TableInputCSV } from './components/TableInputCSV/TableInputCSV';
-export { TabsBar } from './components/Tabs/TabsBar';
+// BMC code: export OrientationStateType
+export { TabsBar, type OrientationStateType } from './components/Tabs/TabsBar';
 export { Tab, type TabProps } from './components/Tabs/Tab';
 export { VerticalTab } from './components/Tabs/VerticalTab';
 export { TabContent } from './components/Tabs/TabContent';

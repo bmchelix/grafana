@@ -6,6 +6,7 @@ import { ScopesContext } from '@grafana/runtime';
 import { SceneComponentProps } from '@grafana/scenes';
 import { Page } from 'app/core/components/Page/Page';
 import { getNavModel } from 'app/core/selectors/navModel';
+import { KeySelectorProvider } from 'app/features/keySelector/KeySelector';
 import { useSelector } from 'app/types/store';
 
 import { DashboardEditPaneSplitter } from '../edit-pane/DashboardEditPaneSplitter';
@@ -15,6 +16,7 @@ import { PanelSearchLayout } from './PanelSearchLayout';
 import { SoloPanelContextProvider, useDefineSoloPanelContext } from './SoloPanelContext';
 
 export function DashboardSceneRenderer({ model }: SceneComponentProps<DashboardScene>) {
+  // BMC code: added uid
   const {
     controls,
     overlay,
@@ -26,6 +28,7 @@ export function DashboardSceneRenderer({ model }: SceneComponentProps<DashboardS
     panelsPerRow,
     isEditing,
     layoutOrchestrator,
+    uid,
   } = model.useState();
   const { type } = useParams();
   const location = useLocation();
@@ -99,7 +102,12 @@ export function DashboardSceneRenderer({ model }: SceneComponentProps<DashboardS
     <>
       {layoutOrchestrator && <layoutOrchestrator.Component model={layoutOrchestrator} />}
       <Page navModel={navModel} pageNav={pageNav} layout={PageLayoutType.Custom}>
-        {editPanel && <editPanel.Component model={editPanel} />}
+        {editPanel && (
+          // BMC Change: Inline to wrap key selector
+          <KeySelectorProvider keys={model.getDashCurrentLocales()!} resourceUid={uid!}>
+            <editPanel.Component model={editPanel} />
+          </KeySelectorProvider>
+        )}
         {!editPanel && (
           <DashboardEditPaneSplitter
             dashboard={model}

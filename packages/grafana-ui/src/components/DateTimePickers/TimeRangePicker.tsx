@@ -2,21 +2,21 @@ import { css, cx } from '@emotion/css';
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { useOverlay } from '@react-aria/overlays';
-import { memo, createRef, useState, useEffect } from 'react';
+import { createRef, memo, useEffect, useState } from 'react';
 
 import {
-  rangeUtil,
   GrafanaTheme2,
-  dateTimeFormat,
-  timeZoneFormatUserFriendly,
   TimeOption,
   TimeRange,
   TimeZone,
   dateMath,
+  dateTimeFormat,
   getTimeZoneInfo,
+  rangeUtil,
+  timeZoneFormatUserFriendly,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { t, Trans } from '@grafana/i18n';
+import { Trans, t } from '@grafana/i18n';
 
 import { useStyles2 } from '../../themes/ThemeContext';
 import { ButtonGroup } from '../Button/ButtonGroup';
@@ -143,6 +143,9 @@ export function TimeRangePicker(props: TimeRangePickerProps) {
     overlayRef
   );
   const { dialogProps } = useDialog({}, overlayRef);
+  //BMC Accessibility Change: Omit role from dialogProps
+  const { role, ...dialogWithoutRole } = dialogProps;
+  //BMC Accessibility Change End
 
   const styles = useStyles2(getStyles);
   const { modalBackdrop } = useStyles2(getModalStyles);
@@ -193,7 +196,8 @@ export function TimeRangePicker(props: TimeRangePickerProps) {
         <div data-testid={selectors.components.TimePicker.overlayContent}>
           <div role="presentation" className={cx(modalBackdrop, styles.backdrop)} {...underlayProps} />
           <FocusScope contain autoFocus restoreFocus>
-            <section className={styles.content} ref={overlayRef} {...overlayProps} {...dialogProps}>
+            {/* BMC Accessibility Change: Removed role from section */}
+            <section className={styles.content} ref={overlayRef} {...overlayProps} {...dialogWithoutRole}>
               <TimePickerContent
                 timeZone={timeZone}
                 fiscalYearStartMonth={fiscalYearStartMonth}

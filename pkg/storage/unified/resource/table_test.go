@@ -318,13 +318,22 @@ func TestColumnEncoding(t *testing.T) {
 }
 
 func TestDecodeCell(t *testing.T) {
-	colDef := &resourcepb.ResourceTableColumnDefinition{Type: resourcepb.ResourceTableColumnDefinition_INT64}
-	var buf bytes.Buffer
-	err := binary.Write(&buf, binary.BigEndian, int64(123))
-	require.NoError(t, err)
+	t.Run("decodes binary int64 values", func(t *testing.T) {
+		colDef := &resourcepb.ResourceTableColumnDefinition{Type: resourcepb.ResourceTableColumnDefinition_INT64}
+		var buf bytes.Buffer
+		err := binary.Write(&buf, binary.BigEndian, int64(123))
+		require.NoError(t, err)
 
-	res, err := DecodeCell(colDef, 0, buf.Bytes())
+		res, err := DecodeCell(colDef, 0, buf.Bytes())
+		require.NoError(t, err)
+		require.Equal(t, int64(123), res)
+	})
 
-	require.NoError(t, err)
-	require.Equal(t, int64(123), res)
+	t.Run("decodes legacy textual int64 values", func(t *testing.T) {
+		colDef := &resourcepb.ResourceTableColumnDefinition{Type: resourcepb.ResourceTableColumnDefinition_INT64}
+		// Regression coverage for IDs encoded as decimal text with length 8.
+		res, err := DecodeCell(colDef, 0, []byte("44449237"))
+		require.NoError(t, err)
+		require.Equal(t, int64(44449237), res)
+	})
 }

@@ -1,11 +1,11 @@
 import { css, cx } from '@emotion/css';
-import { CSSProperties, PropsWithChildren, ReactElement, ReactNode, useId, useState } from 'react';
 import * as React from 'react';
+import { CSSProperties, PropsWithChildren, ReactElement, ReactNode, useId, useState } from 'react';
 import { useMeasure, useToggle } from 'react-use';
 
 import { GrafanaTheme2, LoadingState } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 
 import { useStyles2, useTheme2 } from '../../themes/ThemeContext';
 import { getFocusStyles } from '../../themes/mixins';
@@ -428,7 +428,18 @@ export function PanelChrome({
             style={contentStyle}
             onPointerDown={onContentPointerDown}
           >
-            {typeof children === 'function' ? children(innerWidth, innerHeight) : children}
+            {/* BMC Change: Add loading state message for refresh to load */}
+            {loadingState === LoadingState.RefreshToLoad ? (
+              <div className="panel-empty">
+                <p>
+                  <Trans i18nKey="bmc.load-blank-dashoard.refresh-label">Refresh dashboard to fetch data</Trans>
+                </p>
+              </div>
+            ) : typeof children === 'function' ? (
+              children(innerWidth, innerHeight)
+            ) : (
+              children
+            )}
           </div>
         )}
       </section>

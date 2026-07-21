@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { t } from '@grafana/i18n';
 import { locationService } from '@grafana/runtime';
 import { Page } from 'app/core/components/Page/Page';
 import { NEW_LINK } from 'app/features/dashboard-scene/settings/links/utils';
@@ -34,9 +35,15 @@ export function LinksSettings({ dashboard, sectionNav, editIndex }: SettingsPage
 
   let pageNav = sectionNav.node.parentItem;
 
+  /*BMC Change using t or Trans : To enable localization for below text*/
+
   if (isEditing) {
-    const title = isNew ? 'New link' : 'Edit link';
-    const description = isNew ? 'Create a new link on your dashboard' : 'Edit a specific link of your dashboard';
+    const title = isNew
+      ? `${t('bmcgrafana.dashboards.settings.links.title-new-link', 'New link')}`
+      : `${t('bmcgrafana.dashboards.settings.links.title-edit-link', 'Edit link')}`;
+    const description = isNew
+      ? `${t('bmcgrafana.dashboards.settings.links.description-new-link', 'Create a new link on your dashboard')}`
+      : `${t('bmcgrafana.dashboards.settings.links.description-edit-link', 'Edit a specific link of your dashboard')}`;
     pageNav = {
       text: title,
       subTitle: description,

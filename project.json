@@ -5,7 +5,6 @@
   "targets": {
     "start": {
       "dependsOn": [
-        "check-frontend-dev",
         "themes-generate",
         {
           "projects": ["tag:scope:plugin"],

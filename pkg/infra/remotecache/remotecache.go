@@ -3,6 +3,8 @@ package remotecache
 import (
 	"context"
 	"errors"
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/grafana/grafana/pkg/infra/db"
@@ -110,9 +112,23 @@ func (ds *RemoteCache) Run(ctx context.Context) error {
 }
 
 func createClient(opts *setting.RemoteCacheSettings, sqlstore db.DB, secretsService secrets.Service) (cache CacheStorage, err error) {
+	// BMC code changes start - FIPS mode
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		if opts.Name != redisCacheType && opts.Name != databaseCacheType {
+			return nil, fmt.Errorf("only redis and database remote cache are supported in FIPS mode")
+		}
+		opts.Encryption = true // In FIPS mode, encryption is always enabled and cannot be disabled
+	}
+	// BMC code changes end - FIPS mode
 	switch opts.Name {
 	case redisCacheType:
-		cache, err = newRedisStorage(opts)
+		//BMC Code Start
+		if opts.RedisClusterModeEnabled {
+			cache, err = newRedisClusterStorage(opts)
+		} else {
+			cache, err = newRedisStorage(opts)
+		}
+		//BMC Code End
 	case memcachedCacheType:
 		cache = newMemcachedStorage(opts)
 	case databaseCacheType:

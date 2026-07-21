@@ -21,6 +21,11 @@ export {
   CHINESE_TRADITIONAL,
   PSEUDO_LOCALE,
   DEFAULT_LANGUAGE,
+  // BMC code - Additional languages
+  FRENCH_CANADA,
+  ENGLISH_CANADA,
+  ARABIC_ARABIC,
+  // BMC code - end
 } from './constants';
 export { initPluginTranslations, t, Trans } from './i18n';
 export type { ResourceLoader, Resources, TFunction, TransProps } from './types';

@@ -26,18 +26,20 @@ func NewDataSourceProvider(config DataSourceConfig) *ConfigurableDataSourceProvi
 	return &ConfigurableDataSourceProvider{config: config}
 }
 
-func (p *ConfigurableDataSourceProvider) GetDataSourceInfo(_ context.Context) []schemaversion.DataSourceInfo {
+// Index builds a datasource index for migrations (matches production DataSourceIndexProvider).
+func (p *ConfigurableDataSourceProvider) Index(_ context.Context) *schemaversion.DatasourceIndex {
+	var slice []schemaversion.DataSourceInfo
 	switch p.config {
 	case StandardTestConfig:
-		return p.getStandardTestDataSources()
+		slice = p.getStandardTestDataSources()
 	case DevDashboardConfig:
-		return p.getDevDashboardDataSources()
+		slice = p.getDevDashboardDataSources()
 	default:
-		return p.getStandardTestDataSources()
+		slice = p.getStandardTestDataSources()
 	}
+	return schemaversion.NewDatasourceIndex(slice)
 }
 
-// getStandardTestDataSources returns datasources for standard migration tests
 func (p *ConfigurableDataSourceProvider) getStandardTestDataSources() []schemaversion.DataSourceInfo {
 	return []schemaversion.DataSourceInfo{
 		{
@@ -91,7 +93,6 @@ func (p *ConfigurableDataSourceProvider) getStandardTestDataSources() []schemave
 	}
 }
 
-// getDevDashboardDataSources returns datasources for dev dashboard tests
 func (p *ConfigurableDataSourceProvider) getDevDashboardDataSources() []schemaversion.DataSourceInfo {
 	return []schemaversion.DataSourceInfo{
 		{
@@ -106,7 +107,7 @@ func (p *ConfigurableDataSourceProvider) getDevDashboardDataSources() []schemave
 			Default:    false,
 			UID:        "testdata",
 			Type:       "grafana-testdata-datasource",
-			APIVersion: "", // Frontend testdata datasource has no apiVersion
+			APIVersion: "",
 			Name:       "TestData",
 			ID:         2,
 		},

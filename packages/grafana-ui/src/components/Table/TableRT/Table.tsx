@@ -231,6 +231,12 @@ export const Table = memo((props: Props) => {
       setFooterItems(footerItemsCountRows);
       return;
     }
+    // BMC Code : DRJ71-20318. When there's no data return early to prevent calculation errors.
+    if (rows.length === 0) {
+      setFooterItems(undefined);
+      return;
+    }
+    //BMC Code end
 
     const footerItems = getFooterItems(
       headerGroups[0].headers,

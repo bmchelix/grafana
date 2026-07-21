@@ -19,7 +19,15 @@ export function getVariablesUrlParams(scopedVars?: ScopedVars): UrlQueryMap {
     if (scopedVar) {
       params[VARIABLE_PREFIX + variable.name] = scopedVar.value;
     } else {
-      params[VARIABLE_PREFIX + variable.name] = variableAdapters.get(variable.type).getValueForUrl(variable);
+      // BMC code start
+      // TODO: Revert to Grafana code once we have upgraded plugins
+      // params[VARIABLE_PREFIX + variable.name] = variableAdapters.get(variable.type).getValueForUrl(variable);
+      const adapter = variableAdapters.getIfExists(variable.type);
+      if (adapter) {
+        params[VARIABLE_PREFIX + variable.name] = adapter.getValueForUrl(variable);
+      }
+      // Skip variable types not in the legacy registry (e.g. switch from dashboard-scene)
+      // BMC code end
     }
   }
 

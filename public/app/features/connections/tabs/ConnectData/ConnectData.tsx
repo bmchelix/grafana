@@ -1,11 +1,11 @@
 import { css } from '@emotion/css';
-import { useMemo, useState, MouseEvent } from 'react';
+import { MouseEvent, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom-v5-compat';
 
-import { PluginType, GrafanaTheme2, SelectableValue } from '@grafana/data';
+import { GrafanaTheme2, PluginType, SelectableValue } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
 import { locationSearchToObject, reportInteraction } from '@grafana/runtime';
-import { LoadingPlaceholder, EmptyState, Field, RadioButtonGroup, Tooltip, Combobox, useStyles2 } from '@grafana/ui';
+import { Combobox, EmptyState, Field, LoadingPlaceholder, RadioButtonGroup, Tooltip, useStyles2 } from '@grafana/ui';
 import { contextSrv } from 'app/core/core';
 import { useQueryParams } from 'app/core/hooks/useQueryParams';
 import { HorizontalGroup } from 'app/features/plugins/admin/components/HorizontalGroup';
@@ -79,10 +79,11 @@ export function AddNewConnection() {
   const filterByOptions = [
     { value: 'all', label: t('connections.add-new-connection.filter-by-options.label.all', 'All') },
     { value: 'installed', label: t('connections.add-new-connection.filter-by-options.label.installed', 'Installed') },
-    {
-      value: 'has-update',
-      label: t('connections.add-new-connection.filter-by-options.label.new-updates', 'New Updates'),
-    },
+    // BMC Change: Commented out has-update filter option
+    // {
+    //   value: 'has-update',
+    //   label: t('connections.add-new-connection.filter-by-options.label.new-updates', 'New Updates'),
+    // },
   ];
 
   const onClickCardGridItem = (e: MouseEvent<HTMLElement>, item: CardGridItem) => {

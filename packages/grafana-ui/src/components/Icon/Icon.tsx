@@ -3,9 +3,10 @@ import * as React from 'react';
 import SVG from 'react-inlinesvg';
 
 import { GrafanaTheme2, isIconName } from '@grafana/data';
+import { t } from '@grafana/i18n';
 
 import { useStyles2 } from '../../themes/ThemeContext';
-import { IconName, IconType, IconSize } from '../../types/icon';
+import { IconName, IconSize, IconType } from '../../types/icon';
 import { spin } from '../../utils/keyframes';
 
 import { getIconPath, getSvgSize } from './utils';
@@ -104,6 +105,11 @@ export const Icon = React.memo(
             />
           }
           {...rest}
+          // BMC Code : Accessibility Change (Next 2 lines)
+          role="img"
+          aria-label={
+            iconName === 'info-circle' ? t('bmcgrafana.grafana-ui.icon.information', 'information') : iconName
+          }
         />
       );
     }

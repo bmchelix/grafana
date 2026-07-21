@@ -4,9 +4,15 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"strings"
+
+	"github.com/grafana/grafana/pkg/bhdcodes"
+	"github.com/grafana/grafana/pkg/bmc/audit"
 
 	"github.com/grafana/grafana/pkg/api/apierrors"
+	"github.com/grafana/grafana/pkg/api/bmc/external"
 	"github.com/grafana/grafana/pkg/api/dtos"
+	"github.com/grafana/grafana/pkg/api/pluginproxy"
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/api/routing"
 	"github.com/grafana/grafana/pkg/infra/metrics"
@@ -65,7 +71,8 @@ func (hs *HTTPServer) registerFolderAPI(apiRoute routing.RouteRegister, authoriz
 // 500: internalServerError
 func (hs *HTTPServer) GetFolders(c *contextmodel.ReqContext) response.Response {
 	permission := dashboardaccess.PERMISSION_VIEW
-	if c.Query("permission") == "Edit" {
+	// BMC code: inline change for case insensitive comparison
+	if strings.EqualFold(c.Query("permission"), "Edit") {
 		permission = dashboardaccess.PERMISSION_EDIT
 	}
 
@@ -173,13 +180,17 @@ func (hs *HTTPServer) GetFolderByID(c *contextmodel.ReqContext) response.Respons
 func (hs *HTTPServer) CreateFolder(c *contextmodel.ReqContext) response.Response {
 	cmd := folder.CreateFolderCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while creating folder", err)
 	}
 	cmd.OrgID = c.GetOrgID()
 	cmd.SignedInUser = c.SignedInUser
 
 	folder, err := hs.folderService.Create(c.Req.Context(), &cmd)
 	if err != nil {
+		// BMC CODE START
+		go audit.FolderCreateAudit(c, cmd.Title, err)
+		// BMC CODE END
 		return apierrors.ToFolderErrorResponse(err)
 	}
 
@@ -188,6 +199,9 @@ func (hs *HTTPServer) CreateFolder(c *contextmodel.ReqContext) response.Response
 		return response.Err(err)
 	}
 
+	// BMC CODE START
+	go audit.FolderCreateAudit(c, cmd.Title, nil)
+	// BMC CODE END
 	// TODO set ParentUID if nested folders are enabled
 	return response.JSON(http.StatusOK, folderDTO)
 }
@@ -205,7 +219,8 @@ func (hs *HTTPServer) CreateFolder(c *contextmodel.ReqContext) response.Response
 func (hs *HTTPServer) MoveFolder(c *contextmodel.ReqContext) response.Response {
 	cmd := folder.MoveFolderCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code: updated message
+		return response.Error(http.StatusBadRequest, "bad request data when moving folder", err)
 	}
 	var err error
 
@@ -239,7 +254,8 @@ func (hs *HTTPServer) MoveFolder(c *contextmodel.ReqContext) response.Response {
 func (hs *HTTPServer) UpdateFolder(c *contextmodel.ReqContext) response.Response {
 	cmd := folder.UpdateFolderCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while updating folder", err)
 	}
 
 	cmd.OrgID = c.GetOrgID()
@@ -247,6 +263,9 @@ func (hs *HTTPServer) UpdateFolder(c *contextmodel.ReqContext) response.Response
 	cmd.SignedInUser = c.SignedInUser
 	result, err := hs.folderService.Update(c.Req.Context(), &cmd)
 	if err != nil {
+		// BMC CODE START
+		go audit.FolderUpdateAudit(c, *cmd.NewTitle, err)
+		// BMC COD END
 		return apierrors.ToFolderErrorResponse(err)
 	}
 	folderDTO, err := hs.newToFolderDto(c, result)
@@ -254,6 +273,9 @@ func (hs *HTTPServer) UpdateFolder(c *contextmodel.ReqContext) response.Response
 		return response.Err(err)
 	}
 
+	// BMC CODE START
+	go audit.FolderUpdateAudit(c, *cmd.NewTitle, nil)
+	// BMC COD END
 	return response.JSON(http.StatusOK, folderDTO)
 }
 
@@ -287,13 +309,43 @@ func (hs *HTTPServer) DeleteFolder(c *contextmodel.ReqContext) response.Response
 	*/
 
 	uid := web.Params(c.Req)[":uid"]
+
+	// BMC Code: Starts
+	folderDetail, getFolderErr := hs.folderService.Get(c.Req.Context(), &folder.GetFolderQuery{UID: &uid, OrgID: c.OrgID, SignedInUser: c.SignedInUser})
+	if getFolderErr != nil {
+		hs.log.Error("Error while getting Folder data for audit")
+	}
+	dashboards, getDashErr := hs.DashboardService.GetDashboardsByFolderUID(c.Req.Context(), &dashboards.GetDashboardsByFolderUIDQuery{FolderUID: uid, OrgID: c.OrgID})
+	if getDashErr != nil {
+		hs.log.Error("Error while getting dashboards data for audit")
+	}
+	// BMC Code: Ends
+
 	err = hs.folderService.Delete(c.Req.Context(), &folder.DeleteFolderCommand{UID: uid, OrgID: c.GetOrgID(), ForceDeleteRules: c.QueryBool("forceDeleteRules"), SignedInUser: c.SignedInUser})
+
+	//BMC CODE STARTS
+	go func() {
+		if folderDetail != nil {
+			audit.FolderDeleteAudit(c, folderDetail.Title, err)
+		}
+		if dashboards != nil {
+			// for deleting redis cache for the folder
+			if err == nil && external.BHD_ENABLE_VAR_CACHING.Enabled(c.Req, c.SignedInUser) {
+				pluginproxy.DeleteFolderCache(c.OrgID, dashboards)
+			}
+			audit.DashboardDeleteAudit(c, err, dashboards...)
+		}
+	}()
+	//BMC CODE ENDS
+
 	if err != nil {
 		return apierrors.ToFolderErrorResponse(err)
 	}
 
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message": "Folder deleted",
+		// BMC code change
+		"bhdCode": bhdcodes.FolderDeleted,
 	})
 }
 

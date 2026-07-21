@@ -2,6 +2,7 @@ import { css } from '@emotion/css';
 import * as React from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
+import { t } from '@grafana/i18n';
 import { getTagColorsFromName, Icon, useStyles2 } from '@grafana/ui';
 
 export interface Props {
@@ -9,9 +10,12 @@ export interface Props {
   removeIcon: boolean;
   count: number;
   onClick?: React.MouseEventHandler<SVGElement>;
+  // BMC Code : Accessibility Change Next line
+  customClearTags?: (label: string) => void;
 }
 
-export const TagBadge = ({ count, label, onClick, removeIcon }: Props) => {
+// BMC Code : Accessibility Change added customClearTags Props in Next line
+export const TagBadge = ({ count, label, onClick, removeIcon, customClearTags }: Props) => {
   const { color } = getTagColorsFromName(label);
   const styles = useStyles2(getStyles);
 
@@ -24,7 +28,23 @@ export const TagBadge = ({ count, label, onClick, removeIcon }: Props) => {
         backgroundColor: color,
       }}
     >
-      {removeIcon && <Icon onClick={onClick} name="times" />}
+      {removeIcon && (
+        <Icon
+          onClick={onClick}
+          name="times"
+          // BMC Code : Accessibility Change starts here.
+          tabIndex={0}
+          role="button"
+          aria-label={t('bmc.tag-filter.remove-tag', 'Remove tag {{label}}', { label: label })}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              customClearTags?.(label);
+            }
+          }}
+          // BMC Code : Accessibility Change ends here.
+        />
+      )}
       {label} {countLabel}
     </span>
   );

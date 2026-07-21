@@ -1,7 +1,48 @@
 import { ResourceKey } from 'i18next';
 import { uniq } from 'lodash';
 
-import { DEFAULT_LANGUAGE, PSEUDO_LOCALE, LANGUAGES as SUPPORTED_LANGUAGES } from '@grafana/i18n';
+import {
+  ARABIC_ARABIC,
+  BRAZILIAN_PORTUGUESE,
+  CHINESE_SIMPLIFIED,
+  DEFAULT_LANGUAGE,
+  ENGLISH_CANADA,
+  ENGLISH_US,
+  FRENCH_CANADA,
+  FRENCH_FRANCE,
+  GERMAN_GERMANY,
+  ITALIAN_ITALY,
+  JAPANESE_JAPAN,
+  KOREAN_KOREA,
+  PSEUDO_LOCALE,
+  RUSSIAN_RUSSIA,
+  SPANISH_SPAIN,
+  LANGUAGES as SUPPORTED_LANGUAGES,
+} from '@grafana/i18n';
+
+// BMC code - Filter Grafana languages to only include allowed ones
+// Add or remove language codes here to control which Grafana languages are available
+const BMC_ALLOWED_LANGUAGE_CODES = [
+  ENGLISH_US, // English (US)
+  FRENCH_FRANCE, // French (France)
+  SPANISH_SPAIN, // Spanish (Spain)
+  GERMAN_GERMANY, // German (Germany)
+  ITALIAN_ITALY, // Italian (Italy)
+  ARABIC_ARABIC, // Arabic (Arabic)
+  FRENCH_CANADA, // French (Canada)
+  ENGLISH_CANADA, // English (Canada)
+  BRAZILIAN_PORTUGUESE, // Portugues (Brazil)
+  RUSSIAN_RUSSIA, // Russian (Russia)
+  CHINESE_SIMPLIFIED, // Chinese (Simplified)
+  JAPANESE_JAPAN, // Japanese (Japan)
+  KOREAN_KOREA, // Korean (Korea)
+];
+
+const FILTERED_SUPPORTED_LANGUAGES = SUPPORTED_LANGUAGES.filter((lang) =>
+  BMC_ALLOWED_LANGUAGE_CODES.includes(lang.code)
+);
+
+// BMC code - end
 
 export type LocaleFileLoader = () => Promise<ResourceKey>;
 
@@ -13,7 +54,8 @@ export interface LanguageDefinition<Namespace extends string = string> extends B
   loader: Record<Namespace, LocaleFileLoader>;
 }
 
-export const LANGUAGES: LanguageDefinition[] = SUPPORTED_LANGUAGES.map((def) => {
+// BMC code - Use filtered Grafana languages instead of all
+export const LANGUAGES: LanguageDefinition[] = FILTERED_SUPPORTED_LANGUAGES.map((def) => {
   // Load the Default language (en-US) as the pseudo-locale, as it will be post-processed by i18next-pseudo library
   const locale = def.code === PSEUDO_LOCALE ? DEFAULT_LANGUAGE : def.code;
   return {
@@ -46,3 +88,6 @@ if (process.env.NODE_ENV !== 'test') {
 export const VALID_LANGUAGES = LANGUAGES.map((v) => v.code);
 
 export const NAMESPACES = uniq(LANGUAGES.flatMap((v) => Object.keys(v.loader)));
+
+// BMC change - Locale constants
+export const DashFolderLinkRegexp = /\/[df]\/([a-zA-Z0-9\_\-]+)(?!.*editview=)/;

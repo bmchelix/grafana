@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css';
-import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 import { TableInstance, useTable } from 'react-table';
 import { VariableSizeList as List } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
@@ -12,11 +12,11 @@ import { useStyles2 } from '@grafana/ui';
 import { DashboardViewItem } from 'app/features/search/types';
 
 import {
+  BrowseDashboardsPermissions,
   DashboardsTreeCellProps,
   DashboardsTreeColumn,
   DashboardsTreeItem,
   SelectionState,
-  BrowseDashboardsPermissions,
 } from '../types';
 
 import CheckboxCell from './CheckboxCell';
@@ -24,7 +24,7 @@ import CheckboxHeaderCell from './CheckboxHeaderCell';
 import { NameCell } from './NameCell';
 import { TagsCell } from './TagsCell';
 import { useCustomFlexLayout } from './customFlexTableLayout';
-import { makeRowID, canSelectItems } from './utils';
+import { canSelectItems, makeRowID } from './utils';
 
 interface DashboardsTreeProps {
   items: DashboardsTreeItem[];
@@ -77,6 +77,9 @@ export function DashboardsTree({
     }
   }, [items]);
 
+  // BMC code - moved canSelect outside useMemo so it can be used in virtualData
+  const canSelect = canSelectItems(permissions);
+
   const tableColumns = useMemo(() => {
     const checkboxColumn: DashboardsTreeColumn = {
       id: 'checkbox',
@@ -102,15 +105,15 @@ export function DashboardsTree({
       Header: t('browse-dashboards.dashboards-tree.tags-column', 'Tags'),
       Cell: (props: DashboardsTreeCellProps) => <TagsCell {...props} onTagClick={onTagClick} />,
     };
-    const canSelect = canSelectItems(permissions);
     const columns = [canSelect && checkboxColumn, nameColumn, tagsColumns].filter(isTruthy);
 
     return columns;
-  }, [onFolderClick, onTagClick, permissions]);
+  }, [onFolderClick, onTagClick, canSelect]);
 
   const table = useTable({ columns: tableColumns, data: items }, useCustomFlexLayout);
   const { getTableProps, getTableBodyProps, headerGroups } = table;
 
+  // BMC code - added canSelect
   const virtualData = useMemo(
     () => ({
       table,
@@ -119,10 +122,11 @@ export function DashboardsTree({
       onItemSelectionChange,
       treeID,
       permissions,
+      canSelect,
     }),
     // we need this to rerender if items changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [table, isSelected, onAllSelectionChange, onItemSelectionChange, items, treeID, permissions]
+    [table, isSelected, onAllSelectionChange, onItemSelectionChange, items, treeID, permissions, canSelect]
   );
 
   const handleIsItemLoaded = useCallback(
@@ -214,12 +218,13 @@ interface VirtualListRowProps {
     onItemSelectionChange: DashboardsTreeCellProps['onItemSelectionChange'];
     treeID: string;
     permissions: BrowseDashboardsPermissions;
+    canSelect: boolean;
   };
 }
 
 function VirtualListRow({ index, style, data }: VirtualListRowProps) {
   const styles = useStyles2(getStyles);
-  const { table, isSelected, onItemSelectionChange, treeID, permissions } = data;
+  const { table, isSelected, onItemSelectionChange, treeID, permissions, canSelect } = data;
   const { rows, prepareRow } = table;
 
   const row = rows[index];
@@ -227,6 +232,36 @@ function VirtualListRow({ index, style, data }: VirtualListRowProps) {
 
   const dashboardItem = row.original.item;
   const { key, ...rowProps } = row.getRowProps({ style });
+
+  // BMC Code : Accessibility Change starts here.
+  const handleRowInteraction = () => {
+    if (onItemSelectionChange && isSelected && dashboardItem.kind !== 'ui') {
+      const state = isSelected(dashboardItem);
+      const shouldSelect = state !== SelectionState.Selected;
+      onItemSelectionChange(dashboardItem, shouldSelect);
+    }
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.target;
+    if (target instanceof HTMLInputElement && target.type === 'checkbox') {
+      return;
+    }
+    if (target instanceof HTMLElement && target.closest('label')?.querySelector('input[type="checkbox"]')) {
+      return;
+    }
+    event.stopPropagation();
+    event.preventDefault();
+    handleRowInteraction();
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleRowInteraction();
+    }
+  };
+  // BMC Code : Accessibility Change ends here.
 
   if (dashboardItem.kind === 'ui' && dashboardItem.uiKind === 'divider') {
     return (
@@ -245,6 +280,11 @@ function VirtualListRow({ index, style, data }: VirtualListRowProps) {
       data-testid={selectors.pages.BrowseDashboards.table.row(
         'title' in dashboardItem ? dashboardItem.title : dashboardItem.uid
       )}
+      // BMC Code: Accessibility Change
+      onClick={canSelect ? handleClick : undefined}
+      onKeyDown={canSelect ? handleKeyDown : undefined}
+      role={canSelect ? 'button' : undefined}
+      tabIndex={canSelect ? 0 : undefined}
     >
       {row.cells.map((cell) => {
         const { key, ...cellProps } = cell.getCellProps();

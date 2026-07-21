@@ -4,7 +4,7 @@ import { useThrottle } from 'react-use';
 
 import { InterpolateFunction, PanelProps, textUtil } from '@grafana/data';
 import { t } from '@grafana/i18n';
-import { useStyles2, ScrollContainer, Box, Text, EmptyState, Link } from '@grafana/ui';
+import { Box, EmptyState, Link, ScrollContainer, Text, useStyles2 } from '@grafana/ui';
 import { getConfig } from 'app/core/config';
 import impressionSrv from 'app/core/services/impression_srv';
 import { getGrafanaSearcher } from 'app/features/search/service/searcher';
@@ -192,6 +192,16 @@ export function DashList(props: PanelProps<Options>) {
     <ul>
       {dashboards.map((dash) => {
         let url = dash.url + urlParams;
+
+        // BMC code - localized dashboard/folder names
+        // to be ignored for extraction
+        const localizedTitle = t(`bmc-dynamic.${dash.uid}.name`, dash.name);
+        // dash.location is the folder UID (set from hit.folderUid in sql.ts)
+        const localizedFolderTitle = t(
+          `bmc-dynamic.${dash.location}.name`,
+          foldersTitleMap[dash.location]?.name ?? ''
+        );
+        // BMC code - end
         url = getConfig().disableSanitizeHtml ? url : textUtil.sanitizeUrl(url);
 
         const locationInfo = showFolderNames && dash.location ? foldersTitleMap[dash.location] : undefined;
@@ -199,15 +209,16 @@ export function DashList(props: PanelProps<Options>) {
           <li key={`dash-${dash.uid}`}>
             <div className={css.dashlistLink}>
               <Box flex={1}>
-                <Link href={url}>{dash.name}</Link>
+                <Link href={url}>{localizedTitle}</Link>
                 {showFolderNames && locationInfo && (
                   <Text color="secondary" variant="bodySmall" element="p">
-                    {locationInfo?.name}
+                    {/* BMC code - show localized folder name */}
+                    {localizedFolderTitle}
                   </Text>
                 )}
               </Box>
               <StarToolbarButton
-                title={dash.name}
+                title={localizedTitle}
                 group="dashboard.grafana.app"
                 kind="Dashboard"
                 id={dash.uid}

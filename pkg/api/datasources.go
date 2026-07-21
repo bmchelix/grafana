@@ -6,20 +6,29 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/grafana/grafana/pkg/api/bmc/external"
+	"github.com/grafana/grafana/pkg/bhdcodes"
+	kp "github.com/grafana/grafana/pkg/bmc/kafkaproducer"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 
 	"github.com/grafana/grafana/pkg/api/datasource"
 	"github.com/grafana/grafana/pkg/api/dtos"
+
+	// bmc code change
+	"github.com/grafana/grafana/pkg/api/externalds"
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
 	"github.com/grafana/grafana/pkg/components/simplejson"
 	"github.com/grafana/grafana/pkg/infra/log"
 	contextmodel "github.com/grafana/grafana/pkg/services/contexthandler/model"
 	"github.com/grafana/grafana/pkg/services/datasources"
+	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/util"
 	"github.com/grafana/grafana/pkg/web"
@@ -41,6 +50,12 @@ var datasourcesLogger = log.New("datasources")
 // 500: internalServerError
 func (hs *HTTPServer) GetDataSources(c *contextmodel.ReqContext) response.Response {
 	query := datasources.GetDataSourcesQuery{OrgID: c.GetOrgID(), DataSourceLimit: hs.Cfg.DataSourceLimit}
+
+	//BMC Code : Start => MSP Tenant Check only for non admin users
+	if c.SignedInUser.OrgRole != "Admin" && ((len(strings.TrimSpace(c.SignedInUser.SubTenantId)) != 0) || ((len(c.SignedInUser.MspOrgs) > 0) && !c.SignedInUser.IsUnrestrictedUser)) {
+		query = hs.buildMSPDSQuery(c)
+	}
+	//BMC Code : End
 
 	dataSources, err := hs.DataSourcesService.GetDataSources(c.Req.Context(), &query)
 	if err != nil {
@@ -78,7 +93,10 @@ func (hs *HTTPServer) GetDataSources(c *contextmodel.ReqContext) response.Respon
 		} else {
 			dsItem.TypeLogoUrl = "public/img/icn-datasource.svg"
 		}
-
+		// bmc code: mask url for non super admin user
+		if externalds.IsExternalDs(dsItem.Type) && !c.IsGrafanaAdmin {
+			dsItem.Url = externalds.MaskedUrl
+		}
 		result = append(result, dsItem)
 	}
 
@@ -131,6 +149,10 @@ func (hs *HTTPServer) GetDataSourceById(c *contextmodel.ReqContext) response.Res
 	// Add accesscontrol metadata
 	dto.AccessControl = getAccessControlMetadata(c, datasources.ScopePrefix, dto.UID)
 
+	// bmc code: mask url for non super admin user
+	if externalds.IsExternalDs(dto.Type) && !c.IsGrafanaAdmin {
+		dto.Url = externalds.MaskedUrl
+	}
 	return response.JSON(http.StatusOK, &dto)
 }
 
@@ -173,6 +195,11 @@ func (hs *HTTPServer) DeleteDataSourceById(c *contextmodel.ReqContext) response.
 		return response.Error(http.StatusForbidden, "Cannot delete read-only data source", nil)
 	}
 
+	// BMC Code - Disable deletion for non super admin users
+	if (ds.Type == "bmchelix-ade-datasource" || ds.Type == "json-datasource") && !c.IsGrafanaAdmin {
+		return response.Error(403, "You do not have enough permission to delete datasource", nil)
+	}
+
 	cmd := &datasources.DeleteDataSourceCommand{ID: id, OrgID: c.GetOrgID(), Name: ds.Name}
 
 	err = hs.DataSourcesService.DeleteDataSource(c.Req.Context(), cmd)
@@ -213,7 +240,10 @@ func (hs *HTTPServer) GetDataSourceByUID(c *contextmodel.ReqContext) response.Re
 
 	// Add accesscontrol metadata
 	dto.AccessControl = getAccessControlMetadata(c, datasources.ScopePrefix, dto.UID)
-
+	// bmc code: mask url for non super admin user
+	if externalds.IsExternalDs(dto.Type) && !c.IsGrafanaAdmin {
+		dto.Url = externalds.MaskedUrl
+	}
 	return response.JSON(http.StatusOK, &dto)
 }
 
@@ -249,18 +279,39 @@ func (hs *HTTPServer) DeleteDataSourceByUID(c *contextmodel.ReqContext) response
 		return response.Error(http.StatusForbidden, "Cannot delete read-only data source", nil)
 	}
 
+	// BMC Code - Disable deletion for non super admin users
+	if (ds.Type == "bmchelix-ade-datasource" || ds.Type == "json-datasource") && !c.IsGrafanaAdmin {
+		return response.Error(403, "You do not have enough permission to delete datasource", nil)
+	}
+
 	cmd := &datasources.DeleteDataSourceCommand{UID: uid, OrgID: c.GetOrgID(), Name: ds.Name}
 
 	err = hs.DataSourcesService.DeleteDataSource(c.Req.Context(), cmd)
 	if err != nil {
+		// BMC Code - start
+		kp.DataSourceDeleteEvent.Send(kp.EventOpt{Ctx: c, Err: err,
+			ObjectName:       ds.Name,
+			ObjectDetails:    fmt.Sprintf("Datasource '%s' with UID '%s' and of type '%s'", ds.Name, ds.UID, ds.Type),
+			OperationSubType: "Failed to delete datasource: " + err.Error(),
+		})
+		// BMC Code - end
 		return response.Error(http.StatusInternalServerError, "Failed to delete datasource", err)
 	}
 
 	hs.Live.HandleDatasourceDelete(c.GetOrgID(), ds.UID)
 
+	//BMC Code - start
+	kp.DataSourceDeleteEvent.Send(kp.EventOpt{Ctx: c, Prev: nil, New: nil,
+		ObjectName:       ds.Name,
+		ObjectDetails:    fmt.Sprintf("Datasource '%s' with UID '%s' and of type '%s'", ds.Name, ds.UID, ds.Type),
+		OperationSubType: "Datasource deleted successfully",
+	})
+	//BMC Code - end
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message": "Data source deleted",
 		"id":      ds.ID,
+		//BMC code change
+		"bhdCode": bhdcodes.DatasourceDeleted,
 	})
 }
 
@@ -297,6 +348,11 @@ func (hs *HTTPServer) DeleteDataSourceByName(c *contextmodel.ReqContext) respons
 		return response.Error(http.StatusForbidden, "Cannot delete read-only data source", nil)
 	}
 
+	// BMC Code - Disable deletion for non super admin users
+	if (dataSource.Type == "bmchelix-ade-datasource" || dataSource.Type == "json-datasource") && !c.IsGrafanaAdmin {
+		return response.Error(403, "You do not have enough permission to delete datasource", nil)
+	}
+
 	cmd := &datasources.DeleteDataSourceCommand{Name: name, OrgID: c.GetOrgID()}
 	err = hs.DataSourcesService.DeleteDataSource(c.Req.Context(), cmd)
 	if err != nil {
@@ -308,6 +364,8 @@ func (hs *HTTPServer) DeleteDataSourceByName(c *contextmodel.ReqContext) respons
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message": "Data source deleted",
 		"id":      dataSource.ID,
+		// BMC code change
+		"bhdCode": bhdcodes.DatasourceDeleted,
 	})
 }
 
@@ -316,7 +374,27 @@ func validateURL(cmdType string, url string) response.Response {
 		datasourcesLogger.Error("Failed to validate URL", "url", url)
 		return response.Error(http.StatusBadRequest, "Validation error, invalid URL", err)
 	}
+	return nil
+}
 
+func validateURL_FeatureFlag(c *contextmodel.ReqContext, cmdType string, urlStr string) response.Response {
+	if cmdType == datasources.DS_BMC_SERVICENOW {
+		tenantURL := external.FeatureFlagDSServiceNow.Value(c.Req, c.SignedInUser)
+		if tenantURL == "" || urlStr == "" {
+			return nil
+		}
+		tenantURLParsed, err := url.Parse(tenantURL)
+		if err != nil {
+			return response.Error(http.StatusBadRequest, "Incorrect feature flag URL", err)
+		}
+		urlStrParsed, err := url.Parse(urlStr)
+		if err != nil {
+			return response.Error(http.StatusBadRequest, "Incorrect URL", err)
+		}
+		if tenantURLParsed.Host != urlStrParsed.Host || tenantURLParsed.Port() != urlStrParsed.Port() || tenantURLParsed.Scheme != urlStrParsed.Scheme {
+			return response.Error(http.StatusBadRequest, "Incorrect URL", errors.New("SSRF validation failed"))
+		}
+	}
 	return nil
 }
 
@@ -363,7 +441,8 @@ func validateJSONData(jsonData *simplejson.Json, cfg *setting.Cfg) error {
 func (hs *HTTPServer) AddDataSource(c *contextmodel.ReqContext) response.Response {
 	cmd := datasources.AddDataSourceCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		// BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while creating a data source", err)
 	}
 
 	userID, _ := identity.UserIdentifier(c.GetID())
@@ -375,6 +454,12 @@ func (hs *HTTPServer) AddDataSource(c *contextmodel.ReqContext) response.Respons
 		if resp := validateURL(cmd.Type, cmd.URL); resp != nil {
 			return resp
 		}
+
+		// BMC Code - start
+		if resp := validateURL_FeatureFlag(c, cmd.Type, cmd.URL); resp != nil {
+			return resp
+		}
+		// BMC Code - end
 	}
 
 	if err := validateJSONData(cmd.JsonData, hs.Cfg); err != nil {
@@ -391,6 +476,14 @@ func (hs *HTTPServer) AddDataSource(c *contextmodel.ReqContext) response.Respons
 
 	dataSource, err := hs.DataSourcesService.AddDataSource(c.Req.Context(), &cmd)
 	if err != nil {
+		//BMC Code - start
+		kp.DataSourceAddEvent.Send(kp.EventOpt{Ctx: c, Err: err,
+			ObjectName:       cmd.Name,
+			ObjectDetails:    fmt.Sprintf("Datasource '%s' with UID '%s' and of type '%s'", cmd.Name, cmd.UID, cmd.Type),
+			OperationSubType: "Failed to add datasource: " + err.Error(),
+		})
+		//BMC Code - end
+
 		if errors.Is(err, datasources.ErrDataSourceNameExists) || errors.Is(err, datasources.ErrDataSourceUidExists) {
 			return response.Error(http.StatusConflict, err.Error(), err)
 		}
@@ -403,11 +496,23 @@ func (hs *HTTPServer) AddDataSource(c *contextmodel.ReqContext) response.Respons
 	hs.accesscontrolService.ClearUserPermissionCache(c.SignedInUser)
 
 	ds := hs.convertModelToDtos(c.Req.Context(), dataSource)
+
+	//BMC Code - start
+	newValue := ds
+	newValue.SecureJsonFields = nil
+	kp.DataSourceAddEvent.Send(kp.EventOpt{Ctx: c, Prev: nil, New: newValue,
+		ObjectName:       cmd.Name,
+		ObjectDetails:    fmt.Sprintf("Datasource '%s' with UID '%s' and of type '%s'", cmd.Name, cmd.UID, cmd.Type),
+		OperationSubType: "Datasource added successfully",
+	})
+	//BMC Code - end
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message":    "Datasource added",
 		"id":         dataSource.ID,
 		"name":       dataSource.Name,
 		"datasource": ds,
+		// BMC code change
+		"bhdCode": bhdcodes.DatasourceAdded,
 	})
 }
 
@@ -435,7 +540,7 @@ func (hs *HTTPServer) AddDataSource(c *contextmodel.ReqContext) response.Respons
 func (hs *HTTPServer) UpdateDataSourceByID(c *contextmodel.ReqContext) response.Response {
 	cmd := datasources.UpdateDataSourceCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		return response.Error(http.StatusBadRequest, "bad request data while updating an existing data source by its sequential ID", err)
 	}
 	datasourcesLogger.Debug("Received command to update data source", "url", cmd.URL)
 	cmd.OrgID = c.GetOrgID()
@@ -443,18 +548,44 @@ func (hs *HTTPServer) UpdateDataSourceByID(c *contextmodel.ReqContext) response.
 	if cmd.ID, err = strconv.ParseInt(web.Params(c.Req)[":id"], 10, 64); err != nil {
 		return response.Error(http.StatusBadRequest, "id is invalid", err)
 	}
-	if resp := validateURL(cmd.Type, cmd.URL); resp != nil {
-		return resp
+	// BMC code
+	// author ateli - Mitigation for SSRF issue - DRJ71-3206
+	platformURL, _ := cmd.JsonData.Get("platformURL").String()
+	if !c.IsGrafanaAdmin && externalds.IsExternalDs(cmd.Type) {
+		datasourcesLogger.Debug("Non-superadmin trying to update the external datasource")
+	} else {
+
+		if resp := validateSSRF(cmd.Type, cmd.URL, platformURL, cmd.OrgID, c.Req, c.SignedInUser); resp != nil {
+			return resp
+		}
+
+		if resp := validateURL(cmd.Type, cmd.URL); resp != nil {
+			return resp
+		}
+		if resp := validateURL_FeatureFlag(c, cmd.Type, cmd.URL); resp != nil {
+			return resp
+		}
 	}
+	//end
 	if err := validateJSONData(cmd.JsonData, hs.Cfg); err != nil {
 		return response.Error(http.StatusBadRequest, "Failed to update datasource", err)
 	}
+
 	ds, err := hs.getRawDataSourceById(c.Req.Context(), cmd.ID, cmd.OrgID)
 	if err != nil {
 		if errors.Is(err, datasources.ErrDataSourceNotFound) {
 			return response.Error(http.StatusNotFound, "Data source not found", nil)
 		}
 		return response.Error(http.StatusInternalServerError, "Failed to update datasource", err)
+	}
+
+	// BMC Code - Disable deletion for non super admin users
+	if (ds.Type == "bmchelix-ade-datasource" || ds.Type == "json-datasource") && !c.IsGrafanaAdmin {
+		return response.Error(403, "You do not have enough permission to update datasource", nil)
+	}
+	// bmc code: use url from db
+	if !c.IsGrafanaAdmin && externalds.IsExternalDs(cmd.Type) {
+		cmd.URL = ds.URL
 	}
 
 	return hs.updateDataSourceByID(c, ds, cmd)
@@ -480,13 +611,27 @@ func (hs *HTTPServer) UpdateDataSourceByID(c *contextmodel.ReqContext) response.
 func (hs *HTTPServer) UpdateDataSourceByUID(c *contextmodel.ReqContext) response.Response {
 	cmd := datasources.UpdateDataSourceCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		return response.Error(http.StatusBadRequest, "bad request data while update an existing data source", err)
 	}
 	datasourcesLogger.Debug("Received command to update data source", "url", cmd.URL)
 	cmd.OrgID = c.GetOrgID()
-	if resp := validateURL(cmd.Type, cmd.URL); resp != nil {
-		return resp
+	// BMC code
+	// author ateli - Mitigation for SSRF issue - DRJ71-3206
+	platformURL, _ := cmd.JsonData.Get("platformURL").String()
+
+	if !c.IsGrafanaAdmin && externalds.IsExternalDs(cmd.Type) {
+		datasourcesLogger.Debug("Non-superadmin trying to update the external datasource")
+	} else {
+
+		if resp := validateSSRF(cmd.Type, cmd.URL, platformURL, cmd.OrgID, c.Req, c.SignedInUser); resp != nil {
+			return resp
+		}
+
+		if resp := validateURL(cmd.Type, cmd.URL); resp != nil {
+			return resp
+		}
 	}
+	// end
 	if err := validateJSONData(cmd.JsonData, hs.Cfg); err != nil {
 		return response.Error(http.StatusBadRequest, "Failed to update datasource", err)
 	}
@@ -498,12 +643,26 @@ func (hs *HTTPServer) UpdateDataSourceByUID(c *contextmodel.ReqContext) response
 		}
 		return response.Error(http.StatusInternalServerError, "Failed to update datasource", err)
 	}
+	// bmc code: use url from db
+	if !c.IsGrafanaAdmin && externalds.IsExternalDs(cmd.Type) {
+		cmd.URL = ds.URL
+	}
 	cmd.ID = ds.ID
 
 	return hs.updateDataSourceByID(c, ds, cmd)
 }
 
 func (hs *HTTPServer) updateDataSourceByID(c *contextmodel.ReqContext, ds *datasources.DataSource, cmd datasources.UpdateDataSourceCommand) response.Response {
+	//BMC Code - start
+	preValue, errPreValue := hs.getRawDataSourceByUID(c.Req.Context(), cmd.UID, cmd.OrgID)
+	if errPreValue != nil {
+		datasourcesLogger.Error("Failed to get previous values", errPreValue.Error())
+	}
+	if preValue != nil {
+		preValue.SecureJsonData = nil
+	}
+	//End
+
 	if ds.ReadOnly {
 		return response.Error(http.StatusForbidden, "Cannot update read-only data source", nil)
 	}
@@ -518,6 +677,13 @@ func (hs *HTTPServer) updateDataSourceByID(c *contextmodel.ReqContext, ds *datas
 			return response.Error(http.StatusConflict, "Datasource has already been updated by someone else. Please reload and try again", err)
 		}
 
+		//BMC Code - start
+		kp.DataSourceUpdateEvent.Send(kp.EventOpt{Ctx: c, Err: err,
+			ObjectName:       cmd.Name,
+			ObjectDetails:    fmt.Sprintf("Datasource '%s' with UID '%s' and of type '%s'", cmd.Name, cmd.UID, cmd.Type),
+			OperationSubType: "Failed to update datasource: " + err.Error(),
+		})
+		//BMC Code - end
 		return response.ErrOrFallback(http.StatusInternalServerError, "Failed to update datasource", err)
 	}
 
@@ -537,12 +703,32 @@ func (hs *HTTPServer) updateDataSourceByID(c *contextmodel.ReqContext, ds *datas
 	datasourceDTO := hs.convertModelToDtos(c.Req.Context(), dataSource)
 
 	hs.Live.HandleDatasourceUpdate(c.GetOrgID(), datasourceDTO.UID)
+	//BMC Code - start
+	newValue, errNewValue := hs.getRawDataSourceByUID(c.Req.Context(), cmd.UID, cmd.OrgID)
+	if errNewValue != nil {
+		datasourcesLogger.Error("Failed to get updated values", errNewValue.Error())
+	}
+	if newValue != nil {
+		newValue.SecureJsonData = nil
+	}
+	kp.DataSourceUpdateEvent.Send(kp.EventOpt{Ctx: c, Prev: preValue, New: newValue,
+		ObjectName:       cmd.Name,
+		ObjectDetails:    fmt.Sprintf("Datasource '%s' with UID '%s' and of type '%s'", cmd.Name, cmd.UID, cmd.Type),
+		OperationSubType: "Datasource updated successfully",
+	})
+	//BMC Code - end
 
+	// bMC code change : masking url for non admin
+	if externalds.IsExternalDs(datasourceDTO.Type) && !c.IsGrafanaAdmin {
+		datasourceDTO.Url = externalds.MaskedUrl
+	}
 	return response.JSON(http.StatusOK, util.DynMap{
 		"message":    "Datasource updated",
 		"id":         cmd.ID,
 		"name":       cmd.Name,
 		"datasource": datasourceDTO,
+		// BMC code change
+		"bhdCode": bhdcodes.DatasourceUpdated,
 	})
 }
 
@@ -852,6 +1038,18 @@ func (hs *HTTPServer) checkDatasourceHealth(c *contextmodel.ReqContext, ds *data
 
 	return response.JSON(http.StatusOK, payload)
 }
+
+// BMC code
+// author ateli - Mitigation for SSRF issue - DRJ71-3206
+func validateSSRF(cmdType string, url string, platformURL string, orgId int64, req *http.Request, signedInUser *user.SignedInUser) response.Response {
+	if _, err := datasource.ValidateSSRF(cmdType, url, platformURL, orgId, req, signedInUser); err != nil {
+		return response.Error(400, err.Error(), err)
+	}
+
+	return nil
+}
+
+// End
 
 // swagger:parameters checkDatasourceHealthByID
 type CheckDatasourceHealthByIDParams struct {

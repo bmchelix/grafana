@@ -1,31 +1,31 @@
 import { merge } from 'lodash';
 
 import {
+  AngularMeta,
   AppPluginConfig as AppPluginConfigGrafanaData,
   AuthSettings,
   AzureSettings as AzureSettingsGrafanaData,
   BootData,
   BuildInfo,
+  CurrentUserDTO,
   DataSourceInstanceSettings,
   FeatureToggles,
+  getThemeById,
+  GrafanaConfig,
   GrafanaTheme,
   GrafanaTheme2,
   LicenseInfo,
   MapLayerOptions,
   OAuthSettings,
   PanelPluginMeta,
+  PluginDependencies,
+  PluginExtensions,
+  PluginLoadingStrategy,
   PreinstalledPlugin as PreinstalledPluginGrafanaData,
   systemDateFormats,
   SystemDateFormatSettings,
-  getThemeById,
-  AngularMeta,
-  PluginLoadingStrategy,
-  PluginDependencies,
-  PluginExtensions,
   TimeOption,
   UnifiedAlertingConfig,
-  GrafanaConfig,
-  CurrentUserDTO,
 } from '@grafana/data';
 
 /**
@@ -108,6 +108,11 @@ export class GrafanaBootConfig {
   feedbackLinksEnabled = true;
   disableLoginForm = false;
   defaultDatasource = ''; // UID
+  // BMC code :
+  FeatureFlagEnabled = true;
+  enableDsMetering = false;
+  bhdVersion?: string;
+  // End
   authProxyEnabled = false;
   exploreEnabled = false;
   queryHistoryEnabled = false;

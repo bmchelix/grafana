@@ -581,6 +581,10 @@ export interface DataQueryRequest<TQuery extends DataQuery = DataQuery> {
   panelName?: string;
   panelPluginId?: string;
   dashboardUID?: string;
+  // BMC code changes
+  isFirstLoad?: boolean;
+  openEmptyPanel?: boolean;
+  // BMC code changes
   dashboardTitle?: string;
   headers?: Record<string, string>;
 

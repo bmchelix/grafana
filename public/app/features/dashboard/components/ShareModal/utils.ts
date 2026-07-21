@@ -1,4 +1,4 @@
-import { dateTime, locationUtil, TimeRange, urlUtil, rangeUtil } from '@grafana/data';
+import { dateTime, locationUtil, rangeUtil, TimeRange, urlUtil } from '@grafana/data';
 import { config } from '@grafana/runtime';
 import { createShortLink } from 'app/core/utils/shortLinks';
 import { getTimeSrv } from 'app/features/dashboard/services/TimeSrv';
@@ -72,6 +72,11 @@ export function buildBaseUrl() {
   return baseUrl;
 }
 
+// BMC code
+export function buildHostUrl() {
+  return `${window.location.protocol}//${window.location.host}${config.appSubUrl}`;
+}
+// End
 export async function buildShareUrl(
   useCurrentTimeRange: boolean,
   selectedTheme?: string,
@@ -182,6 +187,18 @@ export function getLocalTimeZone() {
 
   return '&tz=' + encodeURIComponent(options.timeZone);
 }
+// BMC code
+export function updateURLOrigin(url: string) {
+  let parser = document.createElement('a');
+  parser.href = url;
+  // eslint-disable-next-line no-restricted-syntax
+  if (parser.origin.localeCompare(window.location.origin) !== 0) {
+    const updatedURL = url.replace(parser.origin, window.location.origin);
+    return updatedURL;
+  }
+  return url;
+}
+// End
 
 export const getTrackingSource = (panel?: Object | undefined) => {
   return panel ? 'panel' : 'dashboard';
@@ -193,6 +210,9 @@ export const shareDashboardType: {
   link: 'link',
   snapshot: 'snapshot',
   export: 'export',
+  //BMC Change: Starts
+  download: 'download',
+  //BMC Change: Ends
   embed: 'embed',
   libraryPanel: 'library_panel',
   pdf: 'pdf',

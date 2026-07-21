@@ -210,7 +210,8 @@ export interface VariableModel {
 }
 
 export const defaultVariableModel: Partial<VariableModel> = {
-  allowCustomValue: true,
+  // BMC code: allowCustomValue defaults to false
+  allowCustomValue: false,
   includeAll: false,
   multi: false,
   options: [],
@@ -241,11 +242,18 @@ export interface VariableOption {
  * `0`: Never refresh the variable
  * `1`: Queries the data source every time the dashboard loads.
  * `2`: Queries the data source when the dashboard time range changes.
+ * `3`: BMC config to handle DRJ71-14389 load on demand behavior
  */
 export enum VariableRefresh {
   never = 0,
   onDashboardLoad = 1,
   onTimeRangeChanged = 2,
+  // BMC code change- DRJ71-14389
+  /**
+   * Not shown on UI, added to support logic for handling internally. We have added this but functionality is similar to onTimeRangeChanged, so that variable gets loaded when user clicks the dashbaord reload button
+   */
+  onRefreshButtonClick = 3
+  // BMC code ends
 }
 
 /**
@@ -466,7 +474,21 @@ export const defaultAction: Partial<Action> = {
  * `system`: Variables defined by Grafana. See: https://grafana.com/docs/grafana/latest/dashboards/variables/add-template-variables/#global-variables
  * `switch`: Boolean variables rendered as a switch
  */
-export type VariableType = ('query' | 'adhoc' | 'groupby' | 'constant' | 'datasource' | 'interval' | 'textbox' | 'custom' | 'system' | 'snapshot' | 'switch');
+export type VariableType =
+  | 'query'
+  | 'adhoc'
+  | 'groupby'
+  | 'constant'
+  | 'datasource'
+  | 'interval'
+  | 'textbox'
+  | 'custom'
+  | 'system'
+  | 'snapshot'
+  | 'switch'
+  // BMC code: below types
+  | 'datepicker'
+  | 'optimizepicker';
 
 /**
  * Color mode for a field. You can specify a single color, or select a continuous (gradient) color schemes, based on a value.
@@ -1324,5 +1346,6 @@ export const defaultDashboard: Partial<Dashboard> = {
   panels: [],
   schemaVersion: 42,
   tags: [],
-  timezone: 'browser',
+  // BMC Change below: To honor user / org selected timezone
+  timezone: '',
 };

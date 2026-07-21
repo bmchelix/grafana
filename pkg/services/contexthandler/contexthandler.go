@@ -3,8 +3,11 @@ package contexthandler
 
 import (
 	"context"
+	"errors"
 	"fmt"
+
 	"net/http"
+	"net/http/httputil"
 
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
@@ -14,6 +17,9 @@ import (
 
 	authnClients "github.com/grafana/grafana/pkg/services/authn/clients"
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
+
+	"net/url"
+	"strconv"
 
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
@@ -131,6 +137,10 @@ func (h *ContextHandler) setRequestContext(ctx context.Context) context.Context 
 
 	id, err := h.authenticator.Authenticate(ctx, &authn.Request{HTTPRequest: reqContext.Req})
 	if err != nil {
+		// BMC change: next block
+		if errors.Is(err, authn.ErrInvalidPermission) {
+			reqContext.Handle(h.cfg, 401, "Oops... sorry you dont have access to this Dashboard", err)
+		}
 		// Hack: set all errors on LookupTokenErr, so we can check it in auth middlewares
 		reqContext.LookupTokenErr = err
 	} else {
@@ -140,6 +150,17 @@ func (h *ContextHandler) setRequestContext(ctx context.Context) context.Context 
 		reqContext.AllowAnonymous = reqContext.IsAnonymous
 		reqContext.IsRenderCall = id.IsAuthenticatedBy(login.RenderModule)
 		ctx = identity.WithRequester(ctx, id)
+		// BMC Change: Below block to set context with needed values
+		reqContext.BHDRoles = id.BHDRoles
+		reqContext.HasExternalOrg = id.HasExternalOrg
+		reqContext.MspOrgs = id.MspOrgs
+		reqContext.IsUnrestrictedUser = id.IsUnrestrictedUser
+		reqContext.OrgRole = id.OrgRoles[id.OrgID]
+		// BMCTODO : Check if it is fine to remove the below dedicated code lines (now gone)// Bmc code starts
+		if id.IsDedicatedInst {
+			reqContext.Logger.Info("In dedicated instance. Setting a cookie.")
+			h.checkAndSetCookie(reqContext, id.OrgID)
+		}
 	}
 
 	h.excludeSensitiveHeadersFromRequest(reqContext.Req)
@@ -167,6 +188,48 @@ func (h *ContextHandler) setRequestContext(ctx context.Context) context.Context 
 
 	return ctx
 }
+
+// Bmc code starts
+// This method forwards the request from master/other dedicated instance to the correct dedicated instance ingress.
+func (h *ContextHandler) forwardRequestToDedicatedInstance(reqContext *contextmodel.ReqContext, tenantId int64, r *http.Request, w http.ResponseWriter) {
+
+	tenantIdStr := strconv.FormatInt(tenantId, 10)
+	reqContext.Logger.Info("Inside forward request function. Creating reverse proxy.")
+	dedicatedUrlString := "http://adereporting-" + tenantIdStr + ":8080"
+	dedicatedUrl, err := url.Parse(dedicatedUrlString)
+	if err != nil {
+		reqContext.Logger.Error("Failed to parse dedicated URL:", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	reverseProxy := httputil.NewSingleHostReverseProxy(dedicatedUrl)
+	reqContext.Logger.Info("Reverse proxy instance created.")
+	reverseProxy.Director = func(req *http.Request) {
+		req.URL.Host = dedicatedUrl.Host
+		req.URL.Scheme = dedicatedUrl.Scheme
+		req.URL.Path = "/dashboards"
+		reqContext.Logger.Info("Forwarding path is ", "original path", r.URL.Path, "new path", req.URL.Path)
+		//req.Header = make(http.Header)
+		req.Host = dedicatedUrl.Host
+		req.Header = make(http.Header)
+		for key, values := range r.Header {
+			for _, value := range values {
+				//reqContext.Logger.Debug("$$$ Header key", "key", key, "value", value)
+				req.Header.Add(key, value)
+			}
+		}
+	}
+	// Custom error handler
+	reverseProxy.ErrorHandler = func(rw http.ResponseWriter, req *http.Request, err error) {
+		reqContext.Logger.Error("Proxy error:", err)
+		http.Error(rw, "Bad Gateway", http.StatusBadGateway)
+	}
+	reqContext.Logger.Info("Forwarding request to", "url", dedicatedUrl.String())
+	reverseProxy.ServeHTTP(w, r)
+	reqContext.Logger.Info("Completed request forwarding.")
+}
+
+// Bmc code ends
 
 func (h *ContextHandler) excludeSensitiveHeadersFromRequest(req *http.Request) {
 	req.Header.Del(authnClients.ExtJWTAuthenticationHeaderName)
@@ -196,6 +259,43 @@ func (h *ContextHandler) addIDHeaderEndOfRequestFunc(ident identity.Requester) w
 		w.Header().Add(headerName, ident.GetID())
 	}
 }
+
+// Bmc code starts
+func (h *ContextHandler) checkAndSetCookie(reqContext *contextmodel.ReqContext, tenantId int64) {
+	// Check if the cookie is present
+	_, err := reqContext.Req.Cookie("dbhd")
+	if err != nil {
+		reqContext.Logger.Info("Creating new dbhd cookie. Error is ", err)
+		// If the cookie is not present, create a new one
+		if err == http.ErrNoCookie {
+			tenantIdStr := strconv.FormatInt(tenantId, 10)
+			// Create a new cookie
+			newCookie := http.Cookie{
+				Name:     "dbhd",
+				Value:    tenantIdStr,
+				HttpOnly: true, // Accessible only via HTTP(S), not JavaScript
+				Secure:   true, // Send only over HTTPS
+				Path:     "/",
+			}
+
+			// Set the cookie in the response
+			http.SetCookie(reqContext.Resp, &newCookie)
+			reqContext.Logger.Info("Cookie created for dedicated tenant ", tenantId)
+			// Inform the client that a new cookie has been set. Remove it once tested
+			//reqContext.Resp.Write([]byte("New session cookie created and set.\n"))
+		} else {
+			reqContext.Logger.Error("Failed while creating dedicated tenant cookie ", tenantId)
+			http.Error(reqContext.Resp, "Error retrieving cookie", http.StatusInternalServerError)
+			return
+		}
+	} else {
+		// If the cookie is present ignore. Remove it once tested
+		reqContext.Logger.Info("Session cookie is already present for tenant ", "tenantId", tenantId)
+		//reqContext.Resp.Write([]byte("Session cookie is already present: " + cookie.Value + "\n"))
+	}
+}
+
+// Bmc code ends
 
 type authHTTPHeaderListContextKey struct{}
 

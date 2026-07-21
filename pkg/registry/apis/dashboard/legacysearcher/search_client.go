@@ -84,6 +84,9 @@ func (c *DashboardSearchClient) Search(ctx context.Context, req *resourcepb.Reso
 		Page:         req.Page,
 		SignedInUser: user,
 		IsDeleted:    req.IsDeleted,
+		// BMC code: start
+		Lang: req.GetLang(),
+		// BMC code: end
 	}
 
 	if req.Permission == int64(dashboardaccess.PERMISSION_EDIT) {

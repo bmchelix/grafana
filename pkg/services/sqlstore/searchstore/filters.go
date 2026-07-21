@@ -46,6 +46,8 @@ type TitleFilter struct {
 	Dialect         migrator.Dialect
 	Title           string
 	TitleExactMatch bool
+	// BMC Change: Next line
+	Localized bool
 }
 
 func (f TitleFilter) Where() (string, []any) {
@@ -53,8 +55,14 @@ func (f TitleFilter) Where() (string, []any) {
 		return "dashboard.title = ?", []any{f.Title}
 	}
 
-	sql, params := f.Dialect.LikeOperator("dashboard.title", true, f.Title, true)
-	return sql, []any{params}
+	// BMC Change: Updated below block to add check on Localized
+	if f.Localized {
+		sql, param := f.Dialect.LikeOperator("CASE WHEN locale.name IS NOT NULL THEN locale.name ELSE dashboard.title END", true, f.Title, true)
+		return sql, []any{param}
+	}
+
+	sql, param := f.Dialect.LikeOperator("dashboard.title", true, f.Title, true)
+	return sql, []any{param}
 }
 
 type FolderFilter struct {
@@ -156,14 +164,25 @@ func (f TagsFilter) Where() (string, []any) {
 
 type TitleSorter struct {
 	Descending bool
+	// BMC Change: Next line
+	Localized bool
 }
 
 func (s TitleSorter) OrderBy() string {
-	if s.Descending {
-		return "dashboard.title DESC"
-	}
+	// BMC Change: Updated below block to add check on Localized
+	if s.Localized {
+		if s.Descending {
+			return "title DESC"
+		}
 
-	return "dashboard.title ASC"
+		return "title ASC"
+	} else {
+		if s.Descending {
+			return "dashboard.title DESC"
+		}
+
+		return "dashboard.title ASC"
+	}
 }
 
 func sqlIDin(column string, ids []int64) (string, []any) {

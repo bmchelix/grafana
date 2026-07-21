@@ -114,6 +114,15 @@ func (s *Service) bundle(ctx context.Context, collectors []string, uid string) (
 
 	final := buf
 	if len(s.encryptionPublicKeys) > 0 {
+		// BMC code changes start - FIPS
+		// filippo.io/age uses X25519 (Curve25519) + ChaCha20-Poly1305 which are
+		// not FIPS 140-3 approved algorithms. Block encryption in FIPS mode.
+		if s.fipsEnabled {
+			return nil, fmt.Errorf("support bundle encryption is not available in FIPS mode: " +
+				"filippo.io/age uses non-approved algorithms (X25519, ChaCha20-Poly1305). " +
+				"Remove public_keys from [support_bundles] config to create unencrypted bundles")
+		}
+		// BMC code changes end - FIPS
 		var err error
 		final, err = encrypt(buf, s.encryptionPublicKeys...)
 		if err != nil {

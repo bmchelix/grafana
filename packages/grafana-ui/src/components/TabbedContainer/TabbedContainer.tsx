@@ -1,8 +1,8 @@
 import { css } from '@emotion/css';
-import { useState } from 'react';
 import * as React from 'react';
+import { useState } from 'react';
 
-import { SelectableValue, GrafanaTheme2 } from '@grafana/data';
+import { GrafanaTheme2, SelectableValue } from '@grafana/data';
 
 import { IconButton } from '../../components/IconButton/IconButton';
 import { Tab } from '../../components/Tabs/Tab';
@@ -12,12 +12,17 @@ import { useStyles2 } from '../../themes/ThemeContext';
 import { IconName } from '../../types/icon';
 import { Box } from '../Layout/Box/Box';
 import { ScrollContainer } from '../ScrollContainer/ScrollContainer';
+// BMC Code : Accessibility Change ( Next 1 line )
+import { OrientationStateType } from '../Tabs/TabsBar';
 
 export interface TabConfig {
   label: string;
   value: string;
   content: React.ReactNode;
   icon: IconName;
+  // BMC Code : Accessibility Change ( Next 2 lines )
+  tabId?: string;
+  tabPanelId?: string;
 }
 
 export interface TabbedContainerProps {
@@ -26,9 +31,19 @@ export interface TabbedContainerProps {
   closeIconTooltip?: string;
   onClose: () => void;
   testId?: string;
+  // BMC Code : Accessibility Change ( Next 1 line )
+  orientationState?: OrientationStateType;
 }
 
-export function TabbedContainer({ tabs, defaultTab, closeIconTooltip, onClose, testId }: TabbedContainerProps) {
+// BMC Code : Accessibility Change ( Next 1 line )
+export function TabbedContainer({
+  tabs,
+  defaultTab,
+  closeIconTooltip,
+  onClose,
+  testId,
+  orientationState,
+}: TabbedContainerProps) {
   const [activeTab, setActiveTab] = useState(tabs.some((tab) => tab.value === defaultTab) ? defaultTab : tabs[0].value);
   const styles = useStyles2(getStyles);
 
@@ -36,9 +51,27 @@ export function TabbedContainer({ tabs, defaultTab, closeIconTooltip, onClose, t
     setActiveTab(item.value!);
   };
 
+  // BMC Code : Accessibility Change starts here.
+  const focusRef = React.useRef<HTMLAnchorElement>(null);
+
+  React.useEffect(() => {
+    if (activeTab && focusRef.current) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (focusRef.current) {
+            focusRef.current?.focus();
+          }
+        });
+      });
+    }
+  }, [activeTab]);
+  // BMC Code : Accessibility Change ends here.
   return (
     <div className={styles.container} data-testid={testId}>
-      <TabsBar className={styles.tabs}>
+      {
+        // BMC Code : Accessibility Change ( Next 1 line )
+      }
+      <TabsBar className={styles.tabs} orientationState={orientationState}>
         {tabs.map((t) => (
           <Tab
             key={t.value}
@@ -46,6 +79,11 @@ export function TabbedContainer({ tabs, defaultTab, closeIconTooltip, onClose, t
             active={t.value === activeTab}
             onChangeTab={() => onSelectTab(t)}
             icon={t.icon}
+            // BMC Code : Accessibility Change Next line
+            ref={focusRef}
+            // BMC Code : Accessibility Change Next 2 lines
+            aria-controls={t.tabPanelId}
+            id={t.tabId}
           />
         ))}
         <Box grow={1} display="flex" justifyContent="flex-end" paddingRight={1}>

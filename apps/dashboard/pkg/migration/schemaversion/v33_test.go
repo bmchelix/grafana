@@ -219,6 +219,6 @@ type testDataSourceProvider struct {
 	datasources []DataSourceInfo
 }
 
-func (p *testDataSourceProvider) GetDataSourceInfo(_ context.Context) []DataSourceInfo {
-	return p.datasources
+func (p *testDataSourceProvider) Index(_ context.Context) *DatasourceIndex {
+	return NewDatasourceIndex(p.datasources)
 }

@@ -120,6 +120,11 @@ func setupProfiling(profile bool, profileAddr string, profilePort uint64, blockR
 		return err
 	}
 
+	if os.Getenv("FIPS_ENABLED") == "true" && profileDiagnostics.enabled {
+		fmt.Println("FIPS mode enabled: Profiling was enabled but disabling it due to FIPS mode")
+		profileDiagnostics.enabled = false
+	}
+
 	if profileDiagnostics.enabled {
 		fmt.Println("diagnostics: pprof profiling enabled", "addr", profileDiagnostics.addr, "port", profileDiagnostics.port, "blockProfileRate", profileDiagnostics.blockRate, "mutexProfileRate", profileDiagnostics.mutexRate)
 		runtime.SetBlockProfileRate(profileDiagnostics.blockRate)
@@ -143,6 +148,11 @@ func setupTracing(tracing bool, tracingFile string, logger *log.ConcreteLogger) 
 	traceDiagnostics := newTracingDiagnostics(tracing, tracingFile)
 	if err := traceDiagnostics.overrideWithEnv(); err != nil {
 		return err
+	}
+
+	if os.Getenv("FIPS_ENABLED") == "true" && traceDiagnostics.enabled {
+		fmt.Println("FIPS mode enabled: Tracing was enabled but disabling it due to FIPS mode")
+		traceDiagnostics.enabled = false
 	}
 
 	if traceDiagnostics.enabled {

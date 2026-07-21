@@ -2,9 +2,13 @@ package dashboard
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"maps"
+	"net/http"
+	"net/http/httptest"
+	"regexp"
 	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -33,9 +37,12 @@ import (
 	"github.com/grafana/grafana/apps/dashboard/pkg/migration/conversion"
 	"github.com/grafana/grafana/apps/dashboard/pkg/migration/schemaversion"
 	folders "github.com/grafana/grafana/apps/folder/pkg/apis/folder/v1beta1"
+	"github.com/grafana/grafana/pkg/api/bmc/external"
+	"github.com/grafana/grafana/pkg/api/pluginproxy"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
 	"github.com/grafana/grafana/pkg/apimachinery/utils"
 	grafanaregistry "github.com/grafana/grafana/pkg/apiserver/registry/generic"
+	"github.com/grafana/grafana/pkg/bmc/audit"
 	"github.com/grafana/grafana/pkg/infra/db"
 	"github.com/grafana/grafana/pkg/infra/tracing"
 	"github.com/grafana/grafana/pkg/registry/apis/dashboard/legacy"
@@ -46,15 +53,18 @@ import (
 	"github.com/grafana/grafana/pkg/services/apiserver/builder"
 	"github.com/grafana/grafana/pkg/services/apiserver/client"
 	"github.com/grafana/grafana/pkg/services/apiserver/endpoints/request"
+	contextmodel "github.com/grafana/grafana/pkg/services/contexthandler/model"
 	"github.com/grafana/grafana/pkg/services/dashboards"
 	dashsvc "github.com/grafana/grafana/pkg/services/dashboards/service"
 	"github.com/grafana/grafana/pkg/services/datasources"
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
 	"github.com/grafana/grafana/pkg/services/libraryelements"
 	"github.com/grafana/grafana/pkg/services/librarypanels"
+	pref "github.com/grafana/grafana/pkg/services/preference"
 	"github.com/grafana/grafana/pkg/services/provisioning"
 	"github.com/grafana/grafana/pkg/services/quota"
 	"github.com/grafana/grafana/pkg/services/search/sort"
+	"github.com/grafana/grafana/pkg/services/sqlstore"
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/storage/legacysql"
@@ -62,6 +72,7 @@ import (
 	"github.com/grafana/grafana/pkg/storage/unified/apistore"
 	"github.com/grafana/grafana/pkg/storage/unified/resource"
 	"github.com/grafana/grafana/pkg/util"
+	"github.com/grafana/grafana/pkg/web"
 )
 
 var (
@@ -71,7 +82,19 @@ var (
 	_ builder.APIGroupRouteProvider    = (*DashboardsAPIBuilder)(nil)
 	_ builder.APIGroupMutation         = (*DashboardsAPIBuilder)(nil)
 	_ builder.APIGroupValidation       = (*DashboardsAPIBuilder)(nil)
+	// BMC code: next line
+	_ builder.DashboardBMCAuditFilterProvider = (*DashboardsAPIBuilder)(nil)
 )
+
+// BMC code: start
+// dashboardResourcePathRegex matches /apis/dashboard.grafana.app/{version}/namespaces/{ns}/dashboards/{name}
+// (DELETE, PUT, PATCH on a single dashboard resource).
+var dashboardResourcePathRegex = regexp.MustCompile(`^/apis/dashboard\.grafana\.app/[^/]+/namespaces/([^/]+)/dashboards/([^/]+)$`)
+
+// dashboardCollectionPathRegex matches POST /apis/dashboard.grafana.app/{version}/namespaces/{ns}/dashboards (create).
+var dashboardCollectionPathRegex = regexp.MustCompile(`^/apis/dashboard\.grafana\.app/[^/]+/namespaces/([^/]+)/dashboards$`)
+
+// BMC code: end
 
 const (
 	dashboardSpecTitle           = "title"
@@ -112,6 +135,7 @@ type DashboardsAPIBuilder struct {
 	dualWriter                   dualwrite.Service
 	folderClientProvider         client.K8sHandlerProvider
 	libraryPanels                libraryelements.Service // for legacy library panels
+	preferenceService            pref.Service            // BMC code: for SQL restrictions validation
 
 	isStandalone bool // skips any handling including anything to do with legacy storage
 }
@@ -140,6 +164,8 @@ func RegisterAPIService(
 	restConfigProvider apiserver.RestConfigProvider,
 	userService user.Service,
 	libraryPanels libraryelements.Service,
+	// BMC code: next line
+	preferenceService pref.Service,
 ) *DashboardsAPIBuilder {
 	dbp := legacysql.NewDatabaseProvider(sql)
 	namespacer := request.GetNamespaceMapper(cfg)
@@ -163,22 +189,26 @@ func RegisterAPIService(
 		dualWriter:                   dual,
 		folderClientProvider:         newSimpleFolderClientProvider(folderClient),
 		libraryPanels:                libraryPanels,
+		// BMC code: next line
+		preferenceService: preferenceService,
 
 		legacy: &DashboardStorage{
 			Access:           legacy.NewDashboardAccess(dbp, namespacer, dashStore, provisioning, libraryPanelSvc, sorter, dashboardPermissionsSvc, accessControl, features),
 			DashboardService: dashboardService,
+			// BMC code: next line
+			SQLStore: sql,
 		},
 	}
 
 	migration.RegisterMetrics(reg)
-	migration.Initialize(&datasourceInfoProvider{
+	migration.Initialize(&datasourceIndexProvider{
 		datasourceService: datasourceService,
 	})
 	apiregistration.RegisterAPI(builder)
 	return builder
 }
 
-func NewAPIService(ac authlib.AccessClient, features featuremgmt.FeatureToggles, folderClientProvider client.K8sHandlerProvider, datasourceProvider schemaversion.DataSourceInfoProvider, resourcePermissionsSvc *dynamic.NamespaceableResourceInterface) *DashboardsAPIBuilder {
+func NewAPIService(ac authlib.AccessClient, features featuremgmt.FeatureToggles, folderClientProvider client.K8sHandlerProvider, datasourceProvider schemaversion.DataSourceIndexProvider, resourcePermissionsSvc *dynamic.NamespaceableResourceInterface) *DashboardsAPIBuilder {
 	migration.Initialize(datasourceProvider)
 	return &DashboardsAPIBuilder{
 		minRefreshInterval:     "10s",
@@ -370,6 +400,14 @@ func (b *DashboardsAPIBuilder) validateCreate(ctx context.Context, a admission.A
 		}
 	}
 
+	// BMC code: Validate SQL restrictions when user lacks RBAC SQL permissions
+	if !b.isStandalone && !util.IsInterfaceNil(b.preferenceService) && !a.IsDryRun() {
+		if err := ValidateSQLRestrictionsForAdmission(ctx, dashObj, nil, id, b.preferenceService, b.dashboardService); err != nil {
+			return apierrors.NewForbidden(dashv1.DashboardResourceInfo.GroupResource(), a.GetName(), err)
+		}
+	}
+	// BMC code: end
+
 	return nil
 }
 
@@ -405,13 +443,15 @@ func (b *DashboardsAPIBuilder) validateUpdate(ctx context.Context, a admission.A
 		return apierrors.NewBadRequest(err.Error())
 	}
 
+	// BMC code: ensure id is set before use, moved following code out of if block
+	id, err := identity.GetRequester(ctx)
+	if err != nil {
+		return fmt.Errorf("error getting requester: %w", err)
+	}
+	// BMC code: end
+
 	// Validate folder existence if specified and changed
 	if !a.IsDryRun() && newAccessor.GetFolder() != oldAccessor.GetFolder() && newAccessor.GetFolder() != "" {
-		id, err := identity.GetRequester(ctx)
-		if err != nil {
-			return fmt.Errorf("error getting requester: %w", err)
-		}
-
 		if err := b.verifyFolderAccessPermissions(ctx, id, newAccessor.GetFolder()); err != nil {
 			return err
 		}
@@ -430,6 +470,14 @@ func (b *DashboardsAPIBuilder) validateUpdate(ctx context.Context, a admission.A
 	if err := b.dashboardService.ValidateDashboardRefreshInterval(b.minRefreshInterval, refresh); err != nil {
 		return apierrors.NewBadRequest(err.Error())
 	}
+
+	// BMC code: Validate SQL restrictions when user lacks RBAC SQL permissions
+	if !b.isStandalone && !util.IsInterfaceNil(b.preferenceService) && !a.IsDryRun() {
+		if err := ValidateSQLRestrictionsForAdmission(ctx, newDashObj, oldDashObj, id, b.preferenceService, b.dashboardService); err != nil {
+			return apierrors.NewForbidden(dashv1.DashboardResourceInfo.GroupResource(), a.GetName(), err)
+		}
+	}
+	// BMC code: end
 
 	return nil
 }
@@ -643,6 +691,12 @@ func (b *DashboardsAPIBuilder) storageForVersion(
 		Storage:                 dw,
 	}
 
+	// BMC code: start
+	var sqlStore *sqlstore.SQLStore
+	if b.legacy.SQLStore != nil {
+		sqlStore, _ = b.legacy.SQLStore.(*sqlstore.SQLStore)
+	}
+	// BMC code: end
 	// Register the DTO endpoint that will consolidate all dashboard bits
 	storage[dashboards.StoragePath("dto")], err = NewDTOConnector(
 		storage[dashboards.StoragePath()].(rest.Getter),
@@ -652,6 +706,8 @@ func (b *DashboardsAPIBuilder) storageForVersion(
 		b.accessControl,
 		opts.Scheme,
 		newDTOFunc,
+		// BMC code: next line
+		sqlStore,
 	)
 	if err != nil {
 		return err
@@ -809,3 +865,221 @@ func (b *DashboardsAPIBuilder) verifyFolderAccessPermissions(ctx context.Context
 
 	return nil
 }
+
+// BMC code: start
+// GetDashboardBMCAuditFilter returns middleware for BMC audit (and Redis cache cleanup on delete) after
+// dashboard.grafana.app mutations: DELETE, POST create, PUT/PATCH update — parity with legacy /api behavior.
+func (b *DashboardsAPIBuilder) GetDashboardBMCAuditFilter() func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			switch r.Method {
+			case http.MethodDelete:
+				matches := dashboardResourcePathRegex.FindStringSubmatch(r.URL.Path)
+				if matches == nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+				namespace, dashboardUID := matches[1], matches[2]
+				nsInfo, err := authlib.ParseNamespace(namespace)
+				if err != nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+
+				// Fetch dashboard before delete (for audit metadata)
+				dash, fetchErr := b.dashboardService.GetDashboard(r.Context(), &dashboards.GetDashboardQuery{
+					OrgID: nsInfo.OrgID,
+					UID:   dashboardUID,
+				})
+				if fetchErr != nil && !errors.Is(fetchErr, dashboards.ErrDashboardNotFound) {
+					logging.FromContext(r.Context()).Debug("dashboard delete audit: failed to fetch dashboard before delete", "uid", dashboardUID, "err", fetchErr)
+				}
+
+				requester, reqErr := identity.GetRequester(r.Context())
+				if reqErr != nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+				signedInUser, ok := requester.(*user.SignedInUser)
+				if !ok {
+					next.ServeHTTP(w, r)
+					return
+				}
+				reqCtx := &contextmodel.ReqContext{}
+				reqCtx.Context = &web.Context{Req: r}
+				reqCtx.SignedInUser = signedInUser
+
+				recorder := httptest.NewRecorder()
+				next.ServeHTTP(recorder, r)
+
+				copyBMCRecorderToResponse(w, recorder)
+
+				go func() {
+					if dash != nil {
+						var auditErr error
+						if recorder.Code >= 400 {
+							auditErr = fmt.Errorf("delete failed with HTTP status %d", recorder.Code)
+						}
+						audit.DashboardDeleteAudit(reqCtx, auditErr, dash)
+					}
+					if external.BHD_ENABLE_VAR_CACHING.Enabled(reqCtx.Req, reqCtx.SignedInUser) {
+						pluginproxy.DeleteDashboardCache(reqCtx.OrgID, dashboardUID)
+					}
+				}()
+				return
+
+			case http.MethodPost:
+				matches := dashboardCollectionPathRegex.FindStringSubmatch(r.URL.Path)
+				if matches == nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+				namespace := matches[1]
+				nsInfo, err := authlib.ParseNamespace(namespace)
+				if err != nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+
+				requester, reqErr := identity.GetRequester(r.Context())
+				if reqErr != nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+				signedInUser, ok := requester.(*user.SignedInUser)
+				if !ok {
+					next.ServeHTTP(w, r)
+					return
+				}
+				reqCtx := &contextmodel.ReqContext{}
+				reqCtx.Context = &web.Context{Req: r}
+				reqCtx.SignedInUser = signedInUser
+
+				recorder := httptest.NewRecorder()
+				next.ServeHTTP(recorder, r)
+
+				copyBMCRecorderToResponse(w, recorder)
+
+				go b.runDashboardCreateAudit(reqCtx, recorder, nsInfo.OrgID)
+				return
+
+			case http.MethodPut, http.MethodPatch:
+				matches := dashboardResourcePathRegex.FindStringSubmatch(r.URL.Path)
+				if matches == nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+				namespace, dashboardUID := matches[1], matches[2]
+				nsInfo, err := authlib.ParseNamespace(namespace)
+				if err != nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+
+				requester, reqErr := identity.GetRequester(r.Context())
+				if reqErr != nil {
+					next.ServeHTTP(w, r)
+					return
+				}
+				signedInUser, ok := requester.(*user.SignedInUser)
+				if !ok {
+					next.ServeHTTP(w, r)
+					return
+				}
+				reqCtx := &contextmodel.ReqContext{}
+				reqCtx.Context = &web.Context{Req: r}
+				reqCtx.SignedInUser = signedInUser
+
+				recorder := httptest.NewRecorder()
+				next.ServeHTTP(recorder, r)
+
+				copyBMCRecorderToResponse(w, recorder)
+
+				go b.runDashboardUpdateAudit(reqCtx, recorder, nsInfo.OrgID, dashboardUID)
+				return
+
+			default:
+				next.ServeHTTP(w, r)
+			}
+		})
+	}
+}
+
+func copyBMCRecorderToResponse(w http.ResponseWriter, rec *httptest.ResponseRecorder) {
+	for k, v := range rec.Header() {
+		w.Header()[k] = v
+	}
+	w.WriteHeader(rec.Code)
+	_, _ = w.Write(rec.Body.Bytes())
+}
+
+type k8sDashboardAuditJSON struct {
+	Metadata struct {
+		Name string `json:"name"`
+	} `json:"metadata"`
+	Spec struct {
+		Title string `json:"title"`
+	} `json:"spec"`
+}
+
+func parseK8sDashboardUIDTitleFromJSON(b []byte) (uid, title string) {
+	if len(b) == 0 {
+		return "", ""
+	}
+	var p k8sDashboardAuditJSON
+	if err := json.Unmarshal(b, &p); err != nil {
+		return "", ""
+	}
+	return strings.TrimSpace(p.Metadata.Name), strings.TrimSpace(p.Spec.Title)
+}
+
+func (b *DashboardsAPIBuilder) runDashboardCreateAudit(reqCtx *contextmodel.ReqContext, rec *httptest.ResponseRecorder, orgID int64) {
+	auditCtx := context.Background()
+	var auditErr error
+	if rec.Code >= 400 {
+		auditErr = fmt.Errorf("create failed with HTTP status %d", rec.Code)
+	}
+
+	uid, titleFromJSON := parseK8sDashboardUIDTitleFromJSON(rec.Body.Bytes())
+
+	var dash *dashboards.Dashboard
+	if rec.Code < 400 && uid != "" {
+		var err error
+		dash, err = b.dashboardService.GetDashboard(auditCtx, &dashboards.GetDashboardQuery{OrgID: orgID, UID: uid})
+		if err != nil && !errors.Is(err, dashboards.ErrDashboardNotFound) {
+			logging.FromContext(auditCtx).Debug("dashboard create audit: GetDashboard after create failed", "uid", uid, "err", err)
+		}
+	}
+	if dash == nil {
+		title := titleFromJSON
+		if title == "" && uid != "" {
+			title = uid
+		}
+		if title == "" {
+			title = "Dashboard"
+		}
+		dash = &dashboards.Dashboard{Title: title, UID: uid}
+	}
+
+	audit.DashboardCreateAudit(reqCtx, dash, auditErr)
+}
+
+func (b *DashboardsAPIBuilder) runDashboardUpdateAudit(reqCtx *contextmodel.ReqContext, rec *httptest.ResponseRecorder, orgID int64, dashboardUID string) {
+	auditCtx := context.Background()
+	var auditErr error
+	if rec.Code >= 400 {
+		auditErr = fmt.Errorf("update failed with HTTP status %d", rec.Code)
+	}
+
+	dash, err := b.dashboardService.GetDashboard(auditCtx, &dashboards.GetDashboardQuery{OrgID: orgID, UID: dashboardUID})
+	if err != nil && !errors.Is(err, dashboards.ErrDashboardNotFound) {
+		logging.FromContext(auditCtx).Debug("dashboard update audit: GetDashboard failed", "uid", dashboardUID, "err", err)
+	}
+	if dash == nil {
+		dash = &dashboards.Dashboard{Title: dashboardUID, UID: dashboardUID}
+	}
+
+	audit.DashboardUpdateAudit(reqCtx, dash, auditErr)
+}
+
+// BMC code: end

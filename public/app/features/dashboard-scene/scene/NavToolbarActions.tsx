@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import { memo, ReactNode, useEffect, useState } from 'react';
+import { ReactNode, memo, useEffect, useState } from 'react';
 
 import { GrafanaTheme2, store } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
@@ -21,6 +21,7 @@ import { NavToolbarSeparator } from 'app/core/components/AppChrome/NavToolbar/Na
 import { LS_PANEL_COPY_KEY } from 'app/core/constants';
 import { contextSrv } from 'app/core/core';
 import { getDashboardSrv } from 'app/features/dashboard/services/DashboardSrv';
+import { ManageScheduleButton } from 'app/features/dashboard-scene/bmc/ManageScheduleButton';
 import { trackDashboardSceneEditButtonClicked } from 'app/features/dashboard-scene/utils/tracking';
 import { playlistSrv } from 'app/features/playlist/PlaylistSrv';
 import { useGetResourceRepositoryView } from 'app/features/provisioning/hooks/useGetResourceRepositoryView';
@@ -29,6 +30,7 @@ import { StarToolbarButton } from 'app/features/stars/StarToolbarButton';
 import { useSelector } from 'app/types/store';
 
 import { selectFolderRepository } from '../../provisioning/utils/selectors';
+import { ResetFiltersButton, SaveFiltersButton } from '../bmc/SaveFilterActions';
 import { PanelEditor, buildPanelEditScene } from '../panel-edit/PanelEditor';
 import ExportButton from '../sharing/ExportButton/ExportButton';
 import ShareButton from '../sharing/ShareButton/ShareButton';
@@ -115,6 +117,19 @@ export function ToolbarActions({ dashboard }: Props) {
       );
     },
   });
+
+  //BMC Code: Initiation point to create Schedule.
+  toolbarActions.push({
+    group: 'icon-actions',
+    condition:
+      uid &&
+      meta.canShare &&
+      (contextSrv.hasPermission('reports:access') || contextSrv.isEditor) &&
+      isShowingDashboard &&
+      !isEditing,
+    render: () => <ManageScheduleButton key="manage-reports-button" uid={uid} />,
+  });
+  // BMC code: end
 
   toolbarActions.push({
     group: 'icon-actions',
@@ -588,6 +603,18 @@ export function ToolbarActions({ dashboard }: Props) {
     },
   });
 
+  // BMC code - Dashboard personalization
+  toolbarActions.push({
+    group: 'main-buttons',
+    condition: isShowingDashboard && !isEditing && uid && !meta.isSnapshot,
+    render: () => (
+      <ButtonGroup>
+        <SaveFiltersButton dashboard={dashboard} uid={uid!} />
+        <ResetFiltersButton uid={uid!} />
+      </ButtonGroup>
+    ),
+  });
+  // BMC code end
   return <ToolbarButtonRow alignment="right">{renderActionElements(toolbarActions)}</ToolbarButtonRow>;
 }
 

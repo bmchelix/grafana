@@ -2,6 +2,8 @@ import { Subscription } from 'rxjs';
 
 import { DataSourceRef } from '@grafana/data';
 import { getDataSourceSrv, toDataQueryError } from '@grafana/runtime';
+import { getDashboardSrv } from 'app/features/dashboard/services/DashboardSrv';
+import { deleteVariableCache } from 'app/features/dashboard-scene/settings/variables/utils';
 import { ThunkResult } from 'app/types/store';
 
 import { getVariableQueryEditor } from '../editor/getVariableQueryEditor';
@@ -128,6 +130,14 @@ export const changeQueryVariableQuery =
       dispatch(toKeyedAction(rootStateKey, addVariableEditorError({ errorProp: 'query', errorText })));
       return;
     }
+
+    // BMC code starts - For deleting variable cache
+    if (variableInState?.bmcVarCache === true) {
+      const dashboardUID = getDashboardSrv().getCurrent()?.uid;
+      // delete call
+      deleteVariableCache(variableInState, dashboardUID, true);
+    }
+    // BMC code ends
 
     dispatch(toKeyedAction(rootStateKey, removeVariableEditorError({ errorProp: 'query' })));
     dispatch(

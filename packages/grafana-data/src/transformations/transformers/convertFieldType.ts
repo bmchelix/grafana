@@ -2,7 +2,7 @@ import { map } from 'rxjs/operators';
 
 import { TimeZone } from '@grafana/schema';
 
-import { dateTimeParse, DateTimeOptionsWhenParsing } from '../../datetime/parser';
+import { DateTimeOptionsWhenParsing, dateTimeParse } from '../../datetime/parser';
 import { DataFrame, EnumFieldConfig, Field, FieldType } from '../../types/dataFrame';
 import { SynchronousDataTransformerInfo } from '../../types/transformations';
 import { fieldMatchers } from '../matchers';
@@ -209,7 +209,6 @@ export function fieldToStringField(
     case FieldType.time:
       values = values.map((v) => dateTimeParse(v, parseOptions).format(dateFormat));
       break;
-
     // Handle both "string" and "other" types to ensure compatibility across Grafana versions (10 & 11)
     // In some cases fields are classified as 'other' in Grafana 10 but as 'string' in Grafana 11
     case FieldType.string:
