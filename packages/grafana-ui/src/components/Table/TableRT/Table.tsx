@@ -16,6 +16,8 @@ import { Trans } from '@grafana/i18n';
 import { TableCellHeight } from '@grafana/schema';
 
 import { useTheme2 } from '../../../themes/ThemeContext';
+import { useDirection } from '../../../contexts';
+import { overrideDir } from '../../../utils/rtl';
 import { CustomScrollbar } from '../../CustomScrollbar/CustomScrollbar';
 import { Pagination } from '../../Pagination/Pagination';
 import { TableCellInspector } from '../TableCellInspector';
@@ -74,6 +76,8 @@ export const Table = memo((props: Props) => {
   const tableDivRef = useRef<HTMLDivElement>(null);
   const variableSizeListScrollbarRef = useRef<HTMLDivElement>(null);
   const theme = useTheme2();
+  // BMC Code : RTL Change
+  const { isRtl: rtlMode } = useDirection();
   const tableStyles = useTableStyles(theme, cellHeight);
   const headerHeight = noHeader ? 0 : tableStyles.rowHeight;
   const [footerItems, setFooterItems] = useState<FooterItem[] | undefined>(footerValues);
@@ -125,9 +129,10 @@ export const Table = memo((props: Props) => {
   const hasNestedData = nestedDataField !== undefined;
 
   // React-table column definitions
+  // BMC Code : RTL Change
   const memoizedColumns = useMemo(
-    () => getColumns(data, width, columnMinWidth, hasNestedData, footerItems, isCountRowsSet),
-    [data, width, columnMinWidth, hasNestedData, footerItems, isCountRowsSet]
+    () => getColumns(data, width, columnMinWidth, hasNestedData, footerItems, isCountRowsSet, rtlMode),
+    [data, width, columnMinWidth, hasNestedData, footerItems, isCountRowsSet, rtlMode]
   );
 
   // we need a ref to later store the `toggleAllRowsExpanded` function, returned by `useTable`.
@@ -231,6 +236,12 @@ export const Table = memo((props: Props) => {
       setFooterItems(footerItemsCountRows);
       return;
     }
+    // BMC Code : DRJ71-20318. When there's no data return early to prevent calculation errors.
+    if (rows.length === 0) {
+      setFooterItems(undefined);
+      return;
+    }
+    //BMC Code end
 
     const footerItems = getFooterItems(
       headerGroups[0].headers,
@@ -334,6 +345,8 @@ export const Table = memo((props: Props) => {
     <>
       <div
         {...getTableProps()}
+        // BMC Code : RTL Change
+        {...overrideDir()}
         className={tableStyles.table}
         aria-label={ariaLabel}
         role="table"

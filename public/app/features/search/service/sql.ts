@@ -141,7 +141,11 @@ export class SQLSearcher implements GrafanaSearcher {
       const allDeletedHits = await deletedDashboardsCache.get();
       rsp = searchHitsToDashboardSearchHits(filterSearchResults(allDeletedHits, query));
     } else {
-      rsp = await backendSrv.get<DashboardSearchHit[]>('/api/search', query);
+      // BMC Change: Next block inline to include lang in the query
+      rsp = await backendSrv.get<DashboardSearchHit[]>('/api/search', {
+        ...query,
+        lang: config.bootData.user.language ?? '',
+      });
     }
 
     // Field values (columnar)

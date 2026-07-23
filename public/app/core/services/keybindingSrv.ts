@@ -57,6 +57,9 @@ export class KeybindingSrv {
       this.bindAssistantShortcutIfAvailable();
       this.bind('esc', this.exit);
       this.bindGlobalEsc();
+      // BMC Change Start: Restore kiosk mode shortcut ('d k') for dashboard scenes. 
+      this.bind('d k', () => this.chromeService.onToggleKioskMode()); 
+      // BMC Change End
     }
 
     this.bind('c t', () => toggleTheme(false));

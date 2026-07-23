@@ -4,18 +4,18 @@ import {
   DataTransformerID,
   FieldNamePickerConfigSettings,
   FieldType,
+  getTimeZones,
   SelectableValue,
   StandardEditorsRegistryItem,
   standardTransformers,
+  TransformerCategory,
   TransformerRegistryItem,
   TransformerUIProps,
-  TransformerCategory,
-  getTimeZones,
 } from '@grafana/data';
 import { ConvertFieldTypeOptions, ConvertFieldTypeTransformerOptions } from '@grafana/data/internal';
 import { t, Trans } from '@grafana/i18n';
 import { Button, InlineField, InlineFieldRow, Input, Select } from '@grafana/ui';
-import { getAllFieldTypeIconOptions, FieldNamePicker } from '@grafana/ui/internal';
+import { FieldNamePicker, getAllFieldTypeIconOptions } from '@grafana/ui/internal';
 import { findField } from 'app/features/dimensions/utils';
 
 import { getTransformationContent } from '../docs/getTransformationContent';
@@ -137,14 +137,14 @@ export const ConvertFieldTypeTransformerEditor = ({
     <>
       {options.conversions.map((c: ConvertFieldTypeOptions, idx: number) => {
         const targetField = findField(input?.[0], c.targetField);
-
+        // BMC Helix code: start
         // Show "Join with" input when:
         // - A join value exists (maintains backward compatibility)
         // - Target field type is 'other' (Grafana 10) or 'string' (Grafana 11)
         // This ensures consistent UI across versions where arrays may be classified differently.
         const shouldRenderJoinWith =
           c.joinWith?.length || (targetField?.type && [FieldType.other, FieldType.string].includes(targetField.type));
-
+        // BMC Helix code: end
         return (
           <div key={`${c.targetField}-${idx}`}>
             <InlineFieldRow>
@@ -184,7 +184,10 @@ export const ConvertFieldTypeTransformerEditor = ({
               )}
               {c.destinationType === FieldType.string && (
                 <>
+                  {/* BMC Helix code: start */}
+                  {/* {(c.joinWith?.length || targetField?.type === FieldType.other) && ( */}
                   {shouldRenderJoinWith && (
+                    // BMC Helix code: end
                     <InlineField
                       label={t('transformers.convert-field-type-transformer-editor.label-join-with', 'Join with')}
                       tooltip={t(
@@ -197,6 +200,7 @@ export const ConvertFieldTypeTransformerEditor = ({
                         // eslint-disable-next-line @grafana/i18n/no-untranslated-strings
                         placeholder={'JSON'}
                         onChange={onJoinWithChange(idx)}
+                        // BMC Helix code: width set to 16
                         width={16}
                       />
                     </InlineField>

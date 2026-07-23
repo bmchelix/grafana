@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"fmt"
@@ -9,6 +10,8 @@ import (
 	"slices"
 	"sort"
 	"strings"
+
+	"github.com/grafana/grafana/pkg/api/bmc/external"
 
 	"github.com/grafana/grafana/pkg/api/dtos"
 	"github.com/grafana/grafana/pkg/api/webassets"
@@ -23,6 +26,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/licensing"
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginsettings"
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginstore"
+	dashboardkind "github.com/grafana/grafana/pkg/services/store/kind/dashboard"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/tsdb/grafanads"
 	"github.com/grafana/grafana/pkg/util"
@@ -196,6 +200,16 @@ func (hs *HTTPServer) getFrontendSettings(c *contextmodel.ReqContext) (*dtos.Fro
 	// we should remove this once we can be sure that no external plugins rely on this
 	featureToggles["topnav"] = true
 
+	// BMC Change: To set feature toggle for scenes
+	if external.FeatureFlagBHDScenesOFF.Enabled(c.Req, c.SignedInUser) {
+		featureToggles["dashboardScene"] = false
+		featureToggles["dashboardSceneForViewers"] = false
+		featureToggles["dashboardSceneSolo"] = false
+	}
+
+	// BMC Change: Read RTL Support status from feature_status table
+	featureToggles["rtlSupport"] = hs.sqlStore.IsFeatureEnabled(c.Req.Context(), c.GetOrgID(), "Right-to-Left Interface")
+
 	frontendSettings := &dtos.FrontendSettingsDTO{
 		DefaultDatasource:                   defaultDS,
 		Datasources:                         dataSources,
@@ -351,6 +365,19 @@ func (hs *HTTPServer) getFrontendSettings(c *contextmodel.ReqContext) (*dtos.Fro
 			ConnMaxLifetime: hs.Cfg.SqlDatasourceMaxConnLifetimeDefault,
 		},
 		OpenFeatureContext: hs.Cfg.OpenFeature.ContextAttrs,
+		// BMC code
+		EnvType:                        setting.EnvType,
+		IsExternalDSUrlDropdownEnabled: setting.IsExternalDSUrlDropdownEnabled,
+		BulkLimit:                      setting.BulkLimit,
+		MapBoxAccessToken:              setting.MapBoxAccessToken,
+		BulkExportLimit:                setting.BulkExportLimit,
+		BhdVersion:                     setting.BHD_Version,
+		EmailAttachmentSizeLimit:       setting.EmailAttachmentSizeLimit,
+		CSVDelimiter:                   setting.CSVDelimiter,
+		RepeatVariablesLimit:           setting.RepeatVariablesLimit,
+		ARRowLimitForCachedVariables:   hs.Cfg.RemoteVariableCacheSettings.ARRowLimitForCachedVariables,
+		EnableDsMetering:               setting.EnableDsMetering,
+		// End
 	}
 
 	if hs.Cfg.UnifiedAlerting.StateHistory.Enabled {
@@ -460,21 +487,55 @@ func getShortCommitHash(commitHash string, maxLength int) string {
 	return commitHash
 }
 
+//nolint:gocyclo
 func (hs *HTTPServer) getFSDataSources(c *contextmodel.ReqContext, availablePlugins AvailablePlugins) (map[string]plugins.DataSourceDTO, error) {
 	c, span := hs.injectSpan(c, "api.getFSDataSources")
 	defer span.End()
 
+	defaultDatasource := datasources.BMC_HELIX_DS
 	orgDataSources := make([]*datasources.DataSource, 0)
 	if c.GetOrgID() != 0 {
 		query := datasources.GetDataSourcesQuery{OrgID: c.GetOrgID(), DataSourceLimit: hs.Cfg.DataSourceLimit}
+
+		//BMC Code : Start => MSP Tenant Check
+		//len(strings.TrimSpace(c.SignedInUser.SubTenantId)) != 0) => checks if its ITOM MSP subtenant
+		//((len(c.SignedInUser.MspOrgs) > 0) && !c.SignedInUser.IsUnrestrictedUser) => check if its MSP Parent tenant. It could be ITSM parent tenant as well
+		// So after fetching teams check team type as well. All this check can be avoided if jwt can differentiate between ITOM and ITSM MSP
+		if c.SignedInUser.OrgRole != "Admin" && ((len(strings.TrimSpace(c.SignedInUser.SubTenantId)) != 0) || ((len(c.SignedInUser.MspOrgs) > 0) && !c.SignedInUser.IsUnrestrictedUser)) {
+			query = hs.buildMSPDSQuery(c)
+		}
+		//BMC Code : End
 		dataSources, err := hs.DataSourcesService.GetDataSources(c.Req.Context(), &query)
 		if err != nil {
 			return nil, err
 		}
 
+		//BMC Code : Start => DRJ71-14432
+		//ITOM MSP : Set Default Datasource to sub tenant datasource if BMC Helix does not exists
+		if !slices.Contains(query.Names, datasources.BMC_HELIX_DS) {
+			sort.Strings(query.Names)
+		search:
+			for _, name := range query.Names {
+				for _, datasource := range dataSources {
+					if name == datasource.Name {
+						c.Logger.Info("MSP : Set IsDefault to true", "User Id", c.SignedInUser.UserID, "Datasource Name", datasource.Name)
+						datasource.IsDefault = true
+						defaultDatasource = datasource.Name
+						break search
+					}
+				}
+			}
+		}
+		//BMC Code : End
+
 		if c.IsPublicDashboardView() {
 			// If RBAC is enabled, it will filter out all datasources for a public user, so we need to skip it
-			orgDataSources = dataSources
+			// But we can filter to only include datasources actually used by the dashboard
+			filtered, err := hs.publicDashFilterUsedDataSources(c, dataSources)
+			if err != nil {
+				return nil, err
+			}
+			orgDataSources = filtered
 		} else {
 			filtered, err := hs.dsGuardian.New(c.SignedInUser.OrgID, c.SignedInUser).FilterDatasourcesByReadPermissions(dataSources)
 			if err != nil {
@@ -590,7 +651,15 @@ func (hs *HTTPServer) getFSDataSources(c *contextmodel.ReqContext, availablePlug
 			ds.JsonData.Set("directUrl", ds.URL)
 		}
 
-		dataSources[ds.Name] = dsDTO
+		//BMC Code : Start => DRJ71-14425
+		//ITOM MSP : Set Datasource key to BMC Helix for subtenant datasource
+		//so that subtenant user can access OOB dashboard using subtenant datasources
+		if defaultDatasource != datasources.BMC_HELIX_DS && defaultDatasource == dsDTO.Name {
+			c.Logger.Info("MSP : Switched BMC Helix DS", "User Id", c.SignedInUser.UserID, "Datasource Name", dsDTO.Name)
+			dataSources[datasources.BMC_HELIX_DS] = dsDTO
+		} else {
+			dataSources[ds.Name] = dsDTO
+		}
 	}
 
 	// add data sources that are built in (meaning they are not added via data sources page, nor have any entry in
@@ -828,4 +897,46 @@ func (hs *HTTPServer) getEnabledOAuthProviders() map[string]any {
 		}
 	}
 	return providers
+}
+
+func (hs *HTTPServer) publicDashFilterUsedDataSources(c *contextmodel.ReqContext, allDataSources []*datasources.DataSource) ([]*datasources.DataSource, error) {
+	if hs.PublicDashboardsApi == nil || hs.PublicDashboardsApi.PublicDashboardService == nil {
+		return nil, fmt.Errorf("public dashboard service not configured")
+	}
+
+	_, dash, err := hs.PublicDashboardsApi.PublicDashboardService.FindPublicDashboardAndDashboardByAccessToken(c.Req.Context(), c.PublicDashboardAccessToken)
+	if err != nil {
+		return nil, err
+	}
+	if dash == nil || dash.Data == nil {
+		return []*datasources.DataSource{}, nil
+	}
+
+	payload, err := dash.Data.Encode()
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode dashboard data: %w", err)
+	}
+
+	lookup := dashboardkind.CreateDatasourceLookup([]*dashboardkind.DatasourceQueryResult{
+		// empty values (does not resolve anything)
+	})
+
+	dashSummaryInfo, err := dashboardkind.ReadDashboard(bytes.NewReader(payload), lookup)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse dashboard: %w", err)
+	}
+
+	usedUIDs := make(map[string]struct{}, len(dashSummaryInfo.Datasource))
+	for _, ds := range dashSummaryInfo.Datasource {
+		usedUIDs[ds.UID] = struct{}{}
+	}
+
+	filtered := make([]*datasources.DataSource, 0)
+	for _, ds := range allDataSources {
+		if _, ok := usedUIDs[ds.UID]; ok {
+			filtered = append(filtered, ds)
+		}
+	}
+
+	return filtered, nil
 }

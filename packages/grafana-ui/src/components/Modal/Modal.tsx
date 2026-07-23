@@ -2,8 +2,8 @@ import { cx } from '@emotion/css';
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { OverlayContainer, useOverlay } from '@react-aria/overlays';
-import { PropsWithChildren, useRef } from 'react';
 import * as React from 'react';
+import { PropsWithChildren, useRef } from 'react';
 
 import { t } from '@grafana/i18n';
 
@@ -31,6 +31,8 @@ interface BaseProps {
 
   /** If not set will call onDismiss if that is set. */
   onClickBackdrop?: () => void;
+  // BMC Code : Accessibility Change (Next Line)
+  ariaLabelledby?: string;
 }
 
 interface WithStringTitleProps extends BaseProps {
@@ -64,10 +66,20 @@ export function Modal(props: PropsWithChildren<Props>) {
     onDismiss,
     onClickBackdrop,
     trapFocus = true,
+    // BMC Code : Accessibility Change (Next Line)
+    ariaLabelledby,
   } = props;
   const styles = useStyles2(getModalStyles);
 
   const ref = useRef<HTMLDivElement>(null);
+
+  //BMC Accesssibility Change : Next 6 lines.
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    if (isOpen) {
+      closeButtonRef.current?.focus();
+    }
+  }, [isOpen]);
 
   // Handle interacting outside the dialog and pressing
   // the Escape key to close the modal.
@@ -80,6 +92,7 @@ export function Modal(props: PropsWithChildren<Props>) {
   const { dialogProps, titleProps } = useDialog(
     {
       'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledby,
     },
     ref
   );
@@ -109,6 +122,7 @@ export function Modal(props: PropsWithChildren<Props>) {
             }
             <div className={styles.modalHeaderClose}>
               <IconButton
+                ref={closeButtonRef}
                 name="times"
                 size="xl"
                 onClick={onDismiss}

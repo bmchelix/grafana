@@ -237,6 +237,84 @@ func (_m *MockStore) SearchUsersPermissions(ctx context.Context, orgID int64, op
 	return r0, r1
 }
 
+// GetBHDPermissionsByRoles provides a mock function with given fields: ctx, bhdRoles
+func (_m *MockStore) GetBHDPermissionsByRoles(ctx context.Context, bhdRoles []int64) ([]accesscontrol.Permission, error) {
+	ret := _m.Called(ctx, bhdRoles)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetBHDPermissionsByRoles")
+	}
+
+	var r0 []accesscontrol.Permission
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, []int64) ([]accesscontrol.Permission, error)); ok {
+		return rf(ctx, bhdRoles)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, []int64) []accesscontrol.Permission); ok {
+		r0 = rf(ctx, bhdRoles)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]accesscontrol.Permission)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, []int64) error); ok {
+		r1 = rf(ctx, bhdRoles)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetBHDRoleIdByUserId provides a mock function with given fields: ctx, orgID, userID
+func (_m *MockStore) GetBHDRoleIdByUserId(ctx context.Context, orgID int64, userID int64) ([]int64, error) {
+	ret := _m.Called(ctx, orgID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetBHDRoleIdByUserId")
+	}
+
+	var r0 []int64
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, int64, int64) ([]int64, error)); ok {
+		return rf(ctx, orgID, userID)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, int64, int64) []int64); ok {
+		r0 = rf(ctx, orgID, userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]int64)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, int64, int64) error); ok {
+		r1 = rf(ctx, orgID, userID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ValidateUserId provides a mock function with given fields: ctx, orgID, userID
+func (_m *MockStore) ValidateUserId(ctx context.Context, orgID int64, userID int64) error {
+	ret := _m.Called(ctx, orgID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ValidateUserId")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, int64, int64) error); ok {
+		r0 = rf(ctx, orgID, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewMockStore creates a new instance of MockStore. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewMockStore(t interface {

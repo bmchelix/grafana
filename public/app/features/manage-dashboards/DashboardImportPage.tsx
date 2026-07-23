@@ -4,39 +4,51 @@ import { connect, ConnectedProps } from 'react-redux';
 
 import { AppEvents, GrafanaTheme2, LoadingState, NavModelItem } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { config, reportInteraction } from '@grafana/runtime';
 import {
   Button,
+  DropzoneFile,
   Field,
-  Input,
+  FileDropzone,
+  FileDropzoneDefaultChildren,
+  LinkButton,
+  // Input,
   Spinner,
+  // TextLink,
+  // Label,
+  Stack,
   stylesFactory,
   TextArea,
   Themeable2,
-  FileDropzone,
   withTheme2,
-  DropzoneFile,
-  FileDropzoneDefaultChildren,
-  LinkButton,
-  TextLink,
-  Label,
-  Stack,
 } from '@grafana/ui';
 import appEvents from 'app/core/app_events';
 import { Form } from 'app/core/components/Form/Form';
 import { Page } from 'app/core/components/Page/Page';
 import { GrafanaRouteComponentProps } from 'app/core/navigation/types';
+import { getNavModel } from 'app/core/selectors/navModel';
 import { dispatch } from 'app/store/store';
 import { StoreState } from 'app/types/store';
 
 import { cleanUpAction } from '../../core/actions/cleanUp';
 import { ImportDashboardOverviewV2 } from '../dashboard-scene/v2schema/ImportDashboardOverviewV2';
 
+// BMC Code: Next lines
+import { bulkLimit, Import } from './bulkoperation/pages/import/components/Import';
+import { ImportOperationProvider, useImportOperations } from './bulkoperation/pages/import/state/actions';
+import { initialImportDashboardState as iDashboardsState } from './bulkoperation/pages/import/state/reducers';
 import { ImportDashboardOverview } from './components/ImportDashboardOverview';
-import { fetchGcomDashboard, importDashboardJson, importDashboardV2Json } from './state/actions';
+import {
+  clearLoadedDashboard,
+  dashboardLoaded,
+  fetchDashboards,
+  fetchGcomDashboard,
+  importDashboardJson,
+  importDashboardV2Json,
+} from './state/actions';
 import { initialImportDashboardState } from './state/reducers';
-import { validateDashboardJson, validateGcomDashboard } from './utils/validation';
+import { validateDashboardJson } from './utils/validation';
 
 type DashboardImportPageRouteSearchParams = {
   gcomDashboardId?: string;
@@ -56,13 +68,23 @@ const JSON_PLACEHOLDER = `{
 const mapStateToProps = (state: StoreState) => ({
   loadingState: state.importDashboard.state,
   dashboard: state.importDashboard.dashboard,
+  // BMC Code: Next props
+  navModel: getNavModel(state.navIndex, 'dashboards/import', undefined, true),
+  isMultiple: state.importDashboard.multiple,
 });
 
 const mapDispatchToProps = {
   fetchGcomDashboard,
   importDashboardJson,
   cleanUpAction,
+  // BMC Code: Next 3 lines
+  fetchDashboards,
+  dashboardLoaded,
+  clearLoadedDashboard,
 };
+
+// BMC code - next line
+const getImportFailedLabel = () => t('bmc.manage-dashboards.import-failed', 'Import failed');
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -110,7 +132,8 @@ class UnthemedDashboardImport extends PureComponent<Props> {
       this.props.importDashboardJson(json);
     } catch (error) {
       if (error instanceof Error) {
-        appEvents.emit(AppEvents.alertError, ['Import failed', 'JSON -> JS Serialization failed: ' + error.message]);
+        const failureTitle = t('bmc.manage-dashboards.serialization-failed', 'JSON -> JS Serialization failed');
+        appEvents.emit(AppEvents.alertError, [getImportFailedLabel(), `${failureTitle}: ${error.message}`]);
       }
       return;
     }
@@ -163,17 +186,20 @@ class UnthemedDashboardImport extends PureComponent<Props> {
   renderImportForm() {
     const styles = importStyles(this.props.theme);
 
-    const GcomDashboardsLink = () => (
-      // eslint-disable-next-line @grafana/i18n/no-untranslated-strings
-      <TextLink variant="bodySmall" href="https://grafana.com/grafana/dashboards/" external>
-        grafana.com/dashboards
-      </TextLink>
-    );
+    // BMC code: comment below block
+    // const GcomDashboardsLink = () => (
+    //   // eslint-disable-next-line @grafana/i18n/no-untranslated-strings
+    //   <TextLink variant="bodySmall" href="https://grafana.com/grafana/dashboards/" external>
+    //     grafana.com/dashboards
+    //   </TextLink>
+    // );
 
     return (
       <>
+        {/* BMC code */}
         <div className={styles.option}>
-          <FileDropzone
+          {/* BMC Code: Use custom file dropzone */}
+          {/* <FileDropzone
             options={{ multiple: false, accept: ['.json', '.txt'] }}
             readAs="readAsText"
             fileListRenderer={this.fileListRenderer}
@@ -186,9 +212,17 @@ class UnthemedDashboardImport extends PureComponent<Props> {
                 'Drag and drop here or click to browse'
               )}
             />
-          </FileDropzone>
+          </FileDropzone> */}
+
+          <FileDropzoneWrapper
+            onFileUpload={this.onFileUpload}
+            fetchDashboards={this.props.fetchDashboards}
+            dashboardLoaded={this.props.dashboardLoaded}
+            clearLoadedDashboard={this.props.clearLoadedDashboard}
+            fileListRenderer={this.fileListRenderer}
+          />
         </div>
-        <div className={styles.option}>
+        {/* <div className={styles.option}>
           <Form onSubmit={this.getGcomDashboard} defaultValues={{ gcomDashboard: '' }}>
             {({ register, errors }) => (
               <Field
@@ -224,7 +258,8 @@ class UnthemedDashboardImport extends PureComponent<Props> {
               </Field>
             )}
           </Form>
-        </div>
+        </div> */}
+        {/* End */}
         <div className={styles.option}>
           <Form onSubmit={this.getDashboardFromJson} defaultValues={{ dashboardJson: '' }}>
             {({ register, errors }) => (
@@ -263,22 +298,28 @@ class UnthemedDashboardImport extends PureComponent<Props> {
 
   pageNav: NavModelItem = {
     text: t('manage-dashboards.unthemed-dashboard-import.text.import-dashboard', 'Import dashboard'),
-    subTitle: t(
-      'manage-dashboards.unthemed-dashboard-import.subTitle.import-dashboard-from-file-or-grafanacom',
-      'Import dashboard from file or Grafana.com'
-    ),
+    // BMC code: start
+    // subTitle: t(
+    //   'manage-dashboards.unthemed-dashboard-import.subTitle.import-dashboard-from-file-or-grafanacom',
+    //   'Import dashboard from file or Grafana.com'
+    // ),
+    subTitle: t('bmc.dashboard-import.sub-title', 'Import dashboard from file or via dashboard json'),
+    // BMC code end
   };
 
   getDashboardOverview() {
-    const { loadingState, dashboard } = this.props;
+    // BMC code - added isMultiple, clearLoadedDashboard
+    const { loadingState, dashboard, isMultiple, clearLoadedDashboard } = this.props;
 
-    if (loadingState === LoadingState.Done) {
+    // BMC code - modified below conditions
+    if (loadingState === LoadingState.Done && !isMultiple) {
       if (dashboard.elements || dashboard.spec?.elements) {
         return <ImportDashboardOverviewV2 />;
       }
       return <ImportDashboardOverview />;
+    } else if (loadingState === LoadingState.Done && isMultiple) {
+      return <Import clearLoadedDashboard={clearLoadedDashboard} />;
     }
-
     return null;
   }
 
@@ -286,19 +327,22 @@ class UnthemedDashboardImport extends PureComponent<Props> {
     const { loadingState } = this.props;
 
     return (
-      <Page navId="dashboards/browse" pageNav={this.pageNav}>
-        <Page.Contents>
-          {loadingState === LoadingState.Loading && (
-            <Stack direction={'column'} justifyContent="center">
-              <Stack justifyContent="center">
-                <Spinner size="xxl" />
+      // BMC code
+      <ImportOperationProvider initialState={{ ...iDashboardsState }}>
+        <Page navId="dashboards/browse" pageNav={this.pageNav}>
+          <Page.Contents>
+            {loadingState === LoadingState.Loading && (
+              <Stack direction={'column'} justifyContent="center">
+                <Stack justifyContent="center">
+                  <Spinner size="xxl" />
+                </Stack>
               </Stack>
-            </Stack>
-          )}
-          {[LoadingState.Error, LoadingState.NotStarted].includes(loadingState) && this.renderImportForm()}
-          {this.getDashboardOverview()}
-        </Page.Contents>
-      </Page>
+            )}
+            {[LoadingState.Error, LoadingState.NotStarted].includes(loadingState) && this.renderImportForm()}
+            {this.getDashboardOverview()}
+          </Page.Contents>
+        </Page>
+      </ImportOperationProvider>
     );
   }
 }
@@ -322,3 +366,94 @@ const importStyles = stylesFactory((theme: GrafanaTheme2) => {
     }),
   };
 });
+
+// BMC Code: Below file
+const FileDropzoneWrapper: React.FC<any> = ({
+  onFileUpload,
+  fetchDashboards,
+  dashboardLoaded,
+  clearLoadedDashboard,
+  fileListRenderer,
+}) => {
+  const importOperations = useImportOperations();
+  const primaryText = t('bmc.manage-dashboards.upload-json', 'Upload dashboard JSON file(s)');
+  const secondaryText = t('bmc.manage-dashboards.drop-click', 'Drag and drop here or click to browse');
+  return (
+    <>
+      <FileDropzone
+        options={{
+          multiple: true,
+          accept: ['.json', '.txt'],
+          maxFiles: bulkLimit,
+          onDrop: async (files: any) => {
+            await importOperations.clearAllDashboard();
+            if (!files || !files.length) {
+              return;
+            }
+            if (files.length === 1) {
+              const reader = new FileReader();
+              reader.readAsText(files[0]);
+              reader.onload = () => {
+                onFileUpload(reader.result as string);
+              };
+            } else {
+              fetchDashboards();
+              const readFile = async (file: any) => {
+                return new Promise((res, rej) => {
+                  const reader = new FileReader();
+                  reader.onabort = rej;
+                  reader.onload = () => {
+                    try {
+                      const dashboard = JSON.parse(reader.result as string);
+                      importOperations.importDashboardJson(file.id, dashboard);
+                      res(true);
+                    } catch (error) {
+                      rej(error);
+                    }
+                  };
+                  reader.onerror = rej;
+                  reader.readAsText(file.file);
+                });
+              };
+              return await Promise.all(
+                new Array(files.length).fill(null).map((_, index) => {
+                  return readFile({
+                    id: getFileName(files[index].name),
+                    file: files[index],
+                    error: null,
+                  }).catch((error) => {
+                    const failureTitle = t(
+                      'bmc.manage-dashboards.serialization-failed',
+                      'JSON -> JS Serialization failed'
+                    );
+                    appEvents.emit(AppEvents.alertError, [getImportFailedLabel(), `${failureTitle}: ${error.message}`]);
+                  });
+                })
+              )
+                .then((results) => {
+                  if (results.find((res) => res)) {
+                    dashboardLoaded();
+                  } else {
+                    clearLoadedDashboard();
+                  }
+                })
+                .catch((err) => {
+                  appEvents.emit(AppEvents.alertError, [getImportFailedLabel(), err.message]);
+                  clearLoadedDashboard();
+                });
+            }
+          },
+        }}
+        readAs="readAsText"
+        fileListRenderer={fileListRenderer}
+      >
+        <FileDropzoneDefaultChildren primaryText={primaryText} secondaryText={secondaryText} />
+      </FileDropzone>
+    </>
+  );
+};
+
+const getFileName = (fileName: string) => {
+  const delimiter = fileName.lastIndexOf('.');
+  return fileName.substring(0, delimiter);
+};

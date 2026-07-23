@@ -1,7 +1,8 @@
 import { css } from '@emotion/css';
 import { useState } from 'react';
 
-import { PluginType, GrafanaTheme2 } from '@grafana/data';
+import { GrafanaTheme2, PluginType } from '@grafana/data';
+import { config } from '@grafana/runtime';
 import { useStyles2 } from '@grafana/ui';
 import { Page } from 'app/core/components/Page/Page';
 import { RoadmapLinks } from 'app/features/plugins/admin/components/RoadmapLinks';
@@ -38,7 +39,12 @@ export function AddNewConnectionPage() {
   );
 
   return (
-    <Page navId={'connections-add-new-connection'} actions={updateAllButton} className={styles.pageContainer}>
+    <Page
+      navId={'connections-add-new-connection'}
+      // BMC Change: Inline: disable update plugins button in non development mode
+      actions={config.buildInfo.env === 'development' ? updateAllButton : undefined}
+      className={styles.pageContainer}
+    >
       <Page.Contents>
         <AddNewConnection />
         <RoadmapLinks />

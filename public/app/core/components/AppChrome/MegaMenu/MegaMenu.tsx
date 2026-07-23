@@ -112,7 +112,12 @@ export const MegaMenu = memo(
         <MegaMenuHeader handleDockedMenu={handleDockedMenu} handleMegaMenu={handleMegaMenu} onClose={onClose} />
         <nav className={styles.content}>
           <ScrollContainer height="100%" overflowX="hidden" showScrollIndicators>
-            <ul className={styles.itemList} aria-label={t('navigation.megamenu.list-label', 'Navigation')}>
+            {/* BMC Change: Next line, adding unique id */}
+            <ul
+              id={'navigation'}
+              className={styles.itemList}
+              aria-label={t('navigation.megamenu.list-label', 'Navigation')}
+            >
               {navItems.map((link, index) => (
                 <MegaMenuItem
                   key={link.text}

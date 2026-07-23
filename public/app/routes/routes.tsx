@@ -7,14 +7,16 @@ import { PageNotFound } from 'app/core/components/PageNotFound/PageNotFound';
 import config from 'app/core/config';
 import { contextSrv } from 'app/core/services/context_srv';
 import LdapPage from 'app/features/admin/ldap/LdapPage';
-import { getAlertingRoutes } from 'app/features/alerting/routes';
+// import { getAlertingRoutes } from 'app/features/alerting/routes';
 import { isAdmin, isLocalDevEnv, isOpenSourceEdition } from 'app/features/alerting/unified/utils/misc';
 import { ConnectionsRedirectNotice } from 'app/features/connections/components/ConnectionsRedirectNotice/ConnectionsRedirectNotice';
 import { ROUTES as CONNECTIONS_ROUTES } from 'app/features/connections/constants';
 import { getRoutes as getDataConnectionsRoutes } from 'app/features/connections/routes';
 import { DASHBOARD_LIBRARY_ROUTES } from 'app/features/dashboard/dashgrid/types';
+import { FEATURE_CONST, getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { DATASOURCES_ROUTES } from 'app/features/datasources/constants';
 import { ConfigureIRM } from 'app/features/gops/configuration-tracker/components/ConfigureIRM';
+import { isGrafanaAdmin, isOrgAdmin } from 'app/features/plugins/admin/permissions';
 import { getRoutes as getPluginCatalogRoutes } from 'app/features/plugins/admin/routes';
 import { getAppPluginRoutes } from 'app/features/plugins/routes';
 import { getProfileRoutes } from 'app/features/profile/routes';
@@ -25,6 +27,8 @@ import { SafeDynamicImport } from '../core/components/DynamicImports/SafeDynamic
 import { RouteDescriptor } from '../core/navigation/types';
 import { getPublicDashboardRoutes } from '../features/dashboard/routes';
 import { getProvisioningRoutes } from '../features/provisioning/utils/routes';
+
+import { getCalcFieldRoutes } from './routes.calculatedFields';
 
 const isDevEnv = config.buildInfo.env === 'development';
 export const extraRoutes: RouteDescriptor[] = [];
@@ -134,6 +138,8 @@ export function getAppRoutes(): RouteDescriptor[] {
     },
     {
       path: DATASOURCES_ROUTES.New,
+      // BMC code - next line
+      roles: () => (getFeatureStatus(FEATURE_CONST.DASHBOARDS_SSRF_FEATURE_NAME) || isGrafanaAdmin() ? [] : ['Reject']),
       component: () => <Navigate replace to={CONNECTIONS_ROUTES.DataSourcesNew} />,
     },
     {
@@ -250,6 +256,8 @@ export function getAppRoutes(): RouteDescriptor[] {
     },
     {
       path: '/org/new',
+      // BMC code - next line
+      roles: () => (config.buildInfo.env !== 'development' ? ['restricted'] : []),
       component: SafeDynamicImport(() => import(/* webpackChunkName: "NewOrgPage" */ 'app/features/org/NewOrgPage')),
     },
     {
@@ -257,12 +265,14 @@ export function getAppRoutes(): RouteDescriptor[] {
       // Org users page has been combined with admin users
       component: () => <Navigate replace to={'/admin/users'} />,
     },
-    {
-      path: '/org/users/invite',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "UserInvitePage" */ 'app/features/org/UserInvitePage')
-      ),
-    },
+    // BMC code - remove invite route
+    // {
+    //   path: '/org/users/invite',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "UserInvitePage" */ 'app/features/org/UserInvitePage')
+    //   ),
+    // },
+    // End
     {
       path: '/org/serviceaccounts',
       roles: () =>
@@ -298,13 +308,20 @@ export function getAppRoutes(): RouteDescriptor[] {
     },
     {
       path: '/org/teams/new',
-      roles: () => contextSrv.evaluatePermission([AccessControlAction.ActionTeamsCreate]),
+      // BMC code - next two lines
+      // roles: () => contextSrv.evaluatePermission([AccessControlAction.ActionTeamsCreate]),
+      roles: () => (config.buildInfo.env !== 'development' ? ['restricted'] : []),
       component: SafeDynamicImport(() => import(/* webpackChunkName: "CreateTeam" */ 'app/features/teams/CreateTeam')),
     },
     {
       path: '/org/teams/edit/:uid/:page?',
       roles: () =>
-        contextSrv.evaluatePermission([AccessControlAction.ActionTeamsRead, AccessControlAction.ActionTeamsCreate]),
+        contextSrv.evaluatePermission(
+          // BMC code - inline change
+          // () => (config.editorsCanAdmin ? [] : ['Admin']),
+          [AccessControlAction.ActionTeamsRead, AccessControlAction.ActionTeamsCreate]
+        ),
+      // contextSrv.evaluatePermission([AccessControlAction.ActionTeamsRead, AccessControlAction.ActionTeamsCreate]),
       component: SafeDynamicImport(() => import(/* webpackChunkName: "TeamPages" */ 'app/features/teams/TeamPages')),
     },
     // ADMIN
@@ -352,6 +369,8 @@ export function getAppRoutes(): RouteDescriptor[] {
     },
     {
       path: '/admin/users/create',
+      // BMC code - next line
+      roles: () => (config.buildInfo.env !== 'development' ? ['restricted'] : []),
       component: SafeDynamicImport(
         () => import(/* webpackChunkName: "UserCreatePage" */ 'app/features/admin/UserCreatePage')
       ),
@@ -516,6 +535,29 @@ export function getAppRoutes(): RouteDescriptor[] {
         () => import(/* webpackChunkName: "NotificationsPage"*/ 'app/features/notifications/NotificationsPage')
       ),
     },
+    // BMC code - RBAC
+    // TODO: Add right role for accesscontrol action
+    {
+      path: '/org/roles',
+      roles: () =>
+        contextSrv.evaluatePermission(
+          // () => ['Admin'],
+          [AccessControlAction.ActionTeamsRead, AccessControlAction.ActionTeamsCreate]
+        ),
+      component: SafeDynamicImport(
+        () => import(/* webpackChunkName: "RoleList" */ 'app/features/bmc-rbac/roles/RoleList')
+      ),
+    },
+    {
+      path: '/org/roles/:action/:id?',
+      roles: () =>
+        contextSrv.evaluatePermission(
+          // () => ['Admin'],
+          [AccessControlAction.ActionTeamsRead, AccessControlAction.ActionTeamsCreate]
+        ),
+      component: SafeDynamicImport(() => import('app/features/bmc-rbac/roles/ManageRole')),
+    },
+    // End
     {
       // A redirect to the Grafana Metrics Drilldown app from legacy Explore Metrics routes
       path: '/explore/metrics/*',
@@ -550,12 +592,37 @@ export function getAppRoutes(): RouteDescriptor[] {
     },
     ...getPluginCatalogRoutes(),
     ...getSupportBundleRoutes(),
-    ...getAlertingRoutes(),
+    // BMC code - next line
+    // ...getAlertingRoutes(),
     ...getProfileRoutes(),
     ...extraRoutes,
     ...getPublicDashboardRoutes(),
     ...getDataConnectionsRoutes(),
     ...getProvisioningRoutes(),
+    // BMC code - start
+    ...getCalcFieldRoutes(),
+    {
+      path: '/global-locales',
+      exact: true,
+      roles: () => {
+        if (!getFeatureStatus('bhd-localization')) {
+          return ['Reject'];
+        }
+        return ['Admin', 'Editor'];
+      },
+      component: SafeDynamicImport(
+        () => import(/* webpackChunkName: "GlobalLocales" */ 'app/features/bmc-content-localization/GlobalLocales')
+      ),
+    },
+    {
+      path: '/org/rms-config',
+      exact: true,
+      roles: () => (isOrgAdmin() ? [] : ['Reject']),
+      component: SafeDynamicImport(
+        () => import(/* webpackChunkName: "ReportsListPage" */ 'app/features/rms/RMSConfig')
+      ),
+    },
+    // BMC code - end
     {
       path: '/goto/*',
       component: HandleGoToRedirect,

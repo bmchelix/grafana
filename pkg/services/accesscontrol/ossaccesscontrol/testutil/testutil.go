@@ -55,6 +55,7 @@ func ProvideFolderPermissions(
 		cfg, acdb.ProvideService(sqlStore), actionSets, localcache.ProvideService(),
 		features, tracing.InitializeTracerForTest(), sqlStore, permreg.ProvidePermissionRegistry(),
 		nil,
+		nil,
 	)
 
 	orgService, err := orgimpl.ProvideService(sqlStore, cfg, quotaService)

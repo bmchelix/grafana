@@ -3,9 +3,9 @@ import { autoUpdate, useClick, useDismiss, useFloating, useInteractions } from '
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { useOverlay } from '@react-aria/overlays';
-import { FormEvent, useCallback, useRef, useState } from 'react';
+import { FormEvent, useCallback, useMemo, useRef, useState } from 'react';
 
-import { RelativeTimeRange, GrafanaTheme2, TimeOption } from '@grafana/data';
+import { GrafanaTheme2, RelativeTimeRange, TimeOption } from '@grafana/data';
 import { t, Trans } from '@grafana/i18n';
 
 import { useStyles2 } from '../../../themes/ThemeContext';
@@ -46,6 +46,10 @@ type InputState = {
  */
 export function RelativeTimeRangePicker(props: RelativeTimeRangePickerProps) {
   const { timeRange, onChange } = props;
+  // BMC Change: Next hook
+  const validOptions = useMemo(() => {
+    return getQuickOptions().filter((o) => isRelativeFormat(o.from));
+  }, []);
   const [isOpen, setIsOpen] = useState(false);
   const onClose = useCallback(() => setIsOpen(false), []);
   const timeOption = mapRelativeTimeRangeToOption(timeRange);
@@ -57,7 +61,6 @@ export function RelativeTimeRangePicker(props: RelativeTimeRangePickerProps) {
     ref
   );
   const { dialogProps } = useDialog({}, ref);
-  const validOptions = getQuickOptions().filter((o) => isRelativeFormat(o.from));
   const placement = 'bottom-start';
 
   // the order of middleware is important!

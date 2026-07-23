@@ -1,6 +1,6 @@
 import i18n from 'i18next';
-import { useCallback, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useState } from 'react';
 
 import { AdHocVariableFilter, DataSourceRef, SelectableValue } from '@grafana/data';
 
@@ -17,7 +17,6 @@ interface Props {
 // Reassign t() so i18next-parser doesn't warn on dynamic key, and we can have 'failOnWarnings' enabled
 const tFunc = i18n.t;
 
-// import { t } from 'app/core/internationalization';
 export const t = (id: string, defaultMessage: string, values?: Record<string, unknown>) => {
   return tFunc(id, defaultMessage, values);
 };

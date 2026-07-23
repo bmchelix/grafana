@@ -3,7 +3,6 @@ import { useAsyncFn } from 'react-use';
 
 import { locationUtil } from '@grafana/data';
 import { t } from '@grafana/i18n';
-import { locationService } from '@grafana/runtime';
 import { Dashboard } from '@grafana/schema';
 import appEvents from 'app/core/app_events';
 import { useAppNotification } from 'app/core/copy/appNotification';
@@ -68,12 +67,15 @@ export const useDashboardSave = (isCopy = false) => {
           trackDashboardCreatedOrSaved(!!dashboard.id, { name: dashboard.title, url: result.url });
         }
 
-        const currentPath = locationService.getLocation().pathname;
+        // BMC Change: Moved location change logic to broweDashboardAPI
+        // As to maintain the correct state update cycle.
+        // const currentPath = locationService.getLocation().pathname;
         const newUrl = locationUtil.stripBaseFromUrl(result.url);
 
-        if (newUrl !== currentPath && result.url) {
-          setTimeout(() => locationService.replace(newUrl));
-        }
+        // if (newUrl !== currentPath && result.url) {
+        //   setTimeout(() => locationService.replace(newUrl));
+        // }
+        // BMC Change: Ends
         if (dashboard.meta.isStarred) {
           dispatch(
             updateDashboardName({
@@ -86,7 +88,11 @@ export const useDashboardSave = (isCopy = false) => {
         return result;
       } catch (error) {
         if (error instanceof Error) {
-          notifyApp.error(error.message ?? 'Error saving dashboard');
+          notifyApp.error(
+            error.message ?? t('bmcgrafana.dashboards.save-dashboard.error', 'Error saving dashboard'),
+            '',
+            'bhd-00612'
+          );
         }
         throw error;
       }

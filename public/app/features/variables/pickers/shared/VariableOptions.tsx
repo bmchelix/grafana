@@ -1,15 +1,16 @@
 import { css, cx } from '@emotion/css';
-import { PureComponent } from 'react';
 import * as React from 'react';
+import { PureComponent } from 'react';
 
 import { GrafanaTheme2, VariableOption } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Trans, t } from '@grafana/i18n';
-import { Tooltip, Themeable2, withTheme2, clearButtonStyles, stylesFactory } from '@grafana/ui';
+import { Themeable2, Tooltip, clearButtonStyles, stylesFactory, withTheme2 } from '@grafana/ui';
 import checkboxPng from 'img/checkbox.png';
 import checkboxWhitePng from 'img/checkbox_white.png';
 
 import { ALL_VARIABLE_VALUE } from '../../constants';
+import { OPTIONS_LIMIT } from '../OptionsPicker/reducer';
 
 export interface Props extends React.HTMLProps<HTMLUListElement>, Themeable2 {
   multi: boolean;
@@ -22,6 +23,8 @@ export interface Props extends React.HTMLProps<HTMLUListElement>, Themeable2 {
    * Used for aria-controls
    */
   id: string;
+  // BMC Change: Next line
+  totalOptions: number;
 }
 
 class VariableOptions extends PureComponent<Props> {
@@ -56,6 +59,14 @@ class VariableOptions extends PureComponent<Props> {
           >
             {this.renderMultiToggle()}
             {values.map((option, index) => this.renderOption(option, index))}
+            {/* BMC Change: Next block */}
+            {restProps.totalOptions > values.length && values.length === OPTIONS_LIMIT ? (
+              <li style={{ padding: '2px 27px 0 8px' }}>
+                <span>
+                  <Trans i18nKey="bmc.variables.more-values">... More values</Trans>
+                </span>
+              </li>
+            ) : null}
           </ul>
         </div>
       </div>
@@ -93,7 +104,8 @@ class VariableOptions extends PureComponent<Props> {
             })}
           ></span>
           <span data-testid={selectors.pages.Dashboard.SubMenu.submenuItemValueDropDownOptionTexts(`${option.text}`)}>
-            {isAllOption ? t('variable.picker.option-all', 'All') : option.text}
+            {/* BMC Change: Inline */}
+            {isAllOption ? (option.text === 'Omit' ? 'Omit' : t('variable.picker.option-all', 'All')) : option.text}
           </span>
         </button>
       </li>
@@ -127,6 +139,9 @@ class VariableOptions extends PureComponent<Props> {
           data-placement="top"
         >
           <span
+            //BMC Accessibility Change next 1 line: added aria-hidden
+            aria-hidden="true"
+            //BMC Accessibility Change End
             className={cx(styles.variableOptionIcon, {
               [styles.variableOptionIconManySelected]: selectedValues.length > 1,
             })}

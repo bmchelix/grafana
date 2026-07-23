@@ -14,6 +14,7 @@ import {
 import { config } from '@grafana/runtime';
 import { Alert, SecureSocksProxySettings, Divider, Stack } from '@grafana/ui';
 
+import { HCGUrlDropdown } from '../../hcg/HCGUrlDropdown';  //bmc code change
 import { ElasticsearchOptions } from '../types';
 
 import { DataLinks } from './DataLinks';
@@ -25,13 +26,27 @@ export type Props = DataSourcePluginOptionsEditorProps<ElasticsearchOptions>;
 
 export const ConfigEditor = (props: Props) => {
   const { options, onOptionsChange } = props;
-
+  // bmc code : starts
+  const isGrafanaAdmin = config.bootData.user.isGrafanaAdmin;
+  const isExternalDSUrlDropdownEnabled = config.isExternalDSUrlDropdownEnabled === true;
+  if (!isGrafanaAdmin) {
+    options.url = '********';
+  }
+  // bmc code : ends
   useEffect(() => {
     if (!isValidOptions(options)) {
       onOptionsChange(coerceOptions(options));
     }
   }, [onOptionsChange, options]);
 
+  // BMC HCG: Handler for URL selection from dropdown
+  const handleUrlChange = (url: string) => {
+    onOptionsChange({
+      ...options,
+      url: url,
+    });
+  };
+//end
   const authProps = convertLegacyAuthProps({
     config: options,
     onChange: onOptionsChange,
@@ -61,7 +76,23 @@ export const ConfigEditor = (props: Props) => {
         hasRequiredFields={false}
       />
       <Divider spacing={4} />
-      <ConnectionSettings config={options} onChange={onOptionsChange} urlPlaceholder="http://localhost:9200" />
+         {/* bmc code change */}
+      {isExternalDSUrlDropdownEnabled ? (
+        <HCGUrlDropdown
+          resourceType="elasticsearch"
+          value={options.url}
+          onChange={handleUrlChange}
+          disabled={!isGrafanaAdmin}
+        />
+      ) : (
+        <ConnectionSettings
+          urlPlaceholder="http://localhost:9200"
+          config={{ ...options, readOnly: !isGrafanaAdmin }}
+          onChange={onOptionsChange}
+          urlLabel="Server URL"
+        />
+      )}
+       {/* end */}
       <Divider spacing={4} />
       <Auth
         {...authProps}

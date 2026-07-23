@@ -1,6 +1,8 @@
 import { PanelPlugin, PanelPluginMeta } from '@grafana/data';
 import config from 'app/core/config';
 
+import { checkMapBoxPluginFeatureStatus } from '../panel/state/util';
+
 import { pluginImporter } from './importer/pluginImporter';
 
 const promiseCache: Record<string, Promise<PanelPlugin>> = {};
@@ -16,6 +18,12 @@ export function importPanelPlugin(id: string): Promise<PanelPlugin> {
   if (!meta) {
     throw new Error(`Plugin ${id} not found`);
   }
+
+  //BMC Code - Start
+  if (!checkMapBoxPluginFeatureStatus(id)) {
+    throw new Error(`Plugin ${id} not available`);
+  }
+  //BMC Code -End
 
   promiseCache[id] = getPanelPlugin(meta);
   if (id !== meta.type) {
