@@ -1,20 +1,23 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import useAsync from 'react-use/lib/useAsync';
 
-import { Trans, t } from '@grafana/i18n';
-import { config } from '@grafana/runtime';
+import { locationUtil } from '@grafana/data';
+import { t, Trans } from '@grafana/i18n';
 import { ConfirmModal, EmptyState, ScrollContainer, TextLink } from '@grafana/ui';
 import { getDashboardSnapshotSrv, Snapshot } from 'app/features/dashboard/services/SnapshotSrv';
 
 import { SnapshotListTableRow } from './SnapshotListTableRow';
 
 export async function getSnapshots() {
+  // BMC code: next line
+  // const appUrl = window.location.origin;
   return getDashboardSnapshotSrv()
     .getSnapshots()
     .then((result: Snapshot[]) => {
       return result.map((snapshot) => ({
         ...snapshot,
-        url: `${config.appUrl}dashboard/snapshot/${snapshot.key}`,
+        // BMC code: wrap the url in assureBaseUrl to fix subPath issue
+        url: locationUtil.assureBaseUrl(`/dashboard/snapshot/${snapshot.key}`),
       }));
     });
 }

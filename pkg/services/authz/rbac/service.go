@@ -41,8 +41,13 @@ type Service struct {
 	store           store.Store
 	folderStore     store.FolderStore
 	permissionStore store.PermissionStore
-	identityStore   legacy.LegacyIdentityStore
-	settings        Settings
+	// BMC code - start
+	// bhdStore loads BMC BHD role permissions (same source as acimpl loadBHDPermissions).
+	// Nil skips merge; used so unified-storage authz matches HTTP accesscontrol for BHD users.
+	bhdStore accesscontrol.Store
+	// BMC code - end
+	identityStore legacy.LegacyIdentityStore
+	settings      Settings
 
 	mapper MapperRegistry
 
@@ -75,6 +80,8 @@ func NewService(
 	folderStore store.FolderStore,
 	identityStore legacy.LegacyIdentityStore,
 	permissionStore store.PermissionStore,
+	// BMC code - next line
+	bhdStore accesscontrol.Store,
 	logger log.Logger,
 	tracer tracing.Tracer,
 	reg prometheus.Registerer,
@@ -88,6 +95,8 @@ func NewService(
 		store:           store.NewStore(sql, tracer),
 		folderStore:     folderStore,
 		permissionStore: permissionStore,
+		// BMC code - next line
+		bhdStore:        bhdStore,
 		identityStore:   identityStore,
 		settings:        settings,
 		logger:          logger,
@@ -463,6 +472,15 @@ func (s *Service) getUserPermissions(ctx context.Context, ns types.NamespaceInfo
 		if err != nil {
 			return nil, err
 		}
+		// BMC code - next if block
+		if s.bhdStore != nil {
+			bhdPerms, bhdErr := expandBHDMergedPermissions(ctx, s.bhdStore, ns.OrgID, userIdentifiers.ID, action, actionSets)
+			if bhdErr != nil {
+				s.logger.Warn("failed to merge BHD permissions into authz check", "error", bhdErr, "userID", userIdentifiers.ID, "orgID", ns.OrgID)
+			} else {
+				permissions = append(permissions, bhdPerms...)
+			}
+		}
 		scopeMap := s.getScopeMap(permissions)
 
 		scopeMap, err = s.resolveScopeMap(ctx, ns, scopeMap)
@@ -674,6 +692,16 @@ func (s *Service) getScopeMap(permissions []accesscontrol.Permission) map[string
 }
 
 func (s *Service) checkInheritedPermissions(ctx context.Context, scopeMap map[string]bool, req *checkRequest) (bool, error) {
+	// BMC code - start
+	if scopeMap[""] {
+		// Unscoped dashboards:create is only valid under General (root). Other folders need an
+		// explicit folders:uid scope (or ancestor) from the same action grant—e.g. folder edit
+		// roles that include scoped dashboards:create or folders:* .
+		if req.Action == "dashboards:create" && req.Verb == utils.VerbCreate {
+			return req.ParentFolder == accesscontrol.GeneralFolderUID, nil
+		}
+	}
+	// BMC code - end
 	if req.ParentFolder == "" {
 		return false, nil
 	}

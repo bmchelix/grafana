@@ -25,6 +25,9 @@ export interface RichHistoryStarredTabProps {
   loadMoreRichHistory: () => void;
   richHistorySearchFilters?: RichHistorySearchFilters;
   richHistorySettings: RichHistorySettings;
+  // BMC Code : Accessibility Change ( Next 2 lines )
+  tabId?: string;
+  tabPanelId?: string;
 }
 
 const getStyles = (theme: GrafanaTheme2) => {
@@ -48,7 +51,8 @@ const getStyles = (theme: GrafanaTheme2) => {
       marginBottom: theme.spacing(1),
     }),
     sort: css({
-      width: '170px',
+      // BMC Change: To remove the width and make it dynamic
+      // width: 170px;
     }),
     footer: css({
       height: '60px',
@@ -75,6 +79,9 @@ export function RichHistoryStarredTab(props: RichHistoryStarredTabProps) {
     totalQueries,
     loading,
     richHistorySearchFilters,
+    // BMC Code : Accessibility Change ( Next 2 lines )
+    tabId,
+    tabPanelId,
   } = props;
 
   const styles = useStyles2(getStyles);
@@ -138,7 +145,8 @@ export function RichHistoryStarredTab(props: RichHistoryStarredTabProps) {
   const sortOrderOptions = getSortOrderOptions();
 
   return (
-    <div className={styles.container}>
+    // BMC Code : Accessibility Change ( Next 1 line )
+    <div className={styles.container} role="tabpanel" aria-labelledby={tabId} id={tabPanelId}>
       <div className={styles.containerContent}>
         <div className={styles.selectors}>
           {!richHistorySettings.activeDatasourcesOnly && (

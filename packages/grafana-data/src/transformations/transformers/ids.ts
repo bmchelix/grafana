@@ -43,4 +43,9 @@ export enum DataTransformerID {
   formatString = 'formatString',
   regression = 'regression',
   groupToNestedTable = 'groupToNestedTable',
+  // BMC code
+  advanceFunctions = 'advanceFunctions',
+  dynamicFieldsFormatter = 'dynamicFieldsFormatter',
+  sanitizeFunctions = 'sanitizeFunctions',
+  // End
 }

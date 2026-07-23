@@ -1,10 +1,11 @@
 import { useId } from '@react-aria/utils';
-import { useCallback, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useState } from 'react';
 
 import { selectors } from '@grafana/e2e-selectors';
 import { t } from '@grafana/i18n';
 import { TextArea, useStyles2 } from '@grafana/ui';
+import { isRtl } from '@grafana/ui/internal';
 
 import { getStyles } from '../../dashboard-scene/settings/variables/components/VariableTextAreaField';
 import { VariableQueryEditorProps } from '../types';
@@ -30,6 +31,8 @@ export const LegacyVariableQueryEditor = ({ onChange, query }: VariableQueryEdit
 
   return (
     <TextArea
+      // BMC Code : RTL Change
+      dir={isRtl() ? 'ltr' : ''}
       id={id}
       rows={2}
       value={value}

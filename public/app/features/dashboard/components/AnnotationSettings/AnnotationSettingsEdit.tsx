@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
-import { useMemo, useState } from 'react';
 import * as React from 'react';
+import { useMemo, useState } from 'react';
 import { useAsync } from 'react-use';
 
 import {
@@ -11,10 +11,10 @@ import {
   SelectableValue,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { getDataSourceSrv, locationService } from '@grafana/runtime';
 import { AnnotationPanelFilter } from '@grafana/schema/src/raw/dashboard/x/dashboard_types.gen';
-import { Button, Checkbox, Field, FieldSet, Input, MultiSelect, Select, useStyles2, Stack, Alert } from '@grafana/ui';
+import { Alert, Button, Checkbox, Field, FieldSet, Input, MultiSelect, Select, Stack, useStyles2 } from '@grafana/ui';
 import { ColorValueEditor } from 'app/core/components/OptionsUI/color';
 import config from 'app/core/config';
 import StandardAnnotationQueryEditor from 'app/features/annotations/components/StandardAnnotationQueryEditor';
@@ -27,7 +27,9 @@ type Props = {
   dashboard: DashboardModel;
 };
 
-export const newAnnotationName = 'New annotation';
+/*BMC Change: To enable localization for below text*/
+export const newAnnotationName = () =>
+  t('bmcgrafana.dashboards.settings.annotation.edit-form.new-annotation', 'New annotation');
 
 export const AnnotationSettingsEdit = ({ editIdx, dashboard }: Props) => {
   const styles = useStyles2(getStyles);
@@ -135,7 +137,8 @@ export const AnnotationSettingsEdit = ({ editIdx, dashboard }: Props) => {
     goBackToList();
   };
 
-  const isNewAnnotation = annotation.name === newAnnotationName;
+  /*BMC Change: To enable localization for below text*/
+  const isNewAnnotation = annotation.name === newAnnotationName();
 
   const sortFn = (a: SelectableValue<number>, b: SelectableValue<number>) => {
     if (a.label && b.label) {

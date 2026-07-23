@@ -4,13 +4,13 @@ import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { useOverlay } from '@react-aria/overlays';
 import { debounce } from 'lodash';
-import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Observable } from 'rxjs';
 
 import { DataSourceInstanceSettings, GrafanaTheme2 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { reportInteraction, useFavoriteDatasources } from '@grafana/runtime';
 import { DataQuery, DataSourceJsonData, DataSourceRef } from '@grafana/schema';
 import { Button, floatingUtils, Icon, Input, ModalsController, Portal, ScrollContainer, useStyles2 } from '@grafana/ui';
@@ -61,7 +61,9 @@ export interface DataSourcePickerProps {
   uploadFile?: boolean;
   filter?: (ds: DataSourceInstanceSettings) => boolean;
 }
-
+{
+  /*BMC Change: To enable localization for below text*/
+}
 export function DataSourcePicker(props: DataSourcePickerProps) {
   const {
     current,
@@ -71,7 +73,10 @@ export function DataSourcePicker(props: DataSourcePickerProps) {
     inputId,
     noDefault = false,
     disabled = false,
-    placeholder = 'Select data source',
+    placeholder = t(
+      'bmcgrafana.dashboards.settings.variables.editor.types.ad-hoc.data-source-placeholder',
+      'Select data source'
+    ),
     ...restProps
   } = props;
 
@@ -274,6 +279,11 @@ export function DataSourcePicker(props: DataSourcePickerProps) {
           }}
           ref={handleReference}
           disabled={disabled}
+          // BMC Code : Accessibility Change ( Next 4 lines )
+          role="combobox"
+          aria-controls="data-source-suggestion-box"
+          aria-expanded={isOpen}
+          aria-autocomplete="list"
         ></Input>
       </div>
       {isOpen ? (

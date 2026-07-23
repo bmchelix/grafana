@@ -5,6 +5,8 @@ import { t } from '@grafana/i18n';
 import { SceneObject, SceneObjectState } from '@grafana/scenes';
 import { contextSrv } from 'app/core/core';
 import { getNavModel } from 'app/core/selectors/navModel';
+import { LocaleSettingsV2 } from 'app/features/bmc-content-localization/LocaleSettingsV2';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { AccessControlAction } from 'app/types/accessControl';
 import { useSelector } from 'app/types/store';
 
@@ -89,6 +91,19 @@ export function useDashboardEditPageNav(dashboard: DashboardScene, currentEditVi
     active: currentEditView === 'json-model',
   });
 
+  // BMC Change: Next block
+  if (
+    dashboard.state.uid &&
+    getFeatureStatus('bhd-localization') &&
+    (contextSrv.isEditor || contextSrv.hasRole('Admin'))
+  ) {
+    pageNav.children!.push({
+      text: t('bmc.manage-locales.localization-title', 'Localization'),
+      url: locationUtil.getUrlForPartial(location, { editview: 'localization', editIndex: null }),
+      active: currentEditView === 'localization',
+    });
+  }
+
   return { navModel, pageNav };
 }
 
@@ -106,6 +121,9 @@ export function createDashboardEditViewFor(editview: string): DashboardEditView 
       return new JsonModelEditView({});
     case 'permissions':
       return new PermissionsEditView({});
+    // BMC Change: Added localization case
+    case 'localization':
+      return new LocaleSettingsV2({});
     case 'settings':
     default:
       return new GeneralSettingsEditView({});

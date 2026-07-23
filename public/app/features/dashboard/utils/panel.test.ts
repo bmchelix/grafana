@@ -3,6 +3,7 @@ import { ComponentClass } from 'react';
 
 import { dateTime, DateTime, PanelProps, TimeRange } from '@grafana/data';
 import { getPanelPlugin } from '@grafana/data/test';
+import { contextSrv } from 'app/core/core';
 import { applyPanelTimeOverrides, calculateInnerPanelHeight } from 'app/features/dashboard/utils/panel';
 
 import { PanelModel } from '../state/PanelModel';
@@ -41,6 +42,63 @@ describe('applyPanelTimeOverrides', () => {
     expect(overrides.timeRange.raw.to).toBe('now');
   });
 
+  it('should apply timeFrom when dashboard raw time is absolute in render mode (e.g. image renderer)', () => {
+    const prevAuth = contextSrv.user.authenticatedBy;
+    contextSrv.user.authenticatedBy = 'render';
+
+    try {
+      const absoluteDashboardTimeRange: TimeRange = {
+        from: dateTime([2019, 1, 11, 12, 0]),
+        to: dateTime([2019, 1, 11, 18, 0]),
+        raw: {
+          from: dateTime([2019, 1, 11, 12, 0]),
+          to: dateTime([2019, 1, 11, 18, 0]),
+        },
+      };
+
+      const panelModel = {
+        timeFrom: '2h',
+      };
+
+      // @ts-ignore: PanelModel type inconsistency
+      const overrides = applyPanelTimeOverrides(panelModel, absoluteDashboardTimeRange);
+
+      expect(overrides.timeRange.from.toISOString()).toBe(dateTime([2019, 1, 11, 12]).toISOString());
+      expect(overrides.timeRange.to.toISOString()).toBe(fakeCurrentDate.toISOString());
+      expect(overrides.timeRange.raw.from).toBe('now-2h');
+      expect(overrides.timeRange.raw.to).toBe('now');
+    } finally {
+      contextSrv.user.authenticatedBy = prevAuth;
+    }
+  });
+
+  it('should not apply timeFrom when dashboard raw time is absolute outside render mode', () => {
+    const prevAuth = contextSrv.user.authenticatedBy;
+    contextSrv.user.authenticatedBy = '';
+
+    try {
+      const absoluteDashboardTimeRange: TimeRange = {
+        from: dateTime([2019, 1, 11, 12, 0]),
+        to: dateTime([2019, 1, 11, 18, 0]),
+        raw: {
+          from: dateTime([2019, 1, 11, 12, 0]),
+          to: dateTime([2019, 1, 11, 18, 0]),
+        },
+      };
+
+      const panelModel = {
+        timeFrom: '2h',
+      };
+
+      // @ts-ignore: PanelModel type inconsistency
+      const overrides = applyPanelTimeOverrides(panelModel, absoluteDashboardTimeRange);
+
+      expect(overrides.timeRange).toBe(absoluteDashboardTimeRange);
+      expect(overrides.timeInfo).toBe('');
+    } finally {
+      contextSrv.user.authenticatedBy = prevAuth;
+    }
+  });
   it('should apply time shift', () => {
     const panelModel = {
       timeShift: '2h',

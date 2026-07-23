@@ -534,6 +534,14 @@ func (x *resourceTableColumn) Decode(buff []byte) (any, error) {
 			}
 		case resourcepb.ResourceTableColumnDefinition_INT64:
 			{
+				// BMC code start
+				// Compatibility: some legacy search paths still serialize int64 values as plain
+				// decimal text (for example, `legacy_id`), not 8-byte binary values.
+				if parsed, err := strconv.ParseInt(string(bytes.TrimSpace(buff)), 10, 64); err == nil {
+					return parsed, nil
+				}
+				// BMC code end
+
 				var f int64
 				count, err := binary.Decode(buff, binary.BigEndian, &f)
 				if count == 8 && err == nil {

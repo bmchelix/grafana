@@ -3,12 +3,16 @@ import { Subscription } from 'rxjs';
 import { AnnotationQuery, DashboardCursorSync, dateTimeFormat, DateTimeInput, EventBusSrv } from '@grafana/data';
 import { TimeRangeUpdatedEvent } from '@grafana/runtime';
 import { behaviors, sceneGraph, SceneObject, VizPanel } from '@grafana/scenes';
+import { InspectTab } from 'app/features/inspector/types';
 
+import { PanelInspectDrawer } from '../inspect/PanelInspectDrawer';
 import { DashboardDataLayerSet } from '../scene/DashboardDataLayerSet';
 import { DashboardScene } from '../scene/DashboardScene';
+import { DefaultGridLayoutManager } from '../scene/layout-default/DefaultGridLayoutManager';
 import { dataLayersToAnnotations } from '../serialization/dataLayersToAnnotations';
 
 import { PanelModelCompatibilityWrapper } from './PanelModelCompatibilityWrapper';
+import { dashboardSceneGraph } from './dashboardSceneGraph';
 import { findVizPanelByKey, getVizPanelKeyForPanelId } from './utils';
 
 /**
@@ -192,6 +196,69 @@ export class DashboardModelCompatibilityWrapper {
   public hasUnsavedChanges() {
     return this._scene.state.isDirty;
   }
+
+  // BMC Change: Starts
+  public makeRecordDetailsResposive() {
+    const panelHeightMap = dashboardSceneGraph.getRecordDetailsHeightMap();
+    if (Object.keys(panelHeightMap).length > 0) {
+      const newChildren: SceneObject[] = [];
+      (this._scene.state.body as DefaultGridLayoutManager).state.grid?.state.children.forEach((item, index) => {
+        Array.prototype.push.apply(
+          newChildren,
+          dashboardSceneGraph.getDeflatedLayoutChildren(item, index, panelHeightMap)
+        );
+      });
+      (this._scene.state.body as DefaultGridLayoutManager).state.grid.setState({
+        children: newChildren,
+      });
+    }
+  }
+
+  public getPanelsForRenderer() {
+    return this.panels
+      .filter((p) => p._vizPanel.isActive)
+      .map((p) => {
+        return {
+          // Use pathId (e.g., "P2$panel-5") instead of key — pathIds are unique across
+          // repeated panels and match what SoloPanelContext expects for viewPanel URLs.
+          id: p._vizPanel.getPathId(),
+          description: p.description,
+          type: p.type,
+          title: p._vizPanel.interpolate(p.title, undefined, 'text'),
+          transformations: p.transformations,
+          datasource: p.datasource,
+          options: p.options,
+          fieldConfig: p.fieldConfig,
+          pluginVersion: p.pluginVersion,
+          _vizPanel: p._vizPanel,
+        };
+      });
+  }
+
+  public getPanelByIdForRenderer(id: string) {
+    return this.getPanelsForRenderer().find((p) => p.id === id);
+  }
+
+  /**
+   * Opens the inspect drawer for a panel identified by pathId or key.
+   * Called by the renderer via grafanaRuntime.openInspect() after panels have loaded.
+   */
+  public openInspect(panelId: string, tab = 'data'): boolean {
+    // Search all panels in the scene tree (not just active ones) so this works
+    // immediately after navigation, before React has rendered/activated all panels.
+    const panel = this.panels.find((p) => p._vizPanel.getPathId() === panelId || p.key === panelId)?._vizPanel;
+    if (!panel) {
+      return false;
+    }
+
+    const currentTab = Object.values(InspectTab).find((t) => t === tab) ?? InspectTab.Data;
+    this._scene.setState({
+      inspectPanelKey: panelId,
+      overlay: new PanelInspectDrawer({ panelRef: panel.getRef(), currentTab }),
+    });
+    return true;
+  }
+  // BMC Change: Ends
 }
 
 function findAllObjects(root: SceneObject, check: (o: SceneObject) => boolean) {

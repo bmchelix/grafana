@@ -8,6 +8,7 @@ import { ManagerKind } from 'app/features/apiserver/types';
 import { BulkDeleteProvisionedResource } from 'app/features/provisioning/components/BulkActions/BulkDeleteProvisionedResource';
 import { BulkMoveProvisionedResource } from 'app/features/provisioning/components/BulkActions/BulkMoveProvisionedResource';
 import { useSelectionProvisioningStatus } from 'app/features/provisioning/hooks/useSelectionProvisioningStatus';
+import { ConfirmExportModal } from 'app/features/search/page/components/ConfirmExportModal';
 import { useSearchStateManager } from 'app/features/search/state/SearchStateManager';
 import { ShowModalReactEvent } from 'app/types/events';
 import { FolderDTO } from 'app/types/folders';
@@ -134,16 +135,48 @@ export function BrowseActions({ folderDTO }: Props) {
     }
   };
 
+  // BMC Code: Start
+  const showExportModal = () => {
+    appEvents.publish(
+      new ShowModalReactEvent({
+        component: ConfirmExportModal,
+        props: {
+          results: Object.keys(selectedItems.dashboard).filter((uid) => selectedItems.dashboard[uid]),
+          onExportDone: onActionComplete,
+        },
+      })
+    );
+  };
+  // BMC Code: End
+
+  // BMC code - disable Move when folders are selected since nested folders are disabled (MaxNestedFolderDepth=0)
+  const hasFolderSelection = Object.keys(selectedItems.folder).some((uid) => selectedItems.folder[uid]);
   const moveButton = (
-    <Button onClick={showMoveModal} variant="secondary">
+    <Button
+      onClick={showMoveModal}
+      variant="secondary"
+      disabled={hasFolderSelection}
+      tooltip={
+        hasFolderSelection ? t('bmc.browse-dashboards.action.move-folder-tooltip', 'Folders cannot be moved') : undefined
+      }
+    >
       <Trans i18nKey="browse-dashboards.action.move-button">Move</Trans>
     </Button>
   );
+  // BMC code end
 
   return (
     <>
       <Stack gap={1} data-testid="manage-actions">
         {moveButton}
+
+        {/* BMC code */}
+        {0 < Array.from(Object.keys(selectedItems.dashboard).filter((uid) => selectedItems.dashboard[uid])).length ? (
+          <Button icon={'import'} variant="secondary" onClick={showExportModal}>
+            <Trans i18nKey="bmc.search.export">Export</Trans>
+          </Button>
+        ) : null}
+        {/* End */}
 
         <Button onClick={showDeleteModal} variant="destructive">
           <Trans i18nKey="browse-dashboards.action.delete-button">Delete</Trans>

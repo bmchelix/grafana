@@ -52,7 +52,9 @@ export function addLegendOptions<T extends OptionsWithLegend>(
       name: t('grafana-ui.builder.legend.name-width', 'Width'),
       category,
       settings: {
-        placeholder: 'Auto',
+        // BMC Change: To enable localization for below text
+        placeholder: t('bmcgrafana.dashboards.edit-panel.axis.grid-lines.auto-text', 'Auto'),
+        // BMC change ends
       },
       showIf: (c) => c.legend.showLegend && c.legend.placement === 'right',
     });

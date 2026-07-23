@@ -12,6 +12,7 @@
   "streaming": false,
   "tracing": true,
   "backend": true,
+  "hideFromList": true,
 
   "info": {
     "description": "High volume, minimal dependency trace storage.  OSS tracing solution from Grafana Labs.",
@@ -39,7 +40,7 @@
     ],
     "version": "%VERSION%"
   },
-
+  "state": "alpha",
   "dependencies": {
     "grafanaDependency": ">=10.3.0-0"
   }

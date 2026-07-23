@@ -11,6 +11,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/grafana/grafana/pkg/api/bmc/external"
+	"github.com/grafana/grafana/pkg/api/bmc/localization"
+	"github.com/grafana/grafana/pkg/api/pluginproxy"
+	"github.com/grafana/grafana/pkg/bhdcodes"
+
+	"github.com/grafana/grafana/pkg/api/bmc"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 
 	claims "github.com/grafana/authlib/types"
@@ -19,6 +25,7 @@ import (
 	"github.com/grafana/grafana/pkg/api/dtos"
 	"github.com/grafana/grafana/pkg/api/response"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
+	"github.com/grafana/grafana/pkg/bmc/audit"
 	"github.com/grafana/grafana/pkg/components/dashdiffs"
 	"github.com/grafana/grafana/pkg/components/simplejson"
 	"github.com/grafana/grafana/pkg/infra/metrics"
@@ -31,6 +38,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/folder"
 	"github.com/grafana/grafana/pkg/services/org"
 	pref "github.com/grafana/grafana/pkg/services/preference"
+	"github.com/grafana/grafana/pkg/services/preference/prefapi"
 	publicdashboardModels "github.com/grafana/grafana/pkg/services/publicdashboards/models"
 	"github.com/grafana/grafana/pkg/services/star"
 	"github.com/grafana/grafana/pkg/services/user"
@@ -270,6 +278,11 @@ func (hs *HTTPServer) GetDashboard(c *contextmodel.ReqContext) response.Response
 	}
 
 	c.TimeRequest(metrics.MApiDashboardGet)
+
+	// BMC Changes - Will check for user dash personalization and apply it if found
+	bmc.SetupCustomPersonalization(hs.sqlStore, c.Req.Context(), &dto, c.OrgID, c.UserID, uid)
+	// BMC Changes - End
+
 	return response.JSON(http.StatusOK, dto)
 }
 
@@ -383,6 +396,13 @@ func (hs *HTTPServer) deleteDashboard(c *contextmodel.ReqContext) response.Respo
 
 	err = hs.DashboardService.DeleteDashboard(c.Req.Context(), dash.ID, dash.UID, c.GetOrgID())
 	if err != nil {
+		// BMC CODE STARTS
+		go func() {
+			// audit log
+			audit.DashboardDeleteAudit(c, err, dash)
+			checkFFandDeleteCache(c, uid)
+		}()
+		// BMC CODE ENDS
 		return dashboardErrResponse(err, "Failed to delete dashboard")
 	}
 
@@ -392,6 +412,15 @@ func (hs *HTTPServer) deleteDashboard(c *contextmodel.ReqContext) response.Respo
 			hs.log.Error("Failed to broadcast delete info", "dashboard", dash.UID, "error", err)
 		}
 	}
+
+	// BMC CODE STARTS
+	go func() {
+		// audit log
+		audit.DashboardDeleteAudit(c, nil, dash)
+		// delete variable cache of these dashboards from redis
+		checkFFandDeleteCache(c, uid)
+	}()
+	// BMC CODE ENDS
 
 	return response.JSON(http.StatusOK, util.DynMap{
 		"title":   dash.Title,
@@ -423,7 +452,8 @@ func (hs *HTTPServer) PostDashboard(c *contextmodel.ReqContext) response.Respons
 
 	cmd := dashboards.SaveDashboardCommand{}
 	if err := web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data when creating or updating dashboard", err)
 	}
 	return hs.postDashboard(c, cmd)
 }
@@ -449,6 +479,54 @@ func (hs *HTTPServer) postDashboard(c *contextmodel.ReqContext, cmd dashboards.S
 	cmd.UserID = userID
 
 	dash := cmd.GetDashboardModel()
+
+	// BMC Change: Next line
+	localesJson := hs.getLocalesJson(dash.Data)
+
+	//BMC CODE STARTS
+	hs.log.Info("TenantId:", c.SignedInUser.GetOrgID(), " About to authenticate SQL permissions")
+	if !isRbacSqlEnabled(c, hs) {
+		hs.log.Debug("TenantId:", c.SignedInUser.GetOrgID(), " User does not have SQL permissions. Verifying if SQL query has been modified.")
+		var existingDashboard *dashboards.Dashboard
+		var rsp response.Response
+		dashboardUID := dash.UID
+
+		// Check if this is an update (based on the UID)
+		if dashboardUID != "" {
+			hs.log.Debug(
+				"TenantId:", c.SignedInUser.GetOrgID(),
+				" Dashboard has UID, attempting to load existing dashboard",
+				" UID:", dashboardUID,
+			)
+			//load the existing dashboard
+			existingDashboard, rsp = hs.getDashboardHelper(ctx, c.SignedInUser.GetOrgID(), 0, dashboardUID)
+			if rsp != nil {
+				hs.log.Debug("TenantId:", c.SignedInUser.GetOrgID(), " Error fetching existing dashboard")
+				return rsp // should we do this? return if there's an error or failure to find the dashboard?
+			}
+			hs.log.Debug("TenantId:", c.SignedInUser.GetOrgID(), " Existing dashboard loaded successfully", "UID", dashboardUID)
+		} else {
+			existingDashboard = nil
+			hs.log.Debug("TenantId:", c.SignedInUser.GetOrgID(), " No UID found, assuming this is a new dashboard")
+		}
+
+		// RBAC for SQL
+		if existingDashboard == nil {
+			// Enforcing SQL restrictions on a new dashboard.
+			err = bmc.EnforceSQLRestrictions(dash.Data, nil)
+		} else {
+			// Enforce SQL restrictions on existing dashboard
+			err = bmc.EnforceSQLRestrictions(dash.Data, existingDashboard.Data)
+		}
+
+		if err != nil {
+			hs.log.Warn("TenantId:", c.SignedInUser.GetOrgID(), " SQL restriction enforcement failed", "error", err.Error())
+			return response.Error(http.StatusForbidden, err.Error(), nil)
+		}
+		hs.log.Debug("TenantId:", c.SignedInUser.GetOrgID(), " SQL query restrictions passed")
+	}
+	//BMC CODE ENDS
+
 	newDashboard := dash.ID == 0
 	if newDashboard {
 		limitReached, err := hs.QuotaService.QuotaReached(c, dashboards.QuotaTargetSrv)
@@ -464,7 +542,7 @@ func (hs *HTTPServer) postDashboard(c *contextmodel.ReqContext, cmd dashboards.S
 	if dash.ID != 0 {
 		data, err := hs.dashboardProvisioningService.GetProvisionedDashboardDataByDashboardID(c.Req.Context(), dash.ID)
 		if err != nil {
-			return response.Error(http.StatusInternalServerError, "Error while checking if dashboard is provisioned using ID", err)
+			return response.Error(http.StatusInternalServerError, "Error while checking if dashboard is provisioned", err)
 		}
 		provisioningData = data
 	} else if dash.UID != "" {
@@ -506,6 +584,8 @@ func (hs *HTTPServer) postDashboard(c *contextmodel.ReqContext, cmd dashboards.S
 			return response.JSON(http.StatusAccepted, util.DynMap{
 				"status":  "pending",
 				"message": "changes were broadcast to the gitops listener",
+				// BMC code: next line
+				"bhdCode": bhdcodes.DashboardGitOpsBroadcast,
 			})
 		}
 
@@ -515,8 +595,24 @@ func (hs *HTTPServer) postDashboard(c *contextmodel.ReqContext, cmd dashboards.S
 	}
 
 	if saveErr != nil {
+
+		// BMC CODE STARTS
+		if newDashboard {
+			go audit.DashboardCreateAudit(c, dash, saveErr)
+		} else {
+			go audit.DashboardUpdateAudit(c, dash, saveErr)
+		}
+		// BMC CODE ENDS
+
 		return apierrors.ToDashboardErrorResponse(ctx, hs.pluginStore, saveErr)
 	}
+
+	// BMC Change: Starts
+	if external.FeatureFlagBHDLocalization.Enabled(c.Req, c.SignedInUser) {
+		query := localization.Query{OrgID: c.OrgID, ResourceUID: dashboard.UID}
+		localization.UpdateLocalesJSON(c.Req.Context(), hs.sqlStore.WithTransactionalDbSession, query, localesJson)
+	}
+	// BMC Change: Ends
 
 	// connect library panels for this dashboard after the dashboard is stored and has an ID
 	err = hs.LibraryPanelService.ConnectLibraryPanelsForDashboard(ctx, c.SignedInUser, dashboard)
@@ -525,6 +621,15 @@ func (hs *HTTPServer) postDashboard(c *contextmodel.ReqContext, cmd dashboards.S
 	}
 
 	c.TimeRequest(metrics.MApiDashboardSave)
+
+	// BMC CODE STARTS
+	if newDashboard {
+		go audit.DashboardCreateAudit(c, dashboard, nil)
+	} else {
+		go audit.DashboardUpdateAudit(c, dashboard, nil)
+	}
+	// BMC CODE ENDS
+
 	return response.JSON(http.StatusOK, util.DynMap{
 		"status":    "success",
 		"slug":      dashboard.Slug,
@@ -535,6 +640,123 @@ func (hs *HTTPServer) postDashboard(c *contextmodel.ReqContext, cmd dashboards.S
 		"folderUid": dashboard.FolderUID,
 	})
 }
+
+func isRbacSqlEnabled(c *contextmodel.ReqContext, hs *HTTPServer) bool {
+	orgRole := c.SignedInUser.OrgRole
+	isOrgAdmin := orgRole == org.RoleAdmin
+
+	hs.log.Debug(fmt.Sprintf("TenantId: %v From isRbacSqlEnabled(), OrgRole: %v, isOrgAdmin: %v", c.SignedInUser.GetOrgID(), orgRole, isOrgAdmin))
+
+	isSqlEnabledinDefaultPreferences, isAppliedToAdmins := getPreferences(c, hs)
+
+	// If SQL is enabled in default preferences, return true immediately
+	if isSqlEnabledinDefaultPreferences {
+		return true
+	}
+
+	// If SQL is not enabled in default preferences, check:
+	// 1. If applied to admins, return the RBAC value
+	// 2. If the user is an OrgAdmin, allow SQL
+	// 3. Otherwise, return the RBAC value
+	if isAppliedToAdmins {
+		return isSqlEnabledinRbac(c, hs)
+	}
+
+	return isOrgAdmin || isSqlEnabledinRbac(c, hs)
+}
+
+// still BMC code here and continuing too
+func getPreferences(c *contextmodel.ReqContext, hs *HTTPServer) (bool, bool) {
+	// Log the request for preferences
+	hs.log.Debug(fmt.Sprintf("TenantId: %d - Fetching preferences", c.SignedInUser.GetOrgID()))
+
+	// Fetch preferences response
+	preferencesResponse := prefapi.GetPreferencesFor(c.Req.Context(), hs.DashboardService, hs.preferenceService, hs.Features, c.SignedInUser.GetOrgID(), 0, 0)
+	if preferencesResponse.Status() != 200 {
+		hs.log.Error(fmt.Sprintf("TenantId: %d - Failed to fetch preferences, status: %d", c.SignedInUser.GetOrgID(), preferencesResponse.Status()))
+		return false, false
+	}
+	hs.log.Debug(fmt.Sprintf("TenantId: %d - Preferences fetched successfully", c.SignedInUser.GetOrgID()))
+
+	var preferencesData map[string]interface{}
+	if err := json.Unmarshal(preferencesResponse.Body(), &preferencesData); err != nil {
+		hs.log.Error(fmt.Sprintf("TenantId: %d - Failed to parse preferences data: %v", c.SignedInUser.GetOrgID(), err))
+		return false, false
+	}
+	hs.log.Debug(fmt.Sprintf("TenantId: %d - Preferences parsed successfully", c.SignedInUser.GetOrgID()))
+
+	// Check if preferencesData is empty
+	if len(preferencesData) == 0 || preferencesData == nil {
+		hs.log.Debug(fmt.Sprintf("TenantId: %d - Preferences data is empty", c.SignedInUser.GetOrgID()))
+		return true, false
+	}
+	// Check if SQL is enabled in preferences
+	enabledQueryTypesRaw, ok := preferencesData["enabledQueryTypes"].(map[string]interface{})
+	if !ok || enabledQueryTypesRaw == nil {
+		hs.log.Debug(fmt.Sprintf("TenantId: %d - Unable to retrieve enabledQueryTypes or it is nil", c.SignedInUser.GetOrgID()))
+		return true, false
+	}
+
+	// Safely check for "enabledTypes" within "enabledQueryTypes"
+	enabledTypes, ok := enabledQueryTypesRaw["enabledTypes"].([]interface{})
+	if !ok || enabledTypes == nil {
+		hs.log.Debug(fmt.Sprintf("TenantId: %d - Unable to retrieve enabledTypes in enabledQueryTypes or it is nil", c.SignedInUser.GetOrgID()))
+		return true, false
+	}
+
+	isSqlEnabled := containsQueryType(hs, enabledTypes, "SQL", c)
+	hs.log.Debug(fmt.Sprintf("TenantId: %d - isSqlEnabled in preferences: %v", c.SignedInUser.GetOrgID(), isSqlEnabled))
+
+	// Check if SQL is applied to admins
+	isAppliedForAdmin := false
+	if applyForAdmin, ok := enabledQueryTypesRaw["applyForAdmin"].(bool); ok {
+		isAppliedForAdmin = applyForAdmin
+		hs.log.Debug(fmt.Sprintf("TenantId: %d - isAppliedForAdmin: %v", c.SignedInUser.GetOrgID(), isAppliedForAdmin))
+	} else {
+		hs.log.Debug(fmt.Sprintf("TenantId: %d - ApplyForAdmin not found in preferences", c.SignedInUser.GetOrgID()))
+	}
+
+	return isSqlEnabled, isAppliedForAdmin
+}
+
+func containsQueryType(hs *HTTPServer, enabledTypes []interface{}, queryType string, c *contextmodel.ReqContext) bool {
+	// Log the input values
+	hs.log.Debug(fmt.Sprintf("Checking if queryType '%s' exists in enabledTypes", queryType))
+
+	for _, queryTypeItem := range enabledTypes {
+		if queryTypeStr, ok := queryTypeItem.(string); ok {
+			if queryTypeStr == queryType {
+				return true
+			}
+		}
+	}
+	// Log the result if queryType is not found
+	hs.log.Debug(fmt.Sprintf("TenantId: %d - QueryType '%s' not found in enabledTypes", c.SignedInUser.GetOrgID(), queryType))
+	return false
+}
+
+func isSqlEnabledinRbac(c *contextmodel.ReqContext, hs *HTTPServer) bool {
+	hs.log.Debug(fmt.Sprintf("TenantId: %d - Checking RBAC permissions for SQL access", c.SignedInUser.GetOrgID()))
+	userPermissions := c.SignedInUser.GetPermissions()
+
+	permissionList, exists := userPermissions["servicemanagement.querytypes:sql"]
+	if !exists {
+		hs.log.Debug(fmt.Sprintf("TenantId: %d - No RBAC permissions set for SQL, defaulting to false", c.SignedInUser.GetOrgID()))
+		return false
+	}
+
+	// Check for valid permission
+	for _, permission := range permissionList {
+		if strings.HasSuffix(permission, ":*") {
+			hs.log.Debug(fmt.Sprintf("TenantId: %d - User has SQL access via RBAC", c.SignedInUser.GetOrgID()))
+			return true
+		}
+	}
+	hs.log.Debug(fmt.Sprintf("TenantId: %d - No valid SQL permissions found in the list", c.SignedInUser.GetOrgID()))
+	return false
+}
+
+//BMC CODE ENDS
 
 // swagger:route GET /dashboards/home dashboards getHomeDashboard
 //
@@ -579,7 +801,8 @@ func (hs *HTTPServer) GetHomeDashboard(c *contextmodel.ReqContext) response.Resp
 
 	filePath := hs.Cfg.DefaultHomeDashboardPath
 	if filePath == "" {
-		filePath = filepath.Join(hs.Cfg.StaticRootPath, "dashboards/home.json")
+		// BMC code - inline change
+		filePath = filepath.Join(hs.Cfg.StaticRootPath, "dashboards/bmc_home.json")
 	}
 
 	// It's safe to ignore gosec warning G304 since the variable part of the file path comes from a configuration
@@ -605,7 +828,10 @@ func (hs *HTTPServer) GetHomeDashboard(c *contextmodel.ReqContext) response.Resp
 		return response.Error(http.StatusInternalServerError, "Failed to load home dashboard", err)
 	}
 
-	hs.addGettingStartedPanelToHomeDashboard(c, dash.Dashboard)
+	// BMC code
+	// Hide getting started panel on home page
+	// hs.addGettingStartedPanelToHomeDashboard(c, dash.Dashboard)
+	// End
 
 	return response.JSON(http.StatusOK, &dash)
 }
@@ -855,7 +1081,8 @@ func (hs *HTTPServer) CalculateDashboardDiff(c *contextmodel.ReqContext) respons
 
 	apiOptions := dtos.CalculateDiffOptions{}
 	if err := web.Bind(c.Req, &apiOptions); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while calculating dashboard diff", err)
 	}
 
 	evaluator := accesscontrol.EvalPermission(dashboards.ActionDashboardsWrite, dashboards.ScopeDashboardsProvider.GetResourceScope(strconv.FormatInt(apiOptions.Base.DashboardId, 10)))
@@ -1281,3 +1508,42 @@ type RestoreDeletedDashboardByUID struct {
 	// required:true
 	Body dashboards.RestoreDeletedDashboardCommand
 }
+
+// BMC changes start
+func (hs *HTTPServer) getLocalesJson(dash *simplejson.Json) localization.LocalesJSON {
+	localesJson := localization.LocalesJSON{Locales: make(map[localization.Locale]localization.ResourceLocales)}
+	locales := dash.Get("locales")
+	if locales == nil {
+		hs.log.Info("No locales present in the dashboard")
+		return localesJson
+	}
+	localeMap, err := locales.Map()
+	if err != nil {
+		hs.log.Error("Failed to parse locales", "error", err)
+		return localesJson
+	}
+	for key, value := range localeMap {
+		localeKey := localization.Locale(key)
+		if !localization.IsSupportedLocale(localeKey) {
+			continue
+		}
+		if data, ok := value.(map[string]interface{}); ok {
+			// Extract the name and description fields
+			if nameValue, ok := data["name"].(string); ok {
+				localesJson.Locales[localeKey] = localization.ResourceLocales{
+					Name: nameValue,
+				}
+			}
+		}
+	}
+	return localesJson
+}
+
+// delete variable cache of these dashboards from Redis
+func checkFFandDeleteCache(c *contextmodel.ReqContext, uid string) {
+	if external.BHD_ENABLE_VAR_CACHING.Enabled(c.Req, c.SignedInUser) {
+		pluginproxy.DeleteDashboardCache(c.OrgID, uid)
+	}
+}
+
+// BMC Changes end

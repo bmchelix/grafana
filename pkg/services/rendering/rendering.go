@@ -44,6 +44,14 @@ type RenderingService struct {
 	features                    featuremgmt.FeatureToggles
 	RemoteCacheService          *remotecache.RemoteCache
 	RendererPluginManager       PluginManager
+
+	// BMC code
+	customPDFAction     customPDFFunc
+	customCSVAction     customCSVFunc
+	customXLSAction     customXLSFunc
+	customPanelIDAction customPanelIDFunc
+  customAgentPanelAction customAgentPanelFunc
+	// End
 }
 
 type PluginManager interface {
@@ -72,6 +80,19 @@ func ProvideService(cfg *setting.Cfg, features featuremgmt.FeatureToggles, remot
 	}
 
 	logger := log.New("rendering")
+
+	// BMC code
+	// ensure PDFsDir and XLSsDir exists
+	err := os.MkdirAll(cfg.PDFsDir, 0700)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create PDFs directory %q: %w", cfg.PDFsDir, err)
+	}
+
+	err = os.MkdirAll(cfg.XLSsDir, 0700)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create PDFs directory %q: %w", cfg.XLSsDir, err)
+	}
+	// End
 
 	//  value used for domain attribute of renderKey cookie
 	var domain string
@@ -170,6 +191,13 @@ func (rs *RenderingService) Run(ctx context.Context) error {
 		})
 		rs.renderAction = rs.renderViaHTTP
 		rs.renderCSVAction = rs.renderCSVViaHTTP
+		// BMC code
+		rs.customPDFAction = rs.customPDFViaHTTP
+		rs.customCSVAction = rs.customCSVViaHTTP
+		rs.customXLSAction = rs.customXLSViaHTTP
+		rs.customPanelIDAction = rs.customPanelIDHTTP
+		rs.customAgentPanelAction = rs.customAgentPanelViaHTTP
+		// End
 
 		refreshTicker := time.NewTicker(remoteVersionRefreshInterval)
 
@@ -199,9 +227,9 @@ func (rs *RenderingService) Run(ctx context.Context) error {
 		return nil
 	}
 
+	// BMC code - inline change
 	rs.log.Debug("No image renderer found/installed. " +
-		"For image rendering support please use the Grafana Image Renderer remote rendering service. " +
-		"Read more at https://grafana.com/docs/grafana/latest/administration/image_rendering/")
+		"For image rendering support please install the grafana-image-renderer plugin.")
 
 	<-ctx.Done()
 	return nil
@@ -311,7 +339,7 @@ func (rs *RenderingService) render(ctx context.Context, renderType RenderType, o
 		}
 	}
 
-	logger.Info("Rendering", "path", opts.Path, "userID", opts.UserID)
+	logger.Info("Rendering", "path", opts.Path, "userID", opts.AuthOpts.UserID, "orgId", opts.OrgID)
 	if math.IsInf(opts.DeviceScaleFactor, 0) || math.IsNaN(opts.DeviceScaleFactor) || opts.DeviceScaleFactor == 0 {
 		opts.DeviceScaleFactor = 1
 	}
@@ -393,10 +421,43 @@ func (rs *RenderingService) getNewFilePath(rt RenderType) (string, error) {
 		ext = "png"
 		folder = rs.Cfg.ImagesDir
 	}
+	// BMC code
+	if rt == RenderPDF {
+		ext = "pdf"
+		folder = rs.Cfg.PDFsDir
+	}
+	if rt == RenderXLS {
+		ext = "xlsx"
+		folder = rs.Cfg.XLSsDir
+	}
+	// End
 
 	return filepath.Abs(filepath.Join(folder, fmt.Sprintf("%s.%s", rand, ext)))
 }
 
+// BMC Code - Start
+// getNewFilePathByExt returns a new file path for the given extension (csv, pdf, xlsx, png)
+func (rs *RenderingService) getNewFilePathByExt(ext string) (string, error) {
+	rand, err := util.GetRandomString(20)
+	if err != nil {
+		return "", err
+	}
+
+	var folder string
+	switch ext {
+	case "csv":
+		folder = rs.Cfg.CSVsDir
+	case "pdf":
+		folder = rs.Cfg.PDFsDir
+	default:
+		ext = "jpeg"
+		folder = rs.Cfg.ImagesDir
+	}
+
+	return filepath.Abs(filepath.Join(folder, fmt.Sprintf("%s.%s", rand, ext)))
+}
+
+// BMC Code - End
 // getGrafanaCallbackURL creates a URL to send to the image rendering as callback for rendering a Grafana resource
 func (rs *RenderingService) getGrafanaCallbackURL(path string) string {
 	if rs.rendererCallbackURL != "" {

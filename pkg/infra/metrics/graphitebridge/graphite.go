@@ -23,6 +23,7 @@ import (
 	"io"
 	"math"
 	"net"
+	"os"
 	"sort"
 	"strings"
 	"time"
@@ -128,6 +129,13 @@ func NewBridge(c *Config) (*Bridge, error) {
 	if c.URL == "" {
 		return nil, errors.New("missing URL")
 	}
+
+	// BMC code changes - FIPS mode start
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		return nil, errors.New("pushing metrics to Graphite is not allowed in FIPS mode")
+	}
+	// BMC code changes - FIPS mode end
+
 	b.url = c.URL
 
 	if c.Gatherer == nil {

@@ -2,6 +2,7 @@ import { isEqual } from 'lodash';
 import React from 'react';
 import { Unsubscribable } from 'rxjs';
 
+import { locationService } from '@grafana/runtime';
 import {
   VizPanel,
   SceneObjectBase,
@@ -200,6 +201,10 @@ export class DashboardGridItem
     if (direction === 'h') {
       const rowCount = Math.ceil(panelCount / maxPerRow);
       stateChange.height = rowCount * itemHeight;
+      // BMC Change: Increase height for simple layout
+      if (locationService.getSearch().has('simple')) {
+        stateChange.height = rowCount * itemHeight;
+      }
     } else {
       stateChange.height = panelCount * itemHeight;
     }

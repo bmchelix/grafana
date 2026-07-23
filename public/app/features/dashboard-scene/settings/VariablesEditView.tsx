@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { NavModel, NavModelItem, PageLayoutType } from '@grafana/data';
 import { SceneComponentProps, SceneObjectBase, SceneVariable, SceneVariables, sceneGraph } from '@grafana/scenes';
 import { Page } from 'app/core/components/Page/Page';
+import { getDashboardSrv } from 'app/features/dashboard/services/DashboardSrv';
 
 import { DashboardScene } from '../scene/DashboardScene';
 import { NavToolbarActions } from '../scene/NavToolbarActions';
@@ -19,6 +20,7 @@ import {
   EditableVariableType,
   RESERVED_GLOBAL_VARIABLE_NAME_REGEX,
   WORD_CHARACTERS_REGEX,
+  deleteVariableCache,
   getVariableDefault,
   getVariableScene,
 } from './variables/utils';
@@ -76,6 +78,16 @@ export class VariablesEditView extends SceneObjectBase<VariablesEditViewState> i
       console.error('Variable not found');
       return;
     }
+
+    // BMC code starts - Delete cache if variable has caching enabled
+    const variableToDelete = variables[variableIndex];
+    // @ts-expect-error
+    if (variableToDelete?.state?.bmcVarCache) {
+      const dashboardUID = getDashboardSrv().getCurrent()?.uid;
+      // @ts-expect-error
+      deleteVariableCache(variableToDelete.state, dashboardUID, true);
+    }
+    // BMC code ends
 
     // Create a new array excluding the variable to be deleted
     const updatedVariables = [...variables.slice(0, variableIndex), ...variables.slice(variableIndex + 1)];

@@ -23,8 +23,7 @@ export const PlaylistNewPage = () => {
 
   const pageNav: NavModelItem = {
     text: t('playlist.playlist-new-page.page-nav.text.new-playlist', 'New playlist'),
-    subTitle:
-      'A playlist rotates through a pre-selected list of dashboards. A playlist can be a great way to build situational awareness, or just show off your metrics to your team or visitors.',
+    subTitle: t('playlist-edit.sub-title','A playlist rotates through a pre-selected list of dashboards. A playlist can be a great way to build situational awareness, or just show off your metrics to your team or visitors.'),
   };
 
   return (

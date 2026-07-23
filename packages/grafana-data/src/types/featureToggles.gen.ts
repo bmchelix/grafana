@@ -1246,4 +1246,6 @@ export interface FeatureToggles {
   * Enable template dashboards
   */
   dashboardTemplates?: boolean;
+  // BMC Change: RTL Support feature toggle
+  rtlSupport?: boolean;
 }
