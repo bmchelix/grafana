@@ -2,6 +2,7 @@ import { FormEvent, PureComponent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import {
+  AppEvents,
   DataSourceInstanceSettings,
   getDataSourceRef,
   QueryVariableModel,
@@ -9,7 +10,14 @@ import {
   VariableRefresh,
   VariableSort,
 } from '@grafana/data';
+import { t } from '@grafana/i18n';
+import { getAppEvents } from '@grafana/runtime';
+import { FEATURE_CONST, getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { QueryVariableEditorForm } from 'app/features/dashboard-scene/settings/variables/components/QueryVariableForm';
+import {
+  containsDirectTimeRangeVariables,
+  isServiceManagementQuery,
+} from 'app/features/dashboard-scene/settings/variables/utils';
 import { StoreState } from 'app/types/store';
 
 import { getTimeSrv } from '../../dashboard/services/TimeSrv';
@@ -57,6 +65,7 @@ export interface State {
   tagValuesQuery: string | null;
 }
 
+// eslint-disable-next-line react-prefer-function-component/react-prefer-function-component
 export class QueryVariableEditorUnConnected extends PureComponent<Props, State> {
   state: State = {
     regex: null,
@@ -122,12 +131,22 @@ export class QueryVariableEditorUnConnected extends PureComponent<Props, State> 
   };
 
   onIncludeAllChange = (event: FormEvent<HTMLInputElement>) => {
-    this.props.onPropChange({ propName: 'includeAll', propValue: event.currentTarget.checked });
+    this.props.onPropChange({ propName: 'includeAll', propValue: event.currentTarget.checked, updateOptions: true });
   };
 
   onAllValueChange = (event: FormEvent<HTMLInputElement>) => {
     this.props.onPropChange({ propName: 'allValue', propValue: event.currentTarget.value });
   };
+
+  onIncludeOnlyAvailable = (event: FormEvent<HTMLInputElement>) => {
+    this.props.onPropChange({ propName: 'discardForAll', propValue: event.currentTarget.checked, updateOptions: true });
+  };
+
+  // BMC code starts
+  onVariableCacheChange = (event: FormEvent<HTMLInputElement>) => {
+    this.props.onPropChange({ propName: 'bmcVarCache', propValue: event.currentTarget.checked });
+  };
+  // BMC code ends
 
   render() {
     const { extended, variable } = this.props;
@@ -136,6 +155,51 @@ export class QueryVariableEditorUnConnected extends PureComponent<Props, State> 
     }
 
     const timeRange = getTimeSrv().timeRange();
+
+    // BMC code starts - check if enableCachingToggle can be turned on
+    let enableVariableCachingToggle = false;
+    if (getFeatureStatus(FEATURE_CONST.BHD_ENABLE_VAR_CACHING) && variable?.definition !== '') {
+      let errorMsg = '';
+      // Only supports service management type queries
+      if (isServiceManagementQuery(variable?.query || '')) {
+        enableVariableCachingToggle = true;
+      } else {
+        errorMsg = t(
+          'bmc.variables.query-editor.variable-caching.service-management-error',
+          'Caching is supported only for Service Management queries'
+        );
+      }
+
+      // Logic for enabling toggle based on dependencies:
+      // 1. If time range is present in variable query -> Toggle is disabled by default
+
+      if (enableVariableCachingToggle) {
+        const hasTimeRangeVars = containsDirectTimeRangeVariables(variable?.definition);
+
+        if (hasTimeRangeVars) {
+          enableVariableCachingToggle = false;
+          errorMsg = t(
+            'bmc.variables.query-editor.variable-caching.dependant-error',
+            'Caching for time range dependent variables not allowed'
+          );
+        }
+      }
+
+      // Show error if enableVariableCachingToggle is false + property was set to true
+      if (!enableVariableCachingToggle && variable?.bmcVarCache) {
+        const appEvents = getAppEvents();
+        appEvents.publish({
+          type: AppEvents.alertError.name,
+          payload: [errorMsg],
+        });
+
+        // If enableVariableCachingToggle is false + property was set to true, send an event equivalent to the toggle being unchecked to force it being unchecked on UI and dashboard JSON
+        this.onVariableCacheChange?.({
+          currentTarget: { checked: false },
+        } as FormEvent<HTMLInputElement>);
+      }
+    }
+    // BMC code ends
 
     return (
       <QueryVariableEditorForm
@@ -157,6 +221,14 @@ export class QueryVariableEditorUnConnected extends PureComponent<Props, State> 
         onMultiChange={this.onMultiChange}
         onIncludeAllChange={this.onIncludeAllChange}
         onAllValueChange={this.onAllValueChange}
+        // BMC code starts: Below all props
+        onIncludeOnlyAvailable={this.onIncludeOnlyAvailable}
+        discardForAll={variable.discardForAll}
+        // props for BMC variable caching variable
+        bmcVarCache={variable?.bmcVarCache || false}
+        OnVariableCacheChange={this.onVariableCacheChange}
+        enableVariableCachingToggle={enableVariableCachingToggle}
+        // BMC code ends
       />
     );
   }

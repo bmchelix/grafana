@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 	"strings"
 
@@ -63,6 +64,11 @@ func (m *Manager) GetPluginArchive(ctx context.Context, pluginID, version string
 
 // GetPluginArchiveByURL fetches the requested plugin archive from the provided `pluginZipURL`
 func (m *Manager) GetPluginArchiveByURL(ctx context.Context, pluginZipURL string, compatOpts CompatOpts) (*PluginArchive, error) {
+	// BMC code changes start - FIPS
+	if os.Getenv("FIPS_ENABLED") == "true" && !strings.HasPrefix(pluginZipURL, "https://") {
+		return nil, fmt.Errorf("downloading plugin from non-HTTPs URL is not allowed in FIPS mode")
+	}
+	// BMC code changes end - FIPS
 	return m.client.Download(ctx, pluginZipURL, "", compatOpts)
 }
 

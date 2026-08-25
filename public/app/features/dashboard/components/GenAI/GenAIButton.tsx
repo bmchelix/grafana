@@ -1,10 +1,10 @@
 import { css } from '@emotion/css';
-import { useCallback, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useState } from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { llm } from '@grafana/llm';
-import { Button, Spinner, useStyles2, Tooltip, Toggletip, Text, Stack } from '@grafana/ui';
+import { Button, Spinner, Stack, Text, Toggletip, Tooltip, useStyles2 } from '@grafana/ui';
 
 import { GenAIHistory } from './GenAIHistory';
 import { StreamStatus, TIMEOUT, useLLMStream } from './hooks';

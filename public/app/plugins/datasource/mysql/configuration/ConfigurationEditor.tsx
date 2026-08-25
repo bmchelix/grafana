@@ -22,13 +22,22 @@ import {
   Tooltip,
 } from '@grafana/ui';
 
+import { HCGUrlDropdown } from '../../hcg/HCGUrlDropdown';
 import { MySQLOptions } from '../types';
+import { t } from 'i18next';
 
 export const ConfigurationEditor = (props: DataSourcePluginOptionsEditorProps<MySQLOptions>) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const { options, onOptionsChange } = props;
   const jsonData = options.jsonData;
+  //Helix change: starts
+  const isGrafanaAdmin = config.bootData.user.isGrafanaAdmin;
+  const isExternalDSUrlDropdownEnabled = config.isExternalDSUrlDropdownEnabled === true;
+  if (!isGrafanaAdmin) {
+    options.url = '********';
+  }
+  //Helix change: ends
 
   useMigrateDatabaseFields(props);
 
@@ -40,6 +49,14 @@ export const ConfigurationEditor = (props: DataSourcePluginOptionsEditorProps<My
     return (event: SyntheticEvent<HTMLInputElement>) => {
       onOptionsChange({ ...options, ...{ [property]: event.currentTarget.value } });
     };
+  };
+
+  // BMC HCG: Handler for URL selection from dropdown
+  const handleUrlChange = (url: string) => {
+    onOptionsChange({
+      ...options,
+      url: url,
+    });
   };
 
   const onSwitchChanged = (property: keyof MySQLOptions) => {
@@ -71,28 +88,45 @@ export const ConfigurationEditor = (props: DataSourcePluginOptionsEditorProps<My
 
       <Divider />
 
+      {/* Helix change: starts */}
       <ConfigSection title="Connection">
-        <Field label="Host URL" required>
-          <Input
-            width={WIDTH_LONG}
-            name="host"
-            type="text"
-            value={options.url || ''}
-            placeholder="localhost:3306"
-            onChange={onDSOptionChanged('url')}
+        {isExternalDSUrlDropdownEnabled ? (
+          <HCGUrlDropdown
+            resourceType="mysql"
+            value={options.url}
+            onChange={handleUrlChange}
+            disabled={!isGrafanaAdmin}
+            label="Host URL"
+            showSection={false}
           />
-        </Field>
+        ) : (
+          <Field label="Host URL" required>
+            <Input
+              width={WIDTH_LONG}
+              name="host"
+              type="text"
+              value={options.url || ''}
+              placeholder="localhost:3306"
+              onChange={onDSOptionChanged('url')}
+              readOnly={!isGrafanaAdmin}
+            />
+          </Field>
+        )}
 
-        <Field label="Database name">
+        <Field label={t('configuration.configuration-editor.title-database', "Database")}
+        required
+        invalid={!jsonData.database}
+        error={t('configuration.configuration-editor.required-database', 'Database is required')}>
           <Input
             width={WIDTH_LONG}
             name="database"
             value={jsonData.database || ''}
-            placeholder="Database"
+            placeholder="Database name"
             onChange={onUpdateDatasourceJsonDataOption(props, 'database')}
           />
         </Field>
       </ConfigSection>
+      {/* Helix change: ends */}
 
       <Divider />
 

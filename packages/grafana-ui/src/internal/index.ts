@@ -105,3 +105,9 @@ export { closePopover } from '../utils/closePopover';
 
 export { flattenTokens } from '../slate-plugins/slate-prism';
 export { RadialGauge } from '../components/RadialGauge/RadialGauge';
+
+// BMC Code: Add exports for rtl utils
+export { isRtl, overrideDir, getTextDirection, getDirectionalValue } from '../utils/rtl';
+// BMC Code: End of rtl utils exports
+// BMC Change: Patch global @emotion/css cache for RTL BEFORE exporting components
+import '../utils/emotionCachePatch';

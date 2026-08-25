@@ -1,17 +1,19 @@
 import { css, cx } from '@emotion/css';
-import { CSSProperties, PropsWithChildren, ReactElement, ReactNode, useId, useState } from 'react';
 import * as React from 'react';
+import { CSSProperties, PropsWithChildren, ReactElement, ReactNode, useId, useState } from 'react';
 import { useMeasure, useToggle } from 'react-use';
 
 import { GrafanaTheme2, LoadingState } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 
 import { useStyles2, useTheme2 } from '../../themes/ThemeContext';
 import { getFocusStyles } from '../../themes/mixins';
 import { DelayRender } from '../../utils/DelayRender';
 import { getFeatureToggle } from '../../utils/featureToggle';
 import { usePointerDistance } from '../../utils/usePointerDistance';
+import { DirectionCacheProvider, useDirection } from '../../contexts';
+import { directionForPanelContent } from '../../utils/rtl';
 import { useElementSelection } from '../ElementSelectionContext/ElementSelectionContext';
 import { Icon } from '../Icon/Icon';
 import { LoadingBar } from '../LoadingBar/LoadingBar';
@@ -76,6 +78,12 @@ interface BaseProps {
    * If true, the VizPanelMenu will always be visible in the panel header. Defaults to false.
    */
   showMenuAlways?: boolean;
+  // BMC Change: Added panelType prop for RTL support
+  /**
+   * Panel type identifier (e.g., 'timeseries', 'table', 'stat')
+   * Used for RTL direction handling - some panel types are excluded from RTL
+   */
+  panelType?: string;
 }
 
 interface FixedDimensions extends BaseProps {
@@ -157,6 +165,7 @@ export function PanelChrome({
   onMouseEnter,
   onDragStart,
   showMenuAlways = false,
+  panelType, // BMC Change: Added for RTL support
 }: PanelChromeProps) {
   const theme = useTheme2();
   const styles = useStyles2(getStyles);
@@ -164,6 +173,7 @@ export function PanelChrome({
   const panelTitleId = useId().replace(/:/g, '_');
   const { isSelected, onSelect, isSelectable } = useElementSelection(selectionId);
   const pointerDistance = usePointerDistance();
+  const { direction: chromeHeaderDirection } = useDirection();
 
   const hasHeader = !hoverHeader;
 
@@ -352,6 +362,7 @@ export function PanelChrome({
         onMouseMove={onMouseMove}
         onMouseEnter={onMouseEnter}
         ref={ref}
+        dir="ltr" // BMC Change: Set dir="ltr" to the container to prevent RTL from affecting the panel content
       >
         <div className={styles.loadingBarContainer}>
           {loadingState === LoadingState.Loading ? (
@@ -388,6 +399,8 @@ export function PanelChrome({
 
         {hasHeader && (
           <div
+            // BMC Change: Panel header dir follows DirectionContext when nested (else document via useDirection fallback)
+            dir={chromeHeaderDirection}
             className={cx(styles.headerContainer, dragClass)}
             style={headerStyles}
             data-testid={selectors.components.Panels.Panel.headerContainer}
@@ -421,15 +434,30 @@ export function PanelChrome({
         )}
 
         {!collapsed && (
-          <div
-            id={panelContentId}
-            data-testid={selectors.components.Panels.Panel.content}
-            className={cx(styles.content, height === undefined && styles.containNone)}
-            style={contentStyle}
-            onPointerDown={onContentPointerDown}
-          >
-            {typeof children === 'function' ? children(innerWidth, innerHeight) : children}
-          </div>
+          // BMC Change: Add DirectionCacheProvider to the panel content to prevent RTL from affecting the panel content
+          <DirectionCacheProvider 
+            className={css({contain: 'size layout', display: 'flex', flexGrow: 1})} direction={directionForPanelContent(panelType ?? '')}>
+            <div
+              id={panelContentId}
+              data-testid={selectors.components.Panels.Panel.content}
+              className={cx(styles.content, height === undefined && styles.containNone)}
+              style={contentStyle}
+              onPointerDown={onContentPointerDown}
+            >
+              {/* BMC Change: Add loading state message for refresh to load */}
+              {loadingState === LoadingState.RefreshToLoad ? (
+                <div className="panel-empty">
+                  <p>
+                    <Trans i18nKey="bmc.load-blank-dashoard.refresh-label">Refresh dashboard to fetch data</Trans>
+                  </p>
+                </div>
+              ) : typeof children === 'function' ? (
+                children(innerWidth, innerHeight)
+              ) : (
+                children
+              )}
+            </div>
+          </DirectionCacheProvider>
         )}
       </section>
     </MaybeWrap>

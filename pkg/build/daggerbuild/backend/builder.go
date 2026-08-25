@@ -120,7 +120,7 @@ func GolangContainer(
 			WithExec([]string{"mv", "/zig", "/bin/zig"}).
 			// Install the toolchain specifically for armv7 until we figure out why it's crashing w/ zig container = container.
 			WithExec([]string{"mkdir", "/toolchain"}).
-			WithExec([]string{"wget", "-q", "http://dl.grafana.com/ci/arm-linux-musleabihf-cross.tgz", "-P", "/toolchain"}).
+			WithExec([]string{"wget", "-q", "https://dl.grafana.com/ci/arm-linux-musleabihf-cross.tgz", "-P", "/toolchain"}).
 			WithExec([]string{"tar", "-xf", "/toolchain/arm-linux-musleabihf-cross.tgz", "-C", "/toolchain"}).
 			WithExec([]string{"wget", "-q", "https://dl.grafana.com/ci/s390x-linux-musl-cross.tgz", "-P", "/toolchain"}).
 			WithExec([]string{"tar", "-xf", "/toolchain/s390x-linux-musl-cross.tgz", "-C", "/toolchain"}).

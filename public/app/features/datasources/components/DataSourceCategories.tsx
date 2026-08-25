@@ -1,13 +1,10 @@
 import { css } from '@emotion/css';
-import { useCallback } from 'react';
 
 import { DataSourcePluginMeta, GrafanaTheme2 } from '@grafana/data';
-import { Trans } from '@grafana/i18n';
-import { reportInteraction } from '@grafana/runtime';
-import { LinkButton, useStyles2 } from '@grafana/ui';
+import { useStyles2 } from '@grafana/ui';
 import { DataSourcePluginCategory } from 'app/types/datasources';
 
-import { ROUTES } from '../../connections/constants';
+// import { ROUTES } from '../../connections/constants';
 
 import { DataSourceTypeCardList } from './DataSourceTypeCardList';
 
@@ -20,17 +17,19 @@ export type Props = {
 };
 
 export function DataSourceCategories({ categories, onClickDataSourceType }: Props) {
-  const moreDataSourcesLink = `${ROUTES.AddNewConnection}?cat=data-source`;
+  // BMC Code: Commented next line.
+  // const moreDataSourcesLink = `${ROUTES.AddNewConnection}?cat=data-source`;
   const styles = useStyles2(getStyles);
 
-  const handleClick = useCallback(() => {
-    reportInteraction('connections_add_datasource_find_more_ds_plugins_clicked', {
-      targetPath: moreDataSourcesLink,
-      path: window.location.pathname,
-      creator_team: 'grafana_plugins_catalog',
-      schema_version: '1.0.0',
-    });
-  }, [moreDataSourcesLink]);
+  // BMC Code: Commented below function, not in use
+  // const handleClick = useCallback(() => {
+  //   reportInteraction('connections_add_datasource_find_more_ds_plugins_clicked', {
+  //     targetPath: moreDataSourcesLink,
+  //     path: window.location.pathname,
+  //     creator_team: 'grafana_plugins_catalog',
+  //     schema_version: '1.0.0',
+  //   });
+  // }, [moreDataSourcesLink]);
 
   return (
     <>
@@ -45,13 +44,15 @@ export function DataSourceCategories({ categories, onClickDataSourceType }: Prop
       ))}
 
       {/* Find more */}
-      <div className={styles.more}>
+      {/* BMC Change: Starts */}
+      {/* <div className={styles.more}>
         <LinkButton variant="secondary" href={moreDataSourcesLink} onClick={handleClick} target="_self" rel="noopener">
           <Trans i18nKey="datasources.data-source-categories.find-more-data-source-plugins">
             Find more data source plugins
           </Trans>
         </LinkButton>
-      </div>
+      </div> */}
+      {/* BMC Change: Ends */}
     </>
   );
 }

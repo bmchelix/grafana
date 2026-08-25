@@ -458,7 +458,7 @@ func (rs *ReceiverService) UpdateReceiver(ctx context.Context, r *models.Receive
 		if len(diff) > 0 {
 			err = rs.authz.AuthorizeUpdateProtected(ctx, user, r)
 			if err != nil {
-				return nil, makeProtectedFieldsAuthzError(err, diff)
+				return nil, MakeProtectedFieldsAuthzError(err, diff)
 			}
 		}
 	}

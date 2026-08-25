@@ -27,6 +27,8 @@ func NewFakeServiceWithTeamDTO(teamDTO *team.TeamDTO) *FakeService {
 }
 
 func (s *FakeService) CreateTeam(ctx context.Context, cmd *team.CreateTeamCommand) (team.Team, error) {
+	_ = ctx
+	_ = cmd
 	return s.ExpectedTeam, s.ExpectedError
 }
 
@@ -70,10 +72,34 @@ func (s *FakeService) RegisterDelete(query string) {
 }
 
 func (s *FakeService) GetTeamIDsByUser(ctx context.Context, query *team.GetTeamIDsByUserQuery) ([]int64, error) {
+	_ = ctx
+	_ = query
 	result := make([]int64, 0)
-	for _, team := range s.ExpectedTeamsByUser {
-		result = append(result, team.ID)
+	for _, tm := range s.ExpectedTeamsByUser {
+		result = append(result, tm.ID)
 	}
 
 	return result, s.ExpectedError
+}
+
+func (s *FakeService) GetTeamsByIds(ctx context.Context, orgID int64, teamIDs []int64) ([]*team.TeamDTO, error) {
+	_ = ctx
+	_ = orgID
+	if s.ExpectedError != nil {
+		return nil, s.ExpectedError
+	}
+	if len(teamIDs) == 0 || len(s.ExpectedTeamsByUser) == 0 {
+		return nil, nil
+	}
+	idSet := make(map[int64]struct{}, len(teamIDs))
+	for _, id := range teamIDs {
+		idSet[id] = struct{}{}
+	}
+	var out []*team.TeamDTO
+	for _, tm := range s.ExpectedTeamsByUser {
+		if _, ok := idSet[tm.ID]; ok {
+			out = append(out, tm)
+		}
+	}
+	return out, nil
 }

@@ -1,6 +1,9 @@
+import { AriaValueFormat } from 'rc-slider/lib/interface';
+
 import { SliderMarks } from '@grafana/data';
 
 import { Orientation } from '../../types/orientation';
+// BMC Code : Accessibility Change ( Next line )
 
 interface CommonSliderProps {
   min: number;
@@ -16,6 +19,9 @@ interface CommonSliderProps {
   included?: boolean;
   /** Controls visibility of the input field. Defaults to true. */
   showInput?: boolean;
+  // BMC Code : Accessibility Change ( Next 2 lines )
+  ariaLabelledByForHandle?: string | string[];
+  ariaValueTextFormatterForHandle?: AriaValueFormat | AriaValueFormat[];
 }
 export interface SliderProps extends CommonSliderProps {
   value?: number;

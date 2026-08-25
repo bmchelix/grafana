@@ -1,9 +1,9 @@
-import { useMemo, ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { getMessageFromError } from 'app/core/utils/errors';
 import { dispatch as storeDispatch } from 'app/store/store';
-import { AppNotificationSeverity, AppNotification } from 'app/types/appNotifications';
+import { AppNotification, AppNotificationSeverity } from 'app/types/appNotifications';
 import { useDispatch } from 'app/types/store';
 
 import { notifyApp } from '../actions';
@@ -29,6 +29,14 @@ const defaultErrorNotification = {
   icon: 'exclamation-triangle',
 };
 
+// BMC code
+// const defaultInfoNotification = {
+//   title: '',
+//   text: '',
+//   severity: AppNotificationSeverity.Info,
+//   icon: 'exclamation-triangle',
+// };
+// Ends
 export const createSuccessNotification = (title: string, text = '', traceId?: string): AppNotification => ({
   ...defaultSuccessNotification,
   title,
@@ -66,7 +74,13 @@ export const createWarningNotification = (title: string, text = '', traceId?: st
   showing: true,
 });
 
-export const createInfoNotification = (title: string, text = '', traceId?: string): AppNotification => ({
+// BMC Code: Change, added parameter component
+export const createInfoNotification = (
+  title: string,
+  text = '',
+  traceId?: string,
+  component?: ReactElement
+): AppNotification => ({
   severity: AppNotificationSeverity.Info,
   icon: 'info-circle',
   title,
@@ -74,6 +88,8 @@ export const createInfoNotification = (title: string, text = '', traceId?: strin
   id: uuidv4(),
   timestamp: Date.now(),
   showing: true,
+  traceId,
+  component,
 });
 
 /** Hook for showing toast notifications with varying severity (success, warning, error, info).
@@ -94,8 +110,12 @@ export function useAppNotification() {
       [AppNotificationSeverity.Warning]: (title: string, text = '', traceId?: string) => {
         dispatch(notifyApp(createNotification(title, text, AppNotificationSeverity.Warning, traceId)));
       },
-      [AppNotificationSeverity.Error]: (title: string, text = '', traceId?: string) => {
+      // BMC code - added bhdcode
+      [AppNotificationSeverity.Error]: (title: string, text = '', bhdcode?: string, traceId?: string) => {
         dispatch(notifyApp(createNotification(title, text, AppNotificationSeverity.Error, traceId)));
+        if (bhdcode) {
+          console.error(`[BHDCode: ${bhdcode}] - ${title}. ${text}`);
+        }
       },
       [AppNotificationSeverity.Info]: (title: string, text = '') => {
         dispatch(notifyApp(createNotification(title, text, AppNotificationSeverity.Info)));

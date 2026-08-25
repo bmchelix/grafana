@@ -172,5 +172,7 @@
         "url": "https://grafana.com/docs/grafana/latest/datasources/alertmanager/"
       }
     ]
-  }
+  },
+
+  "state": "alpha"
 }

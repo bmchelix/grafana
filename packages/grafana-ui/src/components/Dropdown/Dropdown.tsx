@@ -8,8 +8,8 @@ import {
   useFloating,
   useInteractions,
 } from '@floating-ui/react';
-import { useCallback, useRef, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { GrafanaTheme2 } from '@grafana/data';
@@ -39,6 +39,8 @@ export interface Props {
 export const Dropdown = React.memo(({ children, overlay, placement, offset, root, onVisibleChange }: Props) => {
   const [show, setShow] = useState(false);
   const transitionRef = useRef(null);
+  //BMC Accessibility Change : track dropdown open/close state
+  const dropDownRef = useRef(false);
   const floatingUIPlacement = getPlacement(placement);
 
   const handleOpenChange = useCallback(
@@ -65,6 +67,16 @@ export const Dropdown = React.memo(({ children, overlay, placement, offset, root
     middleware,
     whileElementsMounted: autoUpdate,
   });
+
+  //BMC Accessibility Change Start : When the dropdown closes, restore focus to the trigger
+  useEffect(() => {
+    if (dropDownRef.current && !show) {
+      const trigger = refs.reference?.current as HTMLElement | null | undefined;
+      trigger?.focus({ preventScroll: true });
+    }
+    dropDownRef.current = show;
+  }, [show, refs.reference]);
+  //BMC Accessibility Change End
 
   const click = useClick(context);
   const dismiss = useDismiss(context);

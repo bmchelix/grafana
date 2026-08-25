@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
+	"os"
 	"strings"
 
 	jose "github.com/go-jose/go-jose/v4"
@@ -13,6 +14,27 @@ import (
 	"github.com/grafana/grafana/pkg/infra/remotecache"
 	"github.com/grafana/grafana/pkg/setting"
 )
+
+// allowedSignatureAlgorithms returns the list of accepted JWT signature algorithms.
+// When FIPS 140-3 mode is enabled, EdDSA (Ed25519) is excluded because it is not
+// a FIPS-approved algorithm.
+func allowedSignatureAlgorithms() []jose.SignatureAlgorithm {
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		return []jose.SignatureAlgorithm{
+			jose.HS256, jose.HS384, jose.HS512,
+			jose.RS256, jose.RS512,
+			jose.ES256, jose.ES384, jose.ES512,
+			jose.PS256, jose.PS384, jose.PS512,
+		}
+	}
+	return []jose.SignatureAlgorithm{
+		jose.EdDSA,
+		jose.HS256, jose.HS384, jose.HS512,
+		jose.RS256, jose.RS512,
+		jose.ES256, jose.ES384, jose.ES512,
+		jose.PS256, jose.PS384, jose.PS512,
+	}
+}
 
 const ServiceName = "AuthService"
 
@@ -70,8 +92,7 @@ func (s *AuthService) Verify(ctx context.Context, strToken string) (map[string]a
 	s.log.Debug("Parsing JSON Web Token")
 
 	strToken = sanitizeJWT(strToken)
-	token, err := jwt.ParseSigned(strToken, []jose.SignatureAlgorithm{jose.EdDSA, jose.HS256, jose.HS384,
-		jose.HS512, jose.RS512, jose.RS256, jose.ES256, jose.ES384, jose.ES512, jose.PS256, jose.PS384, jose.PS512})
+	token, err := jwt.ParseSigned(strToken, allowedSignatureAlgorithms())
 	if err != nil {
 		return nil, err
 	}
@@ -108,8 +129,7 @@ func (s *AuthService) Verify(ctx context.Context, strToken string) (map[string]a
 // HasSubClaim checks if the provided JWT token contains a non-empty "sub" claim.
 // Returns true if it contains, otherwise returns false.
 func HasSubClaim(jwtToken string) bool {
-	parsed, err := jwt.ParseSigned(sanitizeJWT(jwtToken), []jose.SignatureAlgorithm{jose.EdDSA, jose.HS256, jose.HS384,
-		jose.HS512, jose.RS512, jose.RS256, jose.ES256, jose.ES384, jose.ES512, jose.PS256, jose.PS384, jose.PS512})
+	parsed, err := jwt.ParseSigned(sanitizeJWT(jwtToken), allowedSignatureAlgorithms())
 	if err != nil {
 		return false
 	}

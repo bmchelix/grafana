@@ -40,4 +40,6 @@ VariableFormatID:
     // Format variables as URL parameters. Example in multi-variable scenario A + B + C => var-foo=A&var-foo=B&var-foo=C.
     "queryparam" |
     // Format variables as URL parameters with custom parameter name and value prefix.
-    "customqueryparam" @cuetsy(kind="enum",memberNames="Join|Lucene|Raw|Regex|Pipe|Distributed|CSV|HTML|JSON|PercentEncode|UriEncode|SingleQuote|DoubleQuote|SQLString|Date|Glob|Text|QueryParam|CustomQueryParam")
+    "customqueryparam" @cuetsy(kind="enum",memberNames="Join|Lucene|Raw|Regex|Pipe|Distributed|CSV|HTML|JSON|PercentEncode|UriEncode|SingleQuote|DoubleQuote|SQLString|Date|Glob|Text|QueryParam|CustomQueryParam") |
+    "base64" |
+    "bmcsinglequote" @cuetsy(kind="enum",memberNames="Lucene|Raw|Regex|Pipe|Distributed|CSV|HTML|JSON|PercentEncode|UriEncode|SingleQuote|DoubleQuote|SQLString|Date|Glob|Text|QueryParam|Base64|BMCSingleQuote")

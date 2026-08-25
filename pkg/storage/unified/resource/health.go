@@ -32,7 +32,6 @@ type healthServer struct {
 func (s *healthServer) AuthFuncOverride(ctx context.Context, _ string) (context.Context, error) {
 	return ctx, nil
 }
-
 func (s *healthServer) List(ctx context.Context, req *grpc_health_v1.HealthListRequest) (*grpc_health_v1.HealthListResponse, error) {
 	h, err := s.Check(ctx, &grpc_health_v1.HealthCheckRequest{
 		Service: "all", // not used for anything

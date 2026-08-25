@@ -1,11 +1,12 @@
+import { t } from '@grafana/i18n';
 import { Box, LoadingPlaceholder } from '@grafana/ui';
-
 interface Props {
   pageName?: string;
 }
 
 const PageLoader = ({ pageName = '' }: Props) => {
-  const loadingText = `Loading ${pageName}...`;
+  // BMC code - added support for localization
+  const loadingText = `${t('bmcgrafana.page-loader.text', 'Loading')} ${pageName}...`;
   return (
     <Box display="flex" alignItems="center" direction="column" justifyContent="center" paddingTop={10}>
       <LoadingPlaceholder text={loadingText} />

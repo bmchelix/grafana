@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import { useCallback, useState } from 'react';
 
 import { Trans } from '@grafana/i18n';
-import { Button, ClipboardButton, TextArea, Stack, TextLink } from '@grafana/ui';
+import { Button, ClipboardButton, Stack, TextArea } from '@grafana/ui';
 
 import { SaveDashboardFormProps } from '../types';
 
@@ -24,12 +24,15 @@ export const SaveProvisionedDashboardForm = ({ dashboard, onCancel }: Omit<SaveD
   return (
     <>
       <Stack direction="column" gap={2}>
+        {/* BMC code - inline change */}
         <div>
           <Trans i18nKey="dashboard.save-provisioned-dashboard-form.cannot-be-saved">
-            This dashboard cannot be saved from the Grafana UI because it has been provisioned from another source. Copy
-            the JSON or save it to a file below, then you can update your dashboard in the provisioning source.
+            This dashboard cannot be saved from the BMC Helix Dashboards because it has been provisioned from another
+            source. Copy the JSON or save it to a file below, then you can update your dashboard in the provisioning
+            source.
           </Trans>
-          <br />
+          {/* BMC code - comment below block */}
+          {/* <br />
           <i>
             <Trans i18nKey="dashboard.save-provisioned-dashboard-form.see-docs">
               See{' '}
@@ -38,7 +41,7 @@ export const SaveProvisionedDashboardForm = ({ dashboard, onCancel }: Omit<SaveD
               </TextLink>{' '}
               for more information about provisioning.
             </Trans>
-          </i>
+          </i> */}
           <br /> <br />
           <Trans
             i18nKey="dashboard.save-provisioned-dashboard-form.file-path"

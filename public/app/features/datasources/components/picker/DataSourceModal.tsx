@@ -7,15 +7,16 @@ import { Trans, t } from '@grafana/i18n';
 import { config, reportInteraction, useFavoriteDatasources } from '@grafana/runtime';
 import { DataQuery } from '@grafana/schema';
 import {
-  Modal,
   FileDropzone,
   FileDropzoneDefaultChildren,
-  useStyles2,
-  Input,
   Icon,
+  Input,
+  Modal,
   ScrollContainer,
+  useStyles2,
 } from '@grafana/ui';
 import { acceptedFiles, maxFileSize } from 'app/features/dataframe-import/constants';
+import { isGrafanaAdmin } from 'app/features/plugins/admin/permissions';
 import { GrafanaQuery } from 'app/plugins/datasource/grafana/types';
 import { getFileDropToQueryHandler } from 'app/plugins/datasource/grafana/utils';
 
@@ -245,23 +246,25 @@ export function DataSourceModal({
             </FileDropzone>
           )}
         </div>
-        <div className={styles.newDSSection}>
-          <span className={styles.newDSDescription}>
-            <Trans i18nKey="data-source-picker.modal.configure-new-data-source">
-              Open a new tab and configure a data source
-            </Trans>
-          </span>
-          <AddNewDataSourceButton
-            variant="secondary"
-            onClick={() => {
-              reportInteraction(INTERACTION_EVENT_NAME, {
-                item: INTERACTION_ITEM.CONFIG_NEW_DS,
-                src: analyticsInteractionSrc,
-              });
-              onDismiss();
-            }}
-          />
-        </div>
+        {isGrafanaAdmin() && (
+          <div className={styles.newDSSection}>
+            <span className={styles.newDSDescription}>
+              <Trans i18nKey="data-source-picker.modal.configure-new-data-source">
+                Open a new tab and configure a data source
+              </Trans>
+            </span>
+            <AddNewDataSourceButton
+              variant="secondary"
+              onClick={() => {
+                reportInteraction(INTERACTION_EVENT_NAME, {
+                  item: INTERACTION_ITEM.CONFIG_NEW_DS,
+                  src: analyticsInteractionSrc,
+                });
+                onDismiss();
+              }}
+            />
+          </div>
+        )}
       </div>
     </Modal>
   );
