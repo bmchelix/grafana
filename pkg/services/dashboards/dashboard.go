@@ -42,6 +42,9 @@ type DashboardService interface {
 	ValidateDashboardRefreshInterval(minRefreshInterval string, targetRefreshInterval string) error
 	ValidateBasicDashboardProperties(title string, uid string, message string) error
 	GetDashboardsByLibraryPanelUID(ctx context.Context, libraryPanelUID string, orgID int64) ([]*DashboardRef, error)
+	//BMC CODE STARTS
+	GetDashboardsByFolderUID(ctx context.Context, query *GetDashboardsByFolderUIDQuery) ([]*Dashboard, error)
+	//BMC CODE ENDS
 }
 
 type PermissionsRegistrationService interface {
@@ -100,4 +103,7 @@ type Store interface {
 	GetAllDashboardsByOrgId(ctx context.Context, orgID int64) ([]*Dashboard, error)
 
 	GetDashboardsByLibraryPanelUID(ctx context.Context, libraryPanelUID string, orgID int64) ([]*DashboardRef, error)
+	//BMC CODE STARTS
+	GetDashboardsByFolderUID(ctx context.Context, query *GetDashboardsByFolderUIDQuery) ([]*Dashboard, error)
+	//BMC CODE ENDS
 }

@@ -168,6 +168,9 @@ var provisionerUser = func(orgID int64) identity.Requester {
 			{Action: dashboards.ActionFoldersRead, Scope: dashboards.ScopeFoldersAll},
 			{Action: accesscontrol.ActionAlertingProvisioningReadSecrets, Scope: dashboards.ScopeFoldersAll},
 			{Action: accesscontrol.ActionAlertingProvisioningWrite, Scope: dashboards.ScopeFoldersAll},
+			{Action: accesscontrol.ActionAlertingReceiversRead, Scope: dashboards.ScopeFoldersAll},
+			{Action: accesscontrol.ActionAlertingReceiversUpdate, Scope: dashboards.ScopeFoldersAll},
+			{Action: accesscontrol.ActionAlertingReceiversUpdateProtected, Scope: dashboards.ScopeFoldersAll},
 		},
 	)
 }

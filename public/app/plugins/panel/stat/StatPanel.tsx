@@ -11,7 +11,7 @@ import {
   PanelProps,
 } from '@grafana/data';
 import { findNumericFieldMinMax } from '@grafana/data/internal';
-import { BigValueTextMode, BigValueGraphMode } from '@grafana/schema';
+import { BigValueGraphMode, BigValueTextMode } from '@grafana/schema';
 import { BigValue, DataLinksContextMenu, useTheme2, VizRepeater, VizRepeaterRenderValueProps } from '@grafana/ui';
 import { DataLinksContextMenuApi } from '@grafana/ui/internal';
 

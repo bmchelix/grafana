@@ -24,7 +24,7 @@ import (
 	"github.com/grafana/grafana/pkg/setting"
 )
 
-func CreateUser(t *testing.T, db db.DB, cfg *setting.Cfg, cmd user.CreateUserCommand) int64 {
+func CreateUser(t *testing.T, store db.DB, cfg *setting.Cfg, cmd user.CreateUserCommand) int64 {
 	t.Helper()
 
 	cfg.AutoAssignOrg = true
@@ -36,7 +36,7 @@ func CreateUser(t *testing.T, db db.DB, cfg *setting.Cfg, cmd user.CreateUserCom
 	orgService, err := orgimpl.ProvideService(db, cfg, quotaService)
 	require.NoError(t, err)
 	usrSvc, err := userimpl.ProvideService(
-		db, orgService, cfg, nil, nil, tracing.InitializeTracerForTest(),
+		store, orgService, cfg, nil, nil, tracing.InitializeTracerForTest(),
 		quotaService, supportbundlestest.NewFakeBundleService(),
 	)
 	require.NoError(t, err)

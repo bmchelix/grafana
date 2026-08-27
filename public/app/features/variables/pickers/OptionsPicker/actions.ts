@@ -57,7 +57,10 @@ export const navigateOptions = (rootStateKey: string, key: NavigationKey, clearO
 
 export const filterOrSearchOptions = (
   passedIdentifier: KeyedVariableIdentifier,
-  searchQuery = ''
+  searchQuery = '',
+  //BMC code- start
+  isCSVSearch = false // Add isCSVSearch as an optional argument
+  //BMC code- end
 ): ThunkResult<void> => {
   return async (dispatch, getState) => {
     const { rootStateKey } = passedIdentifier;
@@ -81,8 +84,9 @@ export const filterOrSearchOptions = (
     if (containsSearchFilter(queryTarget)) {
       return searchForOptionsWithDebounce(dispatch, getState, searchQuery, rootStateKey);
     }
-
-    return dispatch(toKeyedAction(rootStateKey, updateOptionsAndFilter(options)));
+    //BMC code- start
+    return dispatch(toKeyedAction(rootStateKey, updateOptionsAndFilter({ options, isCSVSearch }))); // Pass isCSVSearch
+    //BMC code- end
   };
 };
 
@@ -135,16 +139,13 @@ export const openOptions =
   async (dispatch, getState) => {
     const { id, rootStateKey: uid } = identifier;
     const picker = getVariablesState(uid, getState()).optionsPicker;
-
     if (picker.id && picker.id !== id) {
       await dispatch(commitChangesToVariable(uid, callback));
     }
-
     const variable = getVariable(identifier, getState());
     if (!hasOptions(variable)) {
       return;
     }
-
     dispatch(toKeyedAction(uid, showOptions(variable)));
   };
 

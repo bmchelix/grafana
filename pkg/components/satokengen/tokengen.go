@@ -37,6 +37,7 @@ func (p *PrefixedKey) key() string {
 }
 
 func (p *PrefixedKey) CalculateChecksum() string {
+	// BMC comment - can ignore FIPS here since integrity checksum and not a security related checksum
 	checksum := crc32.ChecksumIEEE([]byte(p.key()))
 	//checksum to []byte
 	checksumBytes := make([]byte, 4)

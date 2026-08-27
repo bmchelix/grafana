@@ -1,42 +1,47 @@
-import { uniqueId } from 'lodash';
+import { cloneDeep, uniqueId } from 'lodash';
 
 import { DataFrameDTO, DataFrameJSON } from '@grafana/data';
-import { config } from '@grafana/runtime';
+import { config, locationService } from '@grafana/runtime';
 import {
-  VizPanel,
-  SceneTimePicker,
+  LocalValueVariable,
+  SceneDataLayerProvider,
+  SceneGridItemLike,
   SceneGridLayout,
   SceneGridRow,
+  SceneObject,
+  SceneObjectState,
+  SceneRefreshPicker,
+  SceneTimePicker,
   SceneTimeRange,
   SceneVariableSet,
-  SceneRefreshPicker,
-  SceneObject,
-  VizPanelMenu,
-  behaviors,
-  VizPanelState,
-  SceneGridItemLike,
-  SceneDataLayerProvider,
   UserActionEvent,
-  SceneObjectState,
-  LocalValueVariable,
+  VizPanel,
+  VizPanelMenu,
+  VizPanelState,
+  behaviors,
 } from '@grafana/scenes';
 import { isWeekStart } from '@grafana/ui';
+import { DashboardLocale, initializeDashboardLocale } from 'app/features/bmc-content-localization/types';
 import { K8S_V1_DASHBOARD_API_CONFIG } from 'app/features/dashboard/api/v1';
 import {
-  getDashboardSceneProfilerWithMetadata,
   enablePanelProfilingForDashboard,
   getDashboardComponentInteractionCallback,
+  getDashboardSceneProfilerWithMetadata,
 } from 'app/features/dashboard/services/DashboardProfiler';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { DashboardModel } from 'app/features/dashboard/state/DashboardModel';
 import { PanelModel } from 'app/features/dashboard/state/PanelModel';
 import { DashboardDTO, DashboardDataDTO } from 'app/types/dashboard';
 
 import { addPanelsOnLoadBehavior } from '../addToDashboard/addPanelsOnLoadBehavior';
 import { dashboardAnalyticsInitializer } from '../behaviors/DashboardAnalyticsInitializerBehavior';
+import { RefreshBehavior } from '../bmc/behaviors/RefreshBehavior';
+import { TimeAndVariableChangeBehavior } from '../bmc/behaviors/TimeAndVariablesChangeBehavior';
 import { AlertStatesDataLayer } from '../scene/AlertStatesDataLayer';
 import { DashboardAnnotationsDataLayer } from '../scene/DashboardAnnotationsDataLayer';
 import { DashboardControls } from '../scene/DashboardControls';
 import { DashboardDataLayerSet } from '../scene/DashboardDataLayerSet';
+import { DashboardLoadTimeBehavior } from '../scene/DashboardLoadTimeBehavior';
 import { registerDashboardMacro } from '../scene/DashboardMacro';
 // DashboardPanelProfilingBehavior removed - now using composed SceneRenderProfiler
 import { DashboardReloadBehavior } from '../scene/DashboardReloadBehavior';
@@ -57,7 +62,7 @@ import { setDashboardPanelContext } from '../scene/setDashboardPanelContext';
 import { DashboardLayoutManager } from '../scene/types/DashboardLayoutManager';
 import { createPanelDataProvider } from '../utils/createPanelDataProvider';
 import { DashboardInteractions } from '../utils/interactions';
-import { getVizPanelKeyForPanelId } from '../utils/utils';
+import { getVizPanelKeyForPanelId, isOpenEmptyPanelsEnabled } from '../utils/utils';
 import { createVariablesForDashboard, createVariablesForSnapshot } from '../utils/variables';
 
 import { getAngularPanelMigrationHandler } from './angularMigration';
@@ -71,6 +76,13 @@ export interface DashboardLoaderState {
 
 export interface SaveModelToSceneOptions {
   isEmbedded?: boolean;
+}
+
+// BMC code: next interface
+interface ReportLayoutOptions {
+  simple: boolean;
+  orientation: string;
+  fullTable: boolean;
 }
 
 export function transformSaveModelToScene(rsp: DashboardDTO): DashboardScene {
@@ -139,6 +151,29 @@ export function createRowsFromPanels(oldPanels: PanelModel[]): RowsLayoutManager
   });
 }
 
+// BMC code: next function
+function updatePanelsForReport(
+  opts: ReportLayoutOptions = {} as ReportLayoutOptions,
+  w: number,
+  h: number,
+  firstPanelLoaded = true
+): { w: number; h: number } {
+  if (!opts.simple) {
+    return { w, h };
+  }
+  if (!opts.orientation || opts.orientation !== 'landscape') {
+    return {
+      w: 24,
+      h: opts.fullTable ? 20 : 12,
+    };
+  } else {
+    return {
+      w: 24,
+      h: firstPanelLoaded ? 22 : 25,
+    };
+  }
+}
+
 export function createSceneObjectsForPanels(oldPanels: PanelModel[]): SceneGridItemLike[] {
   // collects all panels and rows
   const panels: SceneGridItemLike[] = [];
@@ -148,15 +183,29 @@ export function createSceneObjectsForPanels(oldPanels: PanelModel[]): SceneGridI
   // collects panels in the currently processed, expanded row
   let currentRowPanels: SceneGridItemLike[] = [];
 
+  // BMC code
+  const reportOpts: ReportLayoutOptions = {
+    simple: locationService.getSearch().has('simple'),
+    orientation: locationService.getSearch().get('orientation') ?? 'portrait',
+    fullTable: locationService.getSearch().get('fullTable') === 'true',
+  };
+
+  let firstPanelLoaded = true;
+
+  // BMC code: End
+
   for (const panel of oldPanels) {
     if (panel.type === 'row') {
       if (!currentRow) {
         if (Boolean(panel.collapsed)) {
           // collapsed rows contain their panels within the row model
-          panels.push(createRowFromPanelModel(panel, []));
+          // BMC code: added reportOpts
+          panels.push(createRowFromPanelModel(panel, [], reportOpts));
         } else {
           // indicate new row to be processed
           currentRow = panel;
+          // BMC Change: Next line
+          firstPanelLoaded = true;
         }
       } else {
         // when a row has been processed, and we hit a next one for processing
@@ -166,11 +215,14 @@ export function createSceneObjectsForPanels(oldPanels: PanelModel[]): SceneGridI
 
           if (Boolean(panel.collapsed)) {
             // collapsed rows contain their panels within the row model
-            panels.push(createRowFromPanelModel(panel, []));
+            // BMC code: added reportOpts
+            panels.push(createRowFromPanelModel(panel, [], reportOpts));
             currentRow = null;
           } else {
             // indicate new row to be processed
             currentRow = panel;
+            // BMC Change: Next line
+            firstPanelLoaded = true;
           }
 
           currentRowPanels = [];
@@ -181,6 +233,13 @@ export function createSceneObjectsForPanels(oldPanels: PanelModel[]): SceneGridI
       if (panel.snapshotData) {
         convertOldSnapshotToScenesSnapshot(panel);
       }
+
+      // BMC Change: Starts
+      const newSize = updatePanelsForReport(reportOpts, panel.gridPos.w, panel.gridPos.h, firstPanelLoaded);
+      panel.gridPos.w = newSize.w;
+      panel.gridPos.h = newSize.h;
+      firstPanelLoaded = false;
+      // BMC Change: Ends
 
       const panelObject = buildGridItemForPanel(panel);
 
@@ -201,15 +260,23 @@ export function createSceneObjectsForPanels(oldPanels: PanelModel[]): SceneGridI
   return panels;
 }
 
-function createRowFromPanelModel(row: PanelModel, content: SceneGridItemLike[]): SceneGridItemLike {
+function createRowFromPanelModel(
+  row: PanelModel,
+  content: SceneGridItemLike[],
+  reportOpts?: ReportLayoutOptions
+): SceneGridItemLike {
   if (Boolean(row.collapsed)) {
     if (row.panels) {
-      content = row.panels.map((saveModel) => {
+      content = row.panels.map((saveModel, i) => {
         // Collapsed panels are not actually PanelModel instances
         if (!(saveModel instanceof PanelModel)) {
           saveModel = new PanelModel(saveModel);
         }
-
+        // BMC Change: Starts
+        const newSize = updatePanelsForReport(reportOpts!, saveModel.gridPos.w, saveModel.gridPos.h, i === 0);
+        saveModel.gridPos.w = newSize.w;
+        saveModel.gridPos.h = newSize.h;
+        // BMC Change: Ends
         return buildGridItemForPanel(saveModel);
       });
     }
@@ -333,7 +400,21 @@ export function createDashboardSceneFromDashboardModel(oldModel: DashboardModel,
       reloadOnParamsChange: config.featureToggles.reloadDashboardsOnParamsChange && oldModel.meta.reloadOnParamsChange,
       uid,
     }),
+    // BMC code: starts
+    new DashboardLoadTimeBehavior({}),
+    // next behavior is for dashboard personalization
+    new TimeAndVariableChangeBehavior({
+      hasChanges: false,
+      hasTimeChanges: false,
+    }),
+    // BMC Code: Change Ends
   ];
+
+  // BMC Code: Change Starts
+  if (isOpenEmptyPanelsEnabled() && !oldModel.snapshot) {
+    behaviorList.push(new RefreshBehavior({}));
+  }
+  // BMC Code: Change Ends
 
   if (enableProfiling) {
     // Analytics aggregator lifecycle management (initialization, observer registration, cleanup)
@@ -392,6 +473,11 @@ export function createDashboardSceneFromDashboardModel(oldModel: DashboardModel,
         }),
         hideTimeControls: oldModel.timepicker.hidden,
       }),
+      locales: getFeatureStatus('bhd-localization')
+        ? (cloneDeep(oldModel.locales as DashboardLocale) ?? initializeDashboardLocale())
+        : undefined,
+      currentLocales: initializeDashboardLocale(),
+      multilingualPdf: oldModel.multilingualPdf,
     },
     serializerVersion
   );

@@ -1,6 +1,6 @@
 module lefthook
 
-go 1.25.7
+go 1.25.12
 
 tool github.com/evilmartians/lefthook
 

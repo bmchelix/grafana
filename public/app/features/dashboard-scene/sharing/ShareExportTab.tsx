@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 import { useAsync } from 'react-use';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
+import { TypedVariableModel } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
 import { config } from '@grafana/runtime';
 import { SceneComponentProps, SceneObjectBase } from '@grafana/scenes';
@@ -25,7 +26,6 @@ import { DashboardScene } from '../scene/DashboardScene';
 import { makeExportableV1, makeExportableV2 } from '../scene/export/exporters';
 import { transformSceneToSaveModel } from '../serialization/transformSceneToSaveModel';
 import { transformSceneToSaveModelSchemaV2 } from '../serialization/transformSceneToSaveModelSchemaV2';
-import { getVariablesCompatibility } from '../utils/getVariablesCompatibility';
 import { DashboardInteractions } from '../utils/interactions';
 import { getDashboardSceneFor, hasLibraryPanelsInV1Dashboard } from '../utils/utils';
 
@@ -106,7 +106,17 @@ export class ShareExportTab extends SceneObjectBase<ShareExportTabState> impleme
   }> => {
     const { isSharingExternally, exportMode } = this.state;
 
-    const scene = getDashboardSceneFor(this);
+    let scene = getDashboardSceneFor(this);
+    // BMC Change: for localization-aware export
+    const dashboardClone = scene.clone();
+    const nonLocalizedState = scene.getNonLocalizedState?.();
+    if (nonLocalizedState) {
+      dashboardClone.setnonLocalizedState(nonLocalizedState);
+    }
+    dashboardClone.unapplyLocalization();
+    scene = dashboardClone;
+    // BMC Change: Ends
+
     const exportableDashboard = await scene.serializer.makeExportableExternally(scene);
     const initialSaveModel = scene.getInitialSaveModel();
     const initialSaveModelVersion = initialSaveModel && isDashboardV2Spec(initialSaveModel) ? 'v2' : 'v1';
@@ -168,9 +178,14 @@ export class ShareExportTab extends SceneObjectBase<ShareExportTabState> impleme
           let exportableV1: Dashboard | DashboardDataDTO | DashboardJson | { error: unknown };
           if (isSharingExternally) {
             const oldModel = new DashboardModel(spec1, undefined, {
-              getVariablesFromState: () => {
-                return getVariablesCompatibility(window.__grafanaSceneContext);
-              },
+              // GF_12.3.1_TODO - This entire flow is prolly broken
+              // BMC Change: for localization-aware export of variables
+              // getVariablesFromState: () => {
+              //   return getVariablesCompatibility(window.__grafanaSceneContext);
+              // },
+              // Use variables from spec1 instead of Redux/Scenes to preserve {{variableKey}} labels
+              getVariablesFromState: () => (spec1.templating?.list as TypedVariableModel[]) ?? [],
+              // BMC Change: Ends
             });
             exportableV1 = await makeExportableV1(oldModel);
           } else {
@@ -256,9 +271,13 @@ export class ShareExportTab extends SceneObjectBase<ShareExportTabState> impleme
       'panels' in initialSaveModel
     ) {
       const oldModel = new DashboardModel(initialSaveModel, undefined, {
-        getVariablesFromState: () => {
-          return getVariablesCompatibility(window.__grafanaSceneContext);
-        },
+        // BMC Change: for localization-aware export of variables
+        // getVariablesFromState: () => {
+        //     return getVariablesCompatibility(window.__grafanaSceneContext);
+        // },
+        // Use variables from initialSaveModel instead of Redux/Scenes
+        getVariablesFromState: () => (initialSaveModel.templating?.list as TypedVariableModel[]) ?? [],
+        // BMC Change: Ends
       });
       const exportableV1 = isSharingExternally ? await makeExportableV1(oldModel) : initialSaveModel;
       return {

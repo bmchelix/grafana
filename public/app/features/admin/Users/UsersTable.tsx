@@ -48,7 +48,7 @@ export const UsersTable = ({
       {
         id: 'avatarUrl',
         header: '',
-        cell: ({ cell: { value } }: Cell<'avatarUrl'>) => value && <Avatar src={value} alt={'User avatar'} />,
+        cell: ({ cell: { value } }: Cell<'avatarUrl'>) => value && <Avatar src={value} alt={''} />,
       },
       {
         id: 'login',
@@ -181,10 +181,11 @@ export const UsersTable = ({
             <LinkButton
               variant="secondary"
               size="sm"
-              icon="pen"
+              icon="eye"
               href={`admin/users/edit/${original.uid}`}
-              aria-label={t('admin.users-table.edit-aria-label', 'Edit user: {{name}}', { name: original.name })}
-              tooltip={t('admin.users-table.edit-tooltip', 'Edit user')}
+              // BMC Change: Change edit user to view user
+              aria-label={t('admin.users-table.edit-aria-label', 'View user: {{name}}', { name: original.name })}
+              tooltip={t('admin.users-table.edit-tooltip', 'View user')}
             />
           );
         },

@@ -7,6 +7,7 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { useTheme2 } from '../../themes/ThemeContext';
 import { stylesFactory } from '../../themes/stylesFactory';
 import { getFocusStyle, sharedInputStyle } from '../Forms/commonStyles';
+import { useDirection } from '../../contexts';
 import { Spinner } from '../Spinner/Spinner';
 
 import { AutoSizeInputContext } from './AutoSizeInputContext';
@@ -26,6 +27,8 @@ export interface Props extends Omit<HTMLProps<HTMLInputElement>, 'prefix' | 'siz
   addonBefore?: ReactNode;
   /** Add a component as an addon after the input */
   addonAfter?: ReactNode;
+  /** BMC Accessibility Change : Add aria-describedby attribute to the input  */
+  'aria-describedby'?: string;
 }
 
 interface StyleDeps {
@@ -49,8 +52,12 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     invalid,
     loading,
     width = 0,
+    //BMC Code : Accessibility Change (Added aria-describedby prop)
+    'aria-describedby': describedBy,
     ...restProps
   } = props;
+  //BMC Code : Accessibility Change (Next Line)
+  const errorId = props.id ? `${props.id}-error` : '';
   /**
    * Prefix & suffix are positioned absolutely within inputWrapper. We use client rects below to apply correct padding to the input
    * when prefix/suffix is larger than default (28px = 16px(icon) + 12px(left/right paddings)).
@@ -69,12 +76,17 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const autoSizeWidth = isInAutoSizeInput && width ? width + accessoriesWidth / 8 : undefined;
 
   const theme = useTheme2();
+  const { isRtl: rtlMode } = useDirection();
 
   // Don't pass the width prop, as this causes an unnecessary amount of Emotion calls when auto sizing
   const styles = getInputStyles({ theme, invalid: !!invalid, width: autoSizeWidth ? undefined : width });
 
   const suffix = suffixProp || (loading && <Spinner inline={true} />);
 
+  // BMC Change: To flip padding for prefix and suffix, for RTL support
+  const paddingLeft = prefix ? prefixRect.width + 12 : undefined;
+  const paddingRight = suffix || loading ? suffixRect.width + 12 : undefined;
+  // BMC Change: End
   return (
     <div
       className={cx(styles.wrapper, className)}
@@ -94,10 +106,13 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
         <input
           ref={ref}
           className={styles.input}
+          //BMC Code : Accessibility Change (Added aria-describedby attribute)
+          aria-describedby={describedBy || errorId}
           {...restProps}
           style={{
-            paddingLeft: prefix ? prefixRect.width + 12 : undefined,
-            paddingRight: suffix || loading ? suffixRect.width + 12 : undefined,
+            // BMC change: To flip padding for prefix and suffix, for RTL support
+            paddingLeft: rtlMode ? paddingRight : paddingLeft,
+            paddingRight: rtlMode ? paddingLeft : paddingRight,
           }}
         />
 

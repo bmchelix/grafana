@@ -5,7 +5,7 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Trans } from '@grafana/i18n';
 import { VariableValueOption } from '@grafana/scenes';
-import { Button, InlineFieldRow, InlineLabel, useStyles2, Text } from '@grafana/ui';
+import { Button, InlineFieldRow, InlineLabel, Text, useStyles2 } from '@grafana/ui';
 
 export interface VariableValuesPreviewProps {
   options: VariableValueOption[];
@@ -27,7 +27,6 @@ export const VariableValuesPreview = ({ options }: VariableValuesPreviewProps) =
   if (!previewOptions.length) {
     return null;
   }
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', marginTop: '16px' }}>
       <Text variant="bodySmall" weight="medium">

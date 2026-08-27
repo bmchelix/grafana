@@ -105,6 +105,7 @@ func buildIAMConfigFromSettings(cfg *setting.Cfg, registerer prometheus.Register
 	}
 
 	tlsInsecure := operatorSec.Key("tls_insecure").MustBool(false)
+	// BMC code changes end - FIPS
 	tlsCertFile := operatorSec.Key("tls_cert_file").String()
 	tlsKeyFile := operatorSec.Key("tls_key_file").String()
 	tlsCAFile := operatorSec.Key("tls_ca_file").String()

@@ -1,25 +1,27 @@
 import { css } from '@emotion/css';
-import { memo, ReactNode } from 'react';
+import { memo, ReactNode, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom-v5-compat';
 
-import { textUtil } from '@grafana/data';
-import { Trans, t } from '@grafana/i18n';
+import { AppEvents, textUtil } from '@grafana/data';
+import { t, Trans } from '@grafana/i18n';
 import { locationService } from '@grafana/runtime';
 import {
   ButtonGroup,
+  ButtonSelect,
+  ConfirmModal,
   ModalsController,
   ToolbarButton,
-  useForceUpdate,
   ToolbarButtonRow,
-  ConfirmModal,
+  Tooltip,
+  useForceUpdate,
 } from '@grafana/ui';
 import { updateNavIndex } from 'app/core/actions';
 import { AppChromeUpdate } from 'app/core/components/AppChrome/AppChromeUpdate';
 import { NavToolbarSeparator } from 'app/core/components/AppChrome/NavToolbar/NavToolbarSeparator';
 import config from 'app/core/config';
 import { useAppNotification } from 'app/core/copy/appNotification';
-import { appEvents } from 'app/core/core';
+import { appEvents, contextSrv } from 'app/core/core';
 import { useBusEvent } from 'app/core/hooks/useBusEvent';
 import { ID_PREFIX, setStarred } from 'app/core/reducers/navBarTree';
 import { removeNavIndex } from 'app/core/reducers/navModel';
@@ -34,10 +36,11 @@ import { updateTimeZoneForSession } from 'app/features/profile/state/reducers';
 import { KioskMode } from 'app/types/dashboard';
 import { DashboardMetaChangedEvent, ShowModalReactEvent } from 'app/types/events';
 import { StoreState } from 'app/types/store';
+import iconSchedulerSvg from 'img/icon_scheduler.svg';
 
 import {
-  DynamicDashNavButtonModel,
   dynamicDashNavActions,
+  DynamicDashNavButtonModel,
   registerDynamicDashNavAction,
 } from '../../../dashboard-scene/utils/registerDynamicDashNavAction';
 
@@ -190,7 +193,7 @@ export const DashNav = memo<Props>((props) => {
     const isDevEnv = config.buildInfo.env === 'development';
 
     const { dashboard, kioskMode } = props;
-    const { canStar, isStarred } = dashboard.meta;
+    const { canStar, isStarred, canShare } = dashboard.meta;
     const buttons: ReactNode[] = [];
 
     if (kioskMode || isPlaylistRunning()) {
@@ -216,6 +219,47 @@ export const DashNav = memo<Props>((props) => {
     if (dashboard.uid) {
       buttons.push(<PublicDashboardBadgeLegacy key="public-dashboard-badge" uid={dashboard.uid} />);
     }
+
+    const handleManageReports = () => {
+      sessionStorage.removeItem('reportFilter');
+      locationService.push({
+        search: locationService.getSearch().toString(),
+        pathname: `/a/reports/f/${dashboard.uid}`,
+      });
+    };
+
+    // BMC code
+    if (canShare && (contextSrv.hasPermission('reports:access') || contextSrv.isEditor)) {
+      const { theme } = config;
+      buttons.push(
+        <div key="button-reports" style={{ display: 'flex' }}>
+          <Tooltip content={t('bmc.dashboard.toolbar.manage-reports', 'Manage scheduled reports')}>
+            <div
+              onClick={handleManageReports}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  handleManageReports();
+                }
+              }}
+            >
+              <img
+                alt=""
+                style={{
+                  width: '22px',
+                  filter: theme.isDark ? 'brightness(1.2)' : 'brightness(0.5)',
+                }}
+                src={iconSchedulerSvg}
+              />
+            </div>
+          </Tooltip>
+        </div>
+      );
+    }
+    // End
 
     if (isDevEnv && config.featureToggles.dashboardScene) {
       buttons.push(
@@ -257,26 +301,99 @@ export const DashNav = memo<Props>((props) => {
   };
 
   const renderTimeControls = () => {
-    const { dashboard, updateTimeZoneForSession, hideTimePicker } = props;
+    const { dashboard, updateTimeZoneForSession } = props;
 
-    if (hideTimePicker) {
-      return null;
-    }
+    // BMC code changes start - always show refresh button
+    // if (hideTimePicker) {
+    //   return null;
+    // }
+
     return (
       <DashNavTimeControls dashboard={dashboard} onChangeTimeZone={updateTimeZoneForSession} key="time-controls" />
     );
   };
 
-  const renderRightActions = () => {
-    const { dashboard, isFullscreen, hideTimePicker } = props;
+  const RenderRightActions = () => {
+    // BMC Code: Removed hideTimePicker, not used
+    const { dashboard, isFullscreen } = props;
     const { canSave, canEdit, showSettings, canShare } = dashboard.meta;
     const { snapshot } = dashboard;
     const snapshotUrl = snapshot && snapshot.originalUrl;
     const buttons: ReactNode[] = [];
 
+    // BMC code - for dashboard personalization
+    const [isLoadingPersonalization, setIsLoadingPersonalization] = useState(false);
+    const onSaveFilters = () => {
+      setIsLoadingPersonalization(true);
+      const dashboardSrv = getDashboardSrv();
+      const currentVariableValues = dashboard.getVariables();
+      const currentTimeRangeValues = dashboard.time;
+      dashboardSrv
+        .savePersonalizedFilters({
+          uid: dashboard.uid,
+          list: currentVariableValues ?? [],
+          time: currentTimeRangeValues,
+        })
+        .then(() => {
+          const successMessage = t('bmc.dashboard.toolbar.save-filters-success', 'Saved filter values successfully.');
+          appEvents.emit(AppEvents.alertSuccess, [successMessage]);
+        })
+        .catch((err) => {
+          const errorMessage = t('bmc.dashboard.toolbar.save-filters-failure', 'Failed to save filter values.');
+          appEvents.emit(AppEvents.alertError, [errorMessage]);
+        })
+        .finally(() => {
+          setIsLoadingPersonalization(false);
+        });
+    };
+
+    const onResetFilters = () => {
+      setIsLoadingPersonalization(true);
+      const dashboardSrv = getDashboardSrv();
+      dashboardSrv
+        .resetPersonalizedFilters(dashboard.uid)
+        .then(() => {
+          // BMC code - reload the dashboard to reset the variables
+          window.location.href = window.location.href.split('?')[0];
+        })
+        .catch((err) => {
+          const errorMessage = t('bmc.dashboard.toolbar.reset-filters-failure', 'Failed to reset filter values.');
+          appEvents.emit(AppEvents.alertError, [errorMessage]);
+        })
+        .finally(() => {
+          setIsLoadingPersonalization(false);
+        });
+    };
+    // BMC code - end
+
     if (isPlaylistRunning()) {
       return [renderPlaylistControls(), renderTimeControls()];
     }
+
+    // BMC code - for dashboard personalization
+    // Checking UID to hide save filters on Home dash
+    if (dashboard.uid && !isFullscreen) {
+      const saveFiltersText = t('bmc.dashboard.toolbar.save-filters', 'Save filters');
+      const resetFiltersText = t('bmc.dashboard.toolbar.reset-filters', 'Reset filters');
+      buttons.push(
+        <ButtonGroup>
+          <ToolbarButton
+            icon={isLoadingPersonalization ? 'fa fa-spinner' : 'bmc-save-filter'}
+            tooltip={saveFiltersText}
+            disabled={!(dashboard.hasVariablesChanged() || dashboard.hasTimeChanged())}
+            onClick={onSaveFilters}
+            key="button-save-adfiltersd"
+          />
+          <ButtonSelect
+            value={undefined}
+            options={[{ label: resetFiltersText, value: 'Reset filters' }]}
+            title={resetFiltersText}
+            onChange={onResetFilters}
+          />
+        </ButtonGroup>
+      );
+    }
+    // End
 
     if (snapshotUrl) {
       buttons.push(
@@ -335,10 +452,12 @@ export const DashNav = memo<Props>((props) => {
       buttons.push(<ShareButton key="button-share" dashboard={dashboard} />);
     }
 
-    // if the timepicker is hidden, we don't need to add this separator
-    if (!hideTimePicker) {
-      buttons.push(<NavToolbarSeparator key="toolbar-separator" />);
-    }
+    // BMC code changes - always show refresh button so commenting out the if condition
+    // // if the timepicker is hidden, we don't need to add this separator
+    // if (!hideTimePicker) {
+    buttons.push(<NavToolbarSeparator key="toolbar-separator" />);
+    // }
+    // BMC code changes end
 
     buttons.push(renderTimeControls());
 
@@ -351,7 +470,7 @@ export const DashNav = memo<Props>((props) => {
         <>
           {renderLeftActions()}
           <NavToolbarSeparator leftActionsSeparator />
-          <ToolbarButtonRow alignment="right">{renderRightActions()}</ToolbarButtonRow>
+          <ToolbarButtonRow alignment="right">{RenderRightActions()}</ToolbarButtonRow>
         </>
       }
     />

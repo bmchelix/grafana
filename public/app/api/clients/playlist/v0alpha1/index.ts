@@ -5,6 +5,7 @@ import { notifyApp } from '../../../../core/actions';
 import { createSuccessNotification } from '../../../../core/copy/appNotification';
 import { contextSrv } from '../../../../core/services/context_srv';
 import { handleError } from '../../../utils';
+import { t } from 'i18next';
 
 export const playlistAPIv0alpha1 = generatedAPI.enhanceEndpoints({
   endpoints: {
@@ -33,9 +34,10 @@ export const playlistAPIv0alpha1 = generatedAPI.enhanceEndpoints({
       endpointDefinition.onQueryStarted = async (_, { queryFulfilled, dispatch }) => {
         try {
           await queryFulfilled;
-          dispatch(notifyApp(createSuccessNotification('Playlist created')));
+          // BMC change - localization
+          dispatch(notifyApp(createSuccessNotification(t('bmcgrafana.playlist.create-playlist.success','Playlist created'))));
         } catch (e) {
-          handleError(e, dispatch, 'Unable to create playlist');
+          handleError(e, dispatch, t('bmcgrafana.playlist.create-playlist.error','Unable to create playlist'));
         }
       };
     },
@@ -43,9 +45,10 @@ export const playlistAPIv0alpha1 = generatedAPI.enhanceEndpoints({
       onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
         try {
           await queryFulfilled;
-          dispatch(notifyApp(createSuccessNotification('Playlist updated')));
+          // BMC change - localization
+          dispatch(notifyApp(createSuccessNotification(t('bmcgrafana.playlist.update-playlist.success','Playlist updated'))));
         } catch (e) {
-          handleError(e, dispatch, 'Unable to update playlist');
+          handleError(e, dispatch, t('bmcgrafana.playlist.update-playlist.error','Unable to update playlist'));
         }
       },
     },
@@ -53,9 +56,10 @@ export const playlistAPIv0alpha1 = generatedAPI.enhanceEndpoints({
       onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
         try {
           await queryFulfilled;
-          dispatch(notifyApp(createSuccessNotification('Playlist deleted')));
+          // BMC change - localization
+          dispatch(notifyApp(createSuccessNotification(t('bmcgrafana.playlist.delete-playlist.success','Playlist deleted'))));
         } catch (e) {
-          handleError(e, dispatch, 'Unable to delete playlist');
+          handleError(e, dispatch, t('bmcgrafana.playlist.delete-playlist.error','Unable to delete playlist'));
         }
       },
     },

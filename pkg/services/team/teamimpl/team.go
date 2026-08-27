@@ -38,6 +38,7 @@ func ProvideService(db db.DB, cfg *setting.Cfg, tracer tracing.Tracer) (team.Ser
 	}, nil
 }
 
+// BMC code - inline change for Id and IsMspTeams
 func (s *Service) CreateTeam(ctx context.Context, cmd *team.CreateTeamCommand) (team.Team, error) {
 	_, span := s.tracer.Start(ctx, "team.CreateTeam", trace.WithAttributes(
 		attribute.Int64("orgID", cmd.OrgID),
@@ -101,6 +102,14 @@ func (s *Service) GetTeamIDsByUser(ctx context.Context, query *team.GetTeamIDsBy
 	defer span.End()
 	return s.store.GetIDsByUser(ctx, query)
 }
+
+// BMC code
+
+func (s *Service) GetTeamsByIds(ctx context.Context, orgID int64, teamIDs []int64) ([]*team.TeamDTO, error) {
+	return s.store.GetTeamsByIds(ctx, orgID, teamIDs)
+}
+
+// End
 
 func (s *Service) IsTeamMember(ctx context.Context, orgId int64, teamId int64, userId int64) (bool, error) {
 	_, span := s.tracer.Start(ctx, "team.IsTeamMember", trace.WithAttributes(

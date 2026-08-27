@@ -1,3 +1,9 @@
+// BMC Helix code changes start - DRJ71-22513
+// TODO: REMOVE BEFORE UPGRADE
+// Build tag excludes this file from hdb_no_zanzana production builds (OpenFGA CVE remediation).
+//go:build !hdb_no_zanzana
+// BMC Helix code changes end - DRJ71-22513
+
 package logger
 
 import (

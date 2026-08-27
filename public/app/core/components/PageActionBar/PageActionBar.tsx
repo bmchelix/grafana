@@ -1,7 +1,8 @@
 import { css } from '@emotion/css';
 
-import { SelectableValue, GrafanaTheme2 } from '@grafana/data';
-import { LinkButton, FilterInput, InlineField, Checkbox, useStyles2 } from '@grafana/ui';
+import { GrafanaTheme2, SelectableValue } from '@grafana/data';
+import { t } from '@grafana/i18n';
+import { Checkbox, FilterInput, InlineField, LinkButton, useStyles2 } from '@grafana/ui';
 
 import { SortPicker } from '../Select/SortPicker';
 
@@ -30,7 +31,8 @@ export default function PageActionBar({
   linkButton,
   setSearchQuery,
   target,
-  placeholder = 'Search by name or type',
+  // BMC Change: Next line
+  placeholder = t('bmcgrafana.search-inputs.name-type', 'Search by name or type'),
   sortPicker,
   filterCheckbox,
 }: Props) {
@@ -46,9 +48,14 @@ export default function PageActionBar({
 
   return (
     <div className={styles.container}>
+      {/* // BMC Code : Accessibility Change starts here. */}
+      <label htmlFor="playlist-hidden" className={styles.hiddenLabel}>
+        {placeholder}
+      </label>
       <InlineField grow>
-        <FilterInput value={searchQuery} onChange={setSearchQuery} placeholder={placeholder} />
+        <FilterInput id="playlist-hidden" value={searchQuery} onChange={setSearchQuery} placeholder={placeholder} />
       </InlineField>
+      {/* //BMC code Accessibility change ends here */}
       {filterCheckbox && (
         <Checkbox
           label={filterCheckbox.label}
@@ -75,6 +82,17 @@ const getStyles = (theme: GrafanaTheme2) => {
       alignItems: 'center',
       gap: theme.spacing(2),
       marginBottom: theme.spacing(2),
+    }),
+    // BMC a11y change - next object
+    hiddenLabel: css({
+      border: '0',
+      clip: 'rect(0 0 0 0)',
+      height: '1px',
+      margin: '-1px',
+      overflow: 'hidden',
+      padding: '0',
+      position: 'absolute',
+      width: '1px',
     }),
   };
 };

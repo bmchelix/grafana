@@ -1,3 +1,10 @@
+// BMC Helix code changes start - DRJ71-22513
+// TODO: REMOVE BEFORE UPGRADE
+// Build tag gates upstream OpenFGA/Zanzana path; HDB uses zanzana_noop.go instead.
+// ZanzanaClientConfig and ZanzanaService moved to zanzana_shared.go.
+//go:build !hdb_no_zanzana
+// BMC Helix code changes end - DRJ71-22513
+
 package authz
 
 import (
@@ -32,6 +39,8 @@ import (
 	"github.com/grafana/grafana/pkg/services/grpcserver/interceptors"
 	"github.com/grafana/grafana/pkg/setting"
 )
+
+var _ ZanzanaService = (*Zanzana)(nil)
 
 // ProvideZanzanaClient used to register ZanzanaClient.
 // It will also start an embedded ZanzanaSever if mode is set to "embedded".
@@ -113,13 +122,6 @@ func ProvideStandaloneZanzanaClient(cfg *setting.Cfg, features featuremgmt.Featu
 	return NewRemoteZanzanaClient(fmt.Sprintf("stacks-%s", cfg.StackID), zanzanaConfig)
 }
 
-type ZanzanaClientConfig struct {
-	URL              string
-	Token            string
-	TokenExchangeURL string
-	ServerCertFile   string
-}
-
 // NewRemoteZanzanaClient creates a new Zanzana client that connects to remote Zanzana server.
 func NewRemoteZanzanaClient(namespace string, cfg ZanzanaClientConfig) (zanzana.Client, error) {
 	tokenClient, err := authnlib.NewTokenExchangeClient(authnlib.TokenExchangeConfig{
@@ -162,12 +164,6 @@ func NewRemoteZanzanaClient(namespace string, cfg ZanzanaClientConfig) (zanzana.
 	return client, nil
 }
 
-type ZanzanaService interface {
-	services.NamedService
-}
-
-var _ ZanzanaService = (*Zanzana)(nil)
-
 // ProvideZanzanaService is used to register zanzana as a module so we can run it seperatly from grafana.
 func ProvideZanzanaService(cfg *setting.Cfg, features featuremgmt.FeatureToggles, reg prometheus.Registerer) (*Zanzana, error) {
 	s := &Zanzana{
@@ -182,6 +178,7 @@ func ProvideZanzanaService(cfg *setting.Cfg, features featuremgmt.FeatureToggles
 	return s, nil
 }
 
+// Zanzana runs a standalone OpenFGA-backed authorization server.
 type Zanzana struct {
 	*services.BasicService
 

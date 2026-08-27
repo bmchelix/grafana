@@ -18,79 +18,21 @@ import (
 // 3. Handling null/missing datasource references by setting appropriate defaults
 // 4. Maintaining consistency between panel and target datasource configurations
 // 5. Preserving special datasource types like Mixed datasources and expression queries
-//
-// This transformation provides several critical benefits:
-// - Eliminates datasource reference breakage when datasources are renamed
-// - Enables reliable dashboard export/import across different Grafana instances
-// - Supports advanced datasource features that require type and version information
-// - Prepares the schema for future datasource management enhancements
-// - Maintains backward compatibility while establishing a robust foundation
-//
-// The migration handles complex scenarios including:
-// - Panels with missing datasource configuration (set to default)
-// - Mixed datasource panels with heterogeneous targets
-// - Expression queries that reference other queries
-// - Template variables that depend on datasource queries
-// - Annotation queries from various datasource types
-//
-// Example transformations:
-//
-// Before migration (string reference):
-//
-//	datasource: "prometheus-prod"
-//	// or
-//	datasource: null
-//
-// After migration (structured object):
-//
-//	datasource: {
-//	  uid: "prometheus-uid-123",
-//	  type: "prometheus",
-//	  apiVersion: "v1"
-//	}
-//
-// Before migration (panel with targets):
-//
-//	panel: {
-//	  datasource: "CloudWatch",
-//	  targets: [{
-//	    datasource: null,
-//	    refId: "A"
-//	  }]
-//	}
-//
-// After migration (consistent references):
-//
-//	panel: {
-//	  datasource: {
-//	    uid: "cloudwatch-uid-456",
-//	    type: "cloudwatch",
-//	    apiVersion: "v1"
-//	  },
-//	  targets: [{
-//	    datasource: {
-//	      uid: "cloudwatch-uid-456",
-//	      type: "cloudwatch",
-//	      apiVersion: "v1"
-//	    },
-//	    refId: "A"
-//	  }]
-//	}
-func V36(dsInfo DataSourceInfoProvider) SchemaVersionMigrationFunc {
+func V36(dsIndexProvider DataSourceIndexProvider) SchemaVersionMigrationFunc {
 	return func(ctx context.Context, dashboard map[string]interface{}) error {
-		datasources := dsInfo.GetDataSourceInfo(ctx)
+		dsIndex := dsIndexProvider.Index(ctx)
 		dashboard["schemaVersion"] = int(36)
 
-		migrateAnnotations(dashboard, datasources)
-		migrateTemplateVariables(dashboard, datasources)
-		migratePanels(dashboard, datasources)
+		migrateAnnotations(dashboard, dsIndex)
+		migrateTemplateVariables(dashboard, dsIndex)
+		migratePanels(dashboard, dsIndex)
 
 		return nil
 	}
 }
 
 // migrateAnnotations updates datasource references in dashboard annotations
-func migrateAnnotations(dashboard map[string]interface{}, datasources []DataSourceInfo) {
+func migrateAnnotations(dashboard map[string]interface{}, index *DatasourceIndex) {
 	annotations, ok := dashboard["annotations"].(map[string]interface{})
 	if !ok {
 		return
@@ -107,14 +49,13 @@ func migrateAnnotations(dashboard map[string]interface{}, datasources []DataSour
 			continue
 		}
 
-		// Always migrate datasource, even if it doesn't exist (will be set to default)
 		ds := queryMap["datasource"]
-		queryMap["datasource"] = MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, datasources)
+		queryMap["datasource"] = MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, index)
 	}
 }
 
 // migrateTemplateVariables updates datasource references in dashboard variables
-func migrateTemplateVariables(dashboard map[string]interface{}, datasources []DataSourceInfo) {
+func migrateTemplateVariables(dashboard map[string]interface{}, index *DatasourceIndex) {
 	templating, ok := dashboard["templating"].(map[string]interface{})
 	if !ok {
 		return
@@ -125,7 +66,7 @@ func migrateTemplateVariables(dashboard map[string]interface{}, datasources []Da
 		return
 	}
 
-	defaultDS := GetDefaultDSInstanceSettings(datasources)
+	defaultDS := index.GetDefault()
 	for _, variable := range list {
 		varMap, ok := variable.(map[string]interface{})
 		if !ok {
@@ -138,18 +79,14 @@ func migrateTemplateVariables(dashboard map[string]interface{}, datasources []Da
 		}
 
 		ds, exists := varMap["datasource"]
-		// Handle null datasource variables by setting to default (matches frontend behavior)
-		// Only add datasource if it's explicitly null, not if it doesn't exist
 		if exists && ds == nil {
 			varMap["datasource"] = GetDataSourceRef(defaultDS)
 		}
-		// Note: Frontend v36 migration only converts null datasources to default objects
-		// It does NOT convert string datasources to objects, so we should not do that either
 	}
 }
 
 // migratePanels updates datasource references in dashboard panels
-func migratePanels(dashboard map[string]interface{}, datasources []DataSourceInfo) {
+func migratePanels(dashboard map[string]interface{}, index *DatasourceIndex) {
 	panels, ok := dashboard["panels"].([]interface{})
 	if !ok {
 		return
@@ -160,9 +97,8 @@ func migratePanels(dashboard map[string]interface{}, datasources []DataSourceInf
 		if !ok {
 			continue
 		}
-		migratePanelDatasources(panelMap, datasources)
+		migratePanelDatasources(panelMap, index)
 
-		// Handle nested panels in collapsed rows
 		nestedPanels, hasNested := panelMap["panels"].([]interface{})
 		if !hasNested {
 			continue
@@ -173,31 +109,24 @@ func migratePanels(dashboard map[string]interface{}, datasources []DataSourceInf
 			if !ok {
 				continue
 			}
-			migratePanelDatasourcesInternal(np, datasources, true)
+			migratePanelDatasourcesInternal(np, index, true)
 		}
 	}
 }
 
 // migratePanelDatasources updates datasource references in a single panel and its targets
-func migratePanelDatasources(panelMap map[string]interface{}, datasources []DataSourceInfo) {
-	migratePanelDatasourcesInternal(panelMap, datasources, false)
+func migratePanelDatasources(panelMap map[string]interface{}, index *DatasourceIndex) {
+	migratePanelDatasourcesInternal(panelMap, index, false)
 }
 
 // migratePanelDatasourcesInternal updates datasource references with nesting awareness
-func migratePanelDatasourcesInternal(panelMap map[string]interface{}, datasources []DataSourceInfo, isNested bool) {
-	// NOTE: Even though row panels don't technically need datasource or targets fields,
-	// we process them anyway to exactly match frontend behavior and avoid inconsistencies
-	// between frontend and backend migrations. The frontend DashboardMigrator processes
-	// all panels uniformly without special row panel handling.
-
-	defaultDS := GetDefaultDSInstanceSettings(datasources)
+func migratePanelDatasourcesInternal(panelMap map[string]interface{}, index *DatasourceIndex, isNested bool) {
+	defaultDS := index.GetDefault()
 	panelDataSourceWasDefault := false
 
-	// Handle targets - only add default targets to top-level panels (matches frontend behavior)
 	targets, hasTargets := panelMap["targets"].([]interface{})
 	if !hasTargets || len(targets) == 0 {
 		if !isNested {
-			// Add default target to top-level panels only
 			targets = []interface{}{
 				map[string]interface{}{
 					"refId": "A",
@@ -206,34 +135,25 @@ func migratePanelDatasourcesInternal(panelMap map[string]interface{}, datasource
 			panelMap["targets"] = targets
 			hasTargets = true
 		} else {
-			// Nested panels without targets are not processed
 			return
 		}
 	}
 
-	// Handle panel datasource
 	ds, exists := panelMap["datasource"]
 	if !exists || ds == nil {
-		// Set to default if panel has targets with length > 0 (matches frontend logic)
 		if len(targets) > 0 {
-			// Matches frontend: panel.datasource = getDataSourceRef(defaultDs)
 			panelMap["datasource"] = GetDataSourceRef(defaultDS)
 			panelDataSourceWasDefault = true
 		}
 	} else {
-		// Migrate existing non-null datasource
-		// Frontend preserves existing datasource objects as-is, so backend should too
-		// But don't override empty objects {} that were set by previous migrations (like V33)
 		if dsMap, ok := ds.(map[string]interface{}); ok && len(dsMap) == 0 {
-			// Keep empty object {} as-is (set by V33 migration for empty strings)
 			panelMap["datasource"] = ds
 		} else {
-			migrated := MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, datasources)
+			migrated := MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, index)
 			panelMap["datasource"] = migrated
 		}
 	}
 
-	// Handle target datasources
 	if !hasTargets {
 		return
 	}
@@ -246,7 +166,6 @@ func migratePanelDatasourcesInternal(panelMap map[string]interface{}, datasource
 
 		ds, exists := targetMap["datasource"]
 
-		// Check if target datasource is null, missing, or has no uid
 		needsDefault := false
 		if !exists || ds == nil {
 			needsDefault = true
@@ -258,30 +177,25 @@ func migratePanelDatasourcesInternal(panelMap map[string]interface{}, datasource
 		}
 
 		if needsDefault {
-			// Frontend: if (panel.datasource?.uid !== MIXED_DATASOURCE_NAME) { target.datasource = { ...panel.datasource }; }
 			panelDS, ok := panelMap["datasource"].(map[string]interface{})
 			if ok {
 				uid := GetStringValue(panelDS, "uid")
 				isMixed := uid == "-- Mixed --"
 
 				if !isMixed {
-					// Spread the panel datasource properties (mimics frontend: { ...panel.datasource })
 					result := make(map[string]interface{})
 					for k, v := range panelDS {
 						result[k] = v
 					}
 					targetMap["datasource"] = result
 				} else {
-					// Frontend: target.datasource = migrateDatasourceNameToRef(target.datasource, { returnDefaultAsNull: false });
-					targetMap["datasource"] = MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, datasources)
+					targetMap["datasource"] = MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, index)
 				}
 			}
 		} else {
-			// Migrate existing target datasource
-			targetMap["datasource"] = MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, datasources)
+			targetMap["datasource"] = MigrateDatasourceNameToRef(ds, map[string]bool{"returnDefaultAsNull": false}, index)
 		}
 
-		// Update panel datasource if it was default and target is not an expression
 		if panelDataSourceWasDefault {
 			targetDS, ok := targetMap["datasource"].(map[string]interface{})
 			if ok {

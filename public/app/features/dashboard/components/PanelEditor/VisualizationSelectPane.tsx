@@ -98,6 +98,7 @@ export const VisualizationSelectPane = ({ panel, data }: Props) => {
           />
         </div>
         <Field className={styles.customFieldMargin}>
+          {/* BMC Change Inline: Use radioOptions array */}
           <RadioButtonGroup options={radioOptions} value={listMode} onChange={setListMode} fullWidth />
         </Field>
       </div>

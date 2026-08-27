@@ -1,19 +1,20 @@
-import { useCallback, ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { TimeZone } from '@grafana/data';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { config } from '@grafana/runtime';
 import {
+  Box,
   CollapsableSection,
   Field,
   Input,
-  RadioButtonGroup,
-  TagsInput,
   Label,
-  TextArea,
-  Box,
+  RadioButtonGroup,
   Stack,
+  Switch,
+  TagsInput,
+  TextArea,
   WeekStart,
 } from '@grafana/ui';
 import { Page } from 'app/core/components/Page/Page';
@@ -123,6 +124,11 @@ export function GeneralSettingsUnconnected({
     setRenderCounter(renderCounter + 1);
   };
 
+  const onMultilingualPdfToggle = () => {
+    dashboard.multilingualPdf = !dashboard.multilingualPdf;
+    setRenderCounter(renderCounter + 1);
+  };
+
   const editableOptions = [
     { label: t('dashboard.general-settings-unconnected.editable-options.label.editable', 'Editable'), value: true },
     { label: t('dashboard.general-settings-unconnected.editable-options.label.readonly', 'Read-only'), value: false },
@@ -169,7 +175,8 @@ export function GeneralSettingsUnconnected({
             />
           </Field>
           <Field label={t('dashboard-settings.general.tags-label', 'Tags')}>
-            <TagsInput id="tags-input" tags={dashboard.tags} onChange={onTagsChange} width={40} />
+            {/* BMC Change: Remove defined width */}
+            <TagsInput id="tags-input" tags={dashboard.tags} onChange={onTagsChange} />
           </Field>
 
           <Field label={t('dashboard-settings.general.folder-label', 'Folder')}>
@@ -184,6 +191,20 @@ export function GeneralSettingsUnconnected({
             )}
           >
             <RadioButtonGroup value={dashboard.editable} options={editableOptions} onChange={onEditableChange} />
+          </Field>
+          {/* BMC Change */}
+          <Field
+            label={t('bmc.dashboard-settings.general.multilingual-pdf', 'Multiligual PDF')}
+            description={t(
+              'bmc.dashboard-settings.general.multilingual-pdf-description',
+              'Enable multilingual PDF generation for simple layout PDF reports'
+            )}
+          >
+            <Switch
+              id="multilingual-pdfs-toggle"
+              value={!!dashboard.multilingualPdf}
+              onChange={onMultilingualPdfToggle}
+            />
           </Field>
         </Box>
 

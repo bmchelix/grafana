@@ -16,6 +16,7 @@ import {
  * https://developers.grafana.com/ui/latest/index.html?path=/docs/inputs-deprecated-select--docs
  */
 export function Select<T, Rest = {}>(props: SelectCommonProps<T> & Rest) {
+  // @ts-ignore
   return <SelectBase {...props} />;
 }
 

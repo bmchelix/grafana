@@ -106,7 +106,8 @@ const getSwitchStyles = (theme: GrafanaTheme2, transparent?: boolean) => ({
         },
 
         svg: {
-          transform: `translate3d(${theme.spacing(2.25)}, -50%, 0)`,
+          // BMC Change: Use translateX instead of translate3d so @mui/stylis-plugin-rtl can flip it
+          transform: `translateX(${theme.spacing(2.25)}) translateY(-50%)`,
           background: theme.colors.primary.contrastText,
           color: theme.colors.primary.main,
         },
@@ -161,7 +162,8 @@ const getSwitchStyles = (theme: GrafanaTheme2, transparent?: boolean) => ({
         boxShadow: theme.shadows.z1,
         left: 0,
         top: '50%',
-        transform: `translate3d(${theme.spacing(0.25)}, -50%, 0)`,
+        // BMC Change: Use translateX instead of translate3d so stylis-plugin-rtl can flip it
+        transform: `translateX(${theme.spacing(0.25)}) translateY(-50%)`,
         [theme.transitions.handleMotion('no-preference')]: {
           transition: 'transform 0.2s cubic-bezier(0.19, 1, 0.22, 1)',
         },

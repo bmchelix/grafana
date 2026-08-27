@@ -77,8 +77,11 @@ const Confirm = () => {
 
 const HasConnectedDashboards: FC<{ dashboardTitles: string[] }> = ({ dashboardTitles }) => {
   const styles = useStyles2(getModalStyles);
-  const suffix = dashboardTitles.length === 1 ? 'dashboard.' : 'dashboards.';
-  const message = `${dashboardTitles.length} ${suffix}`;
+  // BMC Change: Starts
+  // For localization ease removing logic to calculate suffix.
+  // const suffix = dashboardTitles.length === 1 ? 'dashboard.' : 'dashboards.';
+  const message = `${dashboardTitles.length}`;
+  // BMC Change: Ends
   if (dashboardTitles.length === 0) {
     return null;
   }
@@ -86,9 +89,12 @@ const HasConnectedDashboards: FC<{ dashboardTitles: string[] }> = ({ dashboardTi
   return (
     <div>
       <p className={styles.textInfo}>
-        {'This library panel can not be deleted because it is connected to '}
-        <strong>{message}</strong>
-        {' Remove the library panel from the dashboards listed below and retry.'}
+        {/* BMC Change: To enable localization for below text */}
+        {t(
+          'bmcgrafana.library-panels.delete.cannot-delete-text',
+          'This library panel can not be deleted because it is connected to {{message}} dashboard(s). Remove the library panel from the dashboards listed below and retry.',
+          { message }
+        )}
       </p>
       <table className={styles.myTable}>
         <thead>

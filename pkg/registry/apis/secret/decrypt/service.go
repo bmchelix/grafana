@@ -53,10 +53,12 @@ func readTLSFromConfig(cfg *setting.Cfg) TLSConfig {
 		}
 	}
 
+	insecureSkipVerify := cfg.SecretsManagement.GrpcServerTLSSkipVerify
+
 	return TLSConfig{
 		UseTLS:             true,
 		CAFile:             cfg.SectionWithEnvOverrides("grafana-apiserver").Key("apiservice_ca_bundle_file").MustString(""),
 		ServerName:         cfg.SecretsManagement.GrpcServerTLSServerName,
-		InsecureSkipVerify: cfg.SecretsManagement.GrpcServerTLSSkipVerify,
+		InsecureSkipVerify: insecureSkipVerify,
 	}
 }

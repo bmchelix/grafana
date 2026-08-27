@@ -10,7 +10,7 @@ import {
 } from 'app/plugins/datasource/alertmanager/types';
 import { AccessControlAction } from 'app/types/accessControl';
 import {
-  DataSourceRulesSourceIdentifier as DataSourceRulesSourceIdentifier,
+  DataSourceRulesSourceIdentifier,
   GrafanaRulesSourceIdentifier,
   GrafanaRulesSourceSymbol,
   RuleIdentifier,

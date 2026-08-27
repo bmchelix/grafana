@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -23,6 +24,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/util"
+	"github.com/lib/pq"
 )
 
 type Service struct {
@@ -130,12 +132,16 @@ func (s *Service) Create(ctx context.Context, cmd *user.CreateUserCommand) (*use
 		cmd.Email = cmd.Login
 	}
 
+	// BMC Change: Starts
 	if err := s.store.LoginConflict(ctx, cmd.Login, cmd.Email); err != nil {
 		return nil, user.ErrUserAlreadyExists
 	}
+	// BMC Change: Ends
 
 	// create user
 	usr := &user.User{
+		// BMC Changes - Add user id to create payload.
+		ID:               cmd.Id,
 		UID:              cmd.UID,
 		Email:            strings.ToLower(cmd.Email),
 		Name:             cmd.Name,
@@ -152,12 +158,18 @@ func (s *Service) Create(ctx context.Context, cmd *user.CreateUserCommand) (*use
 		IsProvisioned:    cmd.IsProvisioned,
 	}
 
-	salt, err := util.GetRandomString(10)
+	// FIPS 140-3: use 32-char salt/rands for ≥190 bits entropy (fits 50-char DB column).
+	randLen := 10
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		randLen = 32
+	}
+
+	salt, err := util.GetRandomString(randLen)
 	if err != nil {
 		return nil, err
 	}
 	usr.Salt = salt
-	rands, err := util.GetRandomString(10)
+	rands, err := util.GetRandomString(randLen)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +189,14 @@ func (s *Service) Create(ctx context.Context, cmd *user.CreateUserCommand) (*use
 	err = s.db.InTransaction(ctx, func(ctx context.Context) error {
 		_, err = s.store.Insert(ctx, usr)
 		if err != nil {
-			return err
+			// BMC code - start
+			pqErr := err.(*pq.Error)
+			if pqErr.Code == "23505" {
+				return user.ErrUserAlreadyExists
+			} else {
+				return err
+			}
+			// BMC code - end
 		}
 
 		// create org user link
@@ -459,12 +478,18 @@ func (s *Service) CreateServiceAccount(ctx context.Context, cmd *user.CreateUser
 		IsServiceAccount: true,
 	}
 
-	salt, err := util.GetRandomString(10)
+	// FIPS 140-3: use 32-char salt/rands for ≥190 bits entropy (fits 50-char DB column).
+	randLen := 10
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		randLen = 32
+	}
+
+	salt, err := util.GetRandomString(randLen)
 	if err != nil {
 		return nil, err
 	}
 	usr.Salt = salt
-	rands, err := util.GetRandomString(10)
+	rands, err := util.GetRandomString(randLen)
 	if err != nil {
 		return nil, err
 	}

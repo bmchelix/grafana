@@ -6,6 +6,7 @@ import { Button, Field, FieldSet, Input, Stack } from '@grafana/ui';
 import { TeamRolePicker } from 'app/core/components/RolePicker/TeamRolePicker';
 import { useRoleOptions } from 'app/core/components/RolePicker/hooks';
 import { SharedPreferences } from 'app/core/components/SharedPreferences/SharedPreferences';
+import { config } from 'app/core/config';
 import { contextSrv } from 'app/core/services/context_srv';
 import { AccessControlAction } from 'app/types/accessControl';
 import { Team } from 'app/types/teams';
@@ -61,7 +62,8 @@ export const TeamSettings = ({ team, updateTeam }: Props) => {
             <Field
               noMargin
               label={t('teams.team-settings.label-name', 'Name')}
-              disabled={!canWriteTeamSettings || !!team.isProvisioned}
+              // BMC code: updated condition
+              disabled={!canWriteTeamSettings || !!team.isProvisioned || config.buildInfo.env !== 'development'}
               required
               invalid={!!errors.name}
               error="Name is required"
@@ -71,7 +73,13 @@ export const TeamSettings = ({ team, updateTeam }: Props) => {
 
             {contextSrv.licensedAccessControlEnabled() && canListRoles && (
               <Field noMargin label={t('teams.team-settings.label-role', 'Role')}>
-                <TeamRolePicker teamId={team.id} roleOptions={roleOptions} disabled={!canUpdateRoles} maxWidth="100%" />
+                {/* BMC code - updated disabled condition */}
+                <TeamRolePicker
+                  teamId={team.id}
+                  roleOptions={roleOptions}
+                  disabled={!canUpdateRoles || config.buildInfo.env !== 'development'}
+                  maxWidth="100%"
+                />
               </Field>
             )}
 
@@ -82,7 +90,8 @@ export const TeamSettings = ({ team, updateTeam }: Props) => {
                 'teams.team-settings.description-email',
                 'This is optional and is primarily used to set the team profile avatar (via the Gravatar service)'
               )}
-              disabled={!canWriteTeamSettings}
+              // BMC Change - Next Inline
+              disabled={!canWriteTeamSettings || config.buildInfo.env !== 'development'}
             >
               <Input
                 {...register('email')}
@@ -94,9 +103,12 @@ export const TeamSettings = ({ team, updateTeam }: Props) => {
             </Field>
           </Stack>
         </FieldSet>
-        <Button type="submit" disabled={!canWriteTeamSettings}>
-          <Trans i18nKey="teams.team-settings.save">Save team details</Trans>
-        </Button>
+        {/* BMC Change: Hide save button */}
+        {config.buildInfo.env === 'development' && (
+          <Button type="submit" disabled={!canWriteTeamSettings}>
+            <Trans i18nKey="teams.team-settings.save">Save team details</Trans>
+          </Button>
+        )}
       </form>
       <SharedPreferences resourceUri={`teams/${team.id}`} disabled={!canWriteTeamSettings} preferenceType="team" />
     </Stack>

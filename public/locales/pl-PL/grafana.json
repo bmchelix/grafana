@@ -3538,6 +3538,1411 @@
       "label-value-color": "Kolor wartości"
     }
   },
+  "bmc": {
+    "admin": {
+       "users": {
+         "search-label": "Wyszukaj użytkownika według loginu, adresu e-mail lub imienia i nazwiska"
+       }
+     },
+     "browse-dashboards": {
+       "action": {
+         "move-folder-tooltip": "Nie można przenieść folderów"
+       }
+     },
+     "bulk-operations": {
+       "cancel-text": "Anuluj",
+       "datsource-not-found": "Nie znaleziono źródeł danych typu {{pluginName}}",
+       "import": {
+         "import-all-failed": "Import wszystkich tablic wskaźników nie powiódł się",
+         "no-import": "Nie zaimportowano żadnych tablic wskaźników"
+       },
+       "import-all": "Importuj wszystko",
+       "import-failed": "Nie udało się zaimportować następujących tablic wskaźników",
+       "import-success": "Wszystkie tablice wskaźników zostały pomyślnie zaimportowane",
+       "options": "Opcje",
+       "select-datasource": "Wybierz źródło danych {{pluginName}}",
+       "set-parameters": "Ustaw wymagane parametry dla wybranych tablic wskaźników",
+       "specify-constant": "Określ stałą tekstową"
+     },
+     "calc-fields": {
+       "a-z": "A-Z",
+       "aggregated": "Zagregowane",
+       "all": "Wszystko",
+       "clone": "Klonuj",
+       "confirm-delete": "Czy chcesz usunąć wybrane pola obliczeniowe",
+       "connection-error": "Łączność z BMC Helix ITSM nie jest skonfigurowana.",
+       "custom": "Niestandardowe",
+       "delete": "Usuń",
+       "details": "Szczegóły pola obliczeniowego",
+       "edit": "Edytuj",
+       "edit-field": "Edytuj pole obliczeniowe",
+       "eg": "Np.",
+       "failed": "Nie udało się pobrać pól obliczeniowych",
+       "failure": "Awaria",
+       "filter-by-type": "Filtruj według typu (domyślnie wszystkie)",
+       "folder-view": "Widok folderu",
+       "form-name": "Nazwa formularza",
+       "is-aggregate": "Jest zagregowane",
+       "is-aggregate-description": "Włącz tę opcję, jeśli zapytanie obejmuje funkcje agregacji.",
+       "list-view": "Widok listy",
+       "module": "Moduł",
+       "module-name": "Nazwa modułu",
+       "name": "Nazwa",
+       "name-placeholder": "Wprowadź nazwę pola obliczeniowego",
+       "new-field": "Nowe pole obliczeniowe",
+       "no-calc-fields": "Nie utworzono jeszcze żadnych pól obliczeniowych.",
+       "not-found": "Nie znaleziono pól obliczeniowych pasujących do zapytania.",
+       "ootb": "Out-of-the-box",
+       "query-info": "Zapytanie musi być zapytaniem jednokolumnowym",
+       "query-not-validated": "Zapytanie nie zostało zwalidowane",
+       "save": "Zapisz",
+       "search-by-name": "Wyszukaj pola obliczeniowe według nazwy",
+       "search-items": "Wyszukaj elementy",
+       "select-form": "Wybierz formularz",
+       "select-module": "Wybierz moduł",
+       "sort-asc": "Alfabetycznie (A-Z)",
+       "sort-asc-descripton": "Sortuj wyniki w kolejności alfabetycznej rosnąco",
+       "sort-dsc": "Alfabetycznie (Z-A)",
+       "sort-dsc-descripton": "Sortuj wyniki w kolejności alfabetycznej malejąco",
+       "sort-options": "Opcje sortowania",
+       "sort-placeholder": "Sortuj (domyślnie {{label}})",
+       "sql-label": "SQL",
+       "sql-query": "Zapytanie SQL",
+       "subtitle": "Twórz i zarządzaj polami obliczeniowymi dla usługi ITSM",
+       "title": "Pola obliczeniowe",
+        "unknown-failure": "Nieznana awaria",
+       "update": "Aktualizuj",
+       "validate": "Waliduj",
+       "validation-success": "Pomyślnie zwalidowano zapytanie"
+     },
+     "common": {
+       "cancel": "Anuluj",
+       "dashboards": "Tablice wskaźników",
+       "delete": "Usuń",
+       "download": "Pobierz",
+       "edit": "Edytuj",
+       "loading": "Ładowanie...",
+       "name": "Nazwa",
+       "save": "Zapisz",
+       "type": "Typ"
+     },
+     "content-localization": "Nieprawidłowy kod języka: {{langCode}}",
+     "dashboard": {
+       "toolbar": {
+         "manage-reports": "Zarządzaj zaplanowanymi raportami",
+         "reset-filters": "Resetuj filtry",
+         "reset-filters-failure": "Nie udało się zresetować wartości filtrów.",
+         "save-filters": "Zapisz filtry",
+         "save-filters-failure": "Nie udało się zapisać wartości filtrów.",
+         "save-filters-success": "Pomyślnie zapisano wartości filtrów."
+       }
+     },
+     "dashboard-import": {
+       "import-text": "Importuj",
+       "overwrite": "Nadpisz",
+       "panel-import": "Panel importu",
+       "panel-import-alert": "Import ma panel {{vqb}}. Ponownie wyeksportuj go z żądanego środowiska, w przeciwnym razie wybór widoku będzie wymagał ręcznej interwencji.",
+       "sub-title": "Importuj tablicę wskaźników z pliku lub za pomocą JSON tablicy wskaźników"
+     },
+     "dashboard-scene": {
+       "get-editable-variables": {
+         "description": {
+           "optimize-variable-description": "Zdefiniuj zmienną optymalizacji, w której użytkownicy mogą wybrać typy zapytań optymalizacyjnych"
+         },
+         "name": {
+           "datepicker": "Zakres dat",
+           "optimizepicker": "Zmienna optymalizacji"
+         }
+       },
+       "text": {
+         "discard-changes-to-dashboard": "Masz niezapisane zmiany w tym pulpicie. Czy na pewno chcesz je odrzucić?"
+       }
+     },
+     "dashboard-settings": {
+       "general": {
+         "multilingual-pdf": "Wielojęzyczny PDF",
+         "multilingual-pdf-description": "Włącz generowanie wielojęzycznego PDF dla raportów PDF o prostym układzie"
+       }
+     },
+     "dashboards": {
+       "delete-success": "Usunięto tablicę wskaźników"
+     },
+     "date-picker": {
+       "description": "Zdefiniuj zmienną zakresu dat, w której użytkownicy mogą wybrać dowolny zakres dat",
+       "name": "Zakres dat"
+     },
+     "error-page": {
+       "bmc-support": "Wsparcie BMC",
+       "description": "Ta strona mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.",
+       "go-back": "Wróć do",
+       "home-page": "Strona główna",
+       "or-contact": "lub skontaktuj się z",
+       "title": "Ups... nie udało się załadować tej strony."
+     },
+     "explore": {
+       "total-result-count-aria-live_one": "Liczba załadowanych zapytań: {{ count }}",
+       "total-result-count-aria-live_other": "Liczba załadowanych zapytań: {{ count }}"
+     },
+     "export": {
+       "csvdelimiter": "Separator",
+       "fail": "Eksport nie powiódł się:",
+       "failed-dashboards": "Nieudane tablice wskaźników",
+       "field-enclosure": "Ogranicznik pola",
+       "generation-failed": "Nie udało się wygenerować raportu, spróbuj ponownie później",
+       "grid": "Siatka",
+       "hide-header": "Ukryj nagłówek",
+       "landscape": "Orientacja pozioma",
+       "layout": "Układ",
+       "newline": "Format nowej linii",
+       "orientation": "Orientacja",
+       "portrait": "Orientacja pionowa",
+       "reduce-selection": "Zmniejsz wybrane wartości zmiennych dla {{variableQuery}} i spróbuj ponownie później",
+       "rtl-grid-only": "Układ od prawej do lewej jest dostępny tylko w widoku siatki",
+       "save-as": "Zapisz {{target}} jako {{type}}",
+       "select-report-type-aria": "Wybierz typ raportu",
+       "select-report-type-placeholder": "Wybierz typ raportu",
+       "simple": "Proste",
+       "success": "Pomyślnie wygenerowano raport",
+       "successful": "Eksport udany:",
+       "tableScaling": "Skalowanie tabeli",
+       "type": "Typ",
+       "view": "Wyświetl"
+     },
+     "features-list": {
+       "date-function-resolution-for-service-management": "Obsługa funkcji daty w zarządzaniu usługami",
+       "enable-insight-finder": "Włącz Insight Finder",
+       "enable-ootb-views-for-visual-query-builder": "Włącz widoki OOTB dla wizualnego kreatora zapytań",
+       "export-complete-table-in-pdf": "Wyeksportuj pełną tabelę do PDF",
+       "rtl-support": "Interfejs od prawej do lewej",
+       "skip-ootb-dashboards-during-upgrade": "Pomiń tablice wskaźników OOTB podczas aktualizacji",
+       "skip-ootb-dashboards-during-upgrade-confirm-dialog": {
+         "confirm-button": "Włącz",
+         "desc": "Przed włączeniem tej funkcji usuń foldery out-of-the-box tablic wskaźników, które nie są wymagane",
+         "title": "Przełącz funkcję"
+       },
+       "snapshot": "Migawka"
+     },
+     "grafana-data": {
+       "transformers": {
+         "advance-functions": {
+           "description": "Przekształć wyniki, stosując obliczenia post-processing do wstępnych wyników zapytania. Na przykład: Suma skumulowana, Procent w stosunku do wartości maksymalnej itp.",
+           "name": "Funkcje zaawansowane"
+         },
+         "dynamic-fields-formatter": {
+           "description": "Formatuj pola dynamiczne do par klucz-wartość lub json.",
+           "name": "Narzędzie formatowania pól dynamicznych"
+         },
+         "sanitize-fields": {
+           "description": "Sanityzuj pole do zwykłego tekstu",
+           "name": "Sanityzacja pól"
+         }
+       }
+     },
+     "inspector": {
+       "stats": {
+         "statistics": "Statystyki",
+         "value": "Wartość"
+       }
+     },
+     "key-selector": {
+       "no-results": "Nie znaleziono pasujących kluczy"
+     },
+     "load-blank-dashoard": {
+       "loading-label": "Ładowanie...",
+       "no-data": "Brak danych",
+       "refresh-label": "Odśwież tablicę wskaźników, aby pobrać dane"
+     },
+     "manage-dashboards": {
+       "drop-click": "Przeciągnij i upuść tutaj lub kliknij, aby przeglądać",
+       "import-failed": "Import nie powiódł się",
+       "serialization-failed": "Serializacja JSON -&gt; JS nie powiodła się",
+       "upload-json": "Prześlij plik(i) JSON tablicy wskaźników"
+     },
+     "manage-locales": {
+       "cancel": "Anuluj",
+       "dashboards": {
+         "add": "Dodaj",
+         "add-key": "Dodaj nowy klucz",
+         "dashboard-name": "Nazwa tablicy wskaźników",
+         "enter-key": "Wprowadź klucz",
+         "enter-value": "Wprowadź wartość",
+         "key-text": "Klucz",
+         "key-validation": "Dozwolone są tylko znaki alfanumeryczne",
+         "no-empty-key": "Klucz nie może być pusty",
+         "validation": {
+           "default-value-required": "Wartość domyślna jest wymagana",
+           "key-required": "Klucz jest wymagany"
+         },
+         "value-text": "Wartość"
+       },
+       "export": "Eksportuj",
+       "folders": {
+         "folder-title": "Tytuł folderu"
+       },
+       "global": {
+         "subtitle": "Twórz i zarządzaj globalnymi kluczami do lokalizacji",
+         "title": "Zarządzanie lokalizacją"
+       },
+       "global-keys-text": "Klucze globalne",
+       "import": "Importuj",
+       "local-keys-text": "Klucze lokalne",
+       "localization-title": "Lokalizacja",
+       "new-key": "Nowy klucz",
+       "save": "Zapisz",
+       "search-keys": "Wyszukaj klucze...",
+       "title": "Zarządzaj ustawieniami regionalnymi"
+     },
+     "nav": {
+       "apps": {
+         "insight-finder": {
+           "configure-views-subtitle": "Wyświetl i zarządzaj widokami",
+           "configure-views-title": "Konfiguracja widoków Insight Finder",
+           "custom-views-subtitle": "Twórz i zarządzaj widokiem niestandardowym",
+           "custom-views-title": "Niestandardowe widoki Insight Finder",
+           "home": "Insight Finder",
+           "settings-title": "Ustawienia Insight Finder"
+         },
+         "reports": {
+           "history": "Historia",
+           "manage-ownership": "Zarządzaj własnością",
+           "settings": "Ustawienia"
+         }
+       },
+       "reports-scheduler": "Harmonogram raportów",
+       "rms": {
+         "subtitle": "Aplikacja do tworzenia i modyfikowania widoków dla wizualnego kreatora zapytań",
+         "title": "Reporting Metadata Studio"
+       },
+       "roles": {
+         "subtitle": "Zarządzaj rolami w organizacji",
+         "title": "Role"
+       }
+     },
+     "notification": {
+       "error": {
+         "bhd-00004": "Nie udało się pobrać pól obliczeniowych",
+         "bhd-00005": "Nie udało się utworzyć pola obliczeniowego",
+         "bhd-00006": "Nie udało się usunąć pola obliczeniowego",
+         "bhd-00007": "Nie udało się zmodyfikować pola obliczeniowego",
+         "bhd-00008": "Nie udało się zaktualizować tablic wskaźników",
+         "bhd-00009": "Nie udało się usunąć pola z tablic(y) wskaźników",
+         "bhd-00010": "Nieprawidłowy ładunek żądania podczas tworzenia pola obliczeniowego",
+         "bhd-00011": "Nieprawidłowy ładunek żądania podczas usuwania pola obliczeniowego",
+         "bhd-00012": "Nieprawidłowy ładunek żądania podczas modyfikowania pola obliczeniowego",
+         "bhd-00013": "Nazwa pola obliczeniowego jest już zajęta. Podaj inną nazwę.",
+         "bhd-00102": "Nieprawidłowe dane żądania podczas ustawiania informacji o użytkowniku IMS",
+         "bhd-00103": "Nieprawidłowe dane żądania podczas aktualizacji preferencji użytkownika",
+         "bhd-00104": "Nieprawidłowe dane żądania podczas aktualizacji preferencji organizacji",
+         "bhd-00105": "Nie udało się sparsować treści żądania",
+         "bhd-00106": "Nieprawidłowy motyw podczas aktualizacji preferencji",
+         "bhd-00107": "Nie znaleziono tablicy wskaźników",
+         "bhd-00108": "Wewnętrzny błąd serwera",
+         "bhd-00109": "Nie udało się pobrać preferencji",
+         "bhd-00110": "Nie udało się zapisać preferencji",
+         "bhd-00111": "Nie udało się zaktualizować preferencji użytkownika",
+         "bhd-00201": "Identyfikator jest nieprawidłowy",
+         "bhd-00202": "Nieprawidłowe dane żądania podczas tworzenia folderu",
+         "bhd-00203": "Nieprawidłowe dane żądania podczas aktualizacji folderu",
+         "bhd-00204": "Nieprawidłowe dane żądania podczas przenoszenia folderu",
+         "bhd-00205": "Nieprawidłowe dane żądania podczas aktualizacji uprawnień folderu",
+         "bhd-00206": "Uprawnienia zespołu i użytkownika nie mogą mieć powiązanej roli",
+         "bhd-00207": "Uprawnienia nie mogą mieć zarówno użytkownika, jak i zespołu",
+         "bhd-00208": "Tytuł folderu nie może być pusty",
+         "bhd-00209": "Nie można zmienić tablicy wskaźników w folder",
+         "bhd-00210": "uid zawiera niedozwolone znaki",
+         "bhd-00211": "uid za długi, maks. 40 znaków",
+         "bhd-00212": "Nie udało się usunąć folderu, ponieważ zawiera używane elementy biblioteki",
+         "bhd-00213": "Odmowa dostępu",
+         "bhd-00214": "Aby korzystać z tej usługi, musisz aktywować funkcję zagnieżdżonych folderów.",
+         "bhd-00215": "Nie znaleziono folderu",
+         "bhd-00216": "Folder o takiej nazwie już istnieje w obecnej lokalizacji",
+         "bhd-00217": "Folder/tablica wskaźników o tym samym uid już istnieje",
+         "bhd-00218": "Folder został zmieniony przez kogoś innego",
+         "bhd-00219": "Nie udało się przenieść folderu",
+         "bhd-00220": "Błąd API folderu",
+         "bhd-00221": "Nie udało się pobrać uprawnień folderu",
+         "bhd-00222": "Błąd podczas sprawdzania uprawnień folderu",
+         "bhd-00223": "Nie udało się utworzyć uprawnienia",
+         "bhd-00301": "Do usuwania folderów użyj punktu końcowego folderów.",
+         "bhd-00302": "DashboardId jest nieprawidłowy",
+         "bhd-00303": "Nieprawidłowe dane żądania podczas przywracania wersji tablicy wskaźników",
+         "bhd-00304": "Nieprawidłowe dane żądania podczas przywracania usuniętej tablicy wskaźników",
+         "bhd-00305": "Nieprawidłowe dane żądania podczas obliczania różnic tablicy wskaźników",
+         "bhd-00306": "Nieprawidłowe dane żądania podczas tworzenia lub aktualizacji tablicy wskaźników",
+         "bhd-00307": "Do zapisywania folderów użyj punktu końcowego folderów.",
+         "bhd-00308": "Nie można usunąć udostępnionej tablicy wskaźników",
+         "bhd-00309": "Osiągnięto limit przydziału",
+         "bhd-00310": "Odmowa dostępu do tej tablicy wskaźników",
+         "bhd-00311": "Nie znaleziono tablicy wskaźników",
+         "bhd-00312": "Nie znaleziono folderu",
+         "bhd-00313": "Nie znaleziono wersji tablicy wskaźników",
+         "bhd-00314": "Błąd podczas pobierania publicznych tablic wskaźników",
+         "bhd-00315": "Błąd podczas ładowania tablicy wskaźników, dane tablicy wskaźników są nieprawidłowe",
+         "bhd-00316": "Błąd podczas sprawdzania, czy tablica wskaźników została oznaczona gwiazdką przez użytkownika",
+         "bhd-00317": "Nie udało się odczytać folderu tablicy wskaźników",
+         "bhd-00318": "Błąd podczas sprawdzania, czy tablica wskaźników jest udostępniona",
+         "bhd-00319": "Nie udało się usunąć tablicy wskaźników",
+         "bhd-00320": "Nie udało się pobrać limitu przydziału",
+         "bhd-00321": "Nie można obliczyć różnicy",
+         "bhd-00322": "Błąd podczas łączenia paneli biblioteki",
+         "bhd-00323": "Nie udało się zaktualizować uprawnień",
+         "bhd-00324": "Błąd podczas sprawdzania uprawnień tablicy wskaźników",
+         "bhd-00325": "Nie udało się pobrać uprawnień tablicy wskaźników",
+         "bhd-00326": "Nie udało się pobrać preferencji",
+         "bhd-00327": "Nie udało się załadować głównej tablicy wskaźników",
+         "bhd-00328": "Nie można przywrócić tablicy wskaźników",
+         "bhd-00331": "Nieprawidłowe dane żądania podczas aktualizacji uprawnień tablicy wskaźników",
+         "bhd-00401": "Nieprawidłowe dane żądania podczas tworzenia nowego elementu biblioteki",
+         "bhd-00402": "Nieprawidłowe dane żądania podczas aktualizacji istniejącego elementu biblioteki",
+         "bhd-00403": "Niewystarczające uprawnienia do pobrania panelu biblioteki",
+         "bhd-00404": "Nie udało się pobrać folderu",
+         "bhd-00405": "Nie udało się utworzyć elementu biblioteki",
+         "bhd-00406": "Nie udało się usunąć elementu biblioteki",
+         "bhd-00407": "Nie udało się ocenić uprawnień",
+         "bhd-00408": "Nie udało się pobrać elementów biblioteki",
+         "bhd-00409": "Nie udało się pobrać elementu biblioteki",
+         "bhd-00410": "Nie można ocenić uprawnień panelu biblioteki",
+         "bhd-00411": "Nie udało się pobrać połączeń",
+         "bhd-00412": "Nie udało się zaktualizować elementu biblioteki",
+         "bhd-00414": "Element biblioteki o tej nazwie lub UID już istnieje",
+         "bhd-00415": "Nie udało się znaleźć elementu biblioteki",
+         "bhd-00416": "Nie udało się znaleźć połączenia z elementem biblioteki",
+         "bhd-00417": "Nie znaleziono folderu",
+         "bhd-00418": "Element biblioteki został zmieniony przez kogoś innego",
+         "bhd-00419": "Odmowa dostępu do folderu",
+         "bhd-00420": "Element biblioteki ma połączenia",
+         "bhd-00421": "uid zawiera niedozwolone znaki",
+         "bhd-00422": "uid za długi, maks. 40 znaków",
+         "bhd-00501": "Niezgodność OrgID",
+         "bhd-00502": "Odmowa dostępu do tej migawki",
+         "bhd-00503": "Pusty klucz migawki",
+         "bhd-00504": "Nie znaleziono migawki tablicy wskaźników",
+         "bhd-00505": "Nie znaleziono migawki",
+         "bhd-00506": "Nie udało się pobrać migawki tablicy wskaźników",
+         "bhd-00507": "Nie udało się usunąć migawki tablicy wskaźników",
+         "bhd-00508": "Nie udało się usunąć zewnętrznej tablicy wskaźników",
+         "bhd-00509": "Błąd podczas sprawdzania uprawnień do migawki",
+         "bhd-00510": "Wyszukiwanie nie powiodło się",
+         "bhd-00601": "Nie znaleziono",
+         "bhd-00602": "Wewnętrzny błąd serwera",
+         "bhd-00604": "Brak autoryzacji - stary token jest pusty",
+         "bhd-00605": "Uwierzytelnianie nie powiodło się",
+         "bhd-00606": "Brak uprawnień",
+         "bhd-00701": "userId jest nieprawidłowy",
+         "bhd-00702": "Nazwa organizacji zajęta",
+         "bhd-00703": "Nieprawidłowe dane żądania",
+         "bhd-00704": "Nieprawidłowe dane żądania podczas aktualizacji bieżącej organizacji",
+         "bhd-00705": "Nieprawidłowe dane żądania podczas aktualizacji adresu bieżącej organizacji",
+         "bhd-00706": "Nieprawidłowe dane żądania podczas dodawania nowego użytkownika do bieżącej organizacji",
+         "bhd-00707": "Nieprawidłowe dane żądania podczas aktualizacji użytkowników w organizacji",
+         "bhd-00708": "Nieprawidłowe dane żądania podczas aktualizacji organizacji",
+         "bhd-00709": "Nieprawidłowe dane żądania podczas aktualizacji adresu organizacji",
+         "bhd-00710": "Nieprawidłowe dane żądania podczas tworzenia organizacji",
+         "bhd-00711": "Nieprawidłowe dane żądania podczas aktualizacji danego użytkownika",
+         "bhd-00712": "Nieprawidłowe dane żądania podczas dodawania zaproszenia organizacji",
+         "bhd-00713": "Nieprawidłowe dane żądania podczas dodawania konfiguracji niestandardowej",
+         "bhd-00714": "Określono nieprawidłową rolę",
+         "bhd-00715": "orgId jest nieprawidłowe",
+         "bhd-00716": "Nie można zmienić roli tak, aby w organizacji nie było żadnego administratora",
+         "bhd-00717": "Nie można usunąć ostatniego administratora organizacji",
+         "bhd-00718": "Nie można usunąć organizacji dla bieżącego użytkownika",
+         "bhd-00719": "Nie można zaprosić użytkownika zewnętrznego, gdy logowanie jest wyłączone.",
+         "bhd-00720": "Nieprawidłowy adres URL",
+         "bhd-00721": "Nie można przypisać roli wyższej niż rola użytkownika",
+         "bhd-00722": "Tylko użytkownicy mogą tworzyć organizacje",
+         "bhd-00723": "Odmowa dostępu: brak uprawnień do dodania istniejącego użytkownika do tej organizacji",
+         "bhd-00724": "Nie znaleziono organizacji",
+         "bhd-00725": "Nie znaleziono użytkownika",
+         "bhd-00726": "Nie udało się usunąć organizacji. Nie znaleziono identyfikatora",
+         "bhd-00727": "Użytkownik jest już członkiem tej organizacji",
+         "bhd-00728": "Nie udało się pobrać organizacji",
+         "bhd-00729": "Nie udało się pobrać limitu przydziału",
+         "bhd-00730": "Nie udało się aktualizować organizacji",
+         "bhd-00731": "Nie udało się zaktualizować adresu organizacji",
+         "bhd-00732": "Nie udało się pobrać użytkowników dla bieżącej organizacji",
+         "bhd-00733": "Nie udało się dodać użytkownika do organizacji",
+         "bhd-00734": "Nie udało się pobrać użytkowników dla organizacji",
+         "bhd-00735": "Nie udało się pobrać informacji o uwierzytelnieniu użytkownika",
+         "bhd-00736": "Nie udało się zaktualizować użytkownika organizacji",
+         "bhd-00737": "Nie udało się usunąć użytkownika z organizacji",
+         "bhd-00738": "Nie udało się zaktualizować limitów przydziału organizacji",
+         "bhd-00739": "Wyszukiwanie organizacji nie powiodło się",
+         "bhd-00740": "Nie udało się sparsować identyfikatora użytkownika",
+         "bhd-00741": "Nie udało się pobrać zaproszeń z bazy danych",
+         "bhd-00742": "Nie udało się wykonać zapytania do bazy danych w celu sprawdzenia istniejącego użytkownika",
+         "bhd-00743": "Nie udało się ocenić uprawnień",
+         "bhd-00744": "Nie udało się wygenerować losowego ciągu znaków",
+         "bhd-00745": "Nie udało się zapisać zaproszenia do bazy danych",
+         "bhd-00746": "Nie udało się wysłać zaproszenia e-mailem",
+         "bhd-00747": "Nie udało się zaktualizować zaproszenia o informację o wysłaniu e-maila",
+         "bhd-00748": "Nie udało się zaktualizować statusu zaproszenia",
+         "bhd-00761": "Błąd podczas próby utworzenia użytkownika organizacji",
+         "bhd-00762": "Nie udało się wysłać wiadomości e-mail invited_to_org",
+         "bhd-00763": "SMTP nie jest skonfigurowany. Sprawdź sekcję [smtp] w pliku konfiguracyjnym grafana.ini",
+         "bhd-00764": "Nie udało się utworzyć organizacji",
+         "bhd-00765": "Nieprawidłowe dane żądania podczas dodawania nowego użytkownika do bieżącej organizacji",
+         "bhd-00801": "„action” i „actionPrefix” wzajemnie się wykluczają",
+         "bhd-00802": "Należy podać co najmniej jedną opcję wyszukiwania",
+         "bhd-00803": "Nieprawidłowy namespacedId",
+         "bhd-00804": "Nie udało się pobrać uprawnień użytkownika w organizacji",
+         "bhd-00805": "Nie udało się uzyskać uprawnień",
+         "bhd-00806": "Nieprawidłowe dane żądania: ",
+         "bhd-00807": "Nieprawidłowe dane żądania podczas ustawiania uprawnień zasobów dla użytkownika",
+         "bhd-00808": "Nieprawidłowe dane żądania podczas ustawiania uprawnień zasobów dla zespołu",
+         "bhd-00809": "Nieprawidłowe dane żądania podczas ustawiania uprawnień zasobów dla wbudowanej roli",
+         "bhd-00901": "Nieprawidłowe dane żądania podczas tworzenia źródła danych",
+         "bhd-00902": "Nieprawidłowe dane żądania podczas aktualizacji istniejącego źródła danych według jego identyfikatora sekwencyjnego",
+         "bhd-00903": "Nieprawidłowe dane żądania podczas aktualizacji istniejącego źródła danych",
+         "bhd-00904": "Nie udało się dodać źródła danych",
+         "bhd-00905": "Identyfikator jest nieprawidłowy",
+         "bhd-00906": "Brak prawidłowego identyfikatora źródła danych",
+         "bhd-00907": "Błąd walidacji, nieprawidłowy adres URL",
+         "bhd-00908": "UID jest nieprawidłowy",
+         "bhd-00909": "Brak uid źródła danych",
+         "bhd-00910": "Brak prawidłowej nazwy źródła danych",
+         "bhd-00911": "Brak identyfikatora źródła danych",
+         "bhd-00912": "Nie znaleziono źródła danych",
+         "bhd-00913": "Nie masz wystarczających uprawnień do aktualizacji źródła danych",
+         "bhd-00914": "Do wykonania tego działania potrzebne są dodatkowe uprawnienia. Niezbędne uprawnienia: datasources.permissions:write",
+         "bhd-00915": "Nie można zaktualizować źródła danych tylko do odczytu",
+         "bhd-00916": "Nie można usunąć źródła danych tylko do odczytu",
+         "bhd-00917": "Nie masz wystarczających uprawnień do usunięcia źródła danych",
+         "bhd-00918": "Odmowa dostępu do źródła danych",
+         "bhd-00919": "Odmowa dostępu",
+         "bhd-00920": "Źródło danych zostało już zaktualizowane przez kogoś innego. Załaduj ponownie i spróbuj ponownie",
+         "bhd-00921": "Nie udało się wykonać zapytania o źródła danych",
+         "bhd-00922": "Nie udało się wykonać zapytania o źródło danych",
+         "bhd-00923": "Nie udało się dodać źródła danych: ",
+         "bhd-00924": "Nie udało się usunąć źródła danych: ",
+         "bhd-00925": "Nie udało się dodać źródła danych",
+         "bhd-00926": "Nie udało się zaktualizować źródła danych",
+         "bhd-00927": "Nie udało się zaktualizować źródła danych: ",
+         "bhd-00928": "Nie udało się usunąć źródła danych",
+         "bhd-00929": "Nie można załadować metadanych źródła danych",
+         "bhd-00930": "Nie można pobrać kontekstu wtyczki",
+         "bhd-00931": "Żądanie wtyczki nie powiodło się",
+         "bhd-00932": "Nie udało się zdeserializować szczegółowej odpowiedzi z wtyczki backendowej",
+         "bhd-00936": "Nieprawidłowe dane żądania podczas dodawania korelacji",
+         "bhd-00937": "Wymagana jest co najmniej jedna etykieta, opis lub konfiguracja",
+         "bhd-00938": "Nieprawidłowe dane żądania podczas aktualizacji korelacji",
+         "bhd-00939": "Korelację można edytować tylko poprzez udostępnianie",
+         "bhd-00940": "Nie znaleziono żadnych korelacji",
+         "bhd-00941": "Nie znaleziono źródła danych źródłowych",
+         "bhd-00942": "Nie znaleziono korelacji",
+         "bhd-00943": "Nie udało się pobrać korelacji",
+         "bhd-00944": "Nie udało się dodać korelacji",
+         "bhd-00945": "Nie udało się pobrać korelacji",
+         "bhd-00946": "Nie udało się usunąć korelacji",
+         "bhd-00947": "Nie udało się zaktualizować korelacji",
+         "bhd-01001": "Nieprawidłowe dane żądania podczas dodawania nowego zapytania do historii zapytań",
+         "bhd-01002": "Nieprawidłowe dane żądania podczas aktualizacji komentarza do zapytania w historii zapytań",
+         "bhd-01003": "Nie znaleziono zapytania w historii zapytań",
+         "bhd-01004": "Nie udało się utworzyć historii zapytań",
+         "bhd-01005": "Nie udało się pobrać historii zapytań",
+         "bhd-01006": "Nie udało się usunąć zapytania z historii zapytań",
+         "bhd-01007": "Nie udało się oznaczyć zapytania gwiazdką w historii zapytań",
+         "bhd-01008": "Nie udało się usunąć gwiazdki z zapytania w historii zapytań",
+         "bhd-01009": "Nie udało się zaktualizować komentarza zapytania w historii zapytań",
+         "bhd-01011": "Nie udało się usunąć historii zapytań",
+         "bhd-01012": "Nie udało się oznaczyć gwiazdką historii zapytań",
+         "bhd-01013": "Nie udało się usunąć gwiazdki z historii zapytań",
+         "bhd-01014": "Nie udało się zaktualizować komentarza zapytania w historii zapytań",
+         "bhd-01101": "Nieprawidłowe dane żądania podczas instalacji wtyczki",
+         "bhd-01102": "Nieprawidłowe dane żądania podczas aktualizacji ustawień wtyczki",
+         "bhd-01103": "Odmowa dostępu",
+         "bhd-01104": "Nie można zainstalować ani zmienić wtyczki podstawowej",
+         "bhd-01105": "Nie można odinstalować wtyczki podstawowej",
+         "bhd-01106": "Nie znaleziono wtyczki, brak zainstalowanej wtyczki o tym identyfikatorze",
+         "bhd-01107": "Wtyczka nie zainstalowana",
+         "bhd-01108": "Plik nie istnieje",
+         "bhd-01109": "Wtyczka jest już zainstalowana",
+         "bhd-01110": "Nie udało się pobrać listy wtyczek",
+         "bhd-01111": "Nie udało się pobrać pliku Markdown",
+         "bhd-01112": "Nie udało się pobrać ustawień wtyczki",
+         "bhd-01113": "Nie udało się zdeserializować szczegółowej odpowiedzi z wtyczki backendowej",
+         "bhd-01114": "Nie udało się zainstalować wtyczki",
+         "bhd-01115": "Nie udało się odinstalować wtyczki",
+         "bhd-01116": "Nie udało się pobrać tablic wskaźników wtyczek",
+         "bhd-01117": "Nie udało się zaktualizować ustawień wtyczki",
+         "bhd-01201": "Nieprawidłowe dane żądania podczas usuwania wielu adnotacji",
+         "bhd-01202": "Nieprawidłowe dane żądania podczas tworzenia adnotacji",
+         "bhd-01203": "Nieprawidłowe dane żądania podczas aktualizacji adnotacji Nieprawidłowe dane żądania podczas aktualizacji adnotacji",
+         "bhd-01204": "Nieprawidłowe dane żądania podczas tworzenia adnotacji w formacie Graphite",
+         "bhd-01205": "annotationId jest nieprawidłowy",
+         "bhd-01206": "Nie udało się zapisać adnotacji Graphite",
+         "bhd-01207": "Nieprawidłowy UID tablicy wskaźników w żądaniu adnotacji",
+         "bhd-01208": "Odmowa dostępu do masowego usuwania adnotacji",
+         "bhd-01209": "Odmowa dostępu do zapisu adnotacji",
+         "bhd-01210": "Nie znaleziono adnotacji",
+         "bhd-01211": "Błąd podczas sprawdzania uprawnień adnotacji",
+         "bhd-01212": "Nie udało się usunąć adnotacji",
+         "bhd-01213": "Nie udało się usunąć adnotacji",
+         "bhd-01214": "Nie udało się zapisać adnotacji",
+         "bhd-01215": "Nie udało się zaktualizować adnotacji",
+         "bhd-01216": "Nie znaleziono znaczników adnotacji",
+         "bhd-01217": "Nie znaleziono adnotacji",
+         "bhd-01218": "Nie udało się pobrać adnotacji",
+         "bhd-01219": "Usunięto adnotacje",
+         "bhd-01301": "Nieprawidłowe dane żądania",
+         "bhd-01302": "Nieprawidłowa operacja",
+         "bhd-01303": "Nieprawidłowa wartość i jej typ",
+         "bhd-01304": "Nieprawidłowa treść żądania",
+         "bhd-01305": "Nieprawidłowy format JSON",
+         "bhd-01306": "Nieprawidłowy identyfikator użytkownika",
+         "bhd-01307": "Brak nazwy roli",
+         "bhd-01308": "Nie można zaktualizować roli systemowej.",
+         "bhd-01309": "Nie można usunąć roli systemowej.",
+         "bhd-01310": "Ta rola jest powiązana z użytkownikami. Przed usunięciem roli usuń wszystkie powiązania.",
+         "bhd-01311": "Ta rola jest powiązana z zespołami. Przed usunięciem roli usuń wszystkie powiązania.",
+         "bhd-01312": "Identyfikator roli jest nieprawidłowy",
+         "bhd-01313": "Nie udało się zwalidować identyfikatora roli",
+         "bhd-01314": "Nieprawidłowy identyfikator roli",
+         "bhd-01315": "Nieprawidłowy ładunek",
+         "bhd-01316": "userId jest nieprawidłowy",
+         "bhd-01317": "Identyfikator użytkownika jest nieprawidłowy",
+         "bhd-01318": "teamId jest nieprawidłowy",
+         "bhd-01319": "Zespół nie istnieje.",
+         "bhd-01320": "Użytkownik nie ma wystarczających uprawnień.",
+         "bhd-01321": "IMS_JWT jest nieprawidłowy",
+         "bhd-01322": "Brakujący lub pusty nagłówek autoryzacji",
+         "bhd-01323": "IMS_JWT jest nieprawidłowy lub nieważny",
+         "bhd-01324": "Użytkownik nie ma przypisanych ról.",
+         "bhd-01325": "Rola nie może pobierać tablic wskaźników.",
+         "bhd-01326": "Nieupoważniony dostęp'",
+         "bhd-01327": "Nie znaleziono roli",
+         "bhd-01328": "Rola o tej samej nazwie już istnieje",
+         "bhd-01329": "Nie udało się pobrać tablic wskaźników",
+         "bhd-01330": "Nie udało się pobrać listy widoków",
+         "bhd-01331": "Nie udało się pobrać spersonalizowanych danych",
+         "bhd-01332": "Nie udało się usunąć spersonalizowanych danych",
+         "bhd-01334": "Błąd podczas sprawdzania uprawnień",
+         "bhd-01335": "Nie udało się pobrać ról.",
+         "bhd-01336": "Błąd podczas tworzenia zapytania do tablicy wskaźników dla administratora",
+         "bhd-01337": "Błąd podczas tworzenia zapytania do tablicy wskaźników",
+         "bhd-01338": "Wewnętrzny błąd serwera",
+         "bhd-01339": "Nie udało się pobrać roli",
+         "bhd-01340": "Nie udało się zaktualizować roli",
+         "bhd-01341": "Nie udało się usunąć roli",
+         "bhd-01342": "Wyszukiwanie ról nie powiodło się",
+         "bhd-01343": "Nie udało się zaktualizować roli użytkownika",
+         "bhd-01344": "Nie udało się zaktualizować roli zespołu",
+         "bhd-01345": "Nie udało się pobrać listy uprawnień",
+         "bhd-01346": "Nie udało się zaktualizować listy uprawnień",
+         "bhd-01347": "Wyszukiwanie użytkowników nie powiodło się",
+         "bhd-01348": "Nie udało się dodać mapowania ról użytkowników.",
+         "bhd-01349": "Nie udało się usunąć mapowania ról użytkowników.",
+         "bhd-01350": "Nie udało się dodać roli zespołu",
+         "bhd-01351": "Nie udało się usunąć roli zespołu",
+         "bhd-01352": "Niespodziewany błąd",
+         "bhd-01364": "Nie znaleziono zapisu",
+         "bhd-01365": "Nie udało się utworzyć roli",
+         "bhd-01366": "Wyszukiwanie zespołów nie powiodło się",
+         "bhd-01367": "Identyfikator zespołu jest nieprawidłowy",
+         "bhd-01368": "Nie znaleziono widoku",
+         "bhd-01369": "Nie udało się pobrać szczegółów widoku",
+         "bhd-01370": "Nie można wygenerować sql",
+         "bhd-01376": "Brak informacji o użytkowniku",
+         "bhd-01377": "Brak informacji o zespołach",
+         "bhd-01401": "Nieprawidłowe dane żądania podczas aktualizacji listy odtwarzania",
+         "bhd-01402": "Nieprawidłowe dane żądania podczas tworzenia listy odtwarzania",
+         "bhd-01403": "Wyszukiwanie nie powiodło się",
+         "bhd-01404": "Nie znaleziono listy odtwarzania",
+         "bhd-01405": "Nie udało się usunąć listy odtwarzania",
+         "bhd-01406": "Nie udało się zapisać listy odtwarzania",
+         "bhd-01407": "Nie udało się załadować listy odtwarzania",
+         "bhd-01408": "Nie udało się utworzyć listy odtwarzania",
+         "bhd-01501": "Nieprawidłowy identyfikator",
+         "bhd-01502": "Nieprawidłowe dane żądania",
+         "bhd-01503": "Nieprawidłowy identyfikator zadania",
+         "bhd-01504": "Nieprawidłowe dane żądania podczas tworzenia raportu",
+         "bhd-01505": "Odbiorcy są wymagani",
+         "bhd-01506": "Ograniczenie domeny nie powiodło się",
+         "bhd-01507": "Nieprawidłowe wyrażenie cron",
+         "bhd-01508": "Nieprawidłowe dane żądania podczas aktualizacji raportu",
+         "bhd-01509": "Nieprawidłowy identyfikator raportu",
+         "bhd-01510": "Ograniczenie tylko domen wewnętrznych nie powiodło się",
+         "bhd-01511": "Brak raportów do usunięcia",
+         "bhd-01512": "Nieprawidłowy ładunek żądania podczas ustawiania konfiguracji FTP",
+         "bhd-01513": "Nieprawidłowy ładunek żądania podczas modyfikowania konfiguracji FTP",
+         "bhd-01514": "Nieprawidłowy ładunek żądania podczas ustawiania domyślnej konfiguracji FTP",
+         "bhd-01515": "Nieprawidłowe dane żądania podczas wysyłania wiadomości e-mail",
+         "bhd-01516": "Nieprawidłowe dane żądania podczas wykonywania raportu jeden raz",
+         "bhd-01517": "Nie określono identyfikatora",
+         "bhd-01518": "Nieprawidłowe dane żądania podczas wyłączania harmonogramu raportów",
+         "bhd-01519": "Lista harmonogramu raportów jest pusta",
+         "bhd-01520": "Harmonogram raportów o tej samej nazwie już istnieje",
+         "bhd-01521": "Wprowadź wymagane dane",
+         "bhd-01522": "Nie można edytować tablicy wskaźników dla istniejącego harmonogramu raportów",
+         "bhd-01523": "Nie znaleziono szczegółów dzierżawcy raportu",
+         "bhd-01524": "Nieprawidłowe dane żądania podczas ustawiania ustawień znakowania raportów",
+         "bhd-01525": "Nieprawidłowy obraz logo. Dozwolone są tylko następujące rozszerzenia: .png, .jpg, .jpeg",
+         "bhd-01526": "Nieprawidłowy adres URL obrazu. Dozwolone są tylko następujące rozszerzenia: .png, .jpg, .jpeg",
+         "bhd-01527": "Nieprawidłowy adres URL logo",
+         "bhd-01528": "Nieprawidłowy adres URL stopki",
+         "bhd-01529": "Nieprawidłowe dane żądania podczas aktualizacji lub tworzenia szczegółów dzierżawcy",
+         "bhd-01530": "Raport nie jest w magazynie",
+         "bhd-01531": "Plik nie jest dostępny w magazynie",
+         "bhd-01532": "Niektórzy odbiorcy nie są użytkownikami wewnętrznymi",
+         "bhd-01533": "Harmonogram raportów nie istnieje",
+         "bhd-01534": "Przekroczono limit harmonogramu raportów",
+         "bhd-01535": "Nie udało się pobrać poprzedniej konfiguracji FTP",
+         "bhd-01537": "Nieprawidłowe dane żądania podczas usuwania harmonogramu raportów",
+         "bhd-01538": "Nieprawidłowe dane żądania podczas włączania harmonogramu raportów",
+         "bhd-01539": "Niektórzy odbiorcy UWD nie są użytkownikami wewnętrznymi",
+         "bhd-01540": "Niektórzy odbiorcy nie znajdują się na białej liście",
+         "bhd-01541": "Niektórzy odbiorcy UWD nie znajdują się na białej liście",
+         "bhd-01542": "Nie udało się pobrać raportów",
+         "bhd-01543": "Konfiguracja FTP już istnieje",
+         "bhd-01544": "Nie udało się dodać konfiguracji FTP",
+         "bhd-01545": "Nie udało się zaktualizować konfiguracji FTP",
+         "bhd-01546": "Nieprawidłowe dane żądania podczas pobierania podglądu",
+         "bhd-01547": "Usunięcie domyślnej konfiguracji FTP jest niedozwolone!",
+         "bhd-01548": "Protokół FTP jest używany w harmonogramie raportów",
+         "bhd-01549": "Nie udało się usunąć konfiguracji FTP",
+         "bhd-01550": "Nie udało się usunąć harmonogramów raportów dla organizacji",
+         "bhd-01551": "Nie udało się wyłączyć harmonogramów raportów dla organizacji.",
+         "bhd-01552": "Nie udało się połączyć z serwerem FTP",
+         "bhd-01601": "Nieprawidłowe dane żądania podczas aktualizacji zalogowanego użytkownika",
+         "bhd-01602": "Nie można zmienić adresu e-mail, gdy proxy uwierzytelniania używa właściwości adresu e-mail",
+         "bhd-01603": "Nie można zmienić nazwy użytkownika, gdy proxy uwierzytelniania używa właściwości nazwy użytkownika",
+         "bhd-01604": "Nieprawidłowy adres e-mail",
+         "bhd-01605": "Identyfikator jest nieprawidłowy",
+         "bhd-01606": "Tylko użytkownicy i konta serwisowe mogą oznaczać tablice wskaźników gwiazdką",
+         "bhd-01607": "Nieprawidłowy UID tablicy wskaźników",
+         "bhd-01608": "orgId jest nieprawidłowe",
+         "bhd-01609": "Tylko użytkownicy i konta serwisowe otrzymują tablice wskaźników oznaczone gwiazdką",
+         "bhd-01610": "Nieprawidłowe dane żądania podczas zmiany hasła użytkownika",
+         "bhd-01611": "Nieprawidłowe dane żądania podczas odwoływania tokena uwierzytelniania",
+         "bhd-01612": "Nieprawidłowe dane żądania podczas aktualizacji użytkownika",
+         "bhd-01613": "Nieprawidłowa organizacja",
+         "bhd-01614": "Jednostka nie może odwoływać tokenów",
+         "bhd-01615": "Jednostka nie może pobierać tokenów",
+         "bhd-01616": "Punkt końcowy dostępny tylko dla użytkowników",
+         "bhd-01617": "Aktualizacja spowodowałaby konflikt logowania użytkownika",
+         "bhd-01618": "Nie udało się pobrać użytkownika",
+         "bhd-01620": "Nie udało się pobrać organizacji użytkowników",
+         "bhd-01621": "Nie udało się pobrać gwiazdek użytkownika",
+         "bhd-01622": "Nie udało się pobrać tablic wskaźników",
+         "bhd-01623": "Nie udało się oznaczyć gwiazdką tablicy wskaźników",
+         "bhd-01624": "Nie udało się usunąć gwiazdki z tablicy wskaźników",
+         "bhd-01625": "Nie udało się zmienić hasła użytkownika",
+         "bhd-01626": "Nie udało się pobrać limitów przydziału organizacji",
+         "bhd-01627": "Nie udało się zaktualizować flagi pomocy",
+         "bhd-01628": "Nie udało się wygenerować weryfikacji wiadomości e-mail",
+         "bhd-01629": "Nie udało się sparsować identyfikatora użytkownika.",
+         "bhd-01630": "Nie udało się pobrać zespołów użytkownika",
+         "bhd-01631": "Nie udało się zaktualizować użytkownika",
+         "bhd-01632": "Nie udało się sparsować identyfikatora użytkownika",
+         "bhd-01640": "Nie znaleziono użytkownika",
+         "bhd-01641": "Nie znaleziono tokena uwierzytelniania użytkownika",
+         "bhd-01642": "Nie udało się zmienić aktywnej organizacji",
+         "bhd-01643": "Nie udało się odwołać tokena uwierzytelniania użytkownika",
+         "bhd-01644": "Nie udało się pobrać tokena uwierzytelniania użytkownika",
+         "bhd-01645": "Nie można odwołać aktywnego tokena uwierzytelniania użytkownika",
+         "bhd-01701": "Nieprawidłowe dane żądania podczas tworzenia nowego użytkownika",
+         "bhd-01702": "Nieprawidłowe dane żądania podczas odwoływania tokena uwierzytelniania dla użytkownika",
+         "bhd-01703": "Nieprawidłowe dane żądania podczas ustawiania uprawnień użytkownika",
+         "bhd-01704": "Nieprawidłowe dane żądania podczas ustawiania hasła dla użytkownika",
+         "bhd-01705": "Brak hasła lub hasło jest za krótkie",
+         "bhd-01706": "Identyfikator jest nieprawidłowy",
+         "bhd-01707": "Nie możesz wylogować się samodzielnie",
+         "bhd-01708": "Nie można usunąć ostatniego administratora Grafana",
+         "bhd-01709": "Nie znaleziono użytkownika",
+         "bhd-01710": "Nie wolno resetować hasła, gdy formularz logowania jest wyłączony",
+         "bhd-01711": "Nie można zmienić roli administratora Grafana dla użytkownika zsynchronizowanego zewnętrznie",
+         "bhd-01712": "Autoryzacja ustawień nie powiodła się",
+         "bhd-01713": "Użytkownik ma konflikt logowania lub adresu e-mail z innym użytkownikiem. Skontaktuj się z administratorem serwera",
+         "bhd-01714": "Nie udało się pobrać statystyk administratora z bazy danych",
+         "bhd-01715": "Nie udało się pobrać statystyk anonimowych z bazy danych",
+         "bhd-01716": "Nie udało się ponownie zaszyfrować kluczy danych",
+         "bhd-01717": "Nie udało się wykonać rotacji kluczy danych",
+         "bhd-01718": "Nie udało się utworzyć użytkownika",
+         "bhd-01719": "Nie udało się odczytać użytkownika z bazy danych",
+         "bhd-01720": "Nie udało się zaktualizować hasła użytkownika",
+         "bhd-01721": "Nie udało się zaktualizować uprawnień użytkownika",
+         "bhd-01722": "Nie udało się usunąć użytkownika",
+         "bhd-01723": "Nie udało się wyłączyć użytkownika zewnętrznego",
+         "bhd-01724": "Nie udało się wyłączyć użytkownika",
+         "bhd-01725": "Nie udało się włączyć użytkownika zewnętrznego",
+         "bhd-01726": "Nie udało się włączyć użytkownika",
+         "bhd-01727": "Nie udało się pobrać użytkownika",
+         "bhd-01728": "Nie udało się pobrać tokenów uwierzytelniania użytkownika",
+         "bhd-01729": "Nie udało się wylogować użytkownika",
+         "bhd-01730": "Hasło użytkownika zostało zaktualizowane, ale nie można odwołać sesji użytkownika",
+         "bhd-01740": "Nie udało się ponownie zaszyfrować tajemnic",
+         "bhd-01741": "Nie udało się zaktualizować limitów przydziału organizacji",
+         "bhd-01742": "Nie udało się cofnąć tajemnic",
+         "bhd-01746": "Nie udało się ponownie załadować konfiguracji wtyczek",
+         "bhd-01757": "Przekroczono maksymalny limit klucza",
+         "bhd-01758": "Przestrzeń nazw HCG nie jest skonfigurowana dla tego tenanta",
+         "bhd-01759": "Nie udało się utworzyć żądania HCG",
+         "bhd-01760": "Nie udało się połączyć z usługą HCG",
+         "bhd-01761": "Nie udało się odczytać odpowiedzi HCG",
+         "bhd-01762": "Nieprawidłowa odpowiedź z usługi HCG"
+       },
+       "success": {
+         "bhd-00001": "Pomyślnie zmodyfikowano pola",
+         "bhd-00002": "Pomyślnie usunięto pola",
+         "bhd-00003": "Pomyślnie utworzono nowe pole",
+         "bhd-00101": "Zaktualizowano preferencje",
+         "bhd-00224": "Usunięto folder",
+         "bhd-00225": "Zaktualizowano uprawnienia folderu",
+         "bhd-00329": "Zaktualizowano uprawnienia tablicy wskaźników",
+         "bhd-00330": "Zmiany zostały rozesłane do odbiornika GitOps",
+         "bhd-00413": "Usunięto element biblioteki",
+         "bhd-00511": "Usunięto migawkę. Opróżnienie jej z pamięci podręcznych CDN może potrwać godzinę.",
+         "bhd-00607": "Zalogowano",
+         "bhd-00749": "Zaktualizowano organizację",
+         "bhd-00750": "Zaktualizowano adres",
+         "bhd-00751": "Dodano użytkownika do organizacji",
+         "bhd-00752": "Zaktualizowano użytkownika organizacji",
+         "bhd-00753": "Zaktualizowano limit przydziału organizacji",
+         "bhd-00754": "Usunięto użytkownika",
+         "bhd-00755": "Usunięto organizację",
+         "bhd-00756": "Utworzono organizację",
+         "bhd-00757": "Zaproszenie odwołane",
+         "bhd-00758": "Zaktualizowano konfigurację",
+         "bhd-00759": "Konfiguracja jest ustawiona na domyślną",
+         "bhd-00760": "Usunięto użytkownika z organizacji",
+         "bhd-00810": "Zaktualizowano uprawnienia",
+         "bhd-00811": "Zaktualizowano uprawnienie",
+         "bhd-00812": "Uprawnienie usunięte",
+         "bhd-00933": "Dodano źródło danych",
+         "bhd-00934": "Zaktualizowano źródło danych",
+         "bhd-00935": "Usunięto źródło danych",
+         "bhd-00948": "Utworzono korelację",
+         "bhd-00949": "Usunięto korelację",
+         "bhd-00950": "Zaktualizowano korelację",
+         "bhd-01010": "Usunięto zapytanie",
+         "bhd-01118": "Zaktualizowano ustawienia wtyczki",
+         "bhd-01220": "Dodano adnotację",
+         "bhd-01221": "Zaktualizowano adnotację",
+         "bhd-01222": "Naprawiono adnotację",
+         "bhd-01223": "Dodano adnotację Graphite",
+         "bhd-01224": "Usunięto adnotację",
+         "bhd-01353": "Jeszcze nie wdrożono",
+         "bhd-01354": "Usunięto dane osobowe",
+         "bhd-01355": "OK",
+         "bhd-01356": "Upoważniony dostęp'",
+         "bhd-01357": "Zaktualizowano uprawnienia",
+         "bhd-01358": "Dodano mapowanie ról użytkowników.",
+         "bhd-01359": "Usunięto mapowanie ról użytkowników dla wszystkich ról.",
+         "bhd-01361": "Dodano rolę zespołu.",
+         "bhd-01362": "Usunięto rolę zespołu.",
+         "bhd-01363": "Pomyślnie zaktualizowano ustawienia regionalne",
+         "bhd-01371": "Utworzono pomyślnie rolę",
+         "bhd-01372": "Pomyślnie zaktualizowano rolę ",
+         "bhd-01373": "Pomyślnie usunięto rolę ",
+         "bhd-01374": "Pomyślnie zaktualizowano role użytkowników.",
+         "bhd-01375": "Role zespołów zaktualizowane pomyślnie",
+         "bhd-01553": "Pomyślnie utworzono raport",
+         "bhd-01554": "Pomyślnie zaktualizowano raport",
+         "bhd-01555": "Pomyślnie usunięto raport",
+         "bhd-01556": "Pomyślnie usunięto raporty",
+         "bhd-01557": "Pomyślnie usunięto użytkownika z raportów.",
+         "bhd-01558": "Pomyślnie zapisano konfigurację FTP",
+         "bhd-01559": "Pomyślnie zaktualizowano konfigurację FTP",
+         "bhd-01560": "Skonfigurowano FTP jako domyślne",
+         "bhd-01561": "Pomyślnie usunięto konfigurację FTP",
+         "bhd-01562": "Pomyślnie usunięto/wyłączono harmonogramy raportów.",
+         "bhd-01563": "Pomyślnie włączono raport",
+         "bhd-01564": "Pomyślnie włączono raporty",
+         "bhd-01565": "Pomyślnie wyłączono raport",
+         "bhd-01566": "Pomyślnie wyłączono raporty",
+         "bhd-01567": "Pomyślnie zaktualizowano znakowanie raportów.",
+         "bhd-01568": "Znakowanie raportów zostało ustawione na domyślne.",
+         "bhd-01569": "Zaktualizowano.",
+         "bhd-01570": "Usunięto.",
+         "bhd-01571": "Pomyślnie wykonano",
+         "bhd-01633": "Zmieniono aktywną organizację",
+         "bhd-01634": "Tablica wskaźników oznaczona gwiazdką!",
+         "bhd-01635": "Usunięto gwiazdkę z tablicy wskaźników",
+         "bhd-01636": "Zmieniono hasło użytkownika",
+         "bhd-01637": "Ustawiono flagę pomocy",
+         "bhd-01638": "Zaktualizowano użytkownika",
+         "bhd-01639": "Wysłano e-mail do weryfikacji",
+         "bhd-01646": "Token uwierzytelniania użytkownika odwołany",
+         "bhd-01731": "Zaktualizowano hasło użytkownika",
+         "bhd-01732": "Zaktualizowano uprawnienia użytkownika",
+         "bhd-01733": "Usunięto użytkownika",
+         "bhd-01734": "Wyłączono użytkownika",
+         "bhd-01735": "Włączono użytkownika",
+         "bhd-01736": "Wylogowano użytkownika",
+         "bhd-01737": "Utworzono użytkownika",
+         "bhd-01748": "Zaktualizowano limit przydziału organizacji",
+         "bhd-01753": "Ponownie załadowano konfigurację tablicy wskaźników",
+         "bhd-01754": "Ponownie załadowano konfigurację wtyczek",
+         "bhd-01755": "Ponownie załadowano konfigurację źródeł danych",
+         "bhd-01756": "Ponownie załadowano konfigurację alertów"
+       }
+     },
+     "notifications": {
+       "dashboard": {
+         "imported": "Zaimportowano tablicę wskaźników",
+         "panel-not-found": "Nie znaleziono panelu",
+         "restored": "Przywrócono tablicę wskaźników",
+         "restored-failed": "Przywracanie tablicy wskaźników nie powiodło się",
+         "restored-version": "Przywrócono z wersji {{version}}",
+         "restored-version-failed": "Nie udało się przywrócić z wersji {{restoredversion}}"
+       },
+       "error": {
+         "error-text": "Błąd",
+         "failed-validation": "Walidacja nie powiodła się",
+         "generate-link": "Błąd podczas generowania skróconego linku",
+         "http-error": "Błąd HTTP {{msg}}",
+         "unknown-error": "Nieznany błąd"
+       },
+       "folder": {
+         "created": "Utworzono folder",
+         "failed-creation": "Nie udało się utworzyć folderu"
+       },
+       "settings": {
+         "saved": "Zapisano ustawienia",
+         "saved-failed": "Nie udało się zapisać ustawień"
+       },
+       "success": {
+         "copied-link": "Skopiowano skrócony link do schowka",
+         "success-text": "Powodzenie"
+       }
+     },
+     "org-custom-config": {
+       "community": "Społeczność",
+       "documentation": "Dokumentacja",
+       "errors": {
+         "query-type-mandatory": "Należy włączyć co najmniej jeden typ zapytania"
+       },
+       "support": "Pomoc",
+       "video": "Film"
+     },
+     "panel": {
+       "bmc-video": {
+         "enter-video": "Wstaw osadzony film wideo",
+         "invalid-url": "Nieprawidłowy adres URL",
+         "url": "URL wideo"
+       },
+       "bmc-welcome": {
+         "communities": "Społeczności",
+         "community-description": "Opis społeczności",
+         "default-community-description": "Połącz. Udostępnij. Odkryj. Dołącz do dyskusji z innymi użytkownikami i ekspertami na temat produktów i rozwiązań BMC.",
+         "default-documentation-description": "Przejrzyj dokumentację produktu, aby poznać wszystkie funkcje raportowania i dowiedzieć się, jak z nich korzystać.",
+         "default-video-description": "Obejrzyj filmy instruktażowe, przeglądy i demonstracje produktów i rozwiązań BMC na kanale BMC w serwisie YouTube.",
+         "documentation": "Dokumentacja",
+         "documentation-description": "Opis dokumentacji",
+         "logo-title": "Logo BMC Helix",
+         "video-description": "Opis wideo",
+         "videos": "Filmy wideo"
+       }
+     },
+     "playlist": {
+       "empty": "Lista odtwarzania jest pusta. Dodaj tablice wskaźników poniżej.",
+       "items-changed_one": "Zmieniono elementy listy odtwarzania. Na liście odtwarzania znajduje się obecnie następująca liczba tablic wskaźników: {{count}}.",
+       "items-changed_other": "Zmieniono elementy listy odtwarzania. Na liście odtwarzania znajduje się obecnie następująca liczba tablic wskaźników: {{count}}."
+     },
+     "query": {
+       "query-name-label": "Nazwa zapytania:"
+     },
+     "rbac": {
+       "common": {
+         "all": "Wszystko",
+         "assigned": "Przypisane",
+         "menu": "Menu",
+         "name": "Nazwa"
+       },
+       "permissions": {
+         "admin": {
+           "datasource-manage": "Zarządzaj źródłami danych",
+           "datasource-manage-desc": "może zarządzać źródłami danych",
+           "reports-manage": "Zarządzaj harmonogramem raportów",
+           "reports-manage-desc": "może zarządzać wszystkimi raportami",
+           "title": "Administracja"
+         },
+         "calc-fields": {
+           "create-desc": "może tworzyć lub aktualizować pola obliczeniowe",
+           "view-desc": "może przeglądać pola obliczeniowe"
+         },
+         "common": {
+           "create": "Utwórz",
+           "view": "Wyświetl"
+         },
+         "dashboards": {
+           "create-desc": "może tworzyć tablice wskaźników",
+           "download-desc": "może pobrać tablicę wskaźników w formacie pdf/xlsx/csv",
+           "view-desc": "może przeglądać dozwolone tablice wskaźników"
+         },
+         "datasource": {
+           "explore": "Eksploruj",
+           "explore-desc": "może korzystać z trybu eksploracji dla źródeł danych"
+         },
+         "datasources": {
+           "title": "Źródła danych"
+         },
+         "drawer-title": "{{name}} - uprawnienia",
+         "folders": {
+           "create-desc": "może tworzyć foldery",
+           "title": "Foldery",
+           "view-desc": "może wyświetlać dozwolone foldery"
+         },
+         "insightfinder": {
+           "access": "Dostęp",
+           "access-desc-tooltip": "może uzyskać dostęp do Insight Finder",
+           "dashboards-create": "Utwórz tablice wskaźników",
+           "dashboards-create-desc": "może tworzyć tablice wskaźników za pomocą Insight Finder",
+           "deep-analysis-access": "Dokładna analiza",
+           "deep-analysis-access-desc": "Sterowany przez sztuczną inteligencję mechanizm wykrywania przyczyny root i wartości odstających. Dokładna analiza musi być skonfigurowana w wersji HelixGPT Agent Studio 26.3.00 lub nowszej",
+           "title": "Insight Finder"
+         },
+         "reports": {
+           "access": "Dostęp",
+           "access-desc": "może przeglądać i tworzyć raporty",
+           "history-read": "Wyświetl historię",
+           "history-read-desc": "może wyświetlać sekcję historii raportów",
+           "recipients-dash-access": "Odbiorcy dynamiczni",
+           "recipients-dash-access-desc": "Możliwość dynamicznego dodawania odbiorców z tablicy wskaźników w harmonogramie",
+           "settings-read": "Wyświetl ustawienia",
+           "settings-read-desc": "może wyświetlać ustawienia raportów",
+           "title": "Raporty"
+         },
+         "servicemanagement-querytypes": {
+           "sql": "SQL",
+           "sql-desc": "może edytować zapytanie sql",
+           "title": "Typy zapytań zarządzania usługami"
+         },
+         "subtitle": "Lista uprawnień"
+       },
+       "roles": {
+         "actions": "Działania",
+         "create": "Utwórz",
+         "custom": "Niestandardowe",
+         "delete": "Usuń rolę",
+         "delete-confirmation": "Czy na pewno usunąć tę rolę?",
+         "delete-role": "Usuń rolę",
+         "description": "Opis",
+         "edit": "Edytuj rolę",
+         "manage-permissions": "Zarządzaj uprawnieniami",
+         "manage-teams": "Zarządzaj zespołami",
+         "manage-users": "Zarządzaj użytkownikami",
+         "name-required": "Nazwa roli jest wymagana",
+         "new": "Nowa rola",
+         "search": "Wyszukaj role",
+         "system": "System",
+         "update": "Aktualizuj"
+       },
+       "teams": {
+         "assigned-count_one": "Liczba przypisanych zespołów: {{count}}",
+         "assigned-count_other": "Liczba przypisanych zespołów: {{count}}",
+         "drawer-title": "{{name}} - zespoły",
+         "none-assigned": "Nie przypisano żadnych zespołów",
+         "none-found": "Nie znaleziono zespołów",
+         "search": "Wyszukaj nazwę zespołu"
+       },
+       "users": {
+         "assigned-count_one": "Liczba przypisanych użytkowników: {{count}}",
+         "assigned-count_other": "Liczba przypisanych użytkowników: {{count}}",
+         "drawer-title": "{{roleName}} - użytkownicy",
+         "email": "Adres e-mail",
+         "login": "Zaloguj",
+         "none-assigned": "Nie przypisano żadnych użytkowników",
+         "none-found": "Nie znaleziono żadnych użytkowników"
+       }
+     },
+     "rms": {
+       "description": "Reporting Metadata Studio to aplikacja systemu Windows bazująca na Pentaho Metadata Editor. Służy do tworzenia niestandardowych widoków lub modyfikowania kopii widoku gotowego do użycia (out-of-the-box). Więcej informacji można znaleźć w dokumentacji online.",
+       "download": {
+         "error": "Nie można pobrać"
+       },
+       "headers": {
+         "env-details": "Szczegóły środowiska"
+       }
+     },
+     "search": {
+       "comfirm-export": "Czy chcesz wyeksportować wybrane tablice wskaźników ({{dashCount}})?",
+       "export": "Eksportuj",
+       "export-status": "Eksportuj status"
+     },
+     "share-modal": {
+       "loading": "Ładowanie",
+       "theme-picker": {
+         "current-theme": "Bieżący motyw",
+         "dark-theme": "Motyw ciemny",
+         "light-theme": "Motyw jasny"
+       }
+     },
+     "shared-preferences": {
+       "datetime-format": {
+         "description": "Spowoduje to zmianę domyślnego formatu godziny używanego w tablicach wskaźników, panelach i raportach.",
+         "label": "Format daty/godziny"
+       },
+       "fields": {
+         "apply-admins": "Zastosuj do administratorów",
+         "enabled-query-types": "Zarządzaj typami zapytań zarządzania usługami",
+         "query-type-label": "Typ zapytania",
+         "query-type-placeholder": "Wybierz typ zapytania"
+       },
+       "query-type": {
+         "form": "Formularz",
+         "sql": "SQL",
+         "vqb": "Wizualny kreator zapytań"
+       }
+     },
+     "tag-filter": {
+       "remove-tag": "Usuń znacznik {{label}}"
+     },
+     "toggle-feature": {
+       "manage-features": "Zarządzaj funkcjami tablicy wskaźników"
+     },
+     "transformers": {
+       "adv-functions": {
+         "against-field": "W odniesieniu do nazwy pola",
+         "alias": "Alias",
+         "field-name": "Nazwa pola",
+         "function-name": "Nazwa funkcji",
+         "percentage": "Wartość procentowa",
+         "percentile-placeholder": "Wartość percentyla",
+         "percentile-value": "Wartość percentyla",
+         "previous-row": "Poprzedni wiersz",
+         "previous-row-placeholder": "Poprzedni wiersz",
+         "rank-placeholder": "Ranga",
+         "rank-value": "Wartość rangi"
+       },
+       "dynamic-fields": {
+         "add-aria": "Dodaj pole do sanityzacji",
+         "add-button": "Dodaj pole",
+         "field-label": "Pole",
+         "format-as": "Formatuj pole dynamiczne jako",
+         "remove-aria": "Usuń transformator typu pola formatowania pól dynamicznych"
+       },
+       "sanitize": {
+         "add-aria": "Dodaj pole do sanityzacji",
+         "add-button": "Dodaj pole",
+         "field-label": "Pole",
+         "remove-aria": "Usuń transformator sanityzacji typu pola"
+       }
+     },
+     "variables": {
+       "more-values": "... Więcej wartości",
+       "optimize": {
+         "close-search-panel": "Zamknij",
+         "deselect-all": "Cofnij wybór wszystkich",
+         "loading": "Ładowanie...",
+         "no-domain-selected": "Nie wybrano domeny",
+         "no-items": "Brak elementów",
+         "remove-item": "Usuń element",
+         "search": "Wyszukaj",
+         "selected": "wybrano",
+         "selected-domains": "Wybrane domeny",
+         "type-to-search": "Wpisz, aby wyszukać"
+       },
+       "query-editor": {
+         "continue": "Kontynuuj",
+         "enable-editor": "Włącz edytor zapytań",
+         "enable-variable-caching": "Włącz buforowanie zmiennych",
+         "modal-close-confirmation": "Bieżące zapytanie zostanie utracone. Czy na pewno chcesz kontynuować?",
+         "modal-close-title": "Niezapisane zmiany",
+         "query-text": "Zapytanie",
+         "service-management-note": "Uwaga: Dotyczy tylko typu zapytania „Zarządzenie usługami”.",
+         "variable-caching": {
+           "dependant-error": "Buforowanie zmiennych zależnych od zakresu czasowego niedozwolone",
+           "modal-close-title": "Buforowanie zmiennych",
+           "modal-disable-confirmation": "Czy chcesz wyłączyć buforowanie dla zmiennej?",
+           "modal-enable-additional-text-1": "Edycja zapytania spowoduje wyczyszczenie pamięci podręcznej zmiennych dla wszystkich użytkowników",
+           "modal-enable-confirmation": "Czy chcesz włączyć buforowanie dla zmiennej?",
+           "service-management-error": "Buforowanie jest dostępne wyłącznie dla zapytań „Zarządzanie usługami”",
+           "time-dependant-warning": "Buforowanie jest niedozwolone dla zmiennych zależnych od czasu."
+         }
+       },
+       "refresh-aria": "Odśwież {{name}}",
+       "refresh-tooltip": "Odśwież tę zmienną",
+       "refresh-variable-aria": "Odśwież {{name}}",
+       "variable-caching": {
+         "cache-delete-success": "Pomyślnie usunięto pamięć podręczną dla zmiennej {{variableName}}"
+       }
+     },
+     "welcome": {
+       "dashboards": "Tablice wskaźników"
+     }
+  },
+  "bmcgrafana": {
+    "command-palette": {
+      "search-box": {
+        "aria-label": "Wyszukaj lub przejdź do…"
+      }
+    },
+    "dashboard": {
+      "panel-copied": "Skopiowano panel. Kliknij ikonę **Dodaj panel**, aby wkleić.",
+     "picker": {
+       "no-options-message": "Nie znaleziono pulpitów",
+       "placeholder": "Wybierz tablicę wskaźników"
+     },
+      "remove-panel": {
+        "confirm-button-text": "Usuń"
+      }
+    },
+    "dashboard-import": {
+      "datasource-validation": "Źródło danych jest wymagane",
+      "name-validation-text": "Nazwa jest wymagana",
+      "needs-value": "wymaga wartości",
+      "select-view": "Wybierz widok",
+      "view-selection-tooltip": "Nie zmieniaj wstępnie wybranego widoku",
+      "view-selection-validation": "Wybór widoku jest wymagany"
+    },
+    "dashboard-scene": {
+      "dashboard-preview-banner": {
+        "not-yet-saved": "Wartość nie jest zapisywana w bazie danych BMC Helix Dashboard"
+      },
+      "help-wizard": {
+        "troubleshooting-request-help": "Aby poprosić o pomoc w rozwiązywaniu problemów, prześlij migawkę tego panelu do działu wsparcia technicznego BMC Helix Dashboards. Migawka zawiera dane odpowiedzi na zapytanie i ustawienia panelu."
+      },
+      "save-provisioned-dashboard-form": {
+        "cannot-be-saved": "Tej tablicy wskaźników nie można zapisać w interfejsie BMC Helix Dashboards, ponieważ została udostępniona z innego źródła. Skopiuj JSON lub zapisz go w pliku poniżej, a następnie możesz zaktualizować swoją tablicę wskaźników w źródle udostępniania."
+      }
+    },
+    "dashboards": {
+      "edit-panel": {
+        "actual": "Rzeczywiste",
+        "actual-description": "Ustaw taki sam rozmiar jak na tablicy wskaźników",
+        "axis": {
+          "grid-lines": {
+            "auto-text": "Auto"
+          }
+        },
+        "discard": "Odrzuć",
+        "fill": "Wypełnij",
+        "fill-description": "Wykorzystaj całą dostępną przestrzeń",
+        "panel-options": {
+          "link-editor": {
+            "url-placeholder": "http://your-grafana.com/d/000000010/annotations"
+          }
+        },
+        "query": {
+          "empty-query-edit-warning": "Pusta nazwa zapytania jest niedozwolona",
+          "query-already-exist-warning": "Nazwa zapytania już istnieje",
+          "query-options": {
+            "min-interval-placeholder": "Bez ograniczeń"
+          }
+        }
+      },
+      "save-dashboard": {
+        "error": "Błąd podczas zapisywania tablicy wskaźników",
+        "errors": {
+          "dash-folder-same-name": "Nazwa tablicy wskaźników nie może być taka sama jak nazwa folderu",
+          "dash-name-invalid": "Nazwa tablicy wskaźników jest nieprawidłowa"
+        }
+      },
+      "settings": {
+        "annotation": {
+          "edit-form": {
+            "new-annotation": "Nowa adnotacja"
+          }
+        },
+        "links": {
+          "description-edit-link": "Edytuj konkretny link tablicy wskaźników",
+          "description-new-link": "Utwórz nowe łącze na tablicy wskaźników",
+          "title-edit-link": "Edytuj link",
+          "title-new-link": "Nowy link"
+        },
+        "variables": {
+          "editor": {
+            "exlude-variable": "Wyklucz zmienną",
+            "exlude-variable-desc": "Wybierz, aby wykluczyć zmienną z zapytania",
+            "select-variable-type": {
+              "ad-hoc-filters": {
+                "name": "Filtry ad hoc"
+              },
+              "constant": {
+                "description": "Zdefiniuj ukrytą stałą zmienną, przydatną do prefiksów metrycznych w tablicach wskaźników, które chcesz udostępnić.",
+                "name": "Stała"
+              },
+              "custom": {
+                "name": "Niestandardowe"
+              },
+              "data-source": {
+                "description": "Umożliwia dynamiczne przełączanie źródeł danych dla wielu paneli.",
+                "name": "Źródło danych"
+              },
+              "interval": {
+                "name": "Interwał"
+              },
+              "query": {
+                "name": "Zapytanie"
+              },
+              "textbox": {
+                "description": "Zdefiniuj pole tekstowe, w którym użytkownicy mogą wprowadzić dowolny ciąg znaków",
+                "name": "Pole tekstowe"
+              }
+            },
+            "types": {
+              "ad-hoc": {
+                "data-source-placeholder": "Wybierz źródło danych"
+              },
+              "date-range": {
+                "title": "Wybierz zakres czasowy"
+              },
+              "query": {
+                "refresh-options": {
+                  "on-dash-load": "Przy wczytaniu tablicy wskaźników",
+                  "on-time-change": "Przy zmianie zakresu czasowego"
+                }
+              }
+            }
+          }
+        },
+        "versions": {
+          "loading-msgs": {
+            "changes": "Pobieranie zmian…",
+            "history-list": "Pobieranie listy historii…",
+            "more-entries": "Pobieranie więcej wpisów…"
+          }
+        }
+      }
+    },
+    "datesource": {
+      "configuration": {
+        "sort-asc": "Sortuj A-Z",
+        "sort-desc": "Sortuj Z-A"
+      }
+    },
+    "explore": {
+      "no-data": "Brak danych",
+      "query-added-announcement": "Dodano nowy wiersz zapytania. {{queryCount}}",
+      "rich-history-settings-tab": {
+        "alert-info": "BMC Helix Dashboards przechowuje wpisy do {{optionLabel}}. Wpisy zaznaczone gwiazdką nie zostaną usunięte."
+      },
+      "to-dashboard": {
+        "panel-to-dashboard": "Dodaj panel do tablicy wskaźników",
+        "to-existing-dashboard-title": "Dodaj panel do istniejącej tablicy wskaźników",
+        "to-new-dashboard-title": "Dodaj panel do nowej tablicy wskaźników"
+      }
+    },
+    "file-drop-zone": {
+      "accepted-file-types-prefix": "Akceptowane typy plików",
+      "file-invalid-type-prefix": "Typ pliku musi być jednym z",
+      "max-file-size": "Maks. rozmiar pliku"
+    },
+    "grafana-data": {
+      "timezone": {
+        "browser-time": "Czas przeglądarki",
+        "coord-universal-time": "Uniwersalny czas koordynowany",
+        "local-browser-time": "Lokalny czas przeglądarki"
+      },
+      "valueFormats": {
+        "categories": {
+          "misc": {
+            "formats": {
+              "european": "Format europejski (przestarzały)"
+            }
+          }
+        }
+      }
+    },
+    "grafana-ui": {
+      "date-time-pickers": {
+        "time-range-input-text": "Wybierz zakres czasowy"
+      },
+      "fieldValidationMessage": {
+        "warning": "Ostrzeżenie"
+      },
+      "file-dropzone": {
+        "bulk-limit-error": "Wybierz maks. {{maxFiles}} tablic wskaźników"
+      },
+      "icon": {
+        "information": "informacje"
+      },
+      "inlineLabel": {
+        "info": "Informacje"
+      },
+      "table": {
+        "filter-placeholder": "Filtruj wartości"
+      },
+      "week-start-picker": {
+        "weekStarts-label-browser": "Przeglądarka"
+      }
+    },
+    "import": {
+      "view-label": "Wyświetl: {{index}}"
+    },
+    "library-panels": {
+      "delete": {
+        "cannot-delete-text": "Nie można usunąć tego panelu biblioteki, ponieważ jest on połączony z {{message}} tablicami wskaźników. Usuń panel biblioteki z tablic wskaźników wymienionych poniżej i spróbuj ponownie."
+      },
+      "modal": {
+        "select-aria-label": "Zacznij wpisywać, aby wyszukać tablicę wskaźników"
+      }
+    },
+    "manage-dashboards": {
+      "specify-constant": "Określ stałą tekstową"
+    },
+    "nav": {
+      "config-general": {
+        "subtitle": "Zarządzaj preferencjami i ustawieniami domyślnymi w BMC Helix Dashboards"
+      }
+    },
+    "notifications": {
+      "empty-state": {
+        "description": "Otrzymane powiadomienia pojawią się tutaj",
+        "title": "Jesteś na bieżąco!"
+      },
+      "live": {
+        "dismissed": {
+          "multiple_one": "Liczba odrzuconych powiadomień: {{count}}",
+          "multiple_other": "Liczba odrzuconych powiadomień: {{count}}",
+          "single": "Odrzucono 1 powiadomienie"
+        }
+      },
+      "stored-notifications": {
+        "select-all": "Wybierz wszystkie powiadomienia"
+      }
+    },
+    "options-ui": {
+      "registry": {
+        "standard-field-condigs": {
+          "category-data-links": "Linki danych"
+        }
+      }
+    },
+    "page-loader": {
+      "text": "Ładowanie"
+    },
+    "panel-message": {
+      "refresh-dashboard": "Odśwież tablicę wskaźników, aby pobrać dane"
+    },
+    "playlist": {
+      "create-playlist": {
+        "error": "Nie udało się utworzyć listy odtwarzania",
+        "success": "Lista odtwarzania utworzona"
+      },
+      "delete-playlist": {
+        "error": "Nie udało się usunąć listy odtwarzania",
+        "success": "Lista odtwarzania usunięta"
+      },
+      "update-playlist": {
+        "error": "Nie udało się zaktualizować listy odtwarzania",
+        "success": "Lista odtwarzania zaktualizowana"
+      }
+    },
+    "plugins": {
+      "browse": {
+        "subtitle": "{{value}} Rozbuduj Helix Dashboards o wtyczki paneli i aplikacje. Aby znaleźć więcej źródeł danych, przejdź do &lt;3&gt;Połączeń&lt;/3&gt;."
+      }
+    },
+    "search-inputs": {
+      "name-type": "Wyszukaj według nazwy lub typu"
+    },
+    "team-permissions": {
+      "add-member": "Dodaj członka",
+      "no-members-message": "W tym zespole nie ma żadnych członków lub nie masz uprawnień do wyświetlenia listy bieżących członków."
+    },
+    "users-and-access": {
+      "headers": {
+        "email-text": "Adres e-mail",
+        "last-active-text": "Ostatnio aktywny",
+        "login-text": "Zaloguj",
+        "members-text": "Członkowie",
+        "name-text": "Nazwa",
+        "provisioned-text": "Po aprowizacji"
+      },
+      "search-user-placeholder-text": "Wyszukaj użytkownika według loginu, adresu e-mail lub imienia i nazwiska"
+    }
+  },
   "bookmarks-page": {
     "empty": {
       "message": "Wygląda na to, że nie utworzono jeszcze żadnych zakładek",

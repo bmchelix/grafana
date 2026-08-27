@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"os"
 
 	"go.opentelemetry.io/otel/attribute"
 
@@ -21,7 +22,7 @@ const (
 
 	securitySection            = "security.encryption"
 	encryptionAlgorithmKey     = "algorithm"
-	defaultEncryptionAlgorithm = encryption.AesCfb
+	defaultEncryptionAlgorithm = encryption.AesGcm
 )
 
 // Service must not be used for encryption.
@@ -43,6 +44,12 @@ func ProvideEncryptionService(
 	usageMetrics usagestats.Service,
 	cfg *setting.Cfg,
 ) (*Service, error) {
+	// BMC code changes start - FIPS
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		encryption.SaltLength = encryption.FIPSSaltLength
+	}
+	// BMC code changes end
+
 	s := &Service{
 		tracer: tracer,
 		log:    log.New("encryption"),
@@ -138,12 +145,20 @@ func (s *Service) deriveEncryptionAlgorithm(payload []byte) (string, []byte, err
 	}
 
 	if payload[0] != encryptionAlgorithmDelimiter {
+		if os.Getenv("FIPS_ENABLED") == "true" {
+			s.log.Error("FIPS mode is enabled. Not having fallback for encryption.")
+			return "", nil, fmt.Errorf("unable to derive encryption algorithm and fallback is not allowed in FIPS mode")
+		}
 		return encryption.AesCfb, payload, nil // backwards compatibility
 	}
 
 	payload = payload[1:]
 	algorithmDelimiterIdx := bytes.Index(payload, []byte{encryptionAlgorithmDelimiter})
 	if algorithmDelimiterIdx == -1 {
+		if os.Getenv("FIPS_ENABLED") == "true" {
+			s.log.Error("FIPS mode is enabled. Not having fallback for encryption.")
+			return "", nil, fmt.Errorf("unable to derive encryption algorithm and fallback is not allowed in FIPS mode")
+		}
 		return encryption.AesCfb, payload, nil // backwards compatibility
 	}
 

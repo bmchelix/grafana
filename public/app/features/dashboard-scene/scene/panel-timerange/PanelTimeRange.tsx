@@ -15,6 +15,7 @@ import {
   VizPanel,
 } from '@grafana/scenes';
 import { Icon, PanelChrome, Stack, TimePickerTooltip, Tooltip, useStyles2 } from '@grafana/ui';
+import { contextSrv } from 'app/core/core';
 import { TimeOverrideResult } from 'app/features/dashboard/utils/panel';
 
 import { getDashboardSceneFor } from '../../utils/utils';
@@ -127,8 +128,8 @@ export class PanelTimeRange extends SceneTimeRangeTransformerBase<PanelTimeRange
         return newTimeData;
       }
 
-      // Only evaluate if the timeFrom if parent time is relative
-      if (rangeUtil.isRelativeTimeRange(parentTimeRange.raw)) {
+      //bmc code change: Apply timeFrom for relative time range or render mode
+      if (rangeUtil.isRelativeTimeRange(parentTimeRange.raw) || contextSrv.user.authenticatedBy === 'render') {
         const timeZone = this.getTimeZone();
         newTimeData.timeRange = {
           from: dateMath.parse(timeFromInfo.from, undefined, timeZone)!,
