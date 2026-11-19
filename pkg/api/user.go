@@ -11,6 +11,7 @@ import (
 	claims "github.com/grafana/authlib/types"
 	"github.com/grafana/grafana/pkg/api/dtos"
 	"github.com/grafana/grafana/pkg/api/response"
+	"github.com/grafana/grafana/pkg/bhdcodes"
 	contextmodel "github.com/grafana/grafana/pkg/services/contexthandler/model"
 	"github.com/grafana/grafana/pkg/services/login"
 	"github.com/grafana/grafana/pkg/services/org"
@@ -145,7 +146,8 @@ func (hs *HTTPServer) UpdateSignedInUser(c *contextmodel.ReqContext) response.Re
 	cmd := user.UpdateUserCommand{}
 	var err error
 	if err = web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		//BMC code change
+		return response.Error(http.StatusBadRequest, "bad request data while updating signed in user", err)
 	}
 
 	cmd.Email = strings.TrimSpace(cmd.Email)
@@ -186,7 +188,7 @@ func (hs *HTTPServer) UpdateUser(c *contextmodel.ReqContext) response.Response {
 	cmd := user.UpdateUserCommand{}
 	var err error
 	if err = web.Bind(c.Req, &cmd); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		return response.Error(http.StatusBadRequest, "bad request data while updating the user", err)
 	}
 
 	cmd.Email = strings.TrimSpace(cmd.Email)
@@ -224,9 +226,11 @@ func (hs *HTTPServer) UpdateUserActiveOrg(c *contextmodel.ReqContext) response.R
 
 func (hs *HTTPServer) handleUpdateUser(ctx context.Context, cmd user.UpdateUserCommand) response.Response {
 	// external user -> user data cannot be updated
+	// Bmc code - start , We want to allow user update for External users as well
 	if response := hs.errOnExternalUser(ctx, cmd.UserID); response != nil {
 		return response
 	}
+	// Bmc code end
 
 	if len(cmd.Login) == 0 {
 		cmd.Login = cmd.Email
@@ -548,7 +552,7 @@ func (hs *HTTPServer) ChangeActiveOrgAndRedirectToHome(c *contextmodel.ReqContex
 func (hs *HTTPServer) ChangeUserPassword(c *contextmodel.ReqContext) response.Response {
 	form := user.ChangeUserPasswordCommand{}
 	if err := web.Bind(c.Req, &form); err != nil {
-		return response.Error(http.StatusBadRequest, "bad request data", err)
+		return response.Error(http.StatusBadRequest, "bad request data while changing the password for the user", err)
 	}
 
 	userID, errResponse := hs.getUserID(c)
@@ -604,7 +608,8 @@ func (hs *HTTPServer) SetHelpFlag(c *contextmodel.ReqContext) response.Response 
 		return response.Error(http.StatusInternalServerError, "Failed to update help flag", err)
 	}
 
-	return response.JSON(http.StatusOK, &util.DynMap{"message": "Help flag set", "helpFlags1": *bitmask})
+	//BMC code change
+	return response.JSON(http.StatusOK, &util.DynMap{"message": "Help flag set", "helpFlags1": *bitmask, "bhdCode": bhdcodes.UsersHelpFlagSet})
 }
 
 // swagger:route GET /user/helpflags/clear signed_in_user clearHelpFlags
@@ -626,8 +631,8 @@ func (hs *HTTPServer) ClearHelpFlags(c *contextmodel.ReqContext) response.Respon
 	if err := hs.userService.Update(c.Req.Context(), &user.UpdateUserCommand{UserID: userID, HelpFlags1: &flags}); err != nil {
 		return response.Error(http.StatusInternalServerError, "Failed to update help flag", err)
 	}
-
-	return response.JSON(http.StatusOK, &util.DynMap{"message": "Help flag set", "helpFlags1": flags})
+	//BMC code change
+	return response.JSON(http.StatusOK, &util.DynMap{"message": "Help flag set", "helpFlags1": flags, "bhdCode": bhdcodes.UsersHelpFlagSet})
 }
 
 func (hs *HTTPServer) getUserID(c *contextmodel.ReqContext) (int64, *response.NormalResponse) {

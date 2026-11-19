@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/grafana/grafana/pkg/api/bmc/localization"
 	"github.com/grafana/grafana/pkg/api/routing"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
 	"github.com/grafana/grafana/pkg/components/simplejson"
@@ -18,6 +19,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/plugindashboards"
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginstore"
 	"github.com/grafana/grafana/pkg/services/quota"
+	"github.com/grafana/grafana/pkg/services/sqlstore"
 )
 
 func ProvideService(routeRegister routing.RouteRegister,
@@ -25,6 +27,8 @@ func ProvideService(routeRegister routing.RouteRegister,
 	pluginDashboardService plugindashboards.Service, pluginStore pluginstore.Store,
 	libraryPanelService librarypanels.Service, dashboardService dashboards.DashboardService,
 	ac accesscontrol.AccessControl, folderService folder.Service, features featuremgmt.FeatureToggles,
+	// BMC Change: Next Arg
+	sqlStore *sqlstore.SQLStore,
 ) *ImportDashboardService {
 	s := &ImportDashboardService{
 		pluginDashboardService: pluginDashboardService,
@@ -32,6 +36,7 @@ func ProvideService(routeRegister routing.RouteRegister,
 		libraryPanelService:    libraryPanelService,
 		folderService:          folderService,
 		features:               features,
+		sqlStore:               sqlStore,
 	}
 
 	dashboardImportAPI := api.New(s, quotaService, pluginStore, ac, features)
@@ -46,6 +51,10 @@ type ImportDashboardService struct {
 	libraryPanelService    librarypanels.Service
 	folderService          folder.Service
 	features               featuremgmt.FeatureToggles
+
+	// BMC Change: Start
+	sqlStore *sqlstore.SQLStore
+	// BMC Change: End
 }
 
 func (s *ImportDashboardService) InterpolateDashboard(ctx context.Context, req *dashboardimport.ImportDashboardRequest) (*simplejson.Json, error) {
@@ -153,6 +162,13 @@ func (s *ImportDashboardService) ImportDashboard(ctx context.Context, req *dashb
 	if err != nil {
 		return nil, err
 	}
+	// BMC Change: Starts
+	localesJson := GetLocalesJson(generatedDash)
+	if ctx.Value("bhd-localization") != nil && localesJson != nil {
+		query := localization.Query{OrgID: dto.OrgID, ResourceUID: savedDashboard.UID}
+		localization.UpdateLocalesJSON(ctx, s.sqlStore.WithTransactionalDbSession, query, *localesJson)
+	}
+	// BMC Change: Ends
 	metrics.MFolderIDsServiceCount.WithLabelValues(metrics.DashboardImport).Inc()
 
 	revision := savedDashboard.Data.Get("revision").MustInt64(0)
@@ -172,4 +188,33 @@ func (s *ImportDashboardService) ImportDashboard(ctx context.Context, req *dashb
 		DashboardId:      savedDashboard.ID,
 		Slug:             savedDashboard.Slug,
 	}, nil
+}
+
+// BMC Change: Below function
+func GetLocalesJson(dash *simplejson.Json) *localization.LocalesJSON {
+	localesJson := localization.LocalesJSON{Locales: make(map[localization.Locale]localization.ResourceLocales)}
+	locales := dash.Get("locales")
+	if locales == nil {
+		return nil
+	}
+	localeMap, err := locales.Map()
+	if err != nil {
+		return nil
+	}
+	for key, value := range localeMap {
+		localeKey := localization.Locale(key)
+		if !localization.IsSupportedLocale(localeKey) {
+			continue
+		}
+		if data, ok := value.(map[string]interface{}); ok {
+			// Extract the name and description fields
+			if nameValue, ok := data["name"].(string); ok {
+				localesJson.Locales[localeKey] = localization.ResourceLocales{
+					Name: nameValue,
+				}
+			}
+		}
+	}
+
+	return &localesJson
 }

@@ -1,14 +1,15 @@
 import { css, cx } from '@emotion/css';
 import { autoUpdate, offset, useFloating } from '@floating-ui/react';
 import Prism, { Grammar, LanguageMap } from 'prismjs';
-import { memo, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { usePrevious } from 'react-use';
 import { Value } from 'slate';
 import Plain from 'slate-plain-serializer';
 import { Editor } from 'slate-react';
 
 import { DataLinkBuiltInVars, GrafanaTheme2, VariableOrigin, VariableSuggestion } from '@grafana/data';
+import { t } from '@grafana/i18n';
 
 import { SlatePrism } from '../../slate-plugins/slate-prism';
 import { useStyles2 } from '../../themes/ThemeContext';
@@ -78,7 +79,12 @@ export const DataLinkInput = memo(
     value,
     onChange,
     suggestions,
-    placeholder = 'http://your-grafana.com/d/000000010/annotations',
+    // BMC Change: To enable localization for below text
+    placeholder = t(
+      'bmcgrafana.dashboards.edit-panel.panel-options.link-editor.url-placeholder',
+      'http://your-grafana.com/d/000000010/annotations'
+    ),
+    // BMC Change ends
   }: DataLinkInputProps) => {
     const editorRef = useRef<Editor>(null);
     const styles = useStyles2(getStyles);

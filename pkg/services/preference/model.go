@@ -33,6 +33,8 @@ type Preference struct {
 	Created          time.Time           `db:"created"`
 	Updated          time.Time           `db:"updated"`
 	JSONData         *PreferenceJSONData `xorm:"json_data" db:"json_data"`
+	// BMC code -next line: for localization, auto set locale header of ITSM
+	IsLanguageSet bool `xorm:"-"`
 }
 
 func (p Preference) Cookies(typ string) bool {
@@ -72,6 +74,10 @@ type SavePreferenceCommand struct {
 	QueryHistory      *QueryHistoryPreference `json:"queryHistory,omitempty"`
 	CookiePreferences []CookieType            `json:"cookiePreferences,omitempty"`
 	Navbar            *NavbarPreference       `json:"navbar,omitempty"`
+
+	// BMC code
+	TimeFormat        string                       `json:"timeFormat,omitempty"`
+	EnabledQueryTypes *EnabledQueryTypesPreference `json:"enabledQueryTypes"`
 }
 
 // One (and only one) of the values must be non-zero
@@ -96,6 +102,10 @@ type PatchPreferenceCommand struct {
 	QueryHistory      *QueryHistoryPreference `json:"queryHistory,omitempty"`
 	CookiePreferences []CookieType            `json:"cookiePreferences,omitempty"`
 	Navbar            *NavbarPreference       `json:"navbar,omitempty"`
+
+	// BMC code
+	TimeFormat        *string                      `json:"timeFormat,omitempty"`
+	EnabledQueryTypes *EnabledQueryTypesPreference `json:"enabledQueryTypes"`
 }
 
 type PreferenceJSONData struct {
@@ -104,11 +114,23 @@ type PreferenceJSONData struct {
 	QueryHistory      QueryHistoryPreference `json:"queryHistory"`
 	CookiePreferences map[string]struct{}    `json:"cookiePreferences"`
 	Navbar            NavbarPreference       `json:"navbar"`
+
+	// BMC code
+	TimeFormat        string                      `json:"timeFormat"`
+	EnabledQueryTypes EnabledQueryTypesPreference `json:"enabledQueryTypes"`
 }
 
 type QueryHistoryPreference struct {
 	HomeTab string `json:"homeTab"`
 }
+
+// BMC Code
+type EnabledQueryTypesPreference struct {
+	EnabledTypes  []string `json:"enabledTypes"`
+	ApplyForAdmin bool     `json:"applyForAdmin"`
+}
+
+// End
 
 type NavbarPreference struct {
 	BookmarkUrls []string `json:"bookmarkUrls"`

@@ -51,15 +51,22 @@ export const QueryEditorRowHeader = <TQuery extends DataQuery>(props: Props<TQue
 
   const onInputChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
     const newName = event.currentTarget.value.trim();
-
     if (newName.length === 0) {
-      setValidationError('An empty query name is not allowed');
+      // BMC Change: To enable localization for below text
+      setValidationError(
+        t('bmcgrafana.dashboards.edit-panel.query.empty-query-edit-warning', 'An empty query name is not allowed')
+      );
+      // BMC Change ends
       return;
     }
 
     for (const otherQuery of queries) {
       if (otherQuery !== query && newName === otherQuery.refId) {
-        setValidationError('Query name already exists');
+        // BMC Change: To enable localization for below text
+        setValidationError(
+          t('bmcgrafana.dashboards.edit-panel.query.query-already-exist-warning', 'Query name already exists')
+        );
+        // BMC Change ends
         return;
       }
     }
@@ -87,22 +94,34 @@ export const QueryEditorRowHeader = <TQuery extends DataQuery>(props: Props<TQue
     <>
       <div className={styles.wrapper}>
         {!hideRefId && !isEditing && (
-          <button
-            className={styles.queryNameWrapper}
-            aria-label={selectors.components.QueryEditorRow.title(query.refId)}
-            title={t('query.query-editor-row-header.query-name-div-title-edit-query-name', 'Edit query name')}
-            onClick={onEditQuery}
-            data-testid="query-name-div"
-            type="button"
-          >
-            <span className={styles.queryName}>{query.refId}</span>
-            <Icon name="pen" className={styles.queryEditIcon} size="sm" />
-          </button>
+          //BMC Change next 2 line (label element)
+          <>
+            <label className={styles.label} htmlFor={`query-name-button-${query.refId}`}>
+              <Trans i18nKey="bmc.query.query-name-label">Query name :</Trans>
+            </label>
+            <button
+              className={styles.queryNameWrapper}
+              // eslint-disable-next-line @grafana/no-aria-label-selectors
+              aria-label={selectors.components.QueryEditorRow.title(query.refId)}
+              title={t('query.query-editor-row-header.query-name-div-title-edit-query-name', 'Edit query name')}
+              onClick={onEditQuery}
+              data-testid="query-name-div"
+              type="button"
+            >
+              <span className={styles.queryName}>{query.refId}</span>
+              <Icon name="pen" className={styles.queryEditIcon} size="sm" />
+            </button>
+          </>
         )}
 
         {!hideRefId && isEditing && (
+          //BMC Change next line (label element)
           <>
+            <label htmlFor={`query-name-button-${query.refId}`} className={styles.label}>
+              <Trans i18nKey="bmc.query.query-name-label">Query name :</Trans>
+            </label>
             <Input
+              id={`query-name-button-${query.refId}`}
               type="text"
               defaultValue={query.refId}
               onBlur={onEditQueryBlur}
@@ -156,6 +175,22 @@ const renderDataSource = <TQuery extends DataQuery>(
 
 const getStyles = (theme: GrafanaTheme2) => {
   return {
+    //BMC Change :To add css to label element
+    label: css({
+      display: 'flex',
+      alignItems: 'start',
+      fontWeight: theme.typography.fontWeightMedium,
+      fontSize: theme.typography.bodySmall.fontSize,
+      backgroundColor: theme.colors.background.secondary,
+      height: theme.spacing(2.5),
+      lineHeight: theme.spacing(2.5),
+      marginRight: theme.spacing(1),
+      border: 'none',
+      width: 'auto',
+      color: theme.colors.text.primary,
+      margin: theme.spacing(0, 1),
+    }),
+    // BMC Change ends here.
     wrapper: css({
       label: 'Wrapper',
       display: 'flex',

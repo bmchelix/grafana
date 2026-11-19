@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom-v5-compat';
 import { useAsyncFn } from 'react-use';
 
 import { NavModelItem, OrgRole } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
-import { Field, Input, Button, Legend, Alert } from '@grafana/ui';
+import { Alert, Button, Field, Input, Legend } from '@grafana/ui';
 import { Page } from 'app/core/components/Page/Page';
+import config from 'app/core/config';
 import { contextSrv } from 'app/core/core';
 import { AccessControlAction } from 'app/types/accessControl';
 import { OrgUser } from 'app/types/user';
@@ -104,7 +105,8 @@ const AdminEditOrgPage = () => {
                 label={t('admin.admin-edit-org-page.label-name', 'Name')}
                 invalid={!!errors.orgName}
                 error="Name is required"
-                disabled={!canWriteOrg}
+                // BMC code: Disable org name edit in non-dev env
+                disabled={config.buildInfo.env !== 'development' || !canWriteOrg}
               >
                 <Input
                   {...register('orgName', { required: true })}
@@ -112,7 +114,7 @@ const AdminEditOrgPage = () => {
                   defaultValue={orgState.value.name}
                 />
               </Field>
-              <Button type="submit" disabled={!canWriteOrg}>
+              <Button type="submit" disabled={config.buildInfo.env !== 'development' || !canWriteOrg}>
                 <Trans i18nKey="admin.edit-org.update-button">Update</Trans>
               </Button>
             </form>

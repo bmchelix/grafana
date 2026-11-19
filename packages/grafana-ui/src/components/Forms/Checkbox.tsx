@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
 
+import { useDirection } from '../../contexts';
 import { useStyles2 } from '../../themes/ThemeContext';
 import { getFocusStyles, getMouseFocusStyles } from '../../themes/mixins';
 
@@ -40,7 +41,10 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       },
       [onChange]
     );
-    const styles = useStyles2(getCheckboxStyles, invalid);
+    // BMC Code : RTL Change
+    const { isRtl: rtlMode } = useDirection();
+    const styles = useStyles2(getCheckboxStyles, invalid, rtlMode);
+    // BMC Code : RTL Change ends here.
 
     return (
       <label className={cx(styles.wrapper, className)}>
@@ -77,7 +81,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   }
 );
 
-export const getCheckboxStyles = (theme: GrafanaTheme2, invalid = false) => {
+// BMC Code : RTL Change, added rtlMode parameter.
+export const getCheckboxStyles = (theme: GrafanaTheme2, invalid = false, rtlMode = false) => {
   const labelStyles = getLabelStyles(theme);
   const checkboxSize = 2;
   const labelPadding = 1;
@@ -86,6 +91,7 @@ export const getCheckboxStyles = (theme: GrafanaTheme2, invalid = false) => {
     return invalid ? theme.colors.error.border : color;
   };
 
+  // BMC Code : RTL Change — rtlMode from useDirection() via useStyles2
   return {
     wrapper: css({
       display: 'inline-grid',
@@ -132,7 +138,8 @@ export const getCheckboxStyles = (theme: GrafanaTheme2, invalid = false) => {
           height: theme.spacing(1.5),
           border: `solid ${theme.colors.primary.contrastText}`,
           borderWidth: '0 3px 3px 0',
-          transform: 'rotate(45deg)',
+          // BMC Code : RTL Change
+          transform: rtlMode ? 'rotate(45deg) scaleX(-1)' : 'rotate(45deg)',
         },
       },
 

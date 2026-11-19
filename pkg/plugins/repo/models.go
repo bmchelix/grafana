@@ -28,7 +28,7 @@ type Version struct {
 
 type ArchMeta struct {
 	SHA256      string `json:"sha256"`
-	MD5         string `json:"md5"`
+	MD5         string `json:"md5"` // BMC comment - Just exists but not used anywhere in the codebase. Grafana uses sha256 for integrity verification.
 	PackageName string `json:"packageName"`
 	DownloadURL string `json:"downloadUrl"`
 }

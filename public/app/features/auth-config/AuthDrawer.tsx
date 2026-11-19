@@ -3,8 +3,8 @@ import { JSX } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { GrafanaTheme2 } from '@grafana/data';
-import { Trans, t } from '@grafana/i18n';
-import { Button, Drawer, Text, TextLink, Switch, useStyles2 } from '@grafana/ui';
+import { t, Trans } from '@grafana/i18n';
+import { Button, Drawer, Switch, Text, TextLink, useStyles2 } from '@grafana/ui';
 import { useAppNotification } from 'app/core/copy/appNotification';
 import { StoreState } from 'app/types/store';
 
@@ -49,9 +49,10 @@ export const AuthDrawerUnconnected = ({
         },
       });
       await loadSettings(false);
-      notifyApp.success('Settings saved');
+      notifyApp.success(t('bmc.notifications.settings.saved', 'Settings saved'));
     } catch (error) {
-      notifyApp.error('Failed to save settings');
+      //BMC code change
+      notifyApp.error(t('bmc.notifications.settings.saved-failed', 'Failed to save settings'), '', 'bhd-00609');
     }
   };
 
@@ -63,9 +64,10 @@ export const AuthDrawerUnconnected = ({
         },
       });
       await loadSettings(false);
-      notifyApp.success('Settings saved');
+      notifyApp.success(t('bmc.notifications.settings.saved', 'Settings saved'));
     } catch (error) {
-      notifyApp.error('Failed to save settings');
+      //BMC code change
+      notifyApp.error(t('bmc.notifications.settings.saved-failed', 'Failed to save settings'), '', 'bhd-00609');
     }
   };
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAsyncFn } from 'react-use';
 
 import { locationUtil } from '@grafana/data';
+import { t } from '@grafana/i18n';
 import { locationService } from '@grafana/runtime';
 import { useAppNotification } from 'app/core/copy/appNotification';
 import { historySrv } from 'app/features/dashboard-scene/settings/version-history/HistorySrv';
@@ -31,7 +32,10 @@ export const useDashboardRestore = (id: number, version: number) => {
         pathname: newUrl,
         state: { routeReloadCounter: prevState ? prevState + 1 : 1 },
       });
-      notifyApp.success('Dashboard restored', `Restored from version ${version}`);
+      notifyApp.success(
+        t('bmc.notifications.dashboard.restored', 'Dashboard restored'),
+        t('bmc.notifications.dashboard.restored-version', 'Restored from version {{version}}', { version })
+      );
     }
   }, [state, version, notifyApp]);
   return { state, onRestoreDashboard };

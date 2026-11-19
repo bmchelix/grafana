@@ -10,13 +10,13 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { t } from '@grafana/i18n';
 
+import { useDirection } from '../../contexts';
 import { useStyles2 } from '../../themes/ThemeContext';
 import { getDragStyles } from '../DragHandle/DragHandle';
 import { IconButton } from '../IconButton/IconButton';
 import { Stack } from '../Layout/Stack/Stack';
 import { ScrollContainer } from '../ScrollContainer/ScrollContainer';
 import { Text } from '../Text/Text';
-
 import 'rc-drawer/assets/index.css';
 
 export interface Props {
@@ -78,9 +78,13 @@ export function Drawer({
   size = 'md',
   tabs,
 }: Props) {
-  const [drawerWidth, onMouseDown, onTouchStart] = useResizebleDrawer();
+  // BMC Change: RTL Support — use DirectionContext when nested (e.g. LTR island in RTL app)
+  const { isRtl: rtlMode } = useDirection();
+  const placement = rtlMode ? 'left' : 'right';
 
-  const styles = useStyles2(getStyles);
+  const [drawerWidth, onMouseDown, onTouchStart] = useResizebleDrawer(rtlMode);
+
+  const styles = useStyles2(getStyles, rtlMode);
   const wrapperStyles = useStyles2(getWrapperStyles, size);
   const dragStyles = useStyles2(getDragStyles);
 
@@ -106,7 +110,7 @@ export function Drawer({
     <RcDrawer
       open={true}
       onClose={onClose}
-      placement="right"
+      placement={placement} // BMC Change: RTL Support - dynamic placement
       getContainer={'.main-view'}
       className={styles.drawerContent}
       rootClassName={styles.drawer}
@@ -182,21 +186,26 @@ export function Drawer({
   );
 }
 
-function useResizebleDrawer(): [
-  string | undefined,
-  React.EventHandler<React.MouseEvent>,
-  React.EventHandler<React.TouchEvent>,
-] {
+// BMC Change: RTL Support - Added rtlMode parameter for RTL-aware resizing
+function useResizebleDrawer(
+  rtlMode: boolean
+): [string | undefined, React.EventHandler<React.MouseEvent>, React.EventHandler<React.TouchEvent>] {
   const [drawerWidth, setDrawerWidth] = useState<string | undefined>(undefined);
 
-  const onMouseMove = useCallback((e: MouseEvent) => {
-    setDrawerWidth(getCustomDrawerWidth(e.clientX));
-  }, []);
+  const onMouseMove = useCallback(
+    (e: MouseEvent) => {
+      setDrawerWidth(getCustomDrawerWidth(e.clientX, rtlMode));
+    },
+    [rtlMode]
+  );
 
-  const onTouchMove = useCallback((e: TouchEvent) => {
-    const touch = e.touches[0];
-    setDrawerWidth(getCustomDrawerWidth(touch.clientX));
-  }, []);
+  const onTouchMove = useCallback(
+    (e: TouchEvent) => {
+      const touch = e.touches[0];
+      setDrawerWidth(getCustomDrawerWidth(touch.clientX, rtlMode));
+    },
+    [rtlMode]
+  );
 
   const onMouseUp = useCallback(
     (e: MouseEvent) => {
@@ -233,9 +242,17 @@ function useResizebleDrawer(): [
   return [drawerWidth, onMouseDown, onTouchStart];
 }
 
-function getCustomDrawerWidth(clientX: number) {
-  let offsetRight = document.body.offsetWidth - (clientX - document.body.offsetLeft);
-  let widthPercent = Math.min((offsetRight / document.body.clientWidth) * 100, 98).toFixed(2);
+// BMC Change: RTL Support - Added rtlMode parameter for RTL-aware width calculation
+function getCustomDrawerWidth(clientX: number, rtlMode: boolean) {
+  let offset: number;
+  if (rtlMode) {
+    // In RTL mode, drawer is on the left, so calculate from the left side
+    offset = clientX - document.body.offsetLeft;
+  } else {
+    // In LTR mode, drawer is on the right, so calculate from the right side
+    offset = document.body.offsetWidth - (clientX - document.body.offsetLeft);
+  }
+  let widthPercent = Math.min((offset / document.body.clientWidth) * 100, 98).toFixed(2);
   return `${widthPercent}vw`;
 }
 
@@ -253,7 +270,11 @@ function useBodyClassWhileOpen() {
   }, []);
 }
 
-const getStyles = (theme: GrafanaTheme2) => {
+// BMC Change: RTL Support - Added rtlMode parameter for RTL-aware styles
+const getStyles = (theme: GrafanaTheme2, rtlMode: boolean) => {
+  // BMC Change: RTL Support - Motion direction depends on drawer placement
+  const motionTransform = rtlMode ? 'translateX(-100%)' : 'translateX(100%)';
+
   return {
     container: css({
       display: 'flex',
@@ -276,10 +297,11 @@ const getStyles = (theme: GrafanaTheme2) => {
       overflow: 'unset !important',
       flexDirection: 'column',
     }),
+    // BMC Change: RTL Support - Motion direction adjusted for RTL
     drawerMotion: css({
       '&-appear': {
         [theme.transitions.handleMotion('no-preference')]: {
-          transform: 'translateX(100%)',
+          transform: motionTransform,
           transition: 'none !important',
         },
         [theme.transitions.handleMotion('reduce')]: {
@@ -341,6 +363,7 @@ const getStyles = (theme: GrafanaTheme2) => {
     actions: css({
       position: 'absolute',
       right: theme.spacing(1),
+      left: 'auto',
       top: theme.spacing(1),
     }),
     subtitle: css({
@@ -358,9 +381,11 @@ const getStyles = (theme: GrafanaTheme2) => {
       paddingLeft: theme.spacing(2),
       margin: theme.spacing(1, -1, -3, -3),
     }),
+    // BMC Change: RTL Support - Resizer position adjusted for RTL (right side for left-opening drawer)
     resizer: css({
       top: 0,
       left: theme.spacing(-1),
+      right: 'auto',
       bottom: 0,
       position: 'absolute',
       zIndex: theme.zIndex.modal,

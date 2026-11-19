@@ -58,11 +58,12 @@ export function buildCategories(plugins: DataSourcePluginMeta[]): DataSourcePlug
     { id: 'profiling', title: t('datasources.build-categories.categories.title.profiling', 'Profiling'), plugins: [] },
     { id: 'sql', title: t('datasources.build-categories.categories.title.sql', 'SQL'), plugins: [] },
     { id: 'cloud', title: t('datasources.build-categories.categories.title.cloud', 'Cloud'), plugins: [] },
-    {
-      id: 'enterprise',
-      title: t('datasources.build-categories.categories.title.enterprise-plugins', 'Enterprise plugins'),
-      plugins: [],
-    },
+    // BMC code - next object
+    // {
+    //   id: 'enterprise',
+    //   title: t('datasources.build-categories.categories.title.enterprise-plugins', 'Enterprise plugins'),
+    //   plugins: [],
+    // },
     {
       id: 'iot',
       title: t('datasources.build-categories.categories.title.industrial-io-t', 'Industrial & IoT'),

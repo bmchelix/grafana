@@ -4,6 +4,8 @@
  * @packageDocumentation
  */
 
+export * from './contexts'; // BMC Change: Export DirectionContext for bidirectional RTL/LTR support
+
 import { FormField } from './components/FormField/FormField';
 import { Input, LegacyInputStatus } from './components/Forms/Legacy/Input/Input';
 import { IndicatorsContainer } from './components/Forms/Legacy/Select/IndicatorsContainer';
@@ -121,7 +123,8 @@ export {
 } from './components/Table/types';
 
 export { TableInputCSV } from './components/TableInputCSV/TableInputCSV';
-export { TabsBar } from './components/Tabs/TabsBar';
+// BMC code: export OrientationStateType
+export { TabsBar, type OrientationStateType } from './components/Tabs/TabsBar';
 export { Tab, type TabProps } from './components/Tabs/Tab';
 export { VerticalTab } from './components/Tabs/VerticalTab';
 export { TabContent } from './components/Tabs/TabContent';

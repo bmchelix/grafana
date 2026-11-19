@@ -21,6 +21,8 @@ import (
 	"github.com/grafana/grafana/pkg/services/accesscontrol/resourcepermissions"
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
 	"github.com/grafana/grafana/pkg/services/licensing"
+	"github.com/grafana/grafana/pkg/services/team"
+	"github.com/grafana/grafana/pkg/services/team/teamtest"
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/tests/testsuite"
@@ -80,6 +82,7 @@ func TestIntegrationUsageMetrics(t *testing.T) {
 				tracing.InitializeTracerForTest(),
 				nil,
 				permreg.ProvidePermissionRegistry(),
+				nil,
 				nil,
 			)
 			assert.Equal(t, tt.expectedValue, s.GetUsageStats(context.Background())["stats.oss.accesscontrol.enabled.count"])
@@ -1222,4 +1225,77 @@ func TestIntegrationService_GetRoleByName(t *testing.T) {
 		require.NotNil(t, role)
 		require.Equal(t, roleName, role.Name)
 	})
+}
+
+// capturingTeamStore records TeamIDs passed to the store when resolving user permissions (HasRequiredPermissions → GetUserPermissions).
+type capturingTeamStore struct {
+	actest.FakeStore
+	lastGetUserQuery accesscontrol.GetUserPermissionsQuery
+}
+
+func (s *capturingTeamStore) GetUserPermissions(ctx context.Context, query accesscontrol.GetUserPermissionsQuery) ([]accesscontrol.Permission, error) {
+	s.lastGetUserQuery = query
+	return s.FakeStore.GetUserPermissions(ctx, query)
+}
+
+func TestHasRequiredPermissions_populatesTeamIDsBeforePermissionLookup(t *testing.T) {
+	ctx := context.Background()
+	cfg := setting.NewCfg()
+	cfg.RBAC.PermissionCache = false
+
+	store := &capturingTeamStore{
+		FakeStore: actest.FakeStore{
+			ExpectedUserPermissions: []accesscontrol.Permission{{Action: "test:action"}},
+		},
+	}
+	store.FakeStore.ExpectedBHDRoleIDs = []int64{99}
+
+	teamSvc := teamtest.NewFakeService()
+	teamSvc.ExpectedTeamsByUser = []*team.TeamDTO{{ID: 7}, {ID: 8}}
+
+	svc := ProvideOSSService(
+		cfg,
+		store,
+		resourcepermissions.NewActionSetService(),
+		localcache.ProvideService(),
+		featuremgmt.WithFeatures(),
+		tracing.InitializeTracerForTest(),
+		nil,
+		permreg.ProvidePermissionRegistry(),
+		teamSvc,
+		nil,
+	)
+
+	ok, err := svc.HasRequiredPermissions(ctx, 1, 42, "Viewer", []string{"test:action"})
+	require.NoError(t, err)
+	assert.True(t, ok)
+	assert.Equal(t, []int64{7, 8}, store.lastGetUserQuery.TeamIDs)
+}
+
+func TestHasRequiredPermissions_teamServiceErr(t *testing.T) {
+	ctx := context.Background()
+	cfg := setting.NewCfg()
+	cfg.RBAC.PermissionCache = false
+
+	store := &capturingTeamStore{FakeStore: actest.FakeStore{}}
+	store.FakeStore.ExpectedBHDRoleIDs = []int64{99}
+
+	teamSvc := teamtest.NewFakeService()
+	teamSvc.ExpectedError = assert.AnError
+
+	svc := ProvideOSSService(
+		cfg,
+		store,
+		resourcepermissions.NewActionSetService(),
+		localcache.ProvideService(),
+		featuremgmt.WithFeatures(),
+		tracing.InitializeTracerForTest(),
+		nil,
+		permreg.ProvidePermissionRegistry(),
+		teamSvc,
+		nil,
+	)
+
+	_, err := svc.HasRequiredPermissions(ctx, 1, 42, "Viewer", []string{"test:action"})
+	require.Error(t, err)
 }

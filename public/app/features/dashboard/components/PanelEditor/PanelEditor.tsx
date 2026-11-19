@@ -6,19 +6,19 @@ import { Subscription } from 'rxjs';
 
 import { FieldConfigSource, GrafanaTheme2, NavModel, NavModelItem, PageLayoutType } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
 import { locationService } from '@grafana/runtime';
 import {
   Button,
   InlineSwitch,
   ModalsController,
   RadioButtonGroup,
+  Stack,
   stylesFactory,
   Themeable2,
   ToolbarButton,
   ToolbarButtonRow,
   withTheme2,
-  Stack,
 } from '@grafana/ui';
 import { AppChromeUpdate } from 'app/core/components/AppChrome/AppChromeUpdate';
 import { Page } from 'app/core/components/Page/Page';
@@ -49,7 +49,7 @@ import { VisualizationButton } from './VisualizationButton';
 import { discardPanelChanges, initPanelEditor, updatePanelEditorUIState } from './state/actions';
 import { PanelEditorUIState, toggleTableView } from './state/reducers';
 import { getPanelEditorTabs } from './state/selectors';
-import { DisplayMode, displayModes, PanelEditorTab } from './types';
+import { DisplayMode, getDisplayModes, PanelEditorTab } from './types';
 import { calculatePanelSize } from './utils';
 
 interface OwnProps {
@@ -257,7 +257,8 @@ export class PanelEditorUnconnected extends PureComponent<Props> {
         maxSize={-200}
         paneSize={uiState.topPaneSize}
         primary="first"
-        secondaryPaneStyle={{ minHeight: 0 }}
+        // BMC Code inline
+        secondaryPaneStyle={{ minHeight: 0, zIndex: 1 }}
         onDragFinished={(size) => {
           if (size) {
             updatePanelEditorUIState({ topPaneSize: size / window.innerHeight });
@@ -312,7 +313,9 @@ export class PanelEditorUnconnected extends PureComponent<Props> {
               onClick={this.onToggleTableView}
               data-testid={selectors.components.PanelEditor.toggleTableView}
             />
-            <RadioButtonGroup value={uiState.mode} options={displayModes} onChange={this.onDisplayModeChange} />
+            {/* BMC Change: Function call for localized text */}
+            <RadioButtonGroup value={uiState.mode} options={getDisplayModes()} onChange={this.onDisplayModeChange} />
+            {/* BMC Change ends */}
             <DashNavTimeControls dashboard={dashboard} onChangeTimeZone={updateTimeZoneForSession} isOnCanvas={true} />
             {!uiState.isPanelOptionsVisible && <VisualizationButton panel={panel} />}
           </Stack>

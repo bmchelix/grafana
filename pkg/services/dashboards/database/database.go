@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -29,6 +30,8 @@ import (
 	"github.com/grafana/grafana/pkg/services/tag"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/util"
+
+	"github.com/grafana/grafana/pkg/bhd_recently_deleted"
 )
 
 var tracer = otel.Tracer("github.com/grafana/grafana/pkg/services/dashboard/database")
@@ -151,8 +154,11 @@ func (d *dashboardStore) ValidateDashboardBeforeSave(ctx context.Context, dash *
 			}
 		}
 
-		if !dashWithIdExists && !dashWithUidExists {
-			return nil
+		if !dashWithIdExists && !dashWithUidExists {			
+			// BMC Change: Restrict duplicate named resource
+			var err error
+			isParentFolderChanged, err = getExistingDashboardByTitleAndFolder(sess, dash, overwrite, isParentFolderChanged)
+			return err
 		}
 
 		if dashWithIdExists && dashWithUidExists && existingById.ID != existingByUid.ID {
@@ -174,7 +180,7 @@ func (d *dashboardStore) ValidateDashboardBeforeSave(ctx context.Context, dash *
 
 		if !dash.IsFolder && dash.FolderUID != existing.FolderUID {
 			isParentFolderChanged = true
-		}
+		}				
 
 		// check for is someone else has written in between
 		if dash.Version != existing.Version {
@@ -468,6 +474,49 @@ func (d *dashboardStore) CountInOrg(ctx context.Context, orgID int64, isFolder b
 	return r.Count, nil
 }
 
+// BMC Change: Next function
+func getExistingDashboardByTitleAndFolder(sess *db.Session, dash *dashboards.Dashboard, overwrite,
+	isParentFolderChanged bool) (bool, error) {
+	var existing dashboards.Dashboard
+	condition := "org_id=? AND title=?"
+	args := []any{dash.OrgID, dash.Title}
+	if dash.FolderUID != "" {
+		condition += " AND folder_uid=?"
+		args = append(args, dash.FolderUID)
+	} else {
+		condition += " AND folder_uid IS NULL"
+	}
+	exists, err := sess.Where(condition, args...).Get(&existing)
+	if err != nil {
+		return isParentFolderChanged, fmt.Errorf("SQL query for existing dashboard by org ID or folder ID failed: %w", err)
+	}
+	if exists && dash.ID != existing.ID {
+		if existing.IsFolder && !dash.IsFolder {
+			return isParentFolderChanged, dashboards.ErrDashboardWithSameNameAsFolder
+		}
+
+		if !existing.IsFolder && dash.IsFolder {
+			return isParentFolderChanged, dashboards.ErrDashboardFolderWithSameNameAsDashboard
+		}
+
+		metrics.MFolderIDsServiceCount.WithLabelValues(metrics.Dashboard).Inc()
+		// nolint:staticcheck
+		if !dash.IsFolder && (dash.FolderID != existing.FolderID || dash.ID == 0) {
+			isParentFolderChanged = true
+		}
+
+		if overwrite {
+			dash.SetID(existing.ID)
+			dash.SetUID(existing.UID)
+			dash.SetVersion(existing.Version)
+		} else {
+			return isParentFolderChanged, dashboards.ErrDashboardWithSameNameInFolderExists
+		}
+	}
+
+	return isParentFolderChanged, nil
+}
+
 func (d *dashboardStore) saveDashboard(ctx context.Context, sess *db.Session, cmd *dashboards.SaveDashboardCommand, emitEntityEvent bool) (*dashboards.Dashboard, error) {
 	dash := cmd.GetDashboardModel()
 
@@ -603,6 +652,54 @@ func (d *dashboardStore) DeleteDashboard(ctx context.Context, cmd *dashboards.De
 	})
 }
 
+// Helix Code start DRJ71-21864 Take dashboard json backup for recovery after deletion:
+
+// marshalDashboardDataJSON marshals the dashboard data to JSON string. If the data is nil, it returns an empty JSON object.
+func marshalDashboardDataJSON(dash *dashboards.Dashboard) (string, error) {
+	if dash.Data == nil {
+		return "{}", nil
+	}
+	b, err := dash.Data.MarshalJSON()
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
+}
+
+// archiveBeforeDelete copies dashboard rows into bhd_recently_deleted_dashboard and
+// removes report schedules for folder children (main dashboard report cleanup stays in existing SQL statements).
+// Folders are permanently deleted and are not archived; only dashboard rows are inserted into the archive table.
+func (d *dashboardStore) archiveBeforeDelete(sess *db.Session, dashboard *dashboards.Dashboard) error {
+	deletedAt := time.Now()
+	if dashboard.IsFolder {
+		var children []*dashboards.Dashboard
+		err := sess.Where("org_id = ? AND folder_uid = ? AND is_folder = ? AND deleted IS NULL", dashboard.OrgID, dashboard.UID, false).
+			Find(&children)
+		if err != nil {
+			return err
+		}
+		for _, ch := range children {
+			dataJSON, err := marshalDashboardDataJSON(ch)
+			if err != nil {
+				return err
+			}
+			if err := bhd_recently_deleted.DeleteReportSchedulesForDashboard(sess, ch.ID); err != nil {
+				return err
+			}
+			if err := bhd_recently_deleted.InsertArchive(sess, ch.OrgID, ch.ID, ch.UID, ch.Slug, ch.Title, ch.FolderUID, ch.IsFolder, dataJSON, deletedAt); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	dataJSON, err := marshalDashboardDataJSON(dashboard)
+	if err != nil {
+		return err
+	}
+	return bhd_recently_deleted.InsertArchive(sess, dashboard.OrgID, dashboard.ID, dashboard.UID, dashboard.Slug, dashboard.Title, dashboard.FolderUID, dashboard.IsFolder, dataJSON, deletedAt)
+}
+// Helix Code end
+
 func (d *dashboardStore) deleteDashboard(cmd *dashboards.DeleteDashboardCommand, sess *db.Session, emitEntityEvent bool) error {
 	dashboard := dashboards.Dashboard{OrgID: cmd.OrgID}
 	if cmd.UID != "" {
@@ -616,13 +713,20 @@ func (d *dashboardStore) deleteDashboard(cmd *dashboards.DeleteDashboardCommand,
 	} else if !has {
 		return dashboards.ErrDashboardNotFound
 	}
-
+	// Helix Code start DRJ71-21864 Take dashboard json backup for recovery after deletion
+	if err := d.archiveBeforeDelete(sess, &dashboard); err != nil {
+		return err
+	}
+	// Helix Code end
 	type statement struct {
 		SQL  string
 		args []any
 	}
 
 	sqlStatements := []statement{
+		// BMC Change: Delete localized names
+		{SQL: "Delete from bhd_localization where resource_uid in (select d.uid from dashboard d where id = ?)", args: []any{dashboard.ID}},
+		// End
 		{SQL: "DELETE FROM dashboard_tag WHERE dashboard_uid = ? AND org_id = ?", args: []any{dashboard.UID, dashboard.OrgID}},
 		{SQL: "DELETE FROM star WHERE dashboard_id = ? ", args: []any{dashboard.ID}},
 		{SQL: "DELETE FROM dashboard WHERE id = ?", args: []any{dashboard.ID}},
@@ -630,6 +734,10 @@ func (d *dashboardStore) deleteDashboard(cmd *dashboards.DeleteDashboardCommand,
 		{SQL: "DELETE FROM dashboard_version WHERE dashboard_id = ?", args: []any{dashboard.ID}},
 		{SQL: "DELETE FROM dashboard_provisioning WHERE dashboard_id = ?", args: []any{dashboard.ID}},
 		{SQL: "DELETE FROM dashboard_acl WHERE dashboard_id = ?", args: []any{dashboard.ID}},
+		// BMC code
+		{SQL: "DELETE from report_scheduler where id IN (select report_scheduler_id from report_data where dashboard_id = ?)", args: []any{dashboard.ID}},
+		{SQL: "DELETE FROM report_data WHERE dashboard_id = ?", args: []any{dashboard.ID}},
+		// End
 	}
 
 	if dashboard.IsFolder {
@@ -748,13 +856,27 @@ func (d *dashboardStore) deleteChildrenDashboardAssociations(sess *db.Session, d
 	}
 
 	if len(dashIds) > 0 {
+		// BMC Change: Next line
+		localizationResources := ""
+
 		for _, dash := range dashIds {
 			// remove all access control permission with child dashboard scopes
 			if err := d.deleteResourcePermissions(sess, dashboard.OrgID, ac.GetResourceScopeUID("dashboards", dash.Uid)); err != nil {
 				return err
 			}
+
+			// BMC Change: Below block
+			if localizationResources != "" {
+				localizationResources += ", "
+			}
+			localizationResources += fmt.Sprintf(`'%s'`, dash.Uid)
 		}
 
+		// BMC Change: Below sql run
+		_, err := sess.Exec(fmt.Sprintf(`DELETE FROM bhd_localization where org_id = %v and resource_uid in (%s)`, dashboard.OrgID, localizationResources))
+		if err != nil {
+			return err
+		}
 		childrenDeletes := []string{
 			"DELETE FROM dashboard_tag WHERE dashboard_id IN (SELECT id FROM dashboard WHERE org_id = ? AND folder_id = ?)",
 			"DELETE FROM star WHERE dashboard_id IN (SELECT id FROM dashboard WHERE org_id = ? AND folder_id = ?)",
@@ -840,6 +962,24 @@ func (d *dashboardStore) GetDashboard(ctx context.Context, query *dashboards.Get
 	return queryResult, err
 }
 
+// BMC CODE STARTS
+func (d *dashboardStore) GetDashboardsByFolderUID(ctx context.Context, query *dashboards.GetDashboardsByFolderUIDQuery) ([]*dashboards.Dashboard, error) {
+	var dashboards = make([]*dashboards.Dashboard, 0)
+	err := d.store.WithDbSession(ctx, func(sess *db.Session) error {
+		if len(query.FolderUID) == 0 {
+			return errors.New("folderuid is null")
+		}
+		err := sess.Where("deleted IS NULL AND folder_uid = ? AND org_id = ?", query.FolderUID, query.OrgID).Find(&dashboards)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return dashboards, nil
+}
+
+//BMC CODE ENDS
+
 func (d *dashboardStore) FindDashboards(ctx context.Context, query *dashboards.FindPersistedDashboardsQuery) ([]dashboards.DashboardSearchProjection, error) {
 	ctx, span := tracer.Start(ctx, "dashboards.database.FindDashboards")
 	defer span.End()
@@ -877,12 +1017,14 @@ func (d *dashboardStore) FindDashboards(ctx context.Context, query *dashboards.F
 	}
 
 	if len(query.Title) > 0 {
-		filters = append(filters, searchstore.TitleFilter{Dialect: d.store.GetDialect(), Title: query.Title, TitleExactMatch: query.TitleExactMatch})
+		// BMC code: inline change
+		filters = append(filters, searchstore.TitleFilter{Dialect: d.store.GetDialect(), Title: query.Title, TitleExactMatch: query.TitleExactMatch, Localized: query.Lang != ""})
 	}
 
 	if len(query.Type) > 0 {
 		filters = append(filters, searchstore.TypeFilter{Dialect: d.store.GetDialect(), Type: query.Type})
 	}
+
 	metrics.MFolderIDsServiceCount.WithLabelValues(metrics.Dashboard).Inc()
 	// nolint:staticcheck
 	if len(query.FolderIds) > 0 {
@@ -909,7 +1051,7 @@ func (d *dashboardStore) FindDashboards(ctx context.Context, query *dashboards.F
 	filters = append(filters, searchstore.DeletedFilter{Deleted: query.IsDeleted})
 
 	var res []dashboards.DashboardSearchProjection
-	sb := &searchstore.Builder{Dialect: d.store.GetDialect(), Filters: filters, Features: d.features}
+	sb := &searchstore.Builder{Dialect: d.store.GetDialect(), Filters: filters, Features: d.features, Lang: query.Lang}
 
 	limit := query.Limit
 	if limit < 1 {
@@ -980,11 +1122,11 @@ func (d *dashboardStore) GetDashboardTags(ctx context.Context, query *dashboards
 						term
 					FROM dashboard
 					INNER JOIN dashboard_tag on dashboard_tag.dashboard_uid = dashboard.uid
-					WHERE dashboard_tag.org_id=?
+					WHERE dashboard_tag.org_id=? and dashboard.org_id=?
 					GROUP BY term
 					ORDER BY term`
 
-		sess := dbSession.SQL(sql, query.OrgID)
+		sess := dbSession.SQL(sql, query.OrgID, query.OrgID)
 		err := sess.Find(&queryResult)
 		return err
 	})

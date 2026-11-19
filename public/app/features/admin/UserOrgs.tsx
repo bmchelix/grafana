@@ -2,18 +2,19 @@ import { css, cx } from '@emotion/css';
 import { memo, PureComponent, ReactElement, useEffect, useRef, useState } from 'react';
 
 import { GrafanaTheme2, OrgRole } from '@grafana/data';
-import { Trans, t } from '@grafana/i18n';
+import { t, Trans } from '@grafana/i18n';
+import { config } from '@grafana/runtime';
 import {
   Button,
   ConfirmButton,
   Field,
   Icon,
   Modal,
+  Stack,
   stylesFactory,
+  TextLink,
   Tooltip,
   useStyles2,
-  Stack,
-  TextLink,
 } from '@grafana/ui';
 import { UserRolePicker } from 'app/core/components/RolePicker/UserRolePicker';
 import { fetchRoleOptions, updateUserRoles } from 'app/core/components/RolePicker/api';
@@ -21,7 +22,7 @@ import { OrgPicker, OrgSelectItem } from 'app/core/components/Select/OrgPicker';
 import { contextSrv } from 'app/core/core';
 import { AccessControlAction, Role } from 'app/types/accessControl';
 import { Organization } from 'app/types/organization';
-import { UserOrg, UserDTO } from 'app/types/user';
+import { UserDTO, UserOrg } from 'app/types/user';
 
 import { OrgRolePicker } from './OrgRolePicker';
 
@@ -71,20 +72,25 @@ export const UserOrgs = memo(({ user, orgs, isExternalUser, onOrgRoleChange, onO
           </tbody>
         </table>
 
-        <div>
-          {canAddToOrg && (
-            <Button variant="secondary" onClick={showOrgAddModal} ref={addToOrgButtonRef}>
-              <Trans i18nKey="admin.user-orgs.add-button">Add user to organization</Trans>
-            </Button>
-          )}
-        </div>
-        <AddToOrgModal
-          user={user}
-          userOrgs={orgs}
-          isOpen={showAddOrgModal}
-          onOrgAdd={onOrgAdd}
-          onDismiss={dismissOrgAddModal}
-        />
+        {/* BMC Change inline */}
+        {config.buildInfo.env === 'development' && (
+          <>
+            <div>
+              {canAddToOrg && (
+                <Button variant="secondary" onClick={showOrgAddModal} ref={addToOrgButtonRef}>
+                  <Trans i18nKey="admin.user-orgs.add-button">Add user to organization</Trans>
+                </Button>
+              )}
+            </div>
+            <AddToOrgModal
+              user={user}
+              userOrgs={orgs}
+              isOpen={showAddOrgModal}
+              onOrgAdd={onOrgAdd}
+              onDismiss={dismissOrgAddModal}
+            />
+          </>
+        )}
       </Stack>
     </div>
   );
@@ -224,11 +230,13 @@ const OrgRow = memo(({ user, org, isExternalUser, onOrgRemove, onOrgRoleChange }
       )}
       <td colSpan={1}>
         {canRemoveFromOrg && (
+          /* BMC code - inline change. Disable button for server admin */
           <ConfirmButton
             confirmText={t('admin.un-themed-org-row.confirmText-confirm-removal', 'Confirm removal')}
             confirmVariant="destructive"
             onCancel={handleCancelClick}
             onConfirm={handleOrgRemove}
+            disabled={true}
           >
             {t('admin.user-orgs.remove-button', 'Remove from organization')}
           </ConfirmButton>
@@ -441,12 +449,13 @@ export function ChangeOrgButton({
           </Tooltip>
         </>
       ) : (
+        // BMC code - inline change. Disable button for server admin
         <ConfirmButton
           confirmText={t('admin.change-org-button.confirmText-save', 'Save')}
           onClick={onChangeRoleClick}
           onCancel={onCancelClick}
           onConfirm={onOrgRoleSave}
-          disabled={isExternalUser}
+          disabled={true}
         >
           {t('admin.user-orgs.change-role-button', 'Change role')}
         </ConfirmButton>

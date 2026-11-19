@@ -2,8 +2,10 @@ package dashboard
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -12,13 +14,16 @@ import (
 	authlib "github.com/grafana/authlib/types"
 	"github.com/grafana/grafana-app-sdk/logging"
 	"github.com/grafana/grafana/apps/dashboard/pkg/apis/dashboard"
+	"github.com/grafana/grafana/pkg/api/bmc"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
 	"github.com/grafana/grafana/pkg/apimachinery/utils"
+	"github.com/grafana/grafana/pkg/components/simplejson"
 	"github.com/grafana/grafana/pkg/infra/slugify"
 	"github.com/grafana/grafana/pkg/registry/apis/dashboard/legacy"
 	"github.com/grafana/grafana/pkg/services/accesscontrol"
 	"github.com/grafana/grafana/pkg/services/apiserver/endpoints/request"
 	"github.com/grafana/grafana/pkg/services/dashboards"
+	"github.com/grafana/grafana/pkg/services/sqlstore"
 	"github.com/grafana/grafana/pkg/storage/unified/apistore"
 	"github.com/grafana/grafana/pkg/storage/unified/resource"
 	"github.com/grafana/grafana/pkg/storage/unified/resourcepb"
@@ -35,6 +40,8 @@ type DTOConnector struct {
 	accessControl accesscontrol.AccessControl
 	scheme        *runtime.Scheme
 	builder       dtoBuilder
+	// BMC code: added SQLStore
+	sqlStore *sqlstore.SQLStore
 }
 
 func NewDTOConnector(
@@ -45,6 +52,8 @@ func NewDTOConnector(
 	accessControl accesscontrol.AccessControl,
 	scheme *runtime.Scheme,
 	builder dtoBuilder,
+	// BMC code: next line
+	sqlStore *sqlstore.SQLStore,
 ) (rest.Storage, error) {
 	return &DTOConnector{
 		getter:        getter,
@@ -54,6 +63,8 @@ func NewDTOConnector(
 		largeObjects:  largeObjects,
 		builder:       builder,
 		scheme:        scheme,
+		// BMC code: next line
+		sqlStore: sqlStore,
 	}, nil
 }
 
@@ -159,6 +170,11 @@ func (r *DTOConnector) Connect(ctx context.Context, name string, opts runtime.Ob
 			responder.Error(err)
 			return
 		}
+		// BMC: Apply user dash personalization (time, variables) when sqlStore is available
+		if r.sqlStore != nil {
+			r.applyPersonalization(ctx, dash, user, name)
+		}
+		// BMC code: end
 		responder.Object(http.StatusOK, dash)
 	}), nil
 }
@@ -184,4 +200,38 @@ func (r *DTOConnector) getAnnotationPermissionsByScope(ctx context.Context, user
 	if err != nil {
 		logger.Warn("Failed to evaluate permission", "err", err, "action", accesscontrol.ActionAnnotationsWrite, "scope", scope)
 	}
+}
+
+// BMC code: next method
+func (r *DTOConnector) applyPersonalization(ctx context.Context, dash runtime.Object, user identity.Requester, uid string) {
+	accessor, err := utils.MetaAccessor(dash)
+	if err != nil {
+		return
+	}
+	spec, err := accessor.GetSpec()
+	if err != nil {
+		return
+	}
+	specData, err := json.Marshal(spec)
+	if err != nil {
+		return
+	}
+	dashboardJson, err := simplejson.NewJson(specData)
+	if err != nil {
+		return
+	}
+	userId, err := user.GetInternalID()
+	if err != nil {
+		return
+	}
+	bmc.ApplyPersonalization(r.sqlStore, ctx, dashboardJson, user.GetOrgID(), userId, uid)
+	modifiedData, err := dashboardJson.MarshalJSON()
+	if err != nil {
+		return
+	}
+	newSpec := reflect.New(reflect.TypeOf(spec)).Interface()
+	if err := json.Unmarshal(modifiedData, newSpec); err != nil {
+		return
+	}
+	_ = accessor.SetSpec(reflect.ValueOf(newSpec).Elem().Interface())
 }

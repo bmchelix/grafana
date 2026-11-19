@@ -57,7 +57,8 @@ function ShareSnapshotRenderer({ model }: SceneComponentProps<ShareSnapshot>) {
   };
 
   const onDeleteSnapshotClick = async () => {
-    await deleteSnapshot(snapshotResult.value?.deleteUrl!);
+    // BMC Code: Correct URL origin to match tenant instance
+    await deleteSnapshot(updateURLOrigin(snapshotResult.value?.deleteUrl!));
     reset();
   };
 
@@ -104,7 +105,8 @@ function ShareSnapshotRenderer({ model }: SceneComponentProps<ShareSnapshot>) {
               step === 2 &&
               snapshotResult.value && (
                 <UpsertSnapshotActions
-                  url={snapshotResult.value!.url}
+                  // BMC Code: Correct URL origin to match tenant instance
+                  url={updateURLOrigin(snapshotResult.value!.url)}
                   onDeleteClick={() => setShowDeleteConfirmation(true)}
                   onNewSnapshotClick={reset}
                 />
@@ -193,3 +195,16 @@ const UpsertSnapshotActions = ({
     </Stack>
   );
 };
+
+// BMC code
+const updateURLOrigin = (url: string) => {
+  let parser = document.createElement('a');
+  parser.href = url;
+  // eslint-disable-next-line no-restricted-syntax
+  if (parser.origin.localeCompare(window.location.origin) !== 0) {
+    const updatedURL = url.replace(parser.origin, window.location.origin);
+    return updatedURL;
+  }
+  return url;
+};
+// End

@@ -4,6 +4,7 @@ import { memo, CSSProperties, ReactElement, useEffect, useRef, useState } from '
 import { GrafanaTheme2 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 
+import { useDirection } from '../../contexts';
 import { useStyles2 } from '../../themes/ThemeContext';
 import { Icon } from '../Icon/Icon';
 
@@ -26,6 +27,8 @@ export interface SubMenuProps {
 /** @internal */
 export const SubMenu = memo(({ items, isOpen, close, customStyle }: SubMenuProps) => {
   const styles = useStyles2(getStyles);
+  // BMC Code : RTL Change
+  const { isRtl: rtlMode } = useDirection();
   const localRef = useRef<HTMLDivElement>(null);
   const [handleKeys] = useMenuFocus({
     localRef,
@@ -36,9 +39,11 @@ export const SubMenu = memo(({ items, isOpen, close, customStyle }: SubMenuProps
   const [pushLeft, setPushLeft] = useState(false);
   useEffect(() => {
     if (isOpen && localRef.current) {
-      setPushLeft(isElementOverflowing(localRef.current));
+      // BMC Code : RTL Change
+      setPushLeft(isElementOverflowing(localRef.current, rtlMode));
     }
-  }, [isOpen]);
+  }, [isOpen, rtlMode]);
+  // BMC Code : RTL Change ends here.
 
   return (
     <>

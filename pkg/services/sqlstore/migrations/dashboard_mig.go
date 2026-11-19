@@ -98,14 +98,17 @@ func addDashboardMigration(mg *Migrator) {
 		Mysql("ALTER TABLE dashboard MODIFY data MEDIUMTEXT;"))
 
 	// add column to store updater of a dashboard
+	// BMC code
+	// Start Abhishek, update updated_by & created_by from DB_Int to DB_BigInt
 	mg.AddMigration("Add column updated_by in dashboard - v2", NewAddColumnMigration(dashboardV2, &Column{
-		Name: "updated_by", Type: DB_Int, Nullable: true,
+		Name: "updated_by", Type: DB_BigInt, Nullable: true,
 	}))
 
 	// add column to store creator of a dashboard
 	mg.AddMigration("Add column created_by in dashboard - v2", NewAddColumnMigration(dashboardV2, &Column{
-		Name: "created_by", Type: DB_Int, Nullable: true,
+		Name: "created_by", Type: DB_BigInt, Nullable: true,
 	}))
+	// End
 
 	// add column to store gnetId
 	mg.AddMigration("Add column gnetId in dashboard", NewAddColumnMigration(dashboardV2, &Column{
@@ -225,6 +228,13 @@ func addDashboardMigration(mg *Migrator) {
 		Type: IndexType,
 	}))
 
+	// BMC code
+	// Start Abhishek, update updated_by & created_by from DB_Int to DB_BigInt
+	mg.AddMigration("alter dashboard.updated_by to bigint", NewRawSQLMigration("").
+		Postgres("ALTER TABLE public.dashboard ALTER COLUMN updated_by TYPE int8;"))
+	mg.AddMigration("alter dashboard.created_by to bigint", NewRawSQLMigration("").
+		Postgres("ALTER TABLE public.dashboard ALTER COLUMN created_by TYPE int8;"))
+	// End
 	mg.AddMigration("delete tags for deleted dashboards", NewRawSQLMigration(
 		"DELETE FROM dashboard_tag WHERE dashboard_id NOT IN (SELECT id FROM dashboard)"))
 
@@ -266,6 +276,13 @@ func addDashboardMigration(mg *Migrator) {
 		Cols: []string{"dashboard_uid"},
 		Type: IndexType,
 	}))
+
+	// Widen check_sum column from 32 to 64 characters to accommodate SHA-256 hex
+	// digests (64 chars) when FIPS 140-3 mode is enabled. MD5 digests (32 chars)
+	// still fit within the wider column, so non-FIPS deployments are unaffected.
+	mg.AddMigration("Widen check_sum column to 64 for FIPS SHA-256 support", NewRawSQLMigration("").
+		Postgres("ALTER TABLE dashboard_provisioning ALTER COLUMN check_sum TYPE VARCHAR(64);"))
+
 }
 
 type FillDashbordUIDAndOrgIDMigration struct {

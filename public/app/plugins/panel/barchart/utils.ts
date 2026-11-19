@@ -252,7 +252,6 @@ export const prepConfig = ({ series, totalSeries, color, orientation, options, t
     if (hasPerBarColor) {
       // use opacity from first numeric field
       let opacityField = frame.fields.find((f) => f.type === FieldType.number)!;
-
       fillOpacity = (opacityField?.config?.custom?.fillOpacity ?? 100) / 100;
 
       getColor = (seriesIdx: number, valueIdx: number) => {

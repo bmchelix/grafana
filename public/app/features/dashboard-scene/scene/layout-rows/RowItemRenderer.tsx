@@ -15,6 +15,7 @@ import { DashboardScene } from '../DashboardScene';
 import { useSoloPanelContext } from '../SoloPanelContext';
 
 import { RowItem } from './RowItem';
+import { isRtl } from '@grafana/ui/internal';
 
 export function RowItemRenderer({ model }: SceneComponentProps<RowItem>) {
   const { layout, collapse: isCollapsed, fillScreen, hideHeader: isHeaderHidden, isDropTarget, key } = model.useState();
@@ -78,6 +79,8 @@ export function RowItemRenderer({ model }: SceneComponentProps<RowItem>) {
     <Draggable key={key!} draggableId={key!} index={myIndex} isDragDisabled={!isDraggable}>
       {(dragProvided, dragSnapshot) => (
         <div
+          // BMC Code : RTL Change
+          dir={isRtl() ? 'rtl' : ''}
           ref={(ref) => {
             dragProvided.innerRef(ref);
             model.containerRef.current = ref;

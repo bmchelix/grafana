@@ -3,10 +3,13 @@ import * as React from 'react';
 import SVG from 'react-inlinesvg';
 
 import { GrafanaTheme2, isIconName } from '@grafana/data';
+import { t } from '@grafana/i18n';
 
+import { useDirection } from '../../contexts'; // BMC Change: RTL Support - Use context-aware direction
 import { useStyles2 } from '../../themes/ThemeContext';
-import { IconName, IconType, IconSize } from '../../types/icon';
+import { IconName, IconSize, IconType } from '../../types/icon';
 import { spin } from '../../utils/keyframes';
+import { getDirectionalIcon, getIconFlipTransform } from '../../utils/rtl';
 
 import { getIconPath, getSvgSize } from './utils';
 
@@ -51,14 +54,16 @@ export const Icon = React.memo(
   React.forwardRef<SVGElement, IconProps>(
     ({ size = 'md', type = 'default', name, className, style, title = '', ...rest }, ref) => {
       const styles = useStyles2(getIconStyles);
-
+      // BMC Change: RTL Support - Use context-aware direction instead of global isRtl()
+      const { isRtl } = useDirection();
       if (!isIconName(name)) {
         console.warn('Icon component passed an invalid icon name', name);
       }
 
       // handle the deprecated 'fa fa-spinner'
-      const iconName: IconName = name === 'fa fa-spinner' ? 'spinner' : name;
-
+      let iconName: IconName = name === 'fa fa-spinner' ? 'spinner' : name;
+      // BMC Change: RTL Support - Flip icon name for rtl (now context-aware)
+      iconName = getDirectionalIcon(iconName, isRtl) as IconName;
       const svgSize = getSvgSize(size);
       const svgHgt = svgSize;
       const svgWid = name.startsWith('gf-bar-align') ? 16 : name.startsWith('gf-interp') ? 30 : svgSize;
@@ -70,7 +75,9 @@ export const Icon = React.memo(
         type === 'mono' ? { [styles.orange]: name === 'favorite' } : '',
         {
           [styles.spin]: iconName === 'spinner',
-        }
+        },
+        // BMC Change: Flip the icon for RTL (now context-aware)
+        css({ transform: getIconFlipTransform(iconName, isRtl) })
       );
 
       return (
@@ -104,6 +111,11 @@ export const Icon = React.memo(
             />
           }
           {...rest}
+          // BMC Code : Accessibility Change (Next 2 lines)
+          role="img"
+          aria-label={
+            iconName === 'info-circle' ? t('bmcgrafana.grafana-ui.icon.information', 'information') : iconName
+          }
         />
       );
     }

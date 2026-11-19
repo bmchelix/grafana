@@ -6,7 +6,6 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { GrafanaTheme2 } from '@grafana/data';
 import { selectors as e2eSelectors } from '@grafana/e2e-selectors';
 import { Trans, t } from '@grafana/i18n';
-import { config } from '@grafana/runtime';
 import { SceneComponentProps } from '@grafana/scenes';
 import { Button, ClipboardButton, CodeEditor, Label, Spinner, Stack, Switch, useStyles2 } from '@grafana/ui';
 import { notifyApp } from 'app/core/actions';
@@ -15,7 +14,6 @@ import { dispatch } from 'app/store/store';
 
 import { ShareExportTab } from '../ShareExportTab';
 
-import { ExportMode, ResourceExport } from './ResourceExport';
 
 const selector = e2eSelectors.pages.ExportDashboardDrawer.ExportAsJson;
 
@@ -59,7 +57,7 @@ function ExportAsCodeRenderer({ model }: SceneComponentProps<ExportAsCode>) {
         </Trans>
       </p>
 
-      {config.featureToggles.kubernetesDashboards ? (
+      {/* {config.featureToggles.kubernetesDashboards ? (
         <ResourceExport
           dashboardJson={dashboardJson}
           isSharingExternally={isSharingExternally ?? false}
@@ -69,7 +67,7 @@ function ExportAsCodeRenderer({ model }: SceneComponentProps<ExportAsCode>) {
           onShareExternallyChange={model.onShareExternallyChange}
           onViewYAML={model.onViewYAML}
         />
-      ) : (
+      ) : ( */}
         <Stack gap={1} alignItems="start">
           <Switch
             label={switchExportLabel}
@@ -80,7 +78,7 @@ function ExportAsCodeRenderer({ model }: SceneComponentProps<ExportAsCode>) {
           />
           <Label>{switchExportLabel}</Label>
         </Stack>
-      )}
+      {/* )} */}
 
       <div className={styles.codeEditorBox}>
         <AutoSizer data-testid={selector.codeEditor} disableWidth>

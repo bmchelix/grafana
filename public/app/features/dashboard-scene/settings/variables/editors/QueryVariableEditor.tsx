@@ -1,29 +1,32 @@
-import { useState, FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { useAsync } from 'react-use';
 
-import { SelectableValue, DataSourceInstanceSettings, getDataSourceRef } from '@grafana/data';
+import { AppEvents, DataSourceInstanceSettings, getDataSourceRef, SelectableValue } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Trans, t } from '@grafana/i18n';
-import { getDataSourceSrv } from '@grafana/runtime';
+import { t, Trans } from '@grafana/i18n';
+import { getAppEvents, getDataSourceSrv } from '@grafana/runtime';
 import { QueryVariable, sceneGraph, SceneVariable } from '@grafana/scenes';
 import { VariableRefresh, VariableSort } from '@grafana/schema';
 import { Box, Button, Field, Modal, TextLink } from '@grafana/ui';
-import { OptionsPaneItemDescriptor } from 'app/features/dashboard/components/PanelEditor/OptionsPaneItemDescriptor';
 import { QueryEditor } from 'app/features/dashboard-scene/settings/variables/components/QueryEditor';
+import { OptionsPaneItemDescriptor } from 'app/features/dashboard/components/PanelEditor/OptionsPaneItemDescriptor';
+import { getDashboardSrv } from 'app/features/dashboard/services/DashboardSrv';
+import { FEATURE_CONST, getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { DataSourcePicker } from 'app/features/datasources/components/picker/DataSourcePicker';
 import { getVariableQueryEditor } from 'app/features/variables/editor/getVariableQueryEditor';
 import { QueryVariableRefreshSelect } from 'app/features/variables/query/QueryVariableRefreshSelect';
 import { QueryVariableSortSelect } from 'app/features/variables/query/QueryVariableSortSelect';
-import {
-  QueryVariableStaticOptions,
-  StaticOptionsOrderType,
-  StaticOptionsType,
-} from 'app/features/variables/query/QueryVariableStaticOptions';
+import { StaticOptionsOrderType, StaticOptionsType } from 'app/features/variables/query/QueryVariableStaticOptions';
 
 import { QueryVariableEditorForm } from '../components/QueryVariableForm';
 import { VariableTextAreaField } from '../components/VariableTextAreaField';
 import { VariableValuesPreview } from '../components/VariableValuesPreview';
-import { hasVariableOptions } from '../utils';
+import {
+  containsDirectTimeRangeVariables,
+  deleteVariableCache,
+  hasVariableOptions,
+  isServiceManagementQuery,
+} from '../utils';
 
 interface QueryVariableEditorProps {
   variable: QueryVariable;
@@ -44,6 +47,11 @@ export function QueryVariableEditor({ variable, onRunQuery }: QueryVariableEdito
     allowCustomValue,
     staticOptions,
     staticOptionsOrder,
+    // BMC Change: Below all props
+    // @ts-expect-error
+    discardForAll,
+    // @ts-expect-error
+    bmcVarCache,
   } = variable.useState();
   const { value: timeRange } = sceneGraph.getTimeRange(variable).useState();
 
@@ -79,6 +87,13 @@ export function QueryVariableEditor({ variable, onRunQuery }: QueryVariableEdito
     variable.setState({ datasource });
   };
   const onQueryChange = (query: VariableQueryType) => {
+    // BMC code starts - invalidate variable cache when query changes (before setting new definition)
+    // @ts-expect-error
+    if (variable.state.bmcVarCache) {
+      const dashboardUID = getDashboardSrv().getCurrent()?.uid;
+      deleteVariableCache(variable.state, dashboardUID, true);
+    }
+    // BMC code ends
     variable.setState({ query, definition: getQueryDef(query) });
     onRunQuery();
   };
@@ -92,6 +107,83 @@ export function QueryVariableEditor({ variable, onRunQuery }: QueryVariableEdito
     onRunQuery();
     variable.setState({ staticOptionsOrder });
   };
+
+  // BMC Change: Starts
+  const onIncludeOnlyAvailable = (event: FormEvent<HTMLInputElement>) => {
+    // @ts-expect-error
+    variable.setState({ discardForAll: event.currentTarget.checked });
+  };
+
+  const onVariableCacheChange = (event: FormEvent<HTMLInputElement>) => {
+    // @ts-expect-error
+    variable.setState({ bmcVarCache: event.currentTarget.checked });
+  };
+
+  let enableVariableCachingToggle = false;
+  const hasValidQuery =
+    variable.state.definition !== '' ||
+    (typeof variable.state.query === 'object' &&
+      variable.state.query !== null &&
+      ((variable.state.query as any).sourceQuery?.rawQuery ||
+        (variable.state.query as any).sourceQuery?.view?.selectedFields?.length > 0));
+
+  if (getFeatureStatus(FEATURE_CONST.BHD_ENABLE_VAR_CACHING) && hasValidQuery) {
+    let errorMsg = '';
+    // Only supports service management type queries
+    if (isServiceManagementQuery(variable.state.query || '')) {
+      enableVariableCachingToggle = true;
+    } else {
+      errorMsg = t(
+        'bmc.variables.query-editor.variable-caching.service-management-error',
+        'Caching is supported only for Service Management queries'
+      );
+    }
+
+    // Logic for enabling toggle based on dependencies:
+    // 1. If time range is present in variable query -> Toggle is disabled by default
+
+    if (enableVariableCachingToggle) {
+      const hasTimeRangeVars = containsDirectTimeRangeVariables(variable.state.definition as string);
+
+      if (hasTimeRangeVars) {
+        enableVariableCachingToggle = false;
+        errorMsg = t(
+          'bmc.variables.query-editor.variable-caching.dependant-error',
+          'Caching for time range dependent variables not allowed'
+        );
+      }
+    }
+
+    // Show error if enableVariableCachingToggle is false + property was set to true
+    if (!enableVariableCachingToggle && bmcVarCache) {
+      const appEvents = getAppEvents();
+      appEvents.publish({
+        type: AppEvents.alertError.name,
+        payload: [errorMsg],
+      });
+
+      // If enableVariableCachingToggle is false + property was set to true, send an event equivalent to the toggle being unchecked to force it being unchecked on UI and dashboard JSON
+      onVariableCacheChange?.({
+        currentTarget: { checked: false },
+      } as FormEvent<HTMLInputElement>);
+    }
+  } else if (getFeatureStatus(FEATURE_CONST.BHD_ENABLE_VAR_CACHING) && bmcVarCache && !hasValidQuery) {
+    // if bmcVarCache was previously on and it is no longer a valid query
+    const appEvents = getAppEvents();
+    appEvents.publish({
+      type: AppEvents.alertError.name,
+      payload: [
+        t(
+          'bmc.variables.query-editor.variable-caching.service-management-error',
+          'Caching is supported only for Service Management queries'
+        ),
+      ],
+    });
+    // Uncheck the cache toggle
+    // @ts-expect-error
+    variable.setState({ bmcVarCache: false });
+  }
+  // BMC Change: Ends
 
   return (
     <QueryVariableEditorForm
@@ -119,6 +211,12 @@ export function QueryVariableEditor({ variable, onRunQuery }: QueryVariableEdito
       staticOptionsOrder={staticOptionsOrder}
       onStaticOptionsChange={onStaticOptionsChange}
       onStaticOptionsOrderChange={onStaticOptionsOrderChange}
+      // BMC Code: Below all props
+      onIncludeOnlyAvailable={onIncludeOnlyAvailable}
+      discardForAll={discardForAll}
+      bmcVarCache={bmcVarCache || false}
+      OnVariableCacheChange={onVariableCacheChange}
+      enableVariableCachingToggle={enableVariableCachingToggle}
     />
   );
 }
@@ -196,8 +294,10 @@ export function Editor({ variable }: { variable: QueryVariable }) {
     refresh,
     query,
     regex,
-    staticOptions,
-    staticOptionsOrder,
+    // BMC code: disable static options
+    // staticOptions,
+    // staticOptionsOrder,
+    // BMC code: end
   } = variable.useState();
   const { value: timeRange } = sceneGraph.getTimeRange(variable).useState();
   const { value: dsConfig } = useAsync(async () => {
@@ -241,12 +341,14 @@ export function Editor({ variable }: { variable: QueryVariable }) {
   const onRefreshChange = (refresh: VariableRefresh) => {
     variable.setState({ refresh: refresh });
   };
-  const onStaticOptionsChange = (staticOptions: StaticOptionsType) => {
-    variable.setState({ staticOptions });
-  };
-  const onStaticOptionsOrderChange = (staticOptionsOrder: StaticOptionsOrderType) => {
-    variable.setState({ staticOptionsOrder });
-  };
+  // BMC code: disable static options
+  // const onStaticOptionsChange = (staticOptions: StaticOptionsType) => {
+  //   variable.setState({ staticOptions });
+  // };
+  // const onStaticOptionsOrderChange = (staticOptionsOrder: StaticOptionsOrderType) => {
+  //   variable.setState({ staticOptionsOrder });
+  // };
+  // BMC code: end
 
   const isHasVariableOptions = hasVariableOptions(variable);
 
@@ -311,14 +413,15 @@ export function Editor({ variable }: { variable: QueryVariable }) {
         refresh={refresh}
       />
 
-      {onStaticOptionsChange && onStaticOptionsOrderChange && (
+      {/* BMC code: disable static options */}
+      {/* {onStaticOptionsChange && onStaticOptionsOrderChange && (
         <QueryVariableStaticOptions
           staticOptions={staticOptions}
           staticOptionsOrder={staticOptionsOrder}
           onStaticOptionsChange={onStaticOptionsChange}
           onStaticOptionsOrderChange={onStaticOptionsOrderChange}
         />
-      )}
+      )} */}
 
       {isHasVariableOptions && <VariableValuesPreview options={variable.getOptionsForSelect(false)} />}
     </div>
@@ -330,7 +433,14 @@ function getQueryDef(query: VariableQueryType) {
     return query;
   } else if (query.hasOwnProperty('query') && typeof query.query === 'string') {
     return query.query;
-  } else {
+  }
+  // BMC code starts
+  // for visual query builder queries
+  else if (typeof query.sourceQuery?.rawQuery === 'string') {
+    return query.sourceQuery.rawQuery;
+  }
+  // BMC code ends
+  else {
     return '';
   }
 }

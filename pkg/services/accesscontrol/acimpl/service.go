@@ -13,6 +13,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 
 	claims "github.com/grafana/authlib/types"
+	bhdperm "github.com/grafana/grafana/pkg/api/bmc/bhd_rbac/bhd_permissions"
 
 	"github.com/grafana/grafana/pkg/api/routing"
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
@@ -34,6 +35,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
 	"github.com/grafana/grafana/pkg/services/folder"
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginaccesscontrol"
+	"github.com/grafana/grafana/pkg/services/team"
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/setting"
 )
@@ -55,6 +57,7 @@ func ProvideService(
 	cfg *setting.Cfg, db db.DB, routeRegister routing.RouteRegister, cache *localcache.CacheService,
 	accessControl accesscontrol.AccessControl, userService user.Service, actionResolver accesscontrol.ActionResolver,
 	features featuremgmt.FeatureToggles, tracer tracing.Tracer, permRegistry permreg.PermissionRegistry,
+	teamService team.Service,
 	lock *serverlock.ServerLockService,
 ) (*Service, error) {
 	service := ProvideOSSService(
@@ -66,6 +69,7 @@ func ProvideService(
 		tracer,
 		db,
 		permRegistry,
+		teamService,
 		lock,
 	)
 
@@ -85,7 +89,7 @@ func ProvideService(
 func ProvideOSSService(
 	cfg *setting.Cfg, store accesscontrol.Store, actionResolver accesscontrol.ActionResolver,
 	cache *localcache.CacheService, features featuremgmt.FeatureToggles, tracer tracing.Tracer,
-	db db.DB, permRegistry permreg.PermissionRegistry, lock *serverlock.ServerLockService,
+	db db.DB, permRegistry permreg.PermissionRegistry, teamService team.Service, lock *serverlock.ServerLockService,
 ) *Service {
 	s := &Service{
 		actionResolver: actionResolver,
@@ -96,6 +100,7 @@ func ProvideOSSService(
 		roles:          accesscontrol.BuildBasicRoleDefinitions(),
 		store:          store,
 		permRegistry:   permRegistry,
+		teamService:    teamService,
 	}
 
 	return s
@@ -113,6 +118,7 @@ type Service struct {
 	roles          map[string]*accesscontrol.RoleDTO
 	store          accesscontrol.Store
 	permRegistry   permreg.PermissionRegistry
+	teamService    team.Service
 	isInitialized  bool
 }
 
@@ -162,11 +168,17 @@ func (s *Service) getUserPermissions(ctx context.Context, user identity.Requeste
 		TeamIDs:      user.GetTeams(),
 		RolePrefixes: OSSRolesPrefixes,
 	})
+
 	if err != nil {
 		return nil, err
 	}
 
 	dbPermissions = s.actionResolver.ExpandActionSets(dbPermissions)
+	// BMC code start - RBAC changes
+	// doing this after append so if there are any duplicates, the rbac permissions will take precedence
+	bhdPermissions := s.loadBHDPermissions(ctx, user)
+	permissions = append(permissions, bhdPermissions...)
+	// BMC code end
 	return append(permissions, dbPermissions...), nil
 }
 
@@ -234,6 +246,11 @@ func (s *Service) getUserDirectPermissions(ctx context.Context, user identity.Re
 
 	permissions = s.actionResolver.ExpandActionSets(permissions)
 	permissions = append(permissions, SharedWithMeFolderPermission)
+
+	// BMC Code: Starts Custom RBAC
+	bhdPermissions := s.loadBHDPermissions(ctx, user)
+	permissions = append(permissions, bhdPermissions...)
+	// BMC Code: Ends
 
 	return permissions, nil
 }
@@ -379,6 +396,115 @@ func (s *Service) getCachedTeamsPermissions(ctx context.Context, user identity.R
 	}
 
 	return permissions, nil
+}
+
+// BMC Code: Next function
+func (s *Service) loadBHDPermissions(ctx context.Context, user identity.Requester) []accesscontrol.Permission {
+	list := []string{}
+	permissions := []accesscontrol.Permission{}
+	bhdPermissions, err := s.store.GetBHDPermissionsByRoles(ctx, user.GetBHDRoles())
+	if err != nil {
+		s.log.Error("Failed to load bhd permissions")
+		return permissions
+	}
+	for _, bhdPermission := range bhdPermissions {
+		relatedBHDPermissions := bhdperm.GetRelatedPermissions(bhdPermission.Action)
+		for _, relatedBHDPermission := range relatedBHDPermissions {
+			if !contains(list, relatedBHDPermission) {
+				list = append(list, relatedBHDPermission)
+				permissions = append(permissions, accesscontrol.Permission{
+					Action: relatedBHDPermission,
+					Scope:  fmt.Sprintf("%s:*", relatedBHDPermission),
+				})
+
+				//User with "dashboards:create" permission should be able to build a dashboard in the general folder, so this permission is added again with the scope "folders:uid:general".
+				if relatedBHDPermission == "dashboards:create" || relatedBHDPermission == "folders:create" {
+					perm := accesscontrol.Permission{
+						Action: relatedBHDPermission,
+						Scope:  "folders:uid:general",
+					}
+					permissions = append(permissions, perm)
+				}
+			}
+		}
+	}
+	return permissions
+}
+
+func (s *Service) HasRequiredPermissions(ctx context.Context, orgID, userID int64, requiredRole string, requiredPermissions []string) (bool, error) {
+	var validUser bool = false
+	user := &user.SignedInUser{
+		UserID: userID,
+		OrgID:  orgID,
+	}
+	err := s.store.ValidateUserId(ctx, orgID, userID)
+	if err != nil {
+		return validUser, fmt.Errorf("Invalid User Id", err)
+	}
+
+	var roles = make([]int64, 0)
+	roles, err = s.store.GetBHDRoleIdByUserId(ctx, orgID, userID)
+	if err != nil {
+		return false, err
+	} else {
+		user.BHDRoles = roles
+		if containsInt(roles, 1) {
+			user.OrgRole = identity.RoleAdmin
+		} else if containsInt(roles, 2) {
+			user.OrgRole = identity.RoleEditor
+		} else {
+			user.OrgRole = identity.RoleViewer
+		}
+	}
+
+	if requiredPermissions != nil && len(requiredPermissions) > 0 {
+		if s.teamService != nil {
+			teamIDs, terr := s.teamService.GetTeamIDsByUser(ctx, &team.GetTeamIDsByUserQuery{OrgID: orgID, UserID: userID})
+			if terr != nil {
+				return false, terr
+			}
+			user.Teams = teamIDs
+		}
+		permissions := make([]accesscontrol.Permission, 0)
+		permissions, err = s.GetUserPermissions(ctx, user, accesscontrol.Options{ReloadCache: false})
+		for _, permission := range requiredPermissions {
+			for _, userPermission := range permissions {
+				if userPermission.Action == permission {
+					validUser = true
+					break
+				}
+			}
+		}
+	}
+	if !validUser {
+		if requiredRole == "Viewer" {
+			validUser = true
+		} else if requiredRole == "Editor" {
+			validUser = (user.OrgRole == identity.RoleEditor) || (user.OrgRole == identity.RoleAdmin)
+		} else if requiredRole == "Admin" {
+			validUser = (user.OrgRole == identity.RoleAdmin)
+		}
+	}
+	return validUser, nil
+}
+
+func containsInt(s []int64, item int64) bool {
+	for _, v := range s {
+		if v == item {
+			return true
+		}
+	}
+	return false
+}
+
+// BMC Code: Next function
+func contains(slice []string, element string) bool {
+	for _, item := range slice {
+		if item == element {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *Service) ClearUserPermissionCache(user identity.Requester) {

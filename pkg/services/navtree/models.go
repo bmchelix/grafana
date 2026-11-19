@@ -19,6 +19,8 @@ const (
 	WeightDrilldown
 	WeightAssistant
 	WeightAlerting
+	// BMC code - next line
+	WeightReport
 	WeightAlertsAndIncidents
 	WeightAIAndML
 	WeightAdaptiveTelemetry

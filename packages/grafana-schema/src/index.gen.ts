@@ -9,53 +9,18 @@
 
 // Raw generated types from Dashboard kind.
 export type {
-  AnnotationTarget,
-  AnnotationPanelFilter,
-  VariableOption,
-  DashboardLink,
-  DashboardLinkType,
-  DashboardLinkPlacement,
-  AnnotationQueryPlacement,
-  ActionType,
-  FetchOptions,
-  InfinityOptions,
-  HttpRequestMethod,
-  ActionVariableType,
-  ActionVariable,
-  Action,
-  VariableType,
-  FieldColorSeriesByMode,
-  FieldColor,
-  GridPos,
-  Threshold,
-  ThresholdsConfig,
-  ValueMapping,
-  ValueMap,
-  RangeMap,
+  Action, ActionType, ActionVariable, ActionVariableType, AnnotationPanelFilter, AnnotationQueryPlacement, AnnotationTarget, DashboardLink, DashboardLinkPlacement, DashboardLinkType, FetchOptions, FieldColor, FieldColorSeriesByMode, GridPos, HttpRequestMethod, InfinityOptions, LibraryPanelRef, RangeMap,
   RegexMap,
-  SpecialValueMap,
-  ValueMappingResult,
-  LibraryPanelRef
+  SpecialValueMap, Threshold,
+  ThresholdsConfig, ValueMap, ValueMapping, ValueMappingResult, VariableOption, VariableType
 } from './raw/dashboard/x/dashboard_types.gen';
 
 // Raw generated enums and default consts from dashboard kind.
 export {
-  defaultAnnotationTarget,
-  defaultAnnotationPanelFilter,
-  VariableRefresh,
-  VariableSort,
-  defaultDashboardLink,
-  defaultFetchOptions,
-  defaultInfinityOptions,
-  defaultAction,
-  FieldColorModeId,
-  defaultGridPos,
-  ThresholdsMode,
-  defaultThresholdsConfig,
-  MappingType,
-  SpecialValueMatch,
-  DashboardCursorSync,
-  defaultDashboardCursorSync
+  DashboardCursorSync, defaultAction, defaultAnnotationPanelFilter, defaultAnnotationTarget, defaultDashboardCursorSync, defaultDashboardLink,
+  defaultFetchOptions, defaultGridPos, defaultInfinityOptions, defaultThresholdsConfig, FieldColorModeId, MappingType,
+  SpecialValueMatch, ThresholdsMode, VariableRefresh,
+  VariableSort
 } from './raw/dashboard/x/dashboard_types.gen';
 
 // The following exported declarations correspond to types in the dashboard@0.0 kind's
@@ -68,19 +33,11 @@ export {
 //
 // TODO generate code such that tsc enforces type compatibility between raw and veneer decls
 export type {
-  Dashboard,
   AnnotationContainer,
-  AnnotationQuery,
-  VariableModel,
-  DataSourceRef,
-  DataTransformerConfig,
-  TimeOption,
-  TimePickerConfig,
-  Panel,
-  FieldConfigSource,
-  MatcherConfig,
-  FieldConfig,
-  RowPanel
+  AnnotationQuery, Dashboard, DataSourceRef,
+  DataTransformerConfig, FieldConfig, FieldConfigSource,
+  MatcherConfig, Panel, RowPanel, TimeOption,
+  TimePickerConfig, VariableModel
 } from './veneer/dashboard.types';
 
 // The following exported declarations correspond to types in the dashboard@0.0 kind's
@@ -93,15 +50,9 @@ export type {
 //
 // TODO generate code such that tsc enforces type compatibility between raw and veneer decls
 export {
-  defaultDashboard,
   defaultAnnotationContainer,
-  defaultAnnotationQuery,
-  defaultVariableModel,
-  VariableHide,
-  defaultTimePickerConfig,
-  defaultPanel,
-  defaultFieldConfigSource,
-  defaultMatcherConfig,
-  defaultFieldConfig,
-  defaultRowPanel
+  defaultAnnotationQuery, defaultDashboard, defaultFieldConfig, defaultFieldConfigSource,
+  defaultMatcherConfig, defaultPanel, defaultRowPanel, defaultTimePickerConfig, defaultVariableModel,
+  VariableHide
 } from './veneer/dashboard.types';
+

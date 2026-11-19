@@ -7,6 +7,8 @@ import { stylesFactory } from '../../themes/stylesFactory';
 export const getSelectStyles = stylesFactory((theme: GrafanaTheme2) => {
   return {
     menu: css({
+      // BMC Change: RTL change next line
+      direction: theme.isRtl ? 'ltr !important' as any : '',
       label: 'grafana-select-menu',
       background: theme.components.dropdown.background,
       borderRadius: theme.shape.radius.default,

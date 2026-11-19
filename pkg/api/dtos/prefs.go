@@ -21,6 +21,9 @@ type UpdatePrefsCmd struct {
 	RegionalFormat string                       `json:"regionalFormat"`
 	Cookies        []pref.CookieType            `json:"cookies,omitempty"`
 	Navbar         *pref.NavbarPreference       `json:"navbar,omitempty"`
+	// BMC code
+	TimeFormat        string                            `json:"timeFormat,omitempty"`
+	EnabledQueryTypes *pref.EnabledQueryTypesPreference `json:"enabledQueryTypes"`
 }
 
 // swagger:model
@@ -40,4 +43,7 @@ type PatchPrefsCmd struct {
 	HomeDashboardUID *string                      `json:"homeDashboardUID,omitempty"`
 	Cookies          []pref.CookieType            `json:"cookies,omitempty"`
 	Navbar           *pref.NavbarPreference       `json:"navbar,omitempty"`
+	// BMC code
+	TimeFormat        *string                           `json:"timeFormat,omitempty"`
+	EnabledQueryTypes *pref.EnabledQueryTypesPreference `json:"enabledQueryTypes"`
 }
