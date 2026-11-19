@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import { PureComponent, Suspense, lazy } from 'react';
 import { ConnectedProps, connect } from 'react-redux';
 
 import { t } from '@grafana/i18n';
@@ -11,9 +11,16 @@ import { AccessControlAction } from 'app/types/accessControl';
 import { ShowConfirmModalEvent } from 'app/types/events';
 import { StoreState } from 'app/types/store';
 
+import { isOrgAdmin } from '../plugins/admin/permissions';
+
 import OrgProfile from './OrgProfile';
 import { loadOrganization, updateOrganization } from './state/actions';
 import { setOrganizationName } from './state/reducers';
+// BMC code
+const ToggleFeature = lazy(() => {
+  return import('../feature-status/ToggleFeature');
+});
+// End
 
 interface OwnProps {}
 
@@ -32,8 +39,11 @@ export class OrgDetailsPage extends PureComponent<Props> {
       appEvents.publish(
         new ShowConfirmModalEvent({
           title: t('org.org-details-page.title.confirm-preferences-update', 'Confirm preferences update'),
-          text: 'This will update the preferences for the whole organization. Are you sure you want to update the preferences?',
-          yesText: 'Save',
+          text: t(
+            'bmcgrafana.org.org-details-page.title.confirm-preferences-update-desc',
+            'This will update the preferences for the whole organization. Are you sure you want to update the preferences?'
+          ),
+          yesText: t('access-control.add-permissions.save', 'Save'),
           yesButtonVariant: 'primary',
           onConfirm: async () => resolve(true),
           onDismiss: async () => resolve(false),
@@ -63,6 +73,13 @@ export class OrgDetailsPage extends PureComponent<Props> {
                   onConfirm={this.handleConfirm}
                 />
               )}
+              {/* BMC code */}
+              {isOrgAdmin() && (
+                <Suspense fallback={<></>}>
+                  <ToggleFeature />
+                </Suspense>
+              )}
+              {/* End */}
             </Stack>
           )}
         </Page.Contents>

@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// BMC Helix code changes start - DRJ71-23070
+// TODO: REMOVE BEFORE UPGRADE
+// Build tag excludes this file from hdb_no_tempo production builds (Tempo CVE remediation).
+//go:build !hdb_no_tempo
+// BMC Helix code changes end - DRJ71-23070
+
+
 package tempo
 
 import (

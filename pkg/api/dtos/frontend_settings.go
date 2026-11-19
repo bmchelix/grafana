@@ -303,6 +303,25 @@ type FrontendSettingsDTO struct {
 	Licensing     *FrontendSettingsLicensingDTO     `json:"licensing,omitempty"`
 	Whitelabeling *FrontendSettingsWhitelabelingDTO `json:"whitelabeling,omitempty"`
 
+	// BMC Change - start
+	EnvType                        string   `json:"EnvType"`
+	IsExternalDSUrlDropdownEnabled bool     `json:"isExternalDSUrlDropdownEnabled"`
+	BhdVersion                     string   `json:"bhdVersion"`
+	BulkLimit                      int      `json:"bulkLimit"`
+	BulkExportLimit                int      `json:"bulkExportLimit"`
+	InsightFinderPdfLimit          int      `json:"insightFinderPdfLimit"`
+	InsightFinderCsvXlsLimit       int      `json:"insightFinderCsvXlsLimit"`
+	EmailAttachmentSizeLimit       int      `json:"emailAttachmentSizeLimit"`
+	CSVDelimiter                   []string `json:"csvDelimiters"`
+	RepeatVariablesLimit           int      `json:"repeatVariablesLimit"`
+	EnabledQueryTypes              struct {
+		EnabledTypes  []string `json:"enabledTypes"`
+		ApplyForAdmin bool     `json:"applyForAdmin"`
+	} `json:"enabledQueryTypes"`
+	ARRowLimitForCachedVariables            int  `json:"arRowLimitForCachedVariables"`
+	RedisVariableCachingEnabledOnDeployment bool `json:"redisVariableCachingEnabledOnDeployment"`
+	EnableDsMetering                        bool `json:"enableDsMetering"`
+	// BMC Change - end
 	LocalFileSystemAvailable bool `json:"localFileSystemAvailable"`
 	// Experimental Scope settings
 	ListScopesEndpoint          string            `json:"listScopesEndpoint"`

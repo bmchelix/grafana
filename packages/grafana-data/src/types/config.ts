@@ -337,6 +337,15 @@ export interface GrafanaConfig {
   analytics: {
     enabled: boolean;
   };
+
+  //BMC code
+  csvDelimiters?: string[];
+  /** BMC: true when Redis caching is enabled on the deployment level. */
+  redisVariableCachingEnabledOnDeployment?: boolean;
+  // row limit for variables which use redis caching
+  arRowLimitForCachedVariables?: number;
+  /** BMC: true when deployed on-SAAS environment — enables HCG URL dropdown for external datasource editors. */
+  isExternalDSUrlDropdownEnabled?: boolean;
 }
 
 export interface SqlConnectionLimits {

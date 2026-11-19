@@ -86,7 +86,14 @@ type FakeStore struct {
 	ExpectedUsersPermissions      map[int64][]accesscontrol.Permission
 	ExpectedUsersRoles            map[int64][]string
 	ExpectedErr                   error
+	// BMC: optional overrides for BHD / user validation used by acimpl.HasRequiredPermissions
+	ExpectedBHDRoleIDs        []int64
+	ExpectedBHDPermissions    []accesscontrol.Permission
+	ExpectedValidateUserErr   error
+	ExpectedBHDRolesErr       error
 }
+
+var _ accesscontrol.Store = FakeStore{}
 
 func (f FakeStore) GetUserPermissions(ctx context.Context, query accesscontrol.GetUserPermissionsQuery) ([]accesscontrol.Permission, error) {
 	return f.ExpectedUserPermissions, f.ExpectedErr
@@ -122,6 +129,31 @@ func (f FakeStore) SaveExternalServiceRole(ctx context.Context, cmd accesscontro
 
 func (f FakeStore) DeleteExternalServiceRole(ctx context.Context, externalServiceID string) error {
 	return f.ExpectedErr
+}
+
+func (f FakeStore) GetBHDPermissionsByRoles(ctx context.Context, bhdRoles []int64) ([]accesscontrol.Permission, error) {
+	_ = bhdRoles
+	if f.ExpectedBHDPermissions != nil {
+		return f.ExpectedBHDPermissions, f.ExpectedBHDRolesErr
+	}
+	return nil, f.ExpectedBHDRolesErr
+}
+
+func (f FakeStore) GetBHDRoleIdByUserId(ctx context.Context, orgID, userID int64) ([]int64, error) {
+	_ = ctx
+	_ = orgID
+	_ = userID
+	if f.ExpectedBHDRoleIDs != nil {
+		return f.ExpectedBHDRoleIDs, f.ExpectedBHDRolesErr
+	}
+	return nil, f.ExpectedBHDRolesErr
+}
+
+func (f FakeStore) ValidateUserId(ctx context.Context, orgID, userID int64) error {
+	_ = ctx
+	_ = orgID
+	_ = userID
+	return f.ExpectedValidateUserErr
 }
 
 var _ accesscontrol.PermissionsService = new(FakePermissionsService)
@@ -160,3 +192,13 @@ func (f *FakePermissionsService) DeleteResourcePermissions(ctx context.Context, 
 func (f *FakePermissionsService) MapActions(permission accesscontrol.ResourcePermission) string {
 	return f.ExpectedMappedAction
 }
+
+// BMC Change start
+func (f *FakePermissionsService) GetPermissionsList() []string {
+	return f.GetPermissionsList()
+}
+func (f *FakePermissionsService) GetPermissionsToActions() map[string][]string {
+	return f.GetPermissionsToActions()
+}
+
+//BMC Change end

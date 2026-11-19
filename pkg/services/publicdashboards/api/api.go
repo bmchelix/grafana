@@ -22,6 +22,16 @@ import (
 	"github.com/grafana/grafana/pkg/web"
 )
 
+// BMC Helix code changes start - CVE-2026-42127
+// TODO: REMOVE BEFORE UPGRADE
+// CVE-2026-42127: Grafana 12.3.7 public-dashboard JSON body caps.
+const (
+	maxQueryBodySize  = 10 * 1024 // 10 KiB
+	maxMutateBodySize = 10 * 1024 // 10 KiB
+)
+
+// BMC Helix code changes end - CVE-2026-42127
+
 type Api struct {
 	PublicDashboardService publicdashboards.Service
 	Middleware             publicdashboards.Middleware
@@ -185,6 +195,11 @@ func (api *Api) CreatePublicDashboard(c *contextmodel.ReqContext) response.Respo
 		return response.Err(ErrInvalidUid.Errorf("CreatePublicDashboard: invalid Uid %s", dashboardUid))
 	}
 
+	// BMC Helix code changes start - CVE-2026-42127
+	// TODO: REMOVE BEFORE UPGRADE
+	c.Req.Body = http.MaxBytesReader(c.Resp, c.Req.Body, maxMutateBodySize)
+	// BMC Helix code changes end - CVE-2026-42127
+
 	pdDTO := &PublicDashboardDTO{}
 	if err := web.Bind(c.Req, pdDTO); err != nil {
 		return response.Err(ErrBadRequest.Errorf("CreatePublicDashboard: bad request data %v", err))
@@ -243,6 +258,11 @@ func (api *Api) UpdatePublicDashboard(c *contextmodel.ReqContext) response.Respo
 	if !validation.IsValidShortUID(uid) {
 		return response.Err(ErrInvalidUid.Errorf("UpdatePublicDashboard: invalid Uid %s", uid))
 	}
+
+	// BMC Helix code changes start - CVE-2026-42127
+	// TODO: REMOVE BEFORE UPGRADE
+	c.Req.Body = http.MaxBytesReader(c.Resp, c.Req.Body, maxMutateBodySize)
+	// BMC Helix code changes end - CVE-2026-42127
 
 	pdDTO := &PublicDashboardDTO{}
 	if err := web.Bind(c.Req, pdDTO); err != nil {

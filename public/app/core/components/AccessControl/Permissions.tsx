@@ -1,19 +1,19 @@
 import { css } from '@emotion/css';
 import { sortBy } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
-import { Text, Box, Button, useStyles2, LoadingPlaceholder } from '@grafana/ui';
+import { Box, Button, LoadingPlaceholder, Text, useStyles2 } from '@grafana/ui';
 import { SlideDown } from 'app/core/components/Animations/SlideDown';
 import { getBackendSrv } from 'app/core/services/backend_srv';
 import { DescendantCount } from 'app/features/browse-dashboards/components/BrowseActions/DescendantCount';
 
 import { AddPermission } from './AddPermission';
 import { PermissionList } from './PermissionList';
-import { PermissionTarget, ResourcePermission, SetPermission, Description } from './types';
+import { Description, PermissionTarget, ResourcePermission, SetPermission } from './types';
 
 const EMPTY_PERMISSION = '';
 
@@ -54,12 +54,23 @@ export const Permissions = ({
   const styles = useStyles2(getStyles);
   const [isAdding, setIsAdding] = useState(false);
   const [desc, setDesc] = useState(INITIAL_DESCRIPTION);
+  // BMC code: next line
+  const [isLoading, setIsLoading] = useState(false);
 
   const [permissions, fetchPermissions] = useAsyncFn(async () => {
+    // BMC code: next line
+    setIsLoading(true);
     let items = await getPermissions(resource, resourceId);
     if (getWarnings) {
       items = getWarnings(items);
     }
+    // BMC code: start
+    if (resource === 'teams' && items.length > 1000) {
+      const trimmedList = items.slice(0, 1000);
+      items = trimmedList;
+    }
+    setIsLoading(false);
+    // BMC code: end
     return items;
   }, [resource, resourceId, getWarnings]);
 
@@ -174,7 +185,17 @@ export const Permissions = ({
             />
           </Box>
         )}
-        {permissions.value?.length === 0 && (
+        {/* BMC code - start */}
+        {isLoading ? (
+          <Box>
+            <Text>
+              <Trans i18nKey="bmc.common.loading">Loading...</Trans>
+            </Text>
+          </Box>
+        ) : null}
+        {/* BMC code - end */}
+        {/* BMC code: inline change */}
+        {!isLoading && permissions.value?.length === 0 && (
           <Box>
             <Text>{emptyLabel}</Text>
           </Box>

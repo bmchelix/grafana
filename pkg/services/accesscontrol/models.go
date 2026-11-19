@@ -497,6 +497,9 @@ const (
 
 	// Usage stats actions
 	ActionUsageStatsRead = "server.usagestats.report:read"
+
+	// BMC code for checking if the user has the permission to manage the elevated dashboard access
+	ActionElevatedDashboardAccessManage = "dashboard.elevated.access:access"
 )
 
 var (
@@ -580,6 +583,9 @@ var OrgsCreateAccessEvaluator = EvalAll(
 	EvalPermission(ActionOrgsRead),
 	EvalPermission(ActionOrgsCreate),
 )
+
+// BMC code for checking if the user has the permission to manage the elevated dashboard access
+var ElevatedDashboardAccessManageEvaluator = EvalPermission(ActionElevatedDashboardAccessManage)
 
 type QueryWithOrg struct {
 	OrgId  *int64 `json:"orgId"`

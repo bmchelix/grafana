@@ -2,8 +2,9 @@ import { debounce } from 'lodash';
 import { useCallback, useMemo } from 'react';
 
 import { SelectableValue } from '@grafana/data';
+import { t } from '@grafana/i18n';
 import PageActionBar, { FilterCheckbox } from 'app/core/components/PageActionBar/PageActionBar';
-import { StoreState, useSelector, useDispatch } from 'app/types/store';
+import { StoreState, useDispatch, useSelector } from 'app/types/store';
 
 import { setDataSourcesSearchQuery, setIsSortAscending } from '../state/reducers';
 import { getDataSourcesSearchQuery, getDataSourcesSort } from '../state/selectors';
@@ -12,12 +13,14 @@ import { trackDsSearched } from '../tracking';
 const ascendingSortValue = 'alpha-asc';
 const descendingSortValue = 'alpha-desc';
 
-const sortOptions = [
+// BMC code: convert to function to make t function available
+const getSortOptions = () => [
   // We use this unicode 'en dash' character (U+2013), because it looks nicer
   // than simple dash in this context. This is also used in the response of
   // the `sorting` endpoint, which is used in the search dashboard page.
-  { label: 'Sort by A–Z', value: ascendingSortValue },
-  { label: 'Sort by Z–A', value: descendingSortValue },
+  // BMC Change: Next couple lines
+  { label: t('bmcgrafana.datesource.configuration.sort-asc', 'Sort by A–Z'), value: ascendingSortValue },
+  { label: t('bmcgrafana.datesource.configuration.sort-desc', 'Sort by Z–A'), value: descendingSortValue },
 ];
 
 export interface DataSourcesListHeaderProps {
@@ -55,7 +58,7 @@ export function DataSourcesListHeader({ filterCheckbox }: DataSourcesListHeaderP
   const sortPicker = {
     onChange: setSort,
     value: isSortAscending ? ascendingSortValue : descendingSortValue,
-    getSortOptions: () => Promise.resolve(sortOptions),
+    getSortOptions: () => Promise.resolve(getSortOptions()),
   };
 
   return (

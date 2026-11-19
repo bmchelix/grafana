@@ -8,10 +8,13 @@ import (
 )
 
 const (
-	Postgres = "postgres"
-	SQLite   = "sqlite3"
-	MySQL    = "mysql"
-	MSSQL    = "mssql"
+	Postgres    = "postgres"
+	// BMC code - start - DRJ71-22817
+	PostgresPgx = "pgx"
+	// BMC code - end
+	SQLite      = "sqlite3"
+	MySQL       = "mysql"
+	MSSQL       = "mssql"
 )
 
 type Migration interface {

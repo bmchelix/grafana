@@ -4,6 +4,7 @@
 process.env.TZ = 'Pacific/Easter'; // UTC-06:00 or UTC-05:00 depending on daylight savings
 
 const esModules = [
+  '@faker-js/faker',
   '@glideapps/glide-data-grid',
   '@wojtekmaj/date-utils',
   'ol',

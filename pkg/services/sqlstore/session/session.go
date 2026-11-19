@@ -102,7 +102,9 @@ func (gtx *SessionTx) ExecWithReturningId(ctx context.Context, query string, arg
 
 func execWithReturningId(ctx context.Context, driverName string, query string, sess Session, args ...any) (int64, error) {
 	var id int64
-	if driverName == "postgres" {
+	// BMC code - DRJ71-22817: pgx and pgxWithHooks drivers added for PgBouncer transaction-pool support.
+	if driverName == "postgres" || driverName == "pgx" ||
+		driverName == "postgresWithHooks" || driverName == "pgxWithHooks" {
 		query = fmt.Sprintf("%s RETURNING id", query)
 		err := sess.Get(ctx, &id, query, args...)
 		if err != nil {

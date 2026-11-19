@@ -3,6 +3,8 @@ import { CSSObjectWithLabel } from 'react-select';
 
 import { GrafanaTheme2 } from '@grafana/data';
 
+import { useDirection } from '../../contexts';
+
 export default function resetSelectStyles(theme: GrafanaTheme2) {
   return {
     clearIndicator: () => ({}),
@@ -48,16 +50,32 @@ export default function resetSelectStyles(theme: GrafanaTheme2) {
 }
 
 export function useCustomSelectStyles(theme: GrafanaTheme2, width: number | string | undefined) {
+  // BMC Change: RTL — respect DirectionProvider / DirectionCacheProvider (not global document dir alone)
+  const { isRtl: rtlMode } = useDirection();
+
   return useMemo(() => {
     return {
       ...resetSelectStyles(theme),
       menuPortal: (base: any) => {
         // Would like to correct top position when menu is placed bottom, but have props are not sent to this style function.
         // Only state is. https://github.com/JedWatson/react-select/blob/master/packages/react-select/src/components/Menu.tsx#L605
-        return {
-          ...base,
-          zIndex: theme.zIndex.portal,
-        };
+        // BMC Change: To support RTL
+        if (!rtlMode) {
+          return {
+            ...base,
+            zIndex: theme.zIndex.portal,
+          };
+        } else {
+          return {
+            top: base.top,
+            right: base.left,
+            left: base.right,
+            position: base.position,
+            width: base.width,
+            boxSizing: base.boxSizing,
+            zIndex: theme.zIndex.portal,
+          };
+        }
       },
       //These are required for the menu positioning to function
       menu: ({ top, bottom, position }: any) => {
@@ -78,5 +96,5 @@ export function useCustomSelectStyles(theme: GrafanaTheme2, width: number | stri
         opacity: state.isDisabled ? 0.5 : 1,
       }),
     };
-  }, [theme, width]);
+  }, [theme, width, rtlMode]);
 }

@@ -21,7 +21,8 @@ export const createCustomVariableAdapter = (): VariableAdapter<CustomVariableMod
       'variables.create-custom-variable-adapter.description.define-variable-values-manually',
       'Define variable values manually'
     ),
-    name: 'Custom',
+    // BMC Change: To enable localization for below text
+    name: t('bmcgrafana.dashboards.settings.variables.editor.select-variable-type.custom.name', 'Custom'),
     initialState: initialCustomVariableModelState,
     reducer: customVariableReducer,
     picker: optionPickerFactory<CustomVariableModel>(),

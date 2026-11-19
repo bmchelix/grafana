@@ -31,9 +31,11 @@ import {
   Collapse,
 } from '@grafana/ui';
 
+import { HCGUrlDropdown } from '../../hcg/HCGUrlDropdown';
 import { PostgresOptions, PostgresTLSMethods, PostgresTLSModes, SecureJsonData } from '../types';
 
 import { useAutoDetectFeatures } from './useAutoDetectFeatures';
+import { t } from 'i18next';
 
 export const postgresVersions: Array<SelectableValue<number>> = [
   { label: '9.0', value: 900 },
@@ -60,6 +62,13 @@ export const PostgresConfigEditor = (props: DataSourcePluginOptionsEditorProps<P
 
   const { options, onOptionsChange } = props;
   const jsonData = options.jsonData;
+  //Helix change: starts
+  const isGrafanaAdmin = config.bootData.user.isGrafanaAdmin;
+  const isExternalDSUrlDropdownEnabled = config.isExternalDSUrlDropdownEnabled === true;
+  if (!isGrafanaAdmin) {
+    options.url = '********';
+  }
+  //Helix change: ends
 
   const onResetPassword = () => {
     updateDatasourcePluginResetOption(props, 'password');
@@ -101,6 +110,14 @@ export const PostgresConfigEditor = (props: DataSourcePluginOptionsEditorProps<P
     };
   };
 
+  // BMC HCG: Handler for URL selection from dropdown
+  const handleUrlChange = (url: string) => {
+    onOptionsChange({
+      ...options,
+      url: url,
+    });
+  };
+
   const WIDTH_LONG = 40;
 
   return (
@@ -123,29 +140,46 @@ export const PostgresConfigEditor = (props: DataSourcePluginOptionsEditorProps<P
       </Collapse>
 
       <Divider />
-
+      
+      {/* Helix change: starts */}
       <ConfigSection title="Connection">
-        <Field label="Host URL" required>
-          <Input
-            width={WIDTH_LONG}
-            name="host"
-            type="text"
-            value={options.url || ''}
-            placeholder="localhost:5432"
-            onChange={onDSOptionChanged('url')}
+        {isExternalDSUrlDropdownEnabled ? (
+          <HCGUrlDropdown
+            resourceType="grafana-postgresql-datasource"
+            value={options.url}
+            onChange={handleUrlChange}
+            disabled={!isGrafanaAdmin}
+            label="Host URL"
+            showSection={false}
           />
-        </Field>
+        ) : (
+          <Field label="Host URL" required>
+            <Input
+              width={WIDTH_LONG}
+              name="host"
+              type="text"
+              value={options.url || ''}
+              placeholder="localhost:5432"
+              onChange={onDSOptionChanged('url')}
+              readOnly={!isGrafanaAdmin}
+            />
+          </Field>
+        )}
 
-        <Field label="Database name" required>
+        <Field label={t('configuration.configuration-editor.title-database', "Database")} 
+        required
+        invalid={!jsonData.database}
+        error={t('configuration.configuration-editor.required-database', 'Database is required')}>
           <Input
             width={WIDTH_LONG}
             name="database"
             value={jsonData.database || ''}
-            placeholder="Database"
+            placeholder="Database name"
             onChange={onUpdateDatasourceJsonDataOption(props, 'database')}
           />
         </Field>
       </ConfigSection>
+      {/* Helix change: ends */}
 
       <Divider />
 

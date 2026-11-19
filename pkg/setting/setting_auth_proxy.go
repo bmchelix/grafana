@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"os"
 	"strings"
 
 	"github.com/grafana/grafana/pkg/util"
@@ -17,6 +18,8 @@ type AuthProxySettings struct {
 	Headers          map[string]string
 	HeadersEncoded   bool
 	SyncTTL          int
+	// BMC: login prefix for PPL service accounts (e.g. bmc_ppl_Demo).
+	PplLoginPrefix string
 }
 
 func (cfg *Cfg) readAuthProxySettings() {
@@ -40,6 +43,11 @@ func (cfg *Cfg) readAuthProxySettings() {
 	}
 
 	authProxySettings.HeadersEncoded = authProxy.Key("headers_encoded").MustBool(false)
+	// BMC: set via deployment env SUPPORT_DEBUGGER_USER_PREFIX.
+	authProxySettings.PplLoginPrefix = os.Getenv("SUPPORT_DEBUGGER_USER_PREFIX")
+	if authProxySettings.PplLoginPrefix == "" {
+		authProxySettings.PplLoginPrefix = "bmc_ppl_"
+	}
 
 	cfg.AuthProxy = authProxySettings
 }

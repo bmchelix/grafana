@@ -8,7 +8,7 @@ import { PanelModel } from 'app/features/dashboard/state/PanelModel';
 import { getLibraryPanel } from 'app/features/library-panels/state/api';
 
 import { createPanelDataProvider } from '../utils/createPanelDataProvider';
-import { getPanelIdForVizPanel } from '../utils/utils';
+import { getDashboardSceneFor, getPanelIdForVizPanel } from '../utils/utils';
 
 import { VizPanelLinks, VizPanelLinksMenu } from './PanelLinks';
 import { panelLinksBehavior } from './PanelMenuBehavior';
@@ -131,6 +131,8 @@ export class LibraryPanelBehavior extends SceneObjectBase<LibraryPanelBehaviorSt
     try {
       const libPanel = await getLibraryPanel(this.state.uid, true);
       this.setPanelFromLibPanel(libPanel);
+      // BMC Change: Next line to apply localization to the library panel
+      getDashboardSceneFor(vizPanel)?.applyLocalizationForPanel?.(vizPanel.state.key!);
     } catch (err) {
       vizPanel.setState({
         _pluginLoadError: `Unable to load library panel: ${this.state.uid}`,

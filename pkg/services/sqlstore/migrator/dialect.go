@@ -120,9 +120,15 @@ var supportedDialects = map[string]dialectFunc{
 	MySQL:                  NewMysqlDialect,
 	SQLite:                 NewSQLite3Dialect,
 	Postgres:               NewPostgresDialect,
-	MySQL + "WithHooks":    NewMysqlDialect,
+	// BMC code - start - DRJ71-22817
+	PostgresPgx:            NewPostgresDialect,
+	// BMC code - end
+	MySQL + "WithHooks": NewMysqlDialect,
 	SQLite + "WithHooks":   NewSQLite3Dialect,
 	Postgres + "WithHooks": NewPostgresDialect,
+	// BMC code - start - DRJ71-22817
+	PostgresPgx + "WithHooks": NewPostgresDialect,
+	// BMC code - end
 }
 
 func NewDialect(driverName string) Dialect {

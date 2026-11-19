@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
 import { isString } from 'lodash';
-import { useCallback, useId, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useId, useState } from 'react';
 
 import { getTimeZoneInfo, GrafanaTheme2, TimeZone } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
@@ -143,8 +143,14 @@ export const TimePickerFooter = (props: Props) => {
                 <Field
                   className={style.fiscalYearField}
                   label={t('time-picker.footer.fiscal-year-start', 'Fiscal year start month')}
+                  //BMC Accessibility Change next 1 line : Added the htmlFor
+                  htmlFor="fiscal-year-start-month-select"
+                  //BMC Accessibility Change End
                 >
                   <Combobox
+                    //BMC Accessibility Change next 1 line : Added the id
+                    id="fiscal-year-start-month-select"
+                    //BMC Accessibility Change End
                     value={fiscalYearStartMonth ?? null}
                     options={getMonthOptions()}
                     onChange={(value) => {

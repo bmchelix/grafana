@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { locationService } from '@grafana/runtime';
 import { Page } from 'app/core/components/Page/Page';
 import { SettingsPageProps } from 'app/features/dashboard/components/DashboardSettings/types';
+import { deleteVariableCache } from 'app/features/dashboard-scene/settings/variables/utils';
 import { StoreState, ThunkDispatch } from 'app/types/store';
 
 import { VariablesUnknownTable } from '../inspect/VariablesUnknownTable';
@@ -102,6 +103,20 @@ class VariableEditorContainerUnconnected extends PureComponent<Props, State> {
   onRemoveVariable = () => {
     this.props.removeVariable(this.state.variableId!);
     this.onModalClose();
+
+    // BMC code starts
+    const dashboardUID = this.props?.dashboard?.uid;
+    const variable_name = this.state.variableId?.id;
+    const variables = this.props.variables;
+    const selectedObject = variables.find((variable) => variable.name === variable_name);
+    if (selectedObject) {
+      if (!deleteVariableCache(selectedObject, dashboardUID, true)) {
+        console.error(`Couldn't delete variable cache for ${variable_name}`);
+      }
+    } else {
+      console.error(`No element found with name : ${variable_name}`);
+    }
+    // BMC code ends
   };
 
   render() {

@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
+	"github.bmc.com/DSOM-ADE/authz-go"
 	claims "github.com/grafana/authlib/types"
 
 	"github.com/grafana/grafana/pkg/infra/log"
@@ -40,6 +41,13 @@ func ptrBool(b bool) *bool {
 }
 
 func TestUserSync_SyncUserHook(t *testing.T) {
+	req := &authn.Request{
+		OrgID: 1,
+		DecodedToken: &authz.UserInfo{
+			UserID: "0",
+		},
+	}
+
 	userProtection := &authinfoimpl.OSSUserProtectionImpl{}
 
 	authFakeNil := &authinfotest.FakeService{
@@ -468,7 +476,8 @@ func TestUserSync_SyncUserHook(t *testing.T) {
 				ID:             "3",
 				UID:            "3",
 				Type:           claims.TypeUser,
-				Login:          "test_mod",
+				// BMC: login updates are not applied; keep existing DB login.
+				Login:          "test",
 				Name:           "test_mod",
 				Email:          "test_mod",
 				IsDisabled:     false,
@@ -661,7 +670,8 @@ func TestUserSync_SyncUserHook(t *testing.T) {
 				ID:              int64ToStr(scimUserNotAdminInitial.ID),
 				UID:             scimUserNotAdminInitial.UID,
 				Type:            claims.TypeUser,
-				Login:           "saml.login. متفاوت",             // Reflects actual behavior: SAML input value persists
+				// BMC: login updates are not applied; keep existing DB login.
+				Login:           scimUserNotAdminInitial.Login,
 				Email:           "saml.email. متفاوت@example.com", // Reflects actual behavior: SAML input value persists
 				Name:            "SAML Name متفاوت",               // Reflects actual behavior: SAML input value persists
 				IsGrafanaAdmin:  ptrBool(true),                    // This SHOULD be updated
@@ -779,7 +789,8 @@ func TestUserSync_SyncUserHook(t *testing.T) {
 				ID:              int64ToStr(scimUserNotAdminInitial.ID),
 				UID:             scimUserNotAdminInitial.UID,
 				Type:            claims.TypeUser,
-				Login:           "saml.login.new",             // Reflects actual behavior: SAML input value persists
+				// BMC: login updates are not applied; keep existing DB login.
+				Login:           scimUserNotAdminInitial.Login,
 				Email:           "saml.email.new@example.com", // Reflects actual behavior: SAML input value persists
 				Name:            "SAML Name New",              // Reflects actual behavior: SAML input value persists
 				IsGrafanaAdmin:  ptrBool(false),               // Unchanged, matches DB
@@ -887,8 +898,21 @@ func TestUserSync_SyncUserHook(t *testing.T) {
 			cfg.Raw.Section("auth.scim").Key("user_sync_enabled").SetValue("true")
 			cfg.Raw.Section("auth.scim").Key("reject_non_provisioned_users").SetValue("true")
 
-			s := ProvideUserSync(tt.fields.userService, userProtection, tt.fields.authInfoService, tt.fields.quotaService, tracing.InitializeTracerForTest(), featuremgmt.WithFeatures(), cfg, nil)
-			err := s.SyncUserHook(context.Background(), tt.args.id, nil)
+			s := ProvideUserSync(
+				tt.fields.userService,
+				userProtection,
+				tt.fields.authInfoService,
+				tt.fields.quotaService,
+				tracing.InitializeTracerForTest(),
+				featuremgmt.WithFeatures(),
+				cfg,
+				nil, // k8sClient
+				nil, // db
+				nil, // teamService
+				nil, // teamPermissionService
+				nil, // orgService
+			)
+			err := s.SyncUserHook(context.Background(), tt.args.id, req)
 			if tt.wantErr {
 				require.Error(t, err)
 				return
@@ -906,6 +930,13 @@ func TestUserSync_SyncUserRetryFetch(t *testing.T) {
 	userSrv.On("Create", mock.Anything, mock.Anything).Return(nil, user.ErrUserAlreadyExists).Once()
 	userSrv.On("GetByEmail", mock.Anything, mock.Anything).Return(&user.User{ID: 1}, nil).Once()
 
+	req := &authn.Request{
+		OrgID: 1,
+		DecodedToken: &authz.UserInfo{
+			UserID: "0",
+		},
+	}
+
 	s := ProvideUserSync(
 		userSrv,
 		authinfoimpl.ProvideOSSUserProtectionService(),
@@ -914,7 +945,11 @@ func TestUserSync_SyncUserRetryFetch(t *testing.T) {
 		tracing.NewNoopTracerService(),
 		featuremgmt.WithFeatures(),
 		setting.NewCfg(),
-		nil,
+		nil, // k8sClient
+		nil, // db
+		nil, // teamService
+		nil, // teamPermissionService
+		nil, // orgService
 	)
 
 	email := "test@test.com"
@@ -927,7 +962,7 @@ func TestUserSync_SyncUserRetryFetch(t *testing.T) {
 				Email: &email,
 			},
 		},
-	}, nil)
+	}, req)
 	require.NoError(t, err)
 }
 

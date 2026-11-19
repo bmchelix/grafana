@@ -38,9 +38,10 @@ export const UserOrganizations = memo<Props>(({ isLoading, orgs, user, setUserOr
               <th>
                 <Trans i18nKey="user-orgs.name-column">Name</Trans>
               </th>
-              <th>
+              {/* BMC code - commented next tag */}
+              {/* <th>
                 <Trans i18nKey="user-orgs.role-column">Role</Trans>
-              </th>
+              </th> */}
               <th />
             </tr>
           </thead>
@@ -49,7 +50,8 @@ export const UserOrganizations = memo<Props>(({ isLoading, orgs, user, setUserOr
               return (
                 <tr key={index}>
                   <td>{org.name}</td>
-                  <td>{org.role}</td>
+                  {/* BMC code - next line */}
+                  {/* <td>{org.role}</td> */}
                   <td className="text-right">
                     {org.orgId === user?.orgId ? (
                       <Button variant="secondary" size="sm" disabled>

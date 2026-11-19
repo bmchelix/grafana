@@ -25,9 +25,10 @@ var ErrFolderNotEmpty = errutil.BadRequest("folder.not-empty", errutil.WithPubli
 var ErrFolderCannotBeParentOfItself = errors.New("folder cannot be parent of itself")
 
 const (
-	GeneralFolderUID      = "general"
-	RootFolderUID         = ""
-	MaxNestedFolderDepth  = 4
+	GeneralFolderUID = "general"
+	RootFolderUID    = ""
+	// BMC code: Set to 0 to allow only root-level folders (no nesting)
+	MaxNestedFolderDepth  = 0
 	SharedWithMeFolderUID = "sharedwithme"
 )
 

@@ -97,6 +97,9 @@ message ResourceSearchRequest {
   int64 page = 11;
 
   int64 permission = 12;
+
+  // BMC: locale for bhd_localization (e.g. en-US, fr-FR) when FeatureFlagBHDLocalization is enabled
+  string lang = 13;
 }
 
 message ResourceSearchResponse {

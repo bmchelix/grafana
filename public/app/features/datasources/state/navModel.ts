@@ -1,12 +1,6 @@
-import { DataSourceSettings, PluginType, PluginInclude, NavModel, NavModelItem } from '@grafana/data';
+import { DataSourceSettings, NavModel, NavModelItem, PluginInclude, PluginType } from '@grafana/data';
 import { t } from '@grafana/i18n';
-import { featureEnabled } from '@grafana/runtime';
-import { ProBadge } from 'app/core/components/Upgrade/ProBadge';
-import config from 'app/core/config';
 import { contextSrv } from 'app/core/core';
-import { isOpenSourceBuildOrUnlicenced } from 'app/features/admin/EnterpriseAuthFeaturesCard';
-import { highlightTrial } from 'app/features/admin/utils';
-import { AccessControlAction } from 'app/types/accessControl';
 import icnDatasourceSvg from 'img/icn-datasource.svg';
 
 import { GenericDataSourcePlugin } from '../types';
@@ -15,7 +9,8 @@ const loadingDSType = 'Loading';
 
 export function buildNavModel(dataSource: DataSourceSettings, plugin: GenericDataSourcePlugin): NavModelItem {
   const pluginMeta = plugin.meta;
-  const highlightsEnabled = config.featureToggles.featureHighlights;
+  // BMC Change: comment next line highlightsEnabled (no longer needed after blocking permissions/insights/cache tabs)
+  // const highlightsEnabled = config.featureToggles.featureHighlights;
   const navModel: NavModelItem = {
     img: pluginMeta.info.logos.large,
     id: 'datasource-' + dataSource.uid,
@@ -54,94 +49,97 @@ export function buildNavModel(dataSource: DataSourceSettings, plugin: GenericDat
     });
   }
 
-  const shouldEnableFeatureHighlights = isOpenSourceBuildOrUnlicenced();
+  // BMC code: starts
+  // Block permissions, insights, cache tabs from datasource nav
+  // const shouldEnableFeatureHighlights = isOpenSourceBuildOrUnlicenced();
 
-  const isLoadingNav = dataSource.type === loadingDSType;
+  // const isLoadingNav = dataSource.type === loadingDSType;
 
-  const permissionsExperimentId = 'feature-highlights-data-source-permissions-badge';
-  const dsPermissions: NavModelItem = {
-    active: false,
-    icon: 'lock',
-    id: `datasource-permissions-${dataSource.uid}`,
-    text: t('datasources.build-nav-model.ds-permissions.text.permissions', 'Permissions'),
-    url: `datasources/edit/${dataSource.uid}/permissions`,
-  };
+  // const permissionsExperimentId = 'feature-highlights-data-source-permissions-badge';
+  // const dsPermissions: NavModelItem = {
+  //   active: false,
+  //   icon: 'lock',
+  //   id: `datasource-permissions-${dataSource.uid}`,
+  //   text: t('datasources.build-nav-model.ds-permissions.text.permissions', 'Permissions'),
+  //   url: `datasources/edit/${dataSource.uid}/permissions`,
+  // };
 
-  if ((highlightTrial() && !isLoadingNav) || shouldEnableFeatureHighlights) {
-    dsPermissions.tabSuffix = () => ProBadge({ experimentId: permissionsExperimentId, eventVariant: 'trial' });
-  }
+  // if ((highlightTrial() && !isLoadingNav) || shouldEnableFeatureHighlights) {
+  //   dsPermissions.tabSuffix = () => ProBadge({ experimentId: permissionsExperimentId, eventVariant: 'trial' });
+  // }
 
-  if (featureEnabled('dspermissions.enforcement') || shouldEnableFeatureHighlights) {
-    if (
-      contextSrv.hasPermissionInMetadata(AccessControlAction.DataSourcesPermissionsRead, dataSource) ||
-      shouldEnableFeatureHighlights
-    ) {
-      navModel.children!.push(dsPermissions);
-    }
-  } else if (highlightsEnabled && !isLoadingNav) {
-    navModel.children!.push({
-      ...dsPermissions,
-      url: dsPermissions.url + '/upgrade',
-      tabSuffix: () => ProBadge({ experimentId: permissionsExperimentId }),
-    });
-  }
+  // if (featureEnabled('dspermissions.enforcement') || shouldEnableFeatureHighlights) {
+  //   if (
+  //     contextSrv.hasPermissionInMetadata(AccessControlAction.DataSourcesPermissionsRead, dataSource) ||
+  //     shouldEnableFeatureHighlights
+  //   ) {
+  //     navModel.children!.push(dsPermissions);
+  //   }
+  // } else if (highlightsEnabled && !isLoadingNav) {
+  //   navModel.children!.push({
+  //     ...dsPermissions,
+  //     url: dsPermissions.url + '/upgrade',
+  //     tabSuffix: () => ProBadge({ experimentId: permissionsExperimentId }),
+  //   });
+  // }
 
-  if (config.analytics?.enabled || shouldEnableFeatureHighlights) {
-    const analyticsExperimentId = 'feature-highlights-data-source-insights-badge';
-    const analytics: NavModelItem = {
-      active: false,
-      icon: 'info-circle',
-      id: `datasource-insights-${dataSource.uid}`,
-      text: t('datasources.build-nav-model.analytics.text.insights', 'Insights'),
-      url: `datasources/edit/${dataSource.uid}/insights`,
-    };
+  // if (config.analytics?.enabled || shouldEnableFeatureHighlights) {
+  //   const analyticsExperimentId = 'feature-highlights-data-source-insights-badge';
+  //   const analytics: NavModelItem = {
+  //     active: false,
+  //     icon: 'info-circle',
+  //     id: `datasource-insights-${dataSource.uid}`,
+  //     text: t('datasources.build-nav-model.analytics.text.insights', 'Insights'),
+  //     url: `datasources/edit/${dataSource.uid}/insights`,
+  //   };
 
-    if ((highlightTrial() && !isLoadingNav) || shouldEnableFeatureHighlights) {
-      analytics.tabSuffix = () => ProBadge({ experimentId: analyticsExperimentId, eventVariant: 'trial' });
-    }
+  //   if ((highlightTrial() && !isLoadingNav) || shouldEnableFeatureHighlights) {
+  //     analytics.tabSuffix = () => ProBadge({ experimentId: analyticsExperimentId, eventVariant: 'trial' });
+  //   }
 
-    if (featureEnabled('analytics') || shouldEnableFeatureHighlights) {
-      if (contextSrv.hasPermission(AccessControlAction.DataSourcesInsightsRead) || shouldEnableFeatureHighlights) {
-        navModel.children!.push(analytics);
-      }
-    } else if (highlightsEnabled && !isLoadingNav) {
-      navModel.children!.push({
-        ...analytics,
-        url: analytics.url + '/upgrade',
-        tabSuffix: () => ProBadge({ experimentId: analyticsExperimentId }),
-      });
-    }
-  }
+  //   if (featureEnabled('analytics') || shouldEnableFeatureHighlights) {
+  //     if (contextSrv.hasPermission(AccessControlAction.DataSourcesInsightsRead) || shouldEnableFeatureHighlights) {
+  //       navModel.children!.push(analytics);
+  //     }
+  //   } else if (highlightsEnabled && !isLoadingNav) {
+  //     navModel.children!.push({
+  //       ...analytics,
+  //       url: analytics.url + '/upgrade',
+  //       tabSuffix: () => ProBadge({ experimentId: analyticsExperimentId }),
+  //     });
+  //   }
+  // }
 
-  const cachingExperimentId = 'feature-highlights-query-caching-badge';
+  // const cachingExperimentId = 'feature-highlights-query-caching-badge';
 
-  const caching: NavModelItem = {
-    active: false,
-    icon: 'database',
-    id: `datasource-cache-${dataSource.uid}`,
-    text: t('datasources.build-nav-model.caching.text.cache', 'Cache'),
-    url: `datasources/edit/${dataSource.uid}/cache`,
-    hideFromTabs: !pluginMeta.isBackend || !config.caching.enabled,
-  };
+  // const caching: NavModelItem = {
+  //   active: false,
+  //   icon: 'database',
+  //   id: `datasource-cache-${dataSource.uid}`,
+  //   text: t('datasources.build-nav-model.caching.text.cache', 'Cache'),
+  //   url: `datasources/edit/${dataSource.uid}/cache`,
+  //   hideFromTabs: !pluginMeta.isBackend || !config.caching.enabled,
+  // };
 
-  if ((highlightTrial() && !isLoadingNav) || shouldEnableFeatureHighlights) {
-    caching.tabSuffix = () => ProBadge({ experimentId: cachingExperimentId, eventVariant: 'trial' });
-  }
+  // if ((highlightTrial() && !isLoadingNav) || shouldEnableFeatureHighlights) {
+  //   caching.tabSuffix = () => ProBadge({ experimentId: cachingExperimentId, eventVariant: 'trial' });
+  // }
 
-  if (featureEnabled('caching') || shouldEnableFeatureHighlights) {
-    if (
-      contextSrv.hasPermissionInMetadata(AccessControlAction.DataSourcesCachingRead, dataSource) ||
-      shouldEnableFeatureHighlights
-    ) {
-      navModel.children!.push(caching);
-    }
-  } else if (highlightsEnabled && !isLoadingNav) {
-    navModel.children!.push({
-      ...caching,
-      url: caching.url + '/upgrade',
-      tabSuffix: () => ProBadge({ experimentId: cachingExperimentId }),
-    });
-  }
+  // if (featureEnabled('caching') || shouldEnableFeatureHighlights) {
+  //   if (
+  //     contextSrv.hasPermissionInMetadata(AccessControlAction.DataSourcesCachingRead, dataSource) ||
+  //     shouldEnableFeatureHighlights
+  //   ) {
+  //     navModel.children!.push(caching);
+  //   }
+  // } else if (highlightsEnabled && !isLoadingNav) {
+  //   navModel.children!.push({
+  //     ...caching,
+  //     url: caching.url + '/upgrade',
+  //     tabSuffix: () => ProBadge({ experimentId: cachingExperimentId }),
+  //   });
+  // }
+  // BMC Change End
 
   return navModel;
 }

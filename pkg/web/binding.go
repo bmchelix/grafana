@@ -10,6 +10,12 @@ import (
 	"reflect"
 )
 
+// BMC Helix code changes start - CVE-2026-42127
+// TODO: REMOVE BEFORE UPGRADE
+// Grafana 12.3.7 cap on JSON bodies Bind will read (public dashboard DoS).
+const MaxBindBodyBytes = 100 << 20
+// BMC Helix code changes end - CVE-2026-42127
+
 // Bind deserializes JSON payload from the request
 func Bind(req *http.Request, v any) error {
 	if req.Body != nil {
@@ -21,7 +27,11 @@ func Bind(req *http.Request, v any) error {
 			return errors.New("bad content type")
 		}
 		defer func() { _ = req.Body.Close() }()
-		err = json.NewDecoder(req.Body).Decode(v)
+		// BMC Helix code changes start - CVE-2026-42127
+		// TODO: REMOVE BEFORE UPGRADE
+		body := http.MaxBytesReader(nil, req.Body, MaxBindBodyBytes)
+		err = json.NewDecoder(body).Decode(v)
+		// BMC Helix code changes end - CVE-2026-42127
 		if err != nil && !errors.Is(err, io.EOF) {
 			return err
 		}

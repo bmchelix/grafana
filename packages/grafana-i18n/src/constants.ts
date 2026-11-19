@@ -20,3 +20,10 @@ export const CHINESE_TRADITIONAL = 'zh-Hant';
 
 export const DEFAULT_LANGUAGE = ENGLISH_US;
 export const PSEUDO_LOCALE = 'pseudo';
+
+// BMC code - Additional languages
+export const FRENCH_CANADA = 'fr-CA';
+export const ENGLISH_CANADA = 'en-CA';
+export const ARABIC_ARABIC = 'ar-AR';
+export const CATALAN_CATALONIA = 'ca-ES';
+// BMC code - end

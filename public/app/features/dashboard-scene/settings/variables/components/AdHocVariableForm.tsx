@@ -6,7 +6,7 @@ import { Trans, t } from '@grafana/i18n';
 import { EditorField } from '@grafana/plugin-ui';
 import { config } from '@grafana/runtime';
 import { DataSourceRef } from '@grafana/schema';
-import { Alert, CodeEditor, Field, Switch, Box } from '@grafana/ui';
+import { Alert, Box, CodeEditor, Field, Switch } from '@grafana/ui';
 import { DataSourcePicker } from 'app/features/datasources/components/picker/DataSourcePicker';
 
 import { VariableCheckboxField } from './VariableCheckboxField';
@@ -126,7 +126,8 @@ export function AdHocVariableForm({
 
       {datasourceSupported && onAllowCustomValueChange && (
         <VariableCheckboxField
-          value={allowCustomValue ?? true}
+          // BMC code: allowCustomValue defaults to false
+          value={allowCustomValue ?? false}
           name={t('dashboard-scene.ad-hoc-variable-form.name-allow-custom-values', 'Allow custom values')}
           description={t(
             'dashboard-scene.ad-hoc-variable-form.description-enables-users-custom-values',

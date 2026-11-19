@@ -199,4 +199,221 @@ describe('DataFrame to CSV', () => {
       1589455688623,"
     `);
   });
+
+  it('should export footer reducers from defaults and overrides together', () => {
+    const dataFrame = new MutableDataFrame({
+      fields: [
+        {
+          name: 'time',
+          type: FieldType.time,
+          values: [1767225960000, 1767225960000, 1767225960000],
+          config: { unit: 'dateTimeAsIso', custom: {} },
+        },
+        { name: 'string', values: ['alpha', 'beta', 'epsilon'], config: { custom: {} } },
+        { name: 'number', values: [1, 2, 5], config: { custom: {} } },
+      ],
+    });
+
+    dataFrame.fields[0].display = getDisplayProcessor({
+      field: dataFrame.fields[0],
+      timeZone: 'utc',
+      theme: createTheme(),
+    });
+
+    (window as any).grafanaBootData = { settings: { csvDelimiters: [','] } };
+    (window as any).grafanaRuntime = {
+      getPanels: () => [
+        {
+          id: 19,
+          fieldConfig: {
+            defaults: {
+              custom: {
+                footer: {
+                  reducers: ['firstNotNull', 'lastNotNull', 'countAll'],
+                },
+              },
+            },
+            overrides: [
+              {
+                matcher: { id: 'byName', options: 'number' },
+                properties: [{ id: 'custom.footer.reducers', value: ['max', 'sum'] }],
+              },
+              {
+                matcher: { id: 'byName', options: 'string' },
+                properties: [{ id: 'custom.footer.reducers', value: ['lastNotNull', 'last'] }],
+              },
+            ],
+          },
+        },
+      ],
+    };
+
+    const csv = toCSV([dataFrame], {
+      headerStyle: CSVHeaderStyle.name,
+      enableOverrides: true,
+      panelId: 19,
+      newline: '\n',
+    });
+
+    const lines = csv.trim().split('\n');
+    const footerLines = lines.slice(-3);
+
+    expect(footerLines).toHaveLength(3);
+    expect(footerLines[0]).toContain('First');
+    expect(footerLines[0]).toContain('Last *   epsilon[@meta@]f=1');
+    expect(footerLines[0]).toContain('Max   5[@meta@]f=1');
+
+    expect(footerLines[1]).toContain('Last');
+    expect(footerLines[1]).toContain('Last   epsilon[@meta@]f=1');
+    expect(footerLines[1]).toContain('Total   8[@meta@]f=1');
+
+    expect(footerLines[2]).toMatch(/Count(\sall)?/i);
+    expect(footerLines[2]).toContain('3[@meta@]f=1');
+
+    expect(csv).not.toContain('Max[@meta@]f=1, [@meta@]f=1,5[@meta@]f=1');
+    expect(csv).not.toContain('Total[@meta@]f=1, [@meta@]f=1,8[@meta@]f=1');
+  });
+
+  it('should keep countAll footer value numeric for first visible time field', () => {
+    const dataFrame = new MutableDataFrame({
+      fields: [
+        {
+          name: 'time',
+          type: FieldType.time,
+          values: [1767225960000, 1767225960000, 1767225960000],
+          config: { unit: 'dateTimeAsIso', custom: {} },
+        },
+        { name: 'string', values: ['alpha', 'beta', 'epsilon'], config: { custom: {} } },
+        { name: 'number', values: [1, 2, 5], config: { custom: {} } },
+      ],
+    });
+
+    dataFrame.fields[0].display = getDisplayProcessor({
+      field: dataFrame.fields[0],
+      timeZone: 'utc',
+      theme: createTheme(),
+    });
+
+    (window as any).grafanaBootData = { settings: { csvDelimiters: [','] } };
+    (window as any).grafanaRuntime = {
+      getPanels: () => [
+        {
+          id: 19,
+          fieldConfig: {
+            defaults: {
+              custom: {
+                footer: {
+                  reducers: ['countAll'],
+                },
+              },
+            },
+            overrides: [],
+          },
+        },
+      ],
+    };
+
+    const csv = toCSV([dataFrame], {
+      headerStyle: CSVHeaderStyle.name,
+      enableOverrides: true,
+      panelId: 19,
+      newline: '\n',
+    });
+
+    expect(csv).toContain('3[@meta@]f=1');
+    expect(csv).not.toMatch(/1970-01-01|1970|05:30:00\.003/);
+  });
+
+  it('should show reducer label only in first value column when reducer is same across columns', () => {
+    const dataFrame = new MutableDataFrame({
+      fields: [
+        {
+          name: 'time',
+          type: FieldType.time,
+          values: [1767225960000, 1767225960000, 1767225960000],
+          config: { unit: 'dateTimeAsIso', custom: {} },
+        },
+        { name: 'string', values: ['alpha', 'beta', 'epsilon'], config: { custom: {} } },
+        { name: 'number', values: [1, 2, 5], config: { custom: {} } },
+      ],
+    });
+
+    dataFrame.fields[0].display = getDisplayProcessor({
+      field: dataFrame.fields[0],
+      timeZone: 'utc',
+      theme: createTheme(),
+    });
+
+    (window as any).grafanaBootData = { settings: { csvDelimiters: [','] } };
+    (window as any).grafanaRuntime = {
+      getPanels: () => [
+        {
+          id: 21,
+          fieldConfig: {
+            defaults: {
+              custom: {
+                footer: {
+                  reducers: ['lastNotNull'],
+                },
+              },
+            },
+            overrides: [],
+          },
+        },
+      ],
+    };
+
+    const csv = toCSV([dataFrame], {
+      headerStyle: CSVHeaderStyle.name,
+      enableOverrides: true,
+      panelId: 21,
+      newline: '\n',
+    });
+
+    const footerLine = csv.trim().split('\n').at(-1) || '';
+    expect(footerLine).toContain('Last *   2026');
+    expect(footerLine).toContain(',epsilon[@meta@]f=1,5[@meta@]f=1');
+    expect(footerLine).not.toContain('Last *   epsilon');
+    expect(footerLine).not.toContain('Last *   5');
+  });
+
+  it('should not print reducer label when first visible column has no footer value', () => {
+    const dataFrame = new MutableDataFrame({
+      fields: [
+        { name: 'string', values: ['alpha', 'beta', 'epsilon'], config: { custom: {} } },
+        { name: 'number', values: [1, 2, 5], config: { custom: {} } },
+        { name: 'time', type: FieldType.time, values: [1767225960000, 1767225960000, 1767225960000], config: { custom: {} } },
+      ],
+    });
+
+    (window as any).grafanaBootData = { settings: { csvDelimiters: [','] } };
+    (window as any).grafanaRuntime = {
+      getPanels: () => [
+        {
+          id: 22,
+          fieldConfig: {
+            defaults: {
+              custom: {
+                footer: {
+                  reducers: ['min'],
+                },
+              },
+            },
+            overrides: [],
+          },
+        },
+      ],
+    };
+
+    const csv = toCSV([dataFrame], {
+      headerStyle: CSVHeaderStyle.name,
+      enableOverrides: true,
+      panelId: 22,
+      newline: '\n',
+    });
+
+    const footerLine = csv.trim().split('\n').at(-1) || '';
+    expect(footerLine).toContain('Min   1[@meta@]f=1');
+    expect(footerLine).not.toContain('Min[@meta@]f=1,');
+  });
 });

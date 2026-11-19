@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { Field, GrafanaTheme2, SelectableValue } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
@@ -66,6 +66,16 @@ export const FilterPopup = ({
   const [values, setValues] = useState<SelectableValue[]>(filteredOptions);
   const [matchCase, setMatchCase] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // BMC Accessibility change: Ref for focus management
+
+  // BMC Accessibility change Start: Move focus to filter input when dialog opens for screen reader and keyboard users
+  useLayoutEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+  //BMC Accessibility change End
 
   const onCancel = useCallback((event?: React.MouseEvent) => onClose(), [onClose]);
 
@@ -134,6 +144,7 @@ export const FilterPopup = ({
 
           <Stack gap={1}>
             <FilterInput
+              ref={inputRef}
               placeholder={filterInputPlaceholder}
               title={filterInputPlaceholder}
               onChange={setSearchFilter}

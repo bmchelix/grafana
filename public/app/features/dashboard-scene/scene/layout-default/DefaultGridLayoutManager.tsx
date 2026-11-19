@@ -2,7 +2,7 @@ import { css, cx } from '@emotion/css';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { t } from '@grafana/i18n';
-import { config } from '@grafana/runtime';
+import { config, locationService } from '@grafana/runtime';
 import {
   SceneObjectState,
   SceneGridLayout,
@@ -138,6 +138,17 @@ export class DefaultGridLayoutManager
         }
       })
     );
+
+    // BMC Change: Start
+    // Expand all non-repeat collapsed rows when showRepeat=true (for report/PDF downloads).
+    // Deferred so the full scene tree (grid, rows, behaviors) is active first.
+    // Repeat rows are handled separately by RowRepeaterBehavior._expandRowsForDownload
+    // after cloned rows are created.
+    const showRepeat = locationService.getSearch().get('showRepeat');
+    if (showRepeat === 'true') {
+      setTimeout(() => this._expandNonRepeatRowsForDownload(), 0);
+    }
+    // BMC Change: End
   }
 
   public addPanel(vizPanel: VizPanel) {
@@ -515,6 +526,27 @@ export class DefaultGridLayoutManager
     });
   }
 
+  // BMC Change: Start
+  private _expandNonRepeatRowsForDownload() {
+    const showRepeat = locationService.getSearch().get('showRepeat');
+    if (showRepeat !== 'true') {
+      return;
+    }
+    this.state.grid.state.children.forEach((child) => {
+      if (!(child instanceof SceneGridRow)) {
+        return;
+      }
+      const hasRepeatBehavior = child.state.$behaviors?.some((b) => b instanceof RowRepeaterBehavior);
+      if (hasRepeatBehavior) {
+        return;
+      }
+      if (child.state.isCollapsed) {
+        this.state.grid.toggleRow(child);
+      }
+    });
+  }
+  // BMC Change: End
+
   public static createFromLayout(currentLayout: DashboardLayoutManager): DefaultGridLayoutManager {
     const panels = currentLayout.getVizPanels();
     const isLazy = getIsLazy(getDashboardSceneFor(currentLayout).state.preload)!;
@@ -610,7 +642,12 @@ function DefaultGridLayoutManagerRenderer({ model }: SceneComponentProps<Default
 
   return (
     <div className={cx(styles.container, isEditing && styles.containerEditing)}>
-      {model.state.grid.Component && <model.state.grid.Component model={model.state.grid} />}
+      {model.state.grid.Component && (
+        // BMC Change: Wrapper with display:contents to set direction without breaking layout
+        <div dir="ltr" style={{ display: 'contents' }}>
+          <model.state.grid.Component model={model.state.grid} />
+        </div>
+      )}
       {showCanvasActions && (
         <div className={styles.actionsWrapper}>
           <CanvasGridAddActions layoutManager={model} />

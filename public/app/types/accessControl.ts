@@ -169,6 +169,9 @@ export enum AccessControlAction {
 
   // Migration Assistant
   MigrationAssistantMigrate = 'migrationassistant:migrate',
+
+  // BMC: Elevated dashboard access (ELT). Must match the seeded BHD permission name.
+  ElevatedDashboardAccessManage = 'dashboard.elevated.access:access',
 }
 
 export interface Role {

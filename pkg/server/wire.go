@@ -110,6 +110,8 @@ import (
 	"github.com/grafana/grafana/pkg/services/login/authinfoimpl"
 	"github.com/grafana/grafana/pkg/services/loginattempt"
 	"github.com/grafana/grafana/pkg/services/loginattempt/loginattemptimpl"
+
+	// BMC Change: Next line for metadata story
 	"github.com/grafana/grafana/pkg/services/navtree/navtreeimpl"
 	"github.com/grafana/grafana/pkg/services/ngalert"
 	ngimage "github.com/grafana/grafana/pkg/services/ngalert/image"
@@ -137,6 +139,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/queryhistory"
 	"github.com/grafana/grafana/pkg/services/quota/quotaimpl"
 	"github.com/grafana/grafana/pkg/services/rendering"
+	"github.com/grafana/grafana/pkg/services/rmsmetadata/rmsmetadataimpl"
 	"github.com/grafana/grafana/pkg/services/search"
 	"github.com/grafana/grafana/pkg/services/search/sort"
 	"github.com/grafana/grafana/pkg/services/searchV2"
@@ -173,6 +176,7 @@ import (
 	tempuser "github.com/grafana/grafana/pkg/services/temp_user"
 	"github.com/grafana/grafana/pkg/services/temp_user/tempuserimpl"
 	"github.com/grafana/grafana/pkg/services/updatemanager"
+	"github.com/grafana/grafana/pkg/services/usagedata/usagedataimpl"
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/services/user/userimpl"
 	"github.com/grafana/grafana/pkg/setting"
@@ -471,6 +475,10 @@ var wireBasicSet = wire.NewSet(
 	appregistry.WireSet,
 	// Dashboard Kubernetes helpers
 	dashboardclient.ProvideK8sClientWithFallback,
+	// BMC Change: Starts
+	rmsmetadataimpl.ProvideService,
+	usagedataimpl.ProvideService,
+	// BMC Change: Ends
 )
 
 var wireSet = wire.NewSet(

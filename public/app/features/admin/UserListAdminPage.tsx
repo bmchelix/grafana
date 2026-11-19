@@ -1,18 +1,18 @@
 import { css } from '@emotion/css';
-import { ComponentType, useEffect } from 'react';
+import { ComponentType, useEffect, useRef, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { selectors as e2eSelectors } from '@grafana/e2e-selectors/src';
-import { Trans, t } from '@grafana/i18n';
-import { LinkButton, RadioButtonGroup, useStyles2, FilterInput, EmptyState } from '@grafana/ui';
+import { t, Trans } from '@grafana/i18n';
+import { EmptyState, FilterInput, LinkButton, RadioButtonGroup, useStyles2 } from '@grafana/ui';
 import { Page } from 'app/core/components/Page/Page';
+import config from 'app/core/config';
 import { contextSrv } from 'app/core/core';
 import { AccessControlAction } from 'app/types/accessControl';
 import { StoreState } from 'app/types/store';
 import { UserFilter } from 'app/types/user';
 
-import { EnterpriseAuthFeaturesCard } from './EnterpriseAuthFeaturesCard';
 import { UsersTable } from './Users/UsersTable';
 import { changeFilter, changePage, changeQuery, changeSort, fetchUsers } from './state/actions';
 
@@ -67,20 +67,73 @@ const UserListAdminPageUnConnected = ({
   isLoading,
 }: Props) => {
   const styles = useStyles2(getStyles);
+  // BMC Code : Accessibility Change starts here.
+  const [statusMessage, setStatusMessage] = useState('');
+  const [pageButtons, setPageButtons] = useState<HTMLButtonElement[]>([]);
+  const statusRef = useRef<HTMLDivElement>(null);
+  // BMC Code : Accessibility Change end here.
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
+  // BMC Code : Accessibility Change starts here.
+  useEffect(() => {
+    if (isLoading) {
+      setStatusMessage(t('users.loading', 'Loading users...'));
+    } else if (users.length === 0) {
+      setStatusMessage(t('users.empty-state.message', 'No users found'));
+    } else {
+      setStatusMessage(`${users.length} Results available`);
+    }
+  }, [isLoading, users]);
+
+  useEffect(() => {
+    if (statusRef.current) {
+      statusRef.current.focus();
+    }
+  }, [statusMessage]);
+
+  useEffect(() => {
+    // Find all pagination buttons after the component renders
+    const buttons = Array.from(document.querySelectorAll('ol li button')).filter(
+      (el): el is HTMLButtonElement => el instanceof HTMLButtonElement
+    );
+    setPageButtons(buttons);
+  }, [users, page, totalPages]);
+
+  useEffect(() => {
+    pageButtons.forEach((button) => {
+      if (button.innerText) {
+        button.setAttribute('aria-label', `${button.innerText}`);
+
+        if (button.innerText === page.toString()) {
+          button.setAttribute('aria-current', 'page');
+        }
+      }
+    });
+  }, [pageButtons, page]);
+  // BMC Code : Accessibility Change ends here.
+
   return (
     <Page.Contents>
       <div className={styles.actionBar} data-testid={selectors.container}>
         <div className={styles.row}>
+          {
+            //BMC Code : Accessibility Change (Next line, Added a label for FilterInput)
+          }
+          <label htmlFor="user-serach-filter-input" className={styles.hiddenLabel}>
+            <Trans i18nKey="bmc.admin.users.search-label">Search user by login, email, or name</Trans>
+          </label>
+          {
+            //BMC Code : Accessibility Change | Added id attribute to bind it to label element
+          }
           <FilterInput
             placeholder={t(
               'admin.user-list-admin-page-un-connected.placeholder-search-login-email',
               'Search user by login, email, or name.'
             )}
+            id="user-serach-filter-input"
             autoFocus={true}
             value={query}
             onChange={changeQuery}
@@ -101,12 +154,17 @@ const UserListAdminPageUnConnected = ({
           {extraFilters.map((FilterComponent, index) => (
             <FilterComponent key={index} filters={filters} onChange={changeFilter} className={styles.filter} />
           ))}
-          {contextSrv.hasPermission(AccessControlAction.UsersCreate) && (
+          {/* BMC Code */}
+          {contextSrv.hasPermission(AccessControlAction.UsersCreate) && config.buildInfo.env === 'development' && (
             <LinkButton href="admin/users/create" variant="primary">
               <Trans i18nKey="admin.users-list.create-button">New user</Trans>
             </LinkButton>
           )}
         </div>
+      </div>
+      <div className="sr-only" ref={statusRef} role="status" aria-live="polite" aria-atomic="true" tabIndex={-1}>
+        {' '}
+        {statusMessage}
       </div>
       {!isLoading && users.length === 0 ? (
         <EmptyState message={t('users.empty-state.message', 'No users found')} variant="not-found" />
@@ -120,7 +178,8 @@ const UserListAdminPageUnConnected = ({
           fetchData={changeSort}
         />
       )}
-      <EnterpriseAuthFeaturesCard page="users" />
+      {/* BMC code: comment next line */}
+      {/* <EnterpriseAuthFeaturesCard page="users" /> */}
     </Page.Contents>
   );
 };
@@ -165,6 +224,18 @@ const getStyles = (theme: GrafanaTheme2) => {
         width: '100%',
       },
     }),
+    // BMC Code : Accessibility Change starts here.
+    hiddenLabel: css({
+      border: '0',
+      clip: 'rect(0 0 0 0)',
+      height: '1px',
+      margin: '-1px',
+      overflow: 'hidden',
+      padding: '0',
+      position: 'absolute',
+      width: '1px',
+    }),
+    // BMC Code : Accessibility Change ends here.
   };
 };
 
