@@ -1,19 +1,24 @@
 package provider
 
 import (
-	"context"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"errors"
 	"io"
+	"os"
 
 	"github.com/grafana/grafana/pkg/services/encryption"
 	"github.com/grafana/grafana/pkg/util"
 )
 
-type aesCfbCipher struct{}
-
-func (c aesCfbCipher) Encrypt(_ context.Context, payload []byte, secret string) ([]byte, error) {
+func cFBEncrypter(payload []byte, secret string) ([]byte, error) {
+	// BMC code changes start - FIPS
+	// Disable AES CFB mode when FIPS is enabled, as it's not compliant with FIPS standards
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		return nil, errors.New("AES CFB mode is not allowed in FIPS mode")
+	}
+	// BMC code changes - end
 	salt, err := util.GetRandomString(encryption.SaltLength)
 	if err != nil {
 		return nil, err

@@ -1,9 +1,9 @@
 import { css, cx } from '@emotion/css';
-import React, { useState, ChangeEvent, FocusEvent, useCallback } from 'react';
+import React, { ChangeEvent, FocusEvent, useCallback, useState } from 'react';
 
-import { rangeUtil, PanelData, DataSourceApi, GrafanaTheme2 } from '@grafana/data';
+import { DataSourceApi, GrafanaTheme2, PanelData, rangeUtil } from '@grafana/data';
 import { Trans, t } from '@grafana/i18n';
-import { Input, InlineSwitch, useStyles2, InlineLabel } from '@grafana/ui';
+import { InlineLabel, InlineSwitch, Input, useStyles2 } from '@grafana/ui';
 import { QueryOperationRow } from 'app/core/components/QueryOperationRow/QueryOperationRow';
 import { QueryGroupOptions } from 'app/types/query';
 
@@ -205,7 +205,6 @@ export const QueryGroupOptionsEditor = React.memo(({ options, dataSource, data, 
     const realMd = data.request?.maxDataPoints;
     const value = options.maxDataPoints ?? '';
     const isAuto = value === '';
-
     return (
       <>
         <InlineLabel
@@ -246,7 +245,11 @@ export const QueryGroupOptionsEditor = React.memo(({ options, dataSource, data, 
 
   const renderIntervalOption = () => {
     const realInterval = data.request?.interval;
-    const minIntervalOnDs = dataSource.interval ?? 'No limit';
+    // BMC Change: To enable localization for below text
+    const minIntervalOnDs =
+      dataSource.interval ??
+      t('bmcgrafana.dashboards.edit-panel.query.query-options.min-interval-placeholder', 'No limit');
+    // BMC Change ends
 
     return (
       <>
@@ -392,6 +395,7 @@ export const QueryGroupOptionsEditor = React.memo(({ options, dataSource, data, 
         />
         {(timeRangeShift || timeRangeFrom) && (
           <>
+            {/* BMC Change: To enable localization for below text */}
             <InlineLabel htmlFor="hide-time-info-switch" className={styles.firstColumn}>
               <Trans i18nKey="query.query-group-options-editor.hide-time-info">Hide time info</Trans>
             </InlineLabel>

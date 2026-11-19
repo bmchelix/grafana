@@ -1,6 +1,8 @@
 import { isEqual } from 'lodash';
 
+import { locationService } from '@grafana/runtime';
 import {
+  LocalValueVariable,
   MultiValueVariable,
   sceneGraph,
   SceneGridItemLike,
@@ -8,6 +10,7 @@ import {
   SceneGridRow,
   SceneObjectBase,
   SceneObjectState,
+  SceneVariableSet,
   VariableDependencyConfig,
   VariableValueSingle,
 } from '@grafana/scenes';
@@ -27,6 +30,9 @@ export class RowRepeaterBehavior extends SceneObjectBase<RowRepeaterBehaviorStat
 
   private _prevRepeatValues?: VariableValueSingle[];
   private _clonedRows?: SceneGridRow[];
+  // BMC Change: Start
+  private _expandedRows = false;
+  // BMC Change: End
 
   public constructor(state: RowRepeaterBehaviorState) {
     super(state);
@@ -147,6 +153,7 @@ export class RowRepeaterBehavior extends SceneObjectBase<RowRepeaterBehaviorStat
 
       const children: SceneGridItemLike[] = [];
 
+      // BMC Change: Below block moved up the rowClone.setState method
       for (const sourceItem of rowContent) {
         const sourceItemY = sourceItem.state.y ?? 0;
         const cloneItem = rowIndex > 0 ? sourceItem.clone() : sourceItem;
@@ -165,12 +172,39 @@ export class RowRepeaterBehavior extends SceneObjectBase<RowRepeaterBehaviorStat
         }
       }
 
-      rowClone.setState({ children });
+      rowClone.setState({
+        key: rowClone.state.key,
+        $variables: new SceneVariableSet({
+          variables: [
+            new LocalValueVariable({
+              name: this.state.variableName,
+              value: variableValues[rowIndex],
+              text: String(variableTexts[rowIndex]),
+              isMulti: variable.state.isMulti,
+              includeAll: variable.state.includeAll,
+            }),
+          ],
+        }),
+        children: children,
+      });
 
       this._clonedRows.push(rowClone);
     }
 
     updateLayout(layout, this._clonedRows, maxYOfRows, rowToRepeat.state.key!);
+
+    // BMC Change: Start
+    // Force re-render of the source row's children so that solo panel matching
+    // (viewPanel mode) re-evaluates getPathId() after LocalValueVariable is set.
+    for (const child of rowContent) {
+      if (child.isActive) {
+        child.forceRender();
+      }
+    }
+
+    // BMC Change: expand rows for report/PDF downloads when showRepeat=true
+    this._expandRowsForDownload(layout);
+    // BMC Change: End
   }
 
   public removeBehavior() {
@@ -187,6 +221,24 @@ export class RowRepeaterBehavior extends SceneObjectBase<RowRepeaterBehaviorStat
   public resetPrevRepeatValues() {
     this._prevRepeatValues = undefined;
   }
+
+  // BMC Change: Start
+  private _expandRowsForDownload(layout: SceneGridLayout) {
+    if (this._expandedRows) {
+      return;
+    }
+    const showRepeat = locationService.getSearch().get('showRepeat');
+    if (showRepeat !== 'true' || !this._clonedRows?.length) {
+      return;
+    }
+    for (const row of this._clonedRows) {
+      if (row.state.isCollapsed) {
+        layout.toggleRow(row);
+      }
+    }
+    this._expandedRows = true;
+  }
+  // BMC Change: End
 }
 
 function getRowContentHeight(panels: SceneGridItemLike[]): number {

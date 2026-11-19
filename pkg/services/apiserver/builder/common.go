@@ -81,6 +81,13 @@ type APIGroupPostStartHookProvider interface {
 	GetPostStartHooks() (map[string]genericapiserver.PostStartHookFunc, error)
 }
 
+// BMC code: next method
+// DashboardBMCAuditFilterProvider lets a builder attach HTTP middleware for BMC dashboard audit (and Redis cache
+// cleanup on delete) on dashboard.grafana.app: DELETE, POST create, PUT/PATCH update (parity with legacy /api).
+type DashboardBMCAuditFilterProvider interface {
+	GetDashboardBMCAuditFilter() func(next http.Handler) http.Handler
+}
+
 type APIGroupOptions struct {
 	Scheme              *runtime.Scheme
 	OptsGetter          generic.RESTOptionsGetter

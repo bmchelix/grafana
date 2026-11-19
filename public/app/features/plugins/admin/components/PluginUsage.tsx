@@ -61,6 +61,8 @@ export function PluginUsage({ plugin }: Props) {
                 clearSelection={() => {}}
                 keyboardEvents={of()}
                 onTagSelected={() => {}}
+                // BMC Code : Accessibility Change ( Next 1 line )
+                onResultsChange={() => {}}
               />
             );
           }}

@@ -401,7 +401,7 @@ export function TableNG(props: TableNGProps) {
   );
 
   const fromFields = useCallback(
-    (f: Field[], widths: number[]): FromFieldsResult => {
+    (f: Field[], widths: number[], rowBgFn: ((rowIndex: number) => CSSProperties) | undefined): FromFieldsResult => {
       const result: FromFieldsResult = {
         columns: [],
         cellRootRenderers: {},
@@ -462,7 +462,7 @@ export function TableNG(props: TableNGProps) {
         const shouldOverflow =
           !IS_SAFARI_26 && rowHeight !== 'auto' && (shouldTextOverflow(field) || Boolean(maxRowHeight));
         const textWrap = rowHeight === 'auto' || shouldTextWrap(field);
-        const canBeColorized = canFieldBeColorized(cellType, applyToRowBgFn);
+        const canBeColorized = canFieldBeColorized(cellType, rowBgFn);
         const cellStyleOptions: TableCellStyleOptions = {
           textAlign,
           textWrap,
@@ -494,8 +494,8 @@ export function TableNG(props: TableNGProps) {
             rowCellStyle.background = undefined;
 
             // generate shared styles for whole row
-            if (applyToRowBgFn != null) {
-              rowCellStyle = { ...rowCellStyle, ...applyToRowBgFn(rowIdx) };
+            if (rowBgFn != null) {
+              rowCellStyle = { ...rowCellStyle, ...rowBgFn(rowIdx) };
             }
           }
 
@@ -503,7 +503,7 @@ export function TableNG(props: TableNGProps) {
           if (canBeColorized) {
             const value = props.row[props.column.key];
             const displayValue = field.display!(value); // this fires here to get colors, then again to get rendered value?
-            const cellColorStyles = getCellColorInlineStyles(cellOptions, displayValue, applyToRowBgFn != null);
+            const cellColorStyles = getCellColorInlineStyles(cellOptions, displayValue, rowBgFn != null);
             Object.assign(style, cellColorStyles);
           }
           if (hasValidStyleField) {
@@ -593,7 +593,7 @@ export function TableNG(props: TableNGProps) {
               shouldOverflow: false,
               maxHeight: maxRowHeight,
             } satisfies TableCellStyleOptions;
-            const tooltipCanBeColorized = canFieldBeColorized(tooltipCellOptions.type, applyToRowBgFn);
+            const tooltipCanBeColorized = canFieldBeColorized(tooltipCellOptions.type, rowBgFn);
             const tooltipDefaultStyles = getDefaultCellStyles(theme, tooltipCellStyleOptions);
             const tooltipSpecificStyles = getCellSpecificStyles(
               tooltipCellOptions.type,
@@ -641,7 +641,7 @@ export function TableNG(props: TableNGProps) {
                 const tooltipCellColorStyles = getCellColorInlineStyles(
                   tooltipCellOptions,
                   tooltipDisplayValue,
-                  applyToRowBgFn != null
+                  rowBgFn != null
                 );
                 Object.assign(tooltipStyle, tooltipCellColorStyles);
               }
@@ -698,7 +698,6 @@ export function TableNG(props: TableNGProps) {
       return result;
     },
     [
-      applyToRowBgFn,
       crossFilterOrder,
       crossFilterRows,
       data,
@@ -733,7 +732,7 @@ export function TableNG(props: TableNGProps) {
   const [nestedFieldWidths] = useColWidths(firstRowNestedData?.fields ?? [], availableWidth);
 
   const { columns, cellRootRenderers } = useMemo(() => {
-    const result = fromFields(visibleFields, widths);
+    const result = fromFields(visibleFields, widths, applyToRowBgFn);
 
     // if nested frames are present, augment the columns to include the nested table expander column.
     if (!firstRowNestedData) {
@@ -743,10 +742,19 @@ export function TableNG(props: TableNGProps) {
     // pre-calculate renderRow and expandedColumns based on the first nested frame's fields.
     const hasNestedHeaders = firstRowNestedData.meta?.custom?.noHeader !== true;
     const renderRow = renderRowFactory(firstRowNestedData.fields, panelContext, expandedRows, enableSharedCrosshair);
+    // BMC Helix code changes start - DRJ71-23677
+    // Parent "apply to row" must not propagate into nested grids. Pass undefined so nested rows are
+    // not colored by the parent frame's applyToRowBgFn (restores pre-12.x behavior). Related changes
+    // in this file: fromFields(..., rowBgFn) parameter; parent call passes applyToRowBgFn; fromFields
+    // body uses rowBgFn instead of closure over applyToRowBgFn.
+    // Grafana upgrade: when upstream fixes nested apply-to-row (e.g. grafana/grafana#129426), accept
+    // incoming TableNG.tsx changes and remove this BMC block (and related DRJ71-23677 edits in this file).
     const { columns: nestedColumns, cellRootRenderers: nestedCellRootRenderers } = fromFields(
       firstRowNestedData.fields,
-      nestedFieldWidths
+      nestedFieldWidths,
+      undefined
     );
+    // BMC Helix code changes end - DRJ71-23677
 
     const expanderCellRenderer: CellRootRenderer = (key, props) => <Cell key={key} {...props} />;
     result.cellRootRenderers[EXPANDED_COLUMN_KEY] = expanderCellRenderer;
@@ -761,6 +769,7 @@ export function TableNG(props: TableNGProps) {
 
     return result;
   }, [
+    applyToRowBgFn,
     buildNestedTableExpanderColumn,
     enableSharedCrosshair,
     expandedRows,

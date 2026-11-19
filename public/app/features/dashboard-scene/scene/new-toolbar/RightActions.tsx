@@ -15,6 +15,11 @@ import { DashboardSettingsButton } from './actions/DashboardSettingsButton';
 import { DiscardLibraryPanelButton } from './actions/DiscardLibraryPanelButton';
 import { DiscardPanelButton } from './actions/DiscardPanelButton';
 import { EditDashboardSwitch } from './actions/EditDashboardSwitch';
+import {
+  ForceRtlPreviewToggle,
+  isArabicUiLanguageForRtlPreview,
+  isHomeDashboardScene,
+} from './actions/ForceRtlPreviewToggle';
 import { ExportDashboardButton } from './actions/ExportDashboardButton';
 import { MakeDashboardEditableButton } from './actions/MakeDashboardEditableButton';
 import { PlayListNextButton } from './actions/PlayListNextButton';
@@ -135,6 +140,25 @@ export const RightActions = ({ dashboard }: { dashboard: DashboardScene }) => {
             component: MakeDashboardEditableButton,
             group: 'save-edit',
             condition: !isEditing && canEditDashboard && !isViewingPanel && !isEditable && !isPlaying,
+          },
+          // BMC Change: Arabic Editor/Admin — RTL preview toggle (view mode); see index.html forceRTL bootstrap.
+          {
+            key: 'force-rtl-preview',
+            component: ForceRtlPreviewToggle,
+            group: 'save-edit',
+            condition:
+              canEditDashboard &&
+              contextSrv.isEditor &&
+              isArabicUiLanguageForRtlPreview() &&
+              !isHomeDashboardScene(dashboard) &&
+              isShowingDashboard &&
+              !isEditingDashboard &&
+              !isEditingPanel &&
+              !isEditingLibraryPanel &&
+              !isViewingPanel &&
+              isEditable &&
+              !playlistSrv.state.isPlaying &&
+              config.featureToggles.rtlSupport === true,
           },
           {
             key: 'edit-dashboard-switch',

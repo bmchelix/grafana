@@ -1,8 +1,9 @@
 import { ChangeEvent } from 'react';
 
 import { Trans, t } from '@grafana/i18n';
+// eslint-disable-next-line no-restricted-imports, import/no-extraneous-dependencies
 import { config } from '@grafana/runtime';
-import { Button, Input, Switch, Form, Field, InputControl, Label, TextArea, Stack } from '@grafana/ui';
+import { Button, Field, Form, Input, InputControl, Label, Stack, Switch, TextArea } from '@grafana/ui';
 import { FolderPicker } from 'app/core/components/Select/FolderPicker';
 import { DashboardModel } from 'app/features/dashboard/state/DashboardModel';
 import { validationSrv } from 'app/features/manage-dashboards/services/ValidationSrv';
@@ -66,14 +67,21 @@ export const SaveDashboardAsForm = ({
 
   const validateDashboardName = (getFormValues: () => SaveDashboardAsFormDTO) => async (dashboardName: string) => {
     if (dashboardName && dashboardName === getFormValues().$folder.title?.trim()) {
-      return 'Dashboard name cannot be the same as folder name';
+      // BMC Change: Next line
+      return t(
+        'bmcgrafana.dashboards.save-dashboard.errors.dash-folder-same-name',
+        'Dashboard name cannot be the same as folder name'
+      );
     }
 
     try {
       await validationSrv.validateNewDashboardName(getFormValues().$folder.uid ?? 'general', dashboardName);
       return true;
     } catch (e) {
-      return e instanceof Error ? e.message : 'Dashboard name is invalid';
+      return e instanceof Error
+        ? e.message
+        : // BMC Change: Next line
+          t('bmcgrafana.dashboards.save-dashboard.errors.dash-name-invalid', 'Dashboard name is invalid');
     }
   };
 

@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/grafana/grafana/pkg/services/msp"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -694,7 +695,8 @@ func (dr *DashboardServiceImpl) BuildSaveDashboardCommand(ctx context.Context, d
 		dash.FolderUID = folder.UID
 	}
 
-	isParentFolderChanged, err := dr.ValidateDashboardBeforeSave(ctx, dash, dto.Overwrite)
+	// BMC Change: Next line (Keep as v11.2.x)
+	isParentFolderChanged, err := dr.dashboardStore.ValidateDashboardBeforeSave(ctx, dash, dto.Overwrite)
 	if err != nil {
 		return nil, err
 	}
@@ -1213,11 +1215,15 @@ func (dr *DashboardServiceImpl) SetDefaultPermissionsAfterCreate(ctx context.Con
 	}
 	permissions := []accesscontrol.SetResourcePermissionCommand{}
 	isNested := obj.GetFolder() != ""
-	//nolint:staticcheck // not yet migrated to OpenFeature
-	if dr.features.IsEnabledGlobally(featuremgmt.FlagKubernetesDashboards) && isNested {
-		// Don't set any permissions for nested dashboards
-		return nil
-	}
+	// BMC code
+	// Grafana 12.3.x brought change to not provide creator permissions to dashboards inside root-level folder (Admin to the user who created)
+	// Commenting out the below code to give creator permissions
+	// //nolint:staticcheck // not yet migrated to OpenFeature
+	// if dr.features.IsEnabledGlobally(featuremgmt.FlagKubernetesDashboards) && isNested {
+	// 	// Don't set any permissions for nested dashboards
+	// 	return nil
+	// }
+	// BMC code end
 	if user.IsIdentityType(claims.TypeUser, claims.TypeServiceAccount) {
 		uid, err := user.GetInternalID()
 		if err != nil {
@@ -1226,11 +1232,20 @@ func (dr *DashboardServiceImpl) SetDefaultPermissionsAfterCreate(ctx context.Con
 		permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
 			UserID: uid, Permission: dashboardaccess.PERMISSION_ADMIN.String(),
 		})
+		// BMC code - changes for MSP: provide default permissions to org0 team
+		if user.GetHasExternalOrg() {
+			permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
+				TeamID: msp.GetUnrestrictedTeamID(user.GetOrgID()), Permission: dashboardaccess.PERMISSION_EDIT.String(),
+			})
+		}
+		// BMC code ends
 	}
 	if !isNested {
 		permissions = append(permissions, []accesscontrol.SetResourcePermissionCommand{
-			{BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
-			{BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// BMC code Start - Fix for DRJ71-4418 - Changes related to folder and Dashboard permission in 9.x
+			// {BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
+			// {BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// BMC code end
 		}...)
 	}
 
@@ -1273,13 +1288,22 @@ func (dr *DashboardServiceImpl) SetDefaultPermissions(ctx context.Context, dto *
 			permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
 				UserID: userID, Permission: dashboardaccess.PERMISSION_ADMIN.String(),
 			})
+			// BMC code - changes for MSP: provide default permissions to org0 team
+			if dto.User.GetHasExternalOrg() {
+				permissions = append(permissions, accesscontrol.SetResourcePermissionCommand{
+					TeamID: msp.GetUnrestrictedTeamID(dto.User.GetOrgID()), Permission: dashboardaccess.PERMISSION_EDIT.String(),
+				})
+			}
+			// BMC code ends
 		}
 	}
 
 	if dash.FolderUID == "" {
 		permissions = append(permissions, []accesscontrol.SetResourcePermissionCommand{
-			{BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
-			{BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// BMC code Start - Fix for DRJ71-4418 - Changes related to folder and Dashboard permission in 9.x
+			//{BuiltinRole: string(org.RoleEditor), Permission: dashboardaccess.PERMISSION_EDIT.String()},
+			//{BuiltinRole: string(org.RoleViewer), Permission: dashboardaccess.PERMISSION_VIEW.String()},
+			// End
 		}...)
 	}
 
@@ -1352,6 +1376,13 @@ func (dr *DashboardServiceImpl) GetDashboards(ctx context.Context, query *dashbo
 
 	return results, nil
 }
+
+// BMC CODE STARTS
+func (dr *DashboardServiceImpl) GetDashboardsByFolderUID(ctx context.Context, query *dashboards.GetDashboardsByFolderUIDQuery) ([]*dashboards.Dashboard, error) {
+	return dr.dashboardStore.GetDashboardsByFolderUID(ctx, query)
+}
+
+//BMC CODE ENDS
 
 func (dr *DashboardServiceImpl) getDashboardsSharedWithUser(ctx context.Context, user identity.Requester) ([]*dashboards.DashboardRef, error) {
 	ctx, span := tracer.Start(ctx, "dashboards.service.getDashboardsSharedWithUser")

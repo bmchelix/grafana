@@ -38,9 +38,22 @@ preferencesV1alpha1: {
 			// Cookie preferences
 			cookiePreferences?: #CookiePreferences
 
+			// BMC Change - Format for dashboards, panels and reports timestamps
+			timeFormat?: string
+
+			// BMC Change - Toggle to set available query types for the tenant
+			enabledQueryTypes?: #EnabledQueryTypes
+			
 			// Navigation preferences
 			navbar?: #NavbarPreference
-		}
+
+			// BMC change - Toggle for loading empty panels - DRJ71-14546
+			loadEmptyPanels?: boolean
+
+			// BMC change - Toggle for using default variable values from dashboard JSON
+			useDefaultVariableValues?: boolean
+
+		} @cuetsy(kind="interface")
 
 		#QueryHistoryPreference: {
 			// one of: '' | 'query' | 'starred';
@@ -53,6 +66,11 @@ preferencesV1alpha1: {
 			functional?: {}
 		}
 
+		#EnabledQueryTypes: {
+			enabledTypes?: [...string]
+			applyForAdmin?: bool
+		} @cuetsy(kind="interface") //0.0
+		
 		#NavbarPreference: {
 			bookmarkUrls: [...string]
 		} 

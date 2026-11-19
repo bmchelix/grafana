@@ -166,10 +166,12 @@ func doBuild(binaryName, pkg string, opts BuildOpts) error {
 	}
 	binary := fmt.Sprintf("./bin/%s", binaryName)
 
+	// BMC code changes, commented out the if condition to keep dev builds also in ./bin/windows-amd64 on Windows
 	//don't include os/arch/libc in output path in dev environment
-	if !opts.isDev {
-		binary = fmt.Sprintf("./bin/%s-%s%s/%s", opts.goos, opts.goarch, libcPart, binaryName)
-	}
+	// if !opts.isDev {
+	binary = fmt.Sprintf("./bin/%s-%s%s/%s", opts.goos, opts.goarch, libcPart, binaryName)
+	// }
+	// BMC code changes end
 
 	if opts.goos == GoOSWindows {
 		binary += ".exe"
@@ -200,6 +202,14 @@ func doBuild(binaryName, pkg string, opts BuildOpts) error {
 		args = append(args, "-tags", strings.Join(opts.buildTags, ","))
 	}
 
+	// BMC code
+	// Pass -dev (go run build.go -dev build) to disable optimizations,  enables debugging
+	if opts.isDev {
+		fmt.Println("Building in dev mode")
+		args = append(args, "-gcflags=all=-N -l")
+	}
+	// BMC code ends
+
 	if opts.race {
 		args = append(args, "-race")
 	}
@@ -226,6 +236,12 @@ func doBuild(binaryName, pkg string, opts BuildOpts) error {
 
 	// Create an md5 checksum of the binary, to be included in the archive for
 	// automatic upgrades.
+	// BMC code changes start - FIPS mode
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		log.Println("FIPS mode enabled, running sha256 instead of md5 for file integrity")
+		return shaFile(binary)
+	}
+	// BMC code changes end - FIPS mode
 	return md5File(binary)
 }
 
@@ -292,6 +308,11 @@ func setBuildEnv(opts BuildOpts) error {
 	if (opts.goos != GoOSLinux || opts.goarch != "amd64") &&
 		opts.goos != GoOSDarwin {
 		// needed for archs other than linux/amd64 and darwin/arm64 + darwin/amd64
+		opts.cgo = true
+	}
+
+	// BMC code: Force CGO enabled for linux/amd64 (required by confluent-kafka-go)
+	if opts.goos == GoOSLinux && opts.goarch == "amd64" {
 		opts.cgo = true
 	}
 

@@ -1,12 +1,12 @@
 import { debounce } from 'lodash';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SelectableValue } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { t } from '@grafana/i18n';
-import { TabbedContainer, TabConfig } from '@grafana/ui';
+import { OrientationStateType, TabbedContainer, TabConfig } from '@grafana/ui';
 import { createDatasourcesList } from 'app/core/utils/richHistory';
-import { SortOrder, RichHistorySearchFilters, RichHistorySettings } from 'app/core/utils/richHistoryTypes';
+import { RichHistorySearchFilters, RichHistorySettings, SortOrder } from 'app/core/utils/richHistoryTypes';
 import { RichHistoryQuery } from 'app/types/explore';
 import { useSelector } from 'app/types/store';
 
@@ -46,6 +46,18 @@ export function RichHistory(props: RichHistoryProps) {
   const { richHistory, richHistoryTotal, height, deleteRichHistory, onClose, firstTab } = props;
 
   const [loading, setLoading] = useState(false);
+
+  // BMC Code : Accessibility Change starts here.
+  const orientationData: OrientationStateType = 'vertical';
+
+  const queryHistoryTabID = 'Query-History-Tab';
+  const starredTabID = 'Starred-Tab';
+  const settingsTabID = 'Settings-Tab';
+
+  const queryHistoryTabpanelID = 'Query-History-Tabpanel';
+  const starredTabpanelID = 'Starred-Tabpanel';
+  const settingsTabpanelID = 'Settings-Tabpanel';
+  // BMC Code : Accessibility Change ends here.
 
   const updateSettings = (settingsToUpdate: Partial<RichHistorySettings>) => {
     props.updateHistorySettings({ ...props.richHistorySettings, ...settingsToUpdate });
@@ -104,9 +116,15 @@ export function RichHistory(props: RichHistoryProps) {
         height={height}
         activeDatasources={activeDatasources}
         listOfDatasources={listOfDatasources}
+        // BMC Code : Accessibility Change ( Next 2 lines )
+        tabId={queryHistoryTabID}
+        tabPanelId={queryHistoryTabpanelID}
       />
     ),
     icon: 'history',
+    // BMC Code : Accessibility Change ( Next 2 lines )
+    tabId: queryHistoryTabID,
+    tabPanelId: queryHistoryTabpanelID,
   };
 
   const StarredTab: TabConfig = {
@@ -122,9 +140,15 @@ export function RichHistory(props: RichHistoryProps) {
         loadMoreRichHistory={() => props.loadMoreRichHistory()}
         richHistorySettings={props.richHistorySettings}
         richHistorySearchFilters={props.richHistorySearchFilters}
+        // BMC Code : Accessibility Change ( Next 2 lines )
+        tabId={starredTabID}
+        tabPanelId={starredTabpanelID}
       />
     ),
     icon: 'star',
+    // BMC Code : Accessibility Change ( Next 2 lines )
+    tabId: starredTabID,
+    tabPanelId: starredTabpanelID,
   };
 
   const SettingsTab: TabConfig = {
@@ -139,9 +163,15 @@ export function RichHistory(props: RichHistoryProps) {
         toggleStarredTabAsFirstTab={toggleStarredTabAsFirstTab}
         toggleActiveDatasourcesOnly={toggleActiveDatasourcesOnly}
         deleteRichHistory={deleteRichHistory}
+        // BMC Code : Accessibility Change ( Next 2 lines )
+        tabId={settingsTabID}
+        tabPanelId={settingsTabpanelID}
       />
     ),
     icon: 'sliders-v-alt',
+    // BMC Code : Accessibility Change ( Next 2 lines )
+    tabId: settingsTabID,
+    tabPanelId: settingsTabpanelID,
   };
 
   let tabs = [QueriesTab, StarredTab, SettingsTab];
@@ -152,6 +182,8 @@ export function RichHistory(props: RichHistoryProps) {
       defaultTab={firstTab}
       closeIconTooltip={t('explore.rich-history.close-tooltip', 'Close query history')}
       testId={selectors.pages.Explore.QueryHistory.container}
+      // BMC Code : Accessibility Change ( Next 1 line )
+      orientationState={orientationData}
     />
   );
 }

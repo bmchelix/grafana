@@ -17,7 +17,8 @@ interface GroupByVariableEditorProps {
 
 export function GroupByVariableEditor(props: GroupByVariableEditorProps) {
   const { variable, onRunQuery, inline } = props;
-  const { datasource: datasourceRef, defaultOptions, allowCustomValue = true } = variable.useState();
+  // BMC code: allowCustomValue defaults to false
+  const { datasource: datasourceRef, defaultOptions, allowCustomValue = false } = variable.useState();
 
   const { value: datasource } = useAsync(async () => {
     return await getDataSourceSrv().get(datasourceRef);

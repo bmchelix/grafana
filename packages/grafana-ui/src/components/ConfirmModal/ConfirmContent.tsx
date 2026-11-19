@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
-import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { GrafanaTheme2 } from '@grafana/data';
@@ -102,7 +102,8 @@ export const ConfirmContent = ({
         {confirmPromptText ? (
           <div className={styles.confirmationInput}>
             <Stack alignItems="flex-start">
-              <Field disabled={disabled}>
+              {/* BMC Change: Next line to take full width */}
+              <Field disabled={disabled} style={{ flexGrow: 1 }}>
                 <Input
                   placeholder={placeholder}
                   onChange={onConfirmationTextChange}

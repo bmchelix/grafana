@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
 import { Trans, t } from '@grafana/i18n';
-import { Alert, Button, Field, Modal, Text, Space, Box } from '@grafana/ui';
-import { MoveActionAvailableTargetWarning } from 'app/features/provisioning/components/Shared/MoveActionAvailableTargetWarning';
+import { Alert, Box, Button, Field, Modal, Space, Text } from '@grafana/ui';
 import { ProvisioningAwareFolderPicker } from 'app/features/provisioning/components/Shared/ProvisioningAwareFolderPicker';
 
 import { DashboardTreeSelection } from '../../types';
@@ -43,7 +42,8 @@ export const MoveModal = ({ onConfirm, onDismiss, selectedItems, ...props }: Pro
         />
       )}
 
-      <MoveActionAvailableTargetWarning />
+      {/* BMC code: disable move action available target warning */}
+      {/* <MoveActionAvailableTargetWarning /> */}
 
       <Box paddingTop={2}>
         <Text element="p">

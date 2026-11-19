@@ -24,6 +24,7 @@ import { config, locationService, logWarning } from '@grafana/runtime';
 import { notifyApp } from 'app/core/actions';
 import { contextSrv } from 'app/core/services/context_srv';
 import { getTimeSrv } from 'app/features/dashboard/services/TimeSrv';
+import { getFeatureStatus } from 'app/features/dashboard/services/featureFlagSrv';
 import { DashboardModel } from 'app/features/dashboard/state/DashboardModel';
 import { store } from 'app/store/store';
 import { AppNotification } from 'app/types/appNotifications';
@@ -53,6 +54,7 @@ import {
 import {
   ensureStringValues,
   ExtendedUrlQueryMap,
+  extractLoginFromUser,
   getCurrentText,
   getCurrentValue,
   getVariableRefresh,
@@ -233,6 +235,8 @@ export const addSystemTemplateVariables = (key: string, dashboard: DashboardMode
           id: contextSrv.user.id,
           email: contextSrv.user.email,
           toString: () => contextSrv.user.id.toString(),
+          // BMC Change: Next line
+          loginId: extractLoginFromUser(contextSrv.user.login),
         },
       },
     };
@@ -366,7 +370,8 @@ export const processVariable = (
       const refreshableVariable = variable as QueryVariableModel;
       if (
         refreshableVariable.refresh === VariableRefresh.onDashboardLoad ||
-        refreshableVariable.refresh === VariableRefresh.onTimeRangeChanged
+        refreshableVariable.refresh === VariableRefresh.onTimeRangeChanged ||
+        refreshableVariable.refresh === VariableRefresh.onRefreshButtonClick
       ) {
         await dispatch(updateOptions(toKeyedVariableIdentifier(refreshableVariable)));
         return;
@@ -504,8 +509,9 @@ export const validateVariableSelectionState = (
     if (Array.isArray(current.value)) {
       const selected = selectOptionsForCurrentValue(variableInState);
 
+      // BMC change starts: feature flag code
       // if none pick first
-      if (selected.length === 0) {
+      if (!getFeatureStatus('bhd_disable_default_variable_selection') && selected.length === 0) {
         const option = variableInState.options[0];
         return setValue(variableInState, {
           value: typeof option.value === 'string' ? [option.value] : option.value,
@@ -644,7 +650,9 @@ export const variableUpdated = (
 
     return Promise.all(promises).then(() => {
       if (emitChangeEvents) {
-        events.publish(new VariablesChanged(event));
+        if (state.dashboard.getModel()?.getOpenEmptyPanels() === false) {
+          events.publish(new VariablesChanged(event));
+        }
         locationService.partial(getQueryWithVariables(rootStateKey, getState));
       }
     });
@@ -672,7 +680,10 @@ const dfs = (
       // when a variable is refreshed on time range change, we need to add that variable to be refreshed and mark its children as visited
       if (
         childVariable &&
-        childVariable.refresh === VariableRefresh.onTimeRangeChanged &&
+        (childVariable.refresh === VariableRefresh.onTimeRangeChanged ||
+          // BMC code changes - DRJ71-14389
+          childVariable.refresh === VariableRefresh.onRefreshButtonClick) &&
+        // BMC code changes end - DRJ71-14389
         variablesRefreshTimeRange.indexOf(childVariable) === -1
       ) {
         variablesRefreshTimeRange.push(childVariable);
@@ -773,7 +784,10 @@ const getVariablesThatNeedRefreshOld = (key: string, state: StoreState): Variabl
   const variablesThatNeedRefresh = allVariables.filter((variable) => {
     if ('refresh' in variable && 'options' in variable) {
       const variableWithRefresh = variable;
-      return variableWithRefresh.refresh === VariableRefresh.onTimeRangeChanged;
+      return (
+        variableWithRefresh.refresh === VariableRefresh.onTimeRangeChanged ||
+        variableWithRefresh.refresh === VariableRefresh.onRefreshButtonClick
+      );
     }
     return false;
   }) as VariableWithOptions[];
@@ -861,8 +875,13 @@ export const templateVarsChangedInUrl =
       if (vars[key].removed) {
         // for some reason (panel|data link without variable) the variable url value (var-xyz) has been removed from the url
         // so we need to revert the value to the value stored in dashboard json
+        // BMC Code, If condition inline
         const variableInModel = dashboard?.templating.list.find((v) => v.name === variable.name);
-        if (variableInModel && hasCurrent(variableInModel)) {
+        if (
+          variableInModel &&
+          hasCurrent(variableInModel) &&
+          !getFeatureStatus('bhd_disable_default_variable_selection')
+        ) {
           value = variableInModel.current.value; // revert value to the value stored in dashboard json
         }
 

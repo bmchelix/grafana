@@ -337,6 +337,9 @@ export interface GrafanaConfig {
   analytics: {
     enabled: boolean;
   };
+
+  /** BMC: true when deployed on-SAAS environment — enables HCG URL dropdown for external datasource editors. */
+  isExternalDSUrlDropdownEnabled?: boolean;
 }
 
 export interface SqlConnectionLimits {

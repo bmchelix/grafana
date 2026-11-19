@@ -1,5 +1,6 @@
 import { Unsubscribable } from 'rxjs';
 
+import { LoadingState } from '@grafana/data';
 import { SceneDataTransformer, SceneObjectBase, SceneObjectState, SceneQueryRunner, VizPanel } from '@grafana/scenes';
 import { SHARED_DASHBOARD_QUERY } from 'app/plugins/datasource/dashboard/constants';
 import { MIXED_DATASOURCE_NAME } from 'app/plugins/datasource/mixed/MixedDataSource';
@@ -29,6 +30,8 @@ export class DashboardDatasourceBehaviour extends SceneObjectBase<DashboardDatas
     const queryRunner = this.parent;
     let libraryPanelSub: Unsubscribable;
     let transformerSub: Unsubscribable;
+    let sourceRunnerSub: Unsubscribable;
+    let dependentRunnerSub: Unsubscribable;
     let dashboard: DashboardScene;
     if (!(queryRunner instanceof SceneQueryRunner)) {
       throw new Error('DashboardDatasourceBehaviour must be attached to a SceneQueryRunner');
@@ -83,11 +86,31 @@ export class DashboardDatasourceBehaviour extends SceneObjectBase<DashboardDatas
       // on the panel. Similar thing happens when going to edit mode and back, where we unsubscribe and
       // since we never re-run the query, only reprocess the transformations, the panel will not update.
       transformerSub = dataTransformer.subscribeToState((newState, oldState) => {
-        if (newState.data !== oldState.data) {
+        // BMC Change: only run queries if the data has changed and the data is not loading
+        if (newState.data !== oldState.data && newState.data?.state !== LoadingState.Loading) {
+          queryRunner.runQueries();
+        }
+      });
+    } else {
+      // BMC Change: Starts
+      // Else block to handle the case when dashboard is loaded from and queryRunnerSub is not present
+      let dependentHasLiveSubscription = false;
+
+      dependentRunnerSub = queryRunner.subscribeToState((newState, oldState) => {
+        if (newState.data?.request?.requestId !== oldState.data?.request?.requestId) {
+          dependentHasLiveSubscription = true;
+        }
+      });
+
+      sourceRunnerSub = sourcePanelQueryRunner.subscribeToState((newState, oldState) => {
+        const newRequestId = newState.data?.request?.requestId;
+        const oldRequestId = oldState.data?.request?.requestId;
+        if (oldRequestId && newRequestId && newRequestId !== oldRequestId && !dependentHasLiveSubscription) {
           queryRunner.runQueries();
         }
       });
     }
+    // BMC Change: Ends
 
     if (this.prevRequestId && this.prevRequestId !== sourcePanelQueryRunner.state.data?.request?.requestId) {
       queryRunner.runQueries();
@@ -101,6 +124,14 @@ export class DashboardDatasourceBehaviour extends SceneObjectBase<DashboardDatas
 
       if (transformerSub) {
         transformerSub.unsubscribe();
+      }
+
+      if (sourceRunnerSub) {
+        sourceRunnerSub.unsubscribe();
+      }
+
+      if (dependentRunnerSub) {
+        dependentRunnerSub.unsubscribe();
       }
     };
   }

@@ -3,15 +3,15 @@ import { DataSourceApi, TypedVariableModel, VariableSupportType, VariableType } 
 import { LegacyVariableQueryEditor } from './editor/LegacyVariableQueryEditor';
 import { StandardVariableQueryEditor } from './editor/getVariableQueryEditor';
 import {
+  hasCurrent,
   hasCustomVariableSupport,
   hasDatasourceVariableSupport,
   hasLegacyVariableSupport,
+  hasOptions,
   hasStandardVariableSupport,
   isLegacyQueryEditor,
-  isQueryEditor,
   isMulti,
-  hasOptions,
-  hasCurrent,
+  isQueryEditor,
 } from './guard';
 import {
   createAdhocVariable,
@@ -19,8 +19,10 @@ import {
   createCustomVariable,
   createDashboardVariable,
   createDatasourceVariable,
+  createDatePickerVariable,
   createGroupByVariable,
   createIntervalVariable,
+  createOptimizeVariable,
   createOrgVariable,
   createQueryVariable,
   createSnapshotVariable,
@@ -179,6 +181,9 @@ describe('type guards', () => {
     custom: { variable: createCustomVariable(), isMulti: true, hasOptions: true, hasCurrent: true },
     snapshot: { variable: createSnapshotVariable(), isMulti: false, hasOptions: true, hasCurrent: true },
     switch: { variable: createSwitchVariable(), isMulti: false, hasOptions: true, hasCurrent: true },
+    // BMC code: next line
+    datepicker: { variable: createDatePickerVariable(), isMulti: false, hasOptions: true, hasCurrent: true },
+    optimizepicker: { variable: createOptimizeVariable(), isMulti: false, hasOptions: true, hasCurrent: true },
   };
 
   const variableFacts = Object.values(variableFactsObj);

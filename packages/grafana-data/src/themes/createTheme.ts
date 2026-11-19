@@ -42,10 +42,15 @@ export function createTheme(options: NewThemeOptions = {}): GrafanaTheme2 {
   const components = createComponents(colors, shadows);
   const visualization = createVisualizationColors(colors, visualizationInput);
 
+  // BMC Change: Detect RTL mode from document direction
+  const isRtl = typeof document !== 'undefined' && document.documentElement.dir === 'rtl';
+
   const theme = {
     name: name ?? (colors.mode === 'dark' ? 'Dark' : 'Light'),
     isDark: colors.mode === 'dark',
     isLight: colors.mode === 'light',
+    // BMC Change: Add isRtl to theme
+    isRtl,
     colors,
     breakpoints,
     spacing,

@@ -1,9 +1,9 @@
 import { css, cx } from '@emotion/css';
-import { useCallback, useMemo } from 'react';
 import * as React from 'react';
+import { useCallback, useMemo } from 'react';
 import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
 
-import { GrafanaTheme2, formattedValueToString, getValueFormat, SelectableValue } from '@grafana/data';
+import { formattedValueToString, getValueFormat, GrafanaTheme2, SelectableValue } from '@grafana/data';
 import { t, Trans } from '@grafana/i18n';
 
 import { useStyles2, useTheme2 } from '../../../themes/ThemeContext';
@@ -23,6 +23,7 @@ interface Props {
   setSearchFilter: (value: string) => void;
   operator: SelectableValue<string>;
   setOperator: (item: SelectableValue<string>) => void;
+  filterInputRef?: React.Ref<HTMLInputElement>; // BMC Accessibility change: Ref for focus management
 }
 
 const ITEM_HEIGHT = 28;
@@ -81,6 +82,7 @@ export const FilterList = ({
   setSearchFilter,
   operator,
   setOperator,
+  filterInputRef,
 }: Props) => {
   const regex = useMemo(() => new RegExp(searchFilter, caseSensitive ? undefined : 'i'), [searchFilter, caseSensitive]);
   const items = useMemo(
@@ -176,11 +178,14 @@ export const FilterList = ({
 
   return (
     <Stack direction="column" gap={0.25}>
+      {/* BMC Accessibility change: Added aria-label and ref for focus management */}
       {!showOperators && (
         <FilterInput
+          ref={filterInputRef}
           placeholder={t('grafana-ui.table.filter-placeholder', 'Filter values')}
           onChange={setSearchFilter}
           value={searchFilter}
+          aria-label={t('bmcgrafana.grafana-ui.table.filter-placeholder', 'Filter values')}
         />
       )}
       {showOperators && (
@@ -193,7 +198,12 @@ export const FilterList = ({
             tooltip={operator.description}
           />
           <FilterInput
+            //BMC Accessibility change: Forward ref for focus management
+            ref={filterInputRef}
             placeholder={t('grafana-ui.table.filter-placeholder', 'Filter values')}
+            //BMC Accessibility Change next 1 line
+            aria-label={t('bmcgrafana.grafana-ui.table.filter-placeholder', 'Filter values')}
+            //BMC Accessibility Change end
             onChange={setSearchFilter}
             value={searchFilter}
           />

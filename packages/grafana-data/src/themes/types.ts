@@ -19,6 +19,8 @@ export interface GrafanaTheme2 {
   name: string;
   isDark: boolean;
   isLight: boolean;
+  // BMC Change: Add isRtl to theme for centralized RTL detection
+  isRtl: boolean;
   colors: ThemeColors;
   breakpoints: ThemeBreakpoints;
   spacing: ThemeSpacing;

@@ -19,6 +19,7 @@ import { getLegacySelectStyles } from './legacySelect';
 import { getMarkdownStyles } from './markdownStyles';
 import { getPageStyles } from './page';
 import { getQueryEditorStyles } from './queryEditor';
+import { getRtlOverrideStyles } from './rtlOverrides'; // BMC Change: RTL Support
 import { getSkeletonStyles } from './skeletonStyles';
 import { getSlateStyles } from './slate';
 import { getUplotStyles } from './uPlot';
@@ -52,6 +53,8 @@ export function GlobalStyles() {
         getUtilityClassStyles(theme),
         getLegacySelectStyles(theme),
         getHacksStyles({}),
+        // BMC Change: RTL Support - Override styles for rtl
+        getRtlOverrideStyles(theme),
       ]}
     />
   );

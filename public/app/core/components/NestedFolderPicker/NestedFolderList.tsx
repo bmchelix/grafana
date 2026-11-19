@@ -1,13 +1,13 @@
 import { css, cx } from '@emotion/css';
-import { useCallback, useId, useMemo, useRef } from 'react';
 import * as React from 'react';
+import { useCallback, useId, useMemo, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 
 import { GrafanaTheme2 } from '@grafana/data';
-import { Trans } from '@grafana/i18n';
-import { IconButton, useStyles2, Text } from '@grafana/ui';
+import { t, Trans } from '@grafana/i18n';
+import { IconButton, Text, useStyles2 } from '@grafana/ui';
 import { Indent } from 'app/core/components/Indent/Indent';
 import { childrenByParentUIDSelector, rootItemsSelector } from 'app/features/browse-dashboards/state/hooks';
 import { DashboardsTreeItem } from 'app/features/browse-dashboards/types';
@@ -221,7 +221,8 @@ function Row({ index, style: virtualStyles, data }: RowProps) {
       id={getDOMId(idPrefix, item.uid)}
     >
       <div className={styles.rowBody}>
-        <Indent level={level} spacing={2} />
+        {/* BMC code: disable indent */}
+        {/* <Indent level={level} spacing={2} /> */}
 
         {foldersAreOpenable && !emptyFolders.has(item.uid) ? (
           <IconButton
@@ -244,7 +245,8 @@ function Row({ index, style: virtualStyles, data }: RowProps) {
         )}
 
         <label className={styles.label} id={labelId}>
-          <Text truncate>{item.title}</Text>
+          {/* BMC Change: Next line */}
+          <Text truncate>{t(`bmc-dynamic.${item.uid}.name`, item.title)}</Text>
           <FolderRepo folder={item} />
         </label>
         {isSearchItem && <FolderParent item={items[index]} />}

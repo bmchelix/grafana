@@ -1,13 +1,13 @@
-import { cx, css } from '@emotion/css';
+import { css, cx } from '@emotion/css';
 import { FormEventHandler, KeyboardEventHandler, ReactNode, useCallback } from 'react';
 
 import {
   DataFrame,
-  TransformerRegistryItem,
-  TransformationApplicabilityLevels,
   GrafanaTheme2,
-  standardTransformersRegistry,
   SelectableValue,
+  TransformationApplicabilityLevels,
+  TransformerRegistryItem,
+  standardTransformersRegistry,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Trans, t } from '@grafana/i18n';

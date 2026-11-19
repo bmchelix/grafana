@@ -1,0 +1,2065 @@
+{
+    "_comment": "No editeu aquest fitxer manualment ni actualitzeu aquestes frases d'origen a Crowdin. La font de referència per a les cadenes en anglès es troba en el codi font",
+    "bmc": {
+      "admin": {
+        "users": {
+          "search-label": "Cerca un usuari pel nom d’inici de sessió, correu electrònic o nom"
+        }
+      },
+      "browse-dashboards": {
+        "action": {
+          "move-folder-tooltip": "No es poden moure les carpetes"
+        }
+      },
+      "bulk-operations": {
+        "cancel-text": "Cancel·la",
+        "datsource-not-found": "No s'han trobat fonts de dades del tipus {{pluginName}}",
+        "import": {
+          "import-all-failed": "Ha fallat la importació de tot el tauler",
+          "no-import": "No s'ha importat cap tauler de control"
+        },
+        "import-all": "Importa-ho tot",
+        "import-failed": "No s'ha pogut importar els següents taulers de control",
+        "import-success": "Tots els taulers de control s'han importat correctament",
+        "options": "Opcions",
+        "select-datasource": "Selecciona una {{pluginName}} font de dades",
+        "set-parameters": "estableix els paràmetres obligatoris per als taulers de control seleccionats",
+        "specify-constant": "Especifica una constant de cadena"
+      },
+      "calc-fields": {
+        "a-z": "A-Z",
+        "aggregated": "Agregat",
+        "all": "Tot",
+        "clone": "Clona",
+        "confirm-delete": "Voleu eliminar el(s) camp(s) calculat(s) seleccionat(s)?",
+        "connection-error": "La connectivitat amb BMC Helix ITSM no està configurada.",
+        "custom": "Personalitzada",
+        "delete": "Suprimeix",
+        "details": "Detalls del camp calculat",
+        "edit": "Editar",
+        "edit-field": "Edita el camp calculat",
+        "eg": "Per exemple",
+        "failed": "No s'han pogut obtenir els camps calculats",
+        "failure": "Fracàs",
+        "filter-by-type": "Filtra per tipus (Per defecte, Tot)",
+        "folder-view": "Vista de la carpeta",
+        "form-name": "Nom del formulari",
+        "is-aggregate": "Està agregat",
+        "is-aggregate-description": "Activeu aquesta opció si la vostra consulta inclou funcions d'agregació.",
+        "list-view": "Visualització de la llista",
+        "module": "Mòdul",
+        "module-name": "Nom del mòdul",
+        "name": "Nom",
+        "name-placeholder": "Introduïu el nom del camp calculat",
+        "new-field": "Nou camp calculat",
+        "no-calc-fields": "Encara no heu creat cap camp calculat.",
+        "not-found": "No s'han trobat camps calculats que coincideixin amb la vostra consulta.",
+        "ootb": "Per defecte",
+        "query-info": "La consulta ha de ser una consulta d'una sola columna",
+        "query-not-validated": "La consulta no s'ha validat",
+        "save": "Desa",
+        "search-by-name": "Cerca els camps calculats per nom",
+        "search-items": "Cerca els elements",
+        "select-form": "Selecciona el formulari",
+        "select-module": "Selecciona el mòdul",
+        "sort-asc": "Per ordre alfabètic (A-Z)",
+        "sort-asc-descripton": "Ordena els resultats en ordre alfabètic ascendent",
+        "sort-dsc": "Per ordre alfabètic (Z-A)",
+        "sort-dsc-descripton": "Ordena els resultats en ordre alfabètic descendent",
+        "sort-options": "Opcions d’ordre",
+        "sort-placeholder": "Ordena (predeterminat {{label}})",
+        "sql-label": "SQL",
+        "sql-query": "Consulta SQL",
+        "subtitle": "Crea i gestiona camps calculats per al servei ITSM",
+        "title": "Camps calculats",
+        "unknown-failure": "Error desconegut",
+        "update": "Actualitza",
+        "validate": "Valida",
+        "validation-success": "Consulta validada correctament"
+      },
+      "common": {
+        "cancel": "Cancel·la",
+        "dashboards": "Taulers de control",
+        "delete": "Suprimeix",
+        "download": "Descarrega",
+        "edit": "Editar",
+        "loading": "S’està carregant...",
+        "name": "Nom",
+        "save": "Desa",
+        "type": "Tipus"
+      },
+      "content-localization": "Codi d'idioma no vàlid: {{langCode}}",
+      "dashboard": {
+        "toolbar": {
+          "manage-reports": "Gestiona els informes programats",
+          "reset-filters": "Restableix els filtres",
+          "reset-filters-failure": "No s'han pogut restablir els valors del filtre.",
+          "save-filters": "Desa els filtres",
+          "save-filters-failure": "No s'han pogut desar els valors del filtre.",
+          "save-filters-success": "Els valors del filtre s'han desat correctament."
+        }
+      },
+      "dashboard-import": {
+        "import-text": "Importar",
+        "overwrite": "Sobreescriu",
+        "panel-import": "Importació del panell",
+        "panel-import-alert": "La importació té un panell {{vqb}}. Torneu-lo a exportar des de l’entorn desitjat; en cas contrari, caldrà intervenció manual per a la selecció de la vista.",
+        "sub-title": "Importa el tauler des d'un fitxer o mitjançant el JSON del tauler de control"
+      },
+      "dashboard-scene": {
+        "get-editable-variables": {
+          "description": {
+            "optimize-variable-description": "Definiu una variable d'optimització, en la qual els usuaris poden seleccionar tipus de consultes per optimitzar"
+          },
+          "name": {
+            "datepicker": "Interval de dates",
+            "optimizepicker": "Variable d'optimització"
+          }
+        },
+        "text": {
+          "discard-changes-to-dashboard": "Teniu canvis no desats en aquest tauler de control. Esteu segur que els voleu descartar?"
+        }
+      },
+      "dashboard-settings": {
+        "general": {
+          "multilingual-pdf": "PDF multilingüe",
+          "multilingual-pdf-description": "Activa la generació de PDF multilingües per a informes PDF de disseny senzill"
+        }
+      },
+      "dashboards": {
+        "delete-success": "S'ha eliminat el tauler de control"
+      },
+      "date-picker": {
+        "description": "Defineix una variable d'interval de dates, on els usuaris puguin seleccionar qualsevol interval de dates",
+        "name": "Interval de dates"
+      },
+      "error-page": {
+        "bmc-support": "Assistència de BMC",
+        "description": "Aquesta pàgina pot haver estat eliminada, haver canviat de nom o estar temporalment no disponible.",
+        "go-back": "Torneu al",
+        "home-page": "Pàgina d'inici",
+        "or-contact": "o poseu-vos en contacte amb",
+        "title": "Ens sap greu; no hem pogut carregar la pàgina."
+      },
+      "explore": {
+        "total-result-count-aria-live_one": "{{ count }} consultes carregades",
+        "total-result-count-aria-live_other": "{{ count }} consultes carregades"
+      },
+      "export": {
+        "csvdelimiter": "Delimitador",
+        "fail": "S'ha produït un error en l'exportació:",
+        "failed-dashboards": "Han fallat els taulers de control",
+        "field-enclosure": "Delimitador de camp",
+        "generation-failed": "No s'ha pogut generar l'informe, torna-ho a provar més tard",
+        "grid": "Quadrícula",
+        "hide-header": "Amaga la capçalera",
+        "landscape": "Horitzontal",
+        "layout": "Disposició",
+        "newline": "Format de nova línia",
+        "orientation": "Orientació",
+        "portrait": "Vertical",
+        "reduce-selection": "Reduïu els valors de les variables seleccionades per a {{variableQuery}} i torneu-ho a provar més tard",
+        "rtl-grid-only": "La disposició de dreta a esquerra només està disponible en la vista de quadrícula",
+        "save-as": "Desa el {{target}} com a {{type}}",
+        "select-report-type-aria": "Seleccioneu el tipus d'informe",
+        "select-report-type-placeholder": "Seleccioneu el tipus d'informe",
+        "simple": "Simple",
+        "success": "Informe generat correctament",
+        "successful": "Exportació realitzada correctament:",
+        "tableScaling": "Escalat de la taula",
+        "type": "Tipus",
+        "view": "Vista"
+      },
+      "features-list": {
+        "date-function-resolution-for-service-management": "Resolució de funcions de data per a la gestió de serveis",
+        "enable-insight-finder": "Activa Insight Finder",
+        "enable-ootb-views-for-visual-query-builder": "Activa les vistes per defecte per al Visual Query Builder",
+        "export-complete-table-in-pdf": "Exporta taula completa en PDF",
+        "rtl-support": "Interfície de dreta a esquerra",
+        "skip-ootb-dashboards-during-upgrade": "Omet els taulers de control per defecte durant l’actualització",
+        "skip-ootb-dashboards-during-upgrade-confirm-dialog": {
+          "confirm-button": "Habilita",
+          "desc": "Suprimiu les carpetes dels panells predeterminats que no siguin necessàries abans d'habilitar aquesta funció",
+          "title": "Alterna la funció"
+        },
+        "snapshot": "Instantània"
+      },
+      "grafana-data": {
+        "transformers": {
+          "advance-functions": {
+            "description": "Transforma els resultats aplicant càlculs de post-processing als resultats inicials de la sol·licitud. Per exemple, Total acumulat, Percentatge respecte del valor màxim, i d'altres.",
+            "name": "Funcions avançades"
+          },
+          "dynamic-fields-formatter": {
+            "description": "Formata els camps dinàmics en parells clau-valor o json.",
+            "name": "Formatador de camps dinàmics"
+          },
+          "sanitize-fields": {
+            "description": "Saneja un camp a text pla",
+            "name": "Saneja camps"
+          }
+        }
+      },
+      "inspector": {
+        "stats": {
+          "statistics": "Estadística",
+          "value": "Valor"
+        }
+      },
+      "key-selector": {
+        "no-results": "No s'han trobat claus que coincideixin"
+      },
+      "load-blank-dashoard": {
+        "loading-label": "S’està carregant...",
+        "no-data": "No hi ha cap dada",
+        "refresh-label": "Actualitza el tauler de control per obtenir dades"
+      },
+      "manage-dashboards": {
+        "drop-click": "Arrossegueu i deixeu anar aquí o feu clic per cercar",
+        "import-failed": "Error d’importació",
+        "serialization-failed": "S'ha produït un error en la serialització JSON -&gt; JS",
+        "upload-json": "Carrega el(s) fitxer(s) JSON del tauler de control"
+      },
+      "manage-locales": {
+        "cancel": "Cancel·la",
+        "dashboards": {
+          "add": "Afegir",
+          "add-key": "Afegeix una nova clau",
+          "dashboard-name": "Nom del tauler de control",
+          "enter-key": "Tecla Intro",
+          "enter-value": "Introduir valor",
+          "key-text": "Clau",
+          "key-validation": "Només es permeten caràcters alfanumèrics",
+          "no-empty-key": "la clau no pot estar buida",
+          "validation": {
+            "default-value-required": "es requereix un valor per defecte",
+            "key-required": "La clau és obligatòria"
+          },
+          "value-text": "Valor"
+        },
+        "export": "Exporta",
+        "folders": {
+          "folder-title": "Títol de la carpeta"
+        },
+        "global": {
+          "subtitle": "Crea i gestiona claus globals per a la localització",
+          "title": "Gestió de solucions"
+        },
+        "global-keys-text": "Tecles globals",
+        "import": "Importar",
+        "local-keys-text": "Claus locals",
+        "localization-title": "Localització",
+        "new-key": "Clau nova",
+        "save": "Desa",
+        "search-keys": "Cerca claus...",
+        "title": "Gestiona la configuració regional"
+      },
+      "nav": {
+        "apps": {
+          "insight-finder": {
+            "configure-views-subtitle": "Visualitza i gestiona les teves vistes",
+            "configure-views-title": "Configuració de les vistes d'Insight Finder",
+            "custom-views-subtitle": "Crea i gestiona la teva vista personalitzada",
+            "custom-views-title": "Vistes personalitzades d’Insight Finder",
+            "home": "Insight Finder",
+            "settings-title": "Configuració d'Insight Finder"
+          },
+          "reports": {
+            "history": "Història",
+            "manage-ownership": "Gestiona la propietat",
+            "settings": "Configuració"
+          }
+        },
+        "reports-scheduler": "Programador d'informes",
+        "rms": {
+          "subtitle": "Una aplicació per crear i modificar vistes per a Visual Query Builder",
+          "title": "Reporting Metadata Studio"
+        },
+        "roles": {
+          "subtitle": "Gestiona rols a tota l'organització",
+          "title": "Rols"
+        }
+      },
+      "notification": {
+        "error": {
+          "bhd-00004": "No s'han pogut obtenir els Camps Calculats",
+          "bhd-00005": "No s'ha pogut crear el camp calculat",
+          "bhd-00006": "No s'ha pogut eliminar el camp calculat",
+          "bhd-00007": "No s'ha pogut modificar el camp calculat",
+          "bhd-00008": "No s'han pogut actualitzar els taulers de control",
+          "bhd-00009": "No s'ha pogut eliminar el camp del(s) tauler(s) de control",
+          "bhd-00010": "càrrega de sol·licitud incorrecta en crear un camp calculat",
+          "bhd-00011": "sol·licitud incorrecta del contingut mentre s'eliminava el camp calculat",
+          "bhd-00012": "sol·licitud incorrecta de càrrega mentre es modificava el camp calculat",
+          "bhd-00013": "El nom del camp calculat ja està en ús. Proporcioneu un altre nom.",
+          "bhd-00102": "dades de sol·licitud incorrectes mentre es configura la informació d'usuari IMS",
+          "bhd-00103": "dades de sol·licitud incorrectes mentre s'actualitzaven les preferències de l'usuari",
+          "bhd-00104": "dades de sol·licitud incorrectes mentre s'actualitzaven les preferències de l'organització",
+          "bhd-00105": "No s’ha pogut analitzar el cos de la petició",
+          "bhd-00106": "Tema no vàlid en actualitzar les preferències",
+          "bhd-00107": "No s'ha trobat el tauler de control",
+          "bhd-00108": "Error de servidor intern",
+          "bhd-00109": "No s'ha pogut obtenir les preferències",
+          "bhd-00110": "No s'han pogut desar les preferències",
+          "bhd-00111": "S'ha produït un error d’actualització de preferències d’usuari",
+          "bhd-00201": "L'id no és vàlid",
+          "bhd-00202": "dades de sol·licitud incorrectes en crear la carpeta",
+          "bhd-00203": "dades de sol·licitud incorrectes en actualitzar la carpeta",
+          "bhd-00204": "dades de sol·licitud incorrectes en traslladar la carpeta",
+          "bhd-00205": "dades de sol·licitud incorrectes en actualitzar els permisos de la carpeta",
+          "bhd-00206": "els permisos d'equip i d'usuari no poden tenir un rol associat",
+          "bhd-00207": "els permisos no poden tenir ni un usuari ni un equip",
+          "bhd-00208": "el títol de la carpeta no pot estar buit",
+          "bhd-00209": "El tauler no es pot canviar per una carpeta",
+          "bhd-00210": "L'uid conté caràcters il·legals",
+          "bhd-00211": "L'uid és massa llarg; com a màxim ha de tenir 40 caràcters",
+          "bhd-00212": "No s'ha pogut eliminar la carpeta perquè conté elements de la biblioteca en ús",
+          "bhd-00213": "Accés denegat",
+          "bhd-00214": "Per utilitzar aquest servei, cal activar la funció de carpetes imbricades.",
+          "bhd-00215": "no s’ha trobat la carpeta",
+          "bhd-00216": "ja existeix una carpeta amb el mateix nom a l'ubicació actual",
+          "bhd-00217": "ja existeix una carpeta/tauler de control amb el mateix uid",
+          "bhd-00218": "algú altre ha canviat la carpeta",
+          "bhd-00219": "s'ha produït un error en moure la carpeta",
+          "bhd-00220": "Error de l'API de la carpeta",
+          "bhd-00221": "No s'han pogut obtenir els permisos de la carpeta",
+          "bhd-00222": "S'ha produït un error en comprovar els permisos de la carpeta",
+          "bhd-00223": "No s’ha pogut crear el permís",
+          "bhd-00301": "Utilitzeu el punt d'accés de les carpetes per eliminar carpetes.",
+          "bhd-00302": "El dashboardId no és vàlid",
+          "bhd-00303": "dades de sol·licitud incorrectes mentre es restaurava la versió del tauler de control",
+          "bhd-00304": "dades de sol·licitud incorrectes mentre es restaurava el tauler de control eliminat",
+          "bhd-00305": "dades de sol·licitud incorrectes mentre es calcula la diferència del tauler de control",
+          "bhd-00306": "dades de sol·licitud incorrectes en crear o actualitzar el tauler de control",
+          "bhd-00307": "Utilitzeu el punt d'accés de les carpetes per desar carpetes.",
+          "bhd-00308": "el tauler de control aprovisionat no es pot eliminar",
+          "bhd-00309": "S'ha assolit la quota",
+          "bhd-00310": "Accés denegat a aquest tauler de control",
+          "bhd-00311": "No s'ha trobat el tauler de control",
+          "bhd-00312": "No s’ha trobat la carpeta",
+          "bhd-00313": "No s'ha trobat la versió del tauler de control",
+          "bhd-00314": "S'ha produït un error en recuperar els taulers de control públics",
+          "bhd-00315": "S'ha produït un error en carregar el tauler de control, les dades del tauler de control no són vàlides",
+          "bhd-00316": "S'ha produït un error en comprovar si l'usuari havia marcat el tauler de control com a favorit",
+          "bhd-00317": "No s'ha pogut llegir la carpeta del tauler de control",
+          "bhd-00318": "S'ha produït un error en comprovar si el tauler de control s'ha proveït",
+          "bhd-00319": "No s'ha pogut eliminar el tauler de control",
+          "bhd-00320": "No s'ha pogut obtenir la quota",
+          "bhd-00321": "No es pot calcular la diferència",
+          "bhd-00322": "S'ha produït un error en connectar els panells de la biblioteca",
+          "bhd-00323": "No s'han pogut actualitzar els permisos",
+          "bhd-00324": "S'ha produït un error en comprovar els permisos del tauler de control",
+          "bhd-00325": "No s'ha pogut obtenir permisos del tauler de control",
+          "bhd-00326": "No s'ha pogut obtenir les preferències",
+          "bhd-00327": "No s'ha pogut carregar el tauler de control d'inici",
+          "bhd-00328": "El tauler de control no es pot restaurar",
+          "bhd-00331": "dades de sol·licitud incorrectes en actualitzar els permisos del tauler de control",
+          "bhd-00401": "dades de sol·licitud incorrectes en crear un nou element de biblioteca",
+          "bhd-00402": "dades de sol·licitud incorrectes mentre s'actualitzava un element de biblioteca existent",
+          "bhd-00403": "permisos insuficients per obtenir el panell de la biblioteca",
+          "bhd-00404": "no s'ha pogut obtenir la carpeta",
+          "bhd-00405": "No s'ha pogut crear l'element de la biblioteca",
+          "bhd-00406": "No s'ha pogut eliminar l'element de la biblioteca",
+          "bhd-00407": "No s'han pogut avaluar els permisos",
+          "bhd-00408": "No s'han pogut obtenir els elements de la biblioteca",
+          "bhd-00409": "No s'ha pogut obtenir l'element de la biblioteca",
+          "bhd-00410": "no s'han pogut avaluar els permisos del panell de la biblioteca",
+          "bhd-00411": "No s'han pogut obtenir les connexions",
+          "bhd-00412": "No s'ha pogut actualitzar l'element de la biblioteca",
+          "bhd-00414": "l'element de la biblioteca amb aquest nom o UID ja existeix",
+          "bhd-00415": "no s'ha pogut trobar l'element de la biblioteca",
+          "bhd-00416": "no s'ha pogut trobar la connexió de l'element de la biblioteca",
+          "bhd-00417": "no s’ha trobat la carpeta",
+          "bhd-00418": "algú altre ha canviat l'element de la biblioteca",
+          "bhd-00419": "accés denegat a la carpeta",
+          "bhd-00420": "l'element de la biblioteca té connexions",
+          "bhd-00421": "L'uid conté caràcters il·legals",
+          "bhd-00422": "L'uid és massa llarg; com a màxim ha de tenir 40 caràcters",
+          "bhd-00501": "Incompatibilitat d'ID d'organització",
+          "bhd-00502": "Accés denegat a aquesta instantània",
+          "bhd-00503": "Clau d'instantània buida",
+          "bhd-00504": "No s'ha trobat la instantània del tauler de control",
+          "bhd-00505": "No s'ha trobat la instantània",
+          "bhd-00506": "No s'ha pogut obtenir la instantània del tauler de control",
+          "bhd-00507": "No s'ha pogut eliminar la instantània del tauler de control",
+          "bhd-00508": "No s'ha pogut eliminar el tauler de control extern",
+          "bhd-00509": "S'ha produït un error en comprovar els permisos per a la instantània",
+          "bhd-00510": "La cerca ha fallat",
+          "bhd-00601": "No s'ha trobat",
+          "bhd-00602": "Error de servidor intern",
+          "bhd-00604": "No autoritzat - El testimoni antic està buit",
+          "bhd-00605": "No s'ha pogut autenticar",
+          "bhd-00606": "No autoritzat",
+          "bhd-00701": "userId no és vàlid",
+          "bhd-00702": "El nom de l'organització ja està agafat",
+          "bhd-00703": "dades de sol·licitud incorrectes",
+          "bhd-00704": "dades de sol·licitud incorrectes mentre s'actualitza l'organització actual",
+          "bhd-00705": "dades de sol·licitud incorrectes mentre s'actualitzava l'adreça de l'organització actual",
+          "bhd-00706": "dades de sol·licitud incorrectes en afegir un nou usuari a l'organització actual",
+          "bhd-00707": "dades de sol·licitud incorrectes en actualitzar usuaris a l'organització",
+          "bhd-00708": "dades de sol·licitud incorrectes mentre s'actualitzava l'organització",
+          "bhd-00709": "dades de sol·licitud incorrectes en actualitzar l'adreça de l'organització",
+          "bhd-00710": "dades de sol·licitud incorrectes en crear l'organització",
+          "bhd-00711": "dades de sol·licitud incorrectes en actualitzar l'usuari indicat",
+          "bhd-00712": "dades de sol·licitud incorrectes en afegir una invitació d'organització",
+          "bhd-00713": "dades de sol·licitud incorrectes en afegir una configuració personalitzada",
+          "bhd-00714": "S'ha especificat un rol no vàlid",
+          "bhd-00715": "L'ID de l'organització no és vàlid",
+          "bhd-00716": "No es pot canviar el rol de manera que no quedi cap administrador d'organització.",
+          "bhd-00717": "No es pot eliminar l'últim administrador de l'organització",
+          "bhd-00718": "No es pot eliminar l'organització per a l'usuari actual",
+          "bhd-00719": "No es pot convidar un usuari extern quan l'inici de sessió està desactivat.",
+          "bhd-00720": "URL no vàlida",
+          "bhd-00721": "No es pot assignar un rol superior al rol de l'usuari",
+          "bhd-00722": "Només els usuaris poden crear organitzacions",
+          "bhd-00723": "Permís denegat: no està permès afegir un usuari existent a aquesta organització",
+          "bhd-00724": "No s'ha trobat l'organització",
+          "bhd-00725": "No s'ha trobat l'usuari",
+          "bhd-00726": "No s'ha pogut eliminar l'organització. No s'ha trobat l'ID",
+          "bhd-00727": "L'usuari ja és membre d'aquesta organització",
+          "bhd-00728": "No s'ha pogut obtenir l'organització",
+          "bhd-00729": "no s'ha pogut obtenir la quota",
+          "bhd-00730": "No s'ha pogut actualitzar l'organització",
+          "bhd-00731": "No s'ha pogut actualitzar l'adreça de l'organització",
+          "bhd-00732": "No s'han pogut obtenir els usuaris de l'organització actual",
+          "bhd-00733": "No s'ha pogut afegir l'usuari a l'organització",
+          "bhd-00734": "No s'han pogut obtenir els usuaris de l'organització",
+          "bhd-00735": "No s'ha pogut obtenir la informació d'autenticació de l'usuari",
+          "bhd-00736": "No s'ha pogut actualitzar l'usuari de l'organització",
+          "bhd-00737": "No s'ha pogut eliminar l'usuari de l'organització",
+          "bhd-00738": "No s'han pogut actualitzar les quotes de l'organització",
+          "bhd-00739": "No s'han pogut cercar organitzacions",
+          "bhd-00740": "No s’ha pogut analitzar l’ID de l'usuari",
+          "bhd-00741": "No s'ha pogut obtenir les invitacions de la base de dades",
+          "bhd-00742": "No s'ha pogut consultar la base de dades per comprovar si l'usuari existeix",
+          "bhd-00743": "No s'han pogut avaluar els permisos",
+          "bhd-00744": "No s'ha pogut generar una cadena aleatòria",
+          "bhd-00745": "No s'ha pogut desar la invitació a la base de dades",
+          "bhd-00746": "No s'ha pogut enviar la invitació per correu electrònic",
+          "bhd-00747": "No s'ha pogut actualitzar la invitació amb la informació del correu electrònic enviat",
+          "bhd-00748": "No s'ha pogut actualitzar l'estat de la invitació",
+          "bhd-00761": "S'ha produït un error en intentar crear l'usuari de l'organització",
+          "bhd-00762": "No s'ha pogut enviar el correu electrònic invited_to_org",
+          "bhd-00763": "SMTP no està configurat, comproveu la secció [SMTP] del fitxer de configuració grafana.ini",
+          "bhd-00764": "No s’ha pogut crear l'organització",
+          "bhd-00765": "dades de sol·licitud incorrectes en afegir un nou usuari a l'organització actual",
+          "bhd-00801": "\"action\" i \"actionPrefix\" són mútuament excloents",
+          "bhd-00802": "cal proporcionar almenys una opció de cerca",
+          "bhd-00803": "namespacedId no vàlid",
+          "bhd-00804": "no s'han pogut obtenir els permisos d'usuari de l'organització",
+          "bhd-00805": "No s'han pogut obtenir els permisos",
+          "bhd-00806": "Data de sol·licitud incorrecta: ",
+          "bhd-00807": "dades de sol·licitud incorrectes mentre s'establien permisos de recursos per a un usuari",
+          "bhd-00808": "dades de sol·licitud incorrectes mentre s'establien permisos de recursos per a un equip",
+          "bhd-00809": "dades de sol·licitud incorrectes en establir permisos de recursos per a un rol integrat",
+          "bhd-00901": "dades de sol·licitud incorrectes en crear una font de dades",
+          "bhd-00902": "dades de sol·licitud incorrectes mentre s'actualitza una font de dades existent pel seu ID seqüencial",
+          "bhd-00903": "dades de sol·licitud incorrectes en actualitzar una font de dades existent",
+          "bhd-00904": "No s'ha pogut afegir la font de dades",
+          "bhd-00905": "L'id no és vàlid",
+          "bhd-00906": "Falta un ID de font de dades vàlid",
+          "bhd-00907": "Error de validació, URL no vàlida",
+          "bhd-00908": "L'UID no és vàlid",
+          "bhd-00909": "Falta l'UID de la font de dades",
+          "bhd-00910": "Falta un nom de font de dades vàlid",
+          "bhd-00911": "Falta l'ID de la font de dades",
+          "bhd-00912": "No s'ha trobat la font de dades",
+          "bhd-00913": "No teniu permisos suficients per actualitzar la font de dades",
+          "bhd-00914": "Necessiteu permisos addicionals per realitzar aquesta acció. Permisos necessaris: datasources.permissions:write",
+          "bhd-00915": "No es pot actualitzar la font de dades de només lectura",
+          "bhd-00916": "No es pot eliminar la font de dades de només lectura",
+          "bhd-00917": "No teniu permís per eliminar una font de dades",
+          "bhd-00918": "Accés denegat a la font de dades",
+          "bhd-00919": "Accés denegat",
+          "bhd-00920": "Algú altre ja ha actualitzat la font de dades. Torneu-ho a carregar i torneu-ho a intentar",
+          "bhd-00921": "No s'han pogut consultar les fonts de dades",
+          "bhd-00922": "No s'ha pogut consultar la font de dades",
+          "bhd-00923": "No s'ha pogut afegir la font de dades: ",
+          "bhd-00924": "No s'ha pogut eliminar la font de dades: ",
+          "bhd-00925": "No s'ha pogut afegir la font de dades",
+          "bhd-00926": "No s'ha pogut actualitzar la font de dades",
+          "bhd-00927": "No s'ha pogut actualitzar la font de dades: ",
+          "bhd-00928": "No s'ha pogut eliminar la font de dades",
+          "bhd-00929": "No s'ha pogut carregar la metadada de la font de dades",
+          "bhd-00930": "No s'ha pogut obtenir el context del connector",
+          "bhd-00931": "La sol·licitud del connector ha fallat",
+          "bhd-00932": "No s'ha pogut deserialitzar la resposta detallada del connector del backend",
+          "bhd-00936": "dades de sol·licitud incorrectes en afegir la correlació",
+          "bhd-00937": "Es requereix almenys una de les següents opcions: etiqueta, descripció o configuració",
+          "bhd-00938": "dades de sol·licitud incorrectes mentre s'actualitzava una correlació",
+          "bhd-00939": "La correlació només es pot editar mitjançant la provisió",
+          "bhd-00940": "No s'ha trobat cap correlació",
+          "bhd-00941": "No s'ha trobat la font de dades d'origen",
+          "bhd-00942": "No s'ha trobat la correlació",
+          "bhd-00943": "No s'han pogut obtenir les correlacions",
+          "bhd-00944": "No s'ha pogut afegir la correlació",
+          "bhd-00945": "No s'ha pogut obtenir la correlació",
+          "bhd-00946": "No s'ha pogut eliminar la correlació",
+          "bhd-00947": "No s'ha pogut actualitzar la correlació",
+          "bhd-01001": "dades de sol·licitud incorrectes en afegir una nova consulta a l'historial de consultes",
+          "bhd-01002": "dades de sol·licitud incorrectes mentre s'actualitzava el comentari per a la consulta a l'historial de consultes",
+          "bhd-01003": "La consulta no s'ha trobat a l'historial de consultes",
+          "bhd-01004": "No s'ha pogut crear l'historial de consultes",
+          "bhd-01005": "No s'ha pogut obtenir l'historial de consultes",
+          "bhd-01006": "No s'ha pogut eliminar la consulta de l'historial de consultes",
+          "bhd-01007": "No s'ha pogut marcar la consulta com a destacada a l'historial de consultes",
+          "bhd-01008": "No s'ha pogut desmarcar la consulta a l'historial de consultes",
+          "bhd-01009": "No s'ha pogut actualitzar el comentari de la consulta a l'historial de consultes",
+          "bhd-01011": "No s'ha pogut eliminar l'historial de consultes",
+          "bhd-01012": "No s'ha pogut marcar l'historial de consultes amb una estrella",
+          "bhd-01013": "No s'ha pogut desmarcar l'historial de consultes",
+          "bhd-01014": "No s'ha pogut actualitzar el comentari de la consulta a l'historial de consultes",
+          "bhd-01101": "dades de sol·licitud incorrectes durant la instal·lació del connector",
+          "bhd-01102": "dades de sol·licitud incorrectes en actualitzar la configuració del connector",
+          "bhd-01103": "Accés denegat",
+          "bhd-01104": "No es pot instal·lar ni canviar un connector bàsic",
+          "bhd-01105": "No es pot desinstal·lar un connector bàsic",
+          "bhd-01106": "No s'ha trobat el connector; no hi ha cap connector instal·lat amb aquest ID",
+          "bhd-01107": "El connector no s'ha instal·lat",
+          "bhd-01108": "el fitxer no existeix",
+          "bhd-01109": "El connector ja està instal·lat",
+          "bhd-01110": "No s'ha pogut obtenir la llista de connectors",
+          "bhd-01111": "No s'ha pogut obtenir el fitxer markdown",
+          "bhd-01112": "No s'ha pogut obtenir la configuració del connector",
+          "bhd-01113": "No s'ha pogut deserialitzar la resposta detallada del connector del backend",
+          "bhd-01114": "No s'ha pogut instal·lar el connector",
+          "bhd-01115": "No s'ha pogut desinstal·lar el connector",
+          "bhd-01116": "No s'ha pogut obtenir els panells del connector",
+          "bhd-01117": "No s'ha pogut actualitzar la configuració del connector",
+          "bhd-01201": "dades de sol·licitud incorrectes en eliminar diverses anotacions",
+          "bhd-01202": "dades de sol·licitud incorrectes en crear l'anotació",
+          "bhd-01203": "dades de sol·licitud incorrectes mentre s'actualitzava l'anotació dades de sol·licitud incorrectes mentre s'actualitzava l'anotació",
+          "bhd-01204": "dades de sol·licitud incorrectes mentre es crea una anotació en format Graphite",
+          "bhd-01205": "annotationId no és vàlid",
+          "bhd-01206": "No s'ha pogut desar l'anotació de Graphite",
+          "bhd-01207": "L'UID del tauler de control no és vàlid a la sol·licitud d'anotació",
+          "bhd-01208": "Accés denegat per eliminar anotacions en massa",
+          "bhd-01209": "Accés denegat per desar l'anotació",
+          "bhd-01210": "No s'ha trobat l'anotació",
+          "bhd-01211": "S'ha produït un error en comprovar els permisos d'anotació",
+          "bhd-01212": "No s'han pogut eliminar les anotacions",
+          "bhd-01213": "No s'ha pogut eliminar l'anotació",
+          "bhd-01214": "No s'ha pogut desar l'anotació",
+          "bhd-01215": "No s'ha pogut actualitzar l'anotació",
+          "bhd-01216": "No s'han trobat etiquetes d'anotació",
+          "bhd-01217": "No s'ha trobat l'anotació",
+          "bhd-01218": "No s'ha pogut obtenir les anotacions",
+          "bhd-01219": "Anotacions eliminades",
+          "bhd-01301": "dades de sol·licitud incorrectes",
+          "bhd-01302": "operació no vàlida",
+          "bhd-01303": "valor no vàlid i el seu tipus",
+          "bhd-01304": "Cos de la sol·licitud no vàlid",
+          "bhd-01305": "Format de JSON no vàlid",
+          "bhd-01306": "ID d'usuari no vàlid",
+          "bhd-01307": "Falta el nom del rol",
+          "bhd-01308": "No es pot actualitzar el rol del sistema.",
+          "bhd-01309": "No es pot eliminar el rol de sistema.",
+          "bhd-01310": "Aquest rol està associat amb usuaris. Abans d'eliminar el rol, elimineu totes les associacions.",
+          "bhd-01311": "Aquest rol està associat amb equips. Abans d'eliminar el rol, elimineu totes les associacions.",
+          "bhd-01312": "ID del rol no vàlid",
+          "bhd-01313": "No s'ha pogut validar l'ID del rol",
+          "bhd-01314": "L'ID del rol no és vàlid",
+          "bhd-01315": "Càrrega no vàlida",
+          "bhd-01316": "userId no és vàlid",
+          "bhd-01317": "L'ID d'usuari no és vàlid",
+          "bhd-01318": "teamId no és vàlid",
+          "bhd-01319": "L'equip no existeix.",
+          "bhd-01320": "L'usuari no té prou permisos.",
+          "bhd-01321": "L'IMS_JWT no és vàlid",
+          "bhd-01322": "Falta la capçalera d’autorització o està buida",
+          "bhd-01323": "L'IMS_JWT no és vàlid o és incorrecte",
+          "bhd-01324": "No hi ha rols assignats a l'usuari.",
+          "bhd-01325": "El rol no té permís per accedir als taulers de control.",
+          "bhd-01326": "Accés no autoritzat",
+          "bhd-01327": "No s'ha trobat el rol",
+          "bhd-01328": "Ja existeix un rol amb el mateix nom",
+          "bhd-01329": "No s'han pogut obtenir els taulers de control",
+          "bhd-01330": "No s’ha pogut obtenir la llista de la vista",
+          "bhd-01331": "No s'ha pogut obtenir dades personalitzades",
+          "bhd-01332": "No s'han pogut eliminar les dades personalitzades",
+          "bhd-01334": "S'ha produït un error en comprovar els permisos",
+          "bhd-01335": "No s'ha pogut recuperar els rols.",
+          "bhd-01336": "S'ha produït un error en crear la consulta del tauler de control per a l'administrador",
+          "bhd-01337": "S'ha produït un error en crear la consulta del tauler de control",
+          "bhd-01338": "Error de servidor intern",
+          "bhd-01339": "No s'ha pogut obtenir el rol",
+          "bhd-01340": "No s'ha pogut actualitzar el rol",
+          "bhd-01341": "No s'ha pogut eliminar el rol",
+          "bhd-01342": "No s'han pogut cercar els rols",
+          "bhd-01343": "S'ha produït un error d’actualització dels rols d’usuari",
+          "bhd-01344": "No s'ha pogut actualitzar el rol dels equips",
+          "bhd-01345": "No s’ha pogut obtenir la llista de permisos",
+          "bhd-01346": "No s'ha pogut actualitzar la llista de permisos",
+          "bhd-01347": "No s'han pogut cercar usuaris",
+          "bhd-01348": "No s'ha pogut afegir l'assignació del rol d'usuari.",
+          "bhd-01349": "No s'ha pogut eliminar l'assignació del rol d'usuari.",
+          "bhd-01350": "No s'ha pogut afegir el rol de l'equip",
+          "bhd-01351": "No s'ha pogut eliminar el rol de l'equip",
+          "bhd-01352": "error inesperat",
+          "bhd-01364": "No s'ha trobat el registre",
+          "bhd-01365": "No s'ha pogut crear el rol",
+          "bhd-01366": "No s'han pogut cercar equips",
+          "bhd-01367": "L'ID de l'equip no és vàlid",
+          "bhd-01368": "No s'ha trobat la vista",
+          "bhd-01369": "No s'han pogut obtenir els detalls de la vista",
+          "bhd-01370": "No s'ha pogut generar sql",
+          "bhd-01376": "Falta la informació de l'usuari",
+          "bhd-01377": "Falta la informació dels equips",
+          "bhd-01401": "dades de sol·licitud incorrectes mentre s'actualitzava la llista de reproducció",
+          "bhd-01402": "dades de sol·licitud incorrectes en crear la llista de reproducció",
+          "bhd-01403": "La cerca ha fallat",
+          "bhd-01404": "No s'ha trobat la llista de reproducció",
+          "bhd-01405": "No s'ha pogut eliminar la llista de reproducció",
+          "bhd-01406": "No s'ha pogut desar la llista de reproducció",
+          "bhd-01407": "No s’ha pogut carregar la la llista de reproducció",
+          "bhd-01408": "No s'ha pogut crear la llista de reproducció",
+          "bhd-01501": "L'ID no és vàlid",
+          "bhd-01502": "dades de sol·licitud incorrectes",
+          "bhd-01503": "L'ID de la tasca no és vàlid",
+          "bhd-01504": "dades de sol·licitud incorrectes en crear un informe",
+          "bhd-01505": "Els destinataris són obligatoris",
+          "bhd-01506": "Ha fallat la restricció de domini",
+          "bhd-01507": "L'expressió cron no és vàlida",
+          "bhd-01508": "dades de sol·licitud incorrectes mentre s'actualitzava l'informe",
+          "bhd-01509": "ID d'informe no vàlid",
+          "bhd-01510": "La restricció només als dominis interns ha fallat",
+          "bhd-01511": "No hi ha informes per eliminar",
+          "bhd-01512": "sol·licitud incorrecta de càrrega mentre es configura l'FTP",
+          "bhd-01513": "sol·licitud incorrecta de dades mentre es modificaven les configuracions de l'FTP",
+          "bhd-01514": "sol·licitud incorrecta de càrrega mentre es configura la configuració de l'FTP predeterminada",
+          "bhd-01515": "dades de sol·licitud incorrectes en enviar el correu",
+          "bhd-01516": "dades de sol·licitud incorrectes en executar l'informe una vegada",
+          "bhd-01517": "No s'especifica l'ID",
+          "bhd-01518": "dades de sol·licitud incorrectes mentre es desactiva el programador d'informes",
+          "bhd-01519": "la llista del programador d'informes està buida",
+          "bhd-01520": "ja existeix un programador d'informes amb el mateix nom",
+          "bhd-01521": "si us plau, ompliu les dades obligatòries",
+          "bhd-01522": "no es pot editar el tauler de control per a l'horari d'informes existent",
+          "bhd-01523": "no s'han trobat els detalls de l'informe del tenant",
+          "bhd-01524": "dades de sol·licitud incorrectes en configurar els paràmetres de marca de l’informe",
+          "bhd-01525": "Imatge de logotip no vàlida. Només es permeten les següents extensions: .png, .jpg, .jpeg",
+          "bhd-01526": "URL d'imatge no vàlida. Només es permeten les següents extensions: .png, .jpg, .jpeg",
+          "bhd-01527": "URL del logotip no vàlida",
+          "bhd-01528": "URL de peu de pàgina no vàlida",
+          "bhd-01529": "dades de sol·licitud incorrectes en actualitzar o crear detalls del tenant",
+          "bhd-01530": "L'informe no està emmagatzemat",
+          "bhd-01531": "El fitxer no està disponible a l'emmagatzematge",
+          "bhd-01532": "Alguns destinataris no són usuaris interns",
+          "bhd-01533": "el programador d'informes no existeix",
+          "bhd-01534": "límit d'horari d'informe superat",
+          "bhd-01535": "No s'ha pogut obtenir la configuració de l'FTP anterior",
+          "bhd-01537": "dades de sol·licitud incorrectes en eliminar el programador d'informes",
+          "bhd-01538": "dades de sol·licitud incorrectes mentre s'activava el programador d'informes",
+          "bhd-01539": "Alguns destinataris en còpia oculta no són usuaris interns",
+          "bhd-01540": "Alguns destinataris no estan a la llista blanca",
+          "bhd-01541": "Alguns destinataris en còpia oculta no estan a la llista blanca",
+          "bhd-01542": "No s'han pogut obtenir els informes",
+          "bhd-01543": "La configuració de l'FTP ja existeix",
+          "bhd-01544": "No s'ha pogut afegir la configuració de l'FTP",
+          "bhd-01545": "No s'ha pogut actualitzar la configuració de l'FTP",
+          "bhd-01546": "dades de sol·licitud incorrectes mentre s'obté la previsualització",
+          "bhd-01547": "No està permès eliminar la configuració de l'FTP predeterminada!",
+          "bhd-01548": "L'FTP s'utilitza en el programador d'informes",
+          "bhd-01549": "No s'ha pogut eliminar la configuració de l'FTP",
+          "bhd-01550": "No s'han pogut eliminar els horaris d'informes per a l'organització.",
+          "bhd-01551": "No s'han pogut desactivar els horaris d'informes per a l'organització.",
+          "bhd-01552": "No s'ha pogut connectar al servidor FTP",
+          "bhd-01601": "dades de sol·licitud incorrectes en actualitzar l'usuari registrat",
+          "bhd-01602": "No està permès canviar el correu electrònic quan el servidor intermediari d'autenticació utilitza la propietat de correu electrònic",
+          "bhd-01603": "No està permès canviar el nom d'usuari quan el servidor intermediari d'autenticació utilitza la propietat de nom d'usuari",
+          "bhd-01604": "Adreça de correu electrònic no vàlida",
+          "bhd-01605": "L'id no és vàlid",
+          "bhd-01606": "Només els usuaris i els comptes de servei poden marcar taulers de control com a favorits",
+          "bhd-01607": "UID del tauler de control no vàlid",
+          "bhd-01608": "L'ID de l'organització no és vàlid",
+          "bhd-01609": "Només els usuaris i els comptes de servei obtenen taulers de control destacats",
+          "bhd-01610": "dades de sol·licitud incorrectes mentre es canviava la contrasenya de l'usuari",
+          "bhd-01611": "dades de sol·licitud incorrectes en revocar el testimoni d'autenticació",
+          "bhd-01612": "dades de sol·licitud incorrectes en actualitzar l'usuari",
+          "bhd-01613": "No és una organització vàlida",
+          "bhd-01614": "entitat no autoritzada a revocar testimonis",
+          "bhd-01615": "entitat no autoritzada a obtenir testimonis",
+          "bhd-01616": "Punt d'accés només disponible per a usuaris",
+          "bhd-01617": "L'actualització provocaria un conflicte d'inici de sessió d'usuari",
+          "bhd-01618": "No s'ha pogut obtenir l'usuari",
+          "bhd-01620": "No s'han pogut obtenir les organitzacions de l'usuari",
+          "bhd-01621": "No s'han pogut obtenir les estrelles de l'usuari",
+          "bhd-01622": "No s'han pogut obtenir els taulers de control",
+          "bhd-01623": "No s'ha pogut marcar el tauler de control com a destacat",
+          "bhd-01624": "No s'ha pogut desmarcar el tauler de control com a destacat",
+          "bhd-01625": "No s'ha pogut canviar la contrasenya de l'usuari",
+          "bhd-01626": "No s'han pogut obtenir les quotes de l'organització",
+          "bhd-01627": "No s'ha pogut actualitzar l'indicador d'ajuda",
+          "bhd-01628": "No s'ha pogut generar la verificació per correu electrònic",
+          "bhd-01629": "No s’ha pogut analitzar l’ID d'usuari",
+          "bhd-01630": "No s'han pogut obtenir els equips d'usuari",
+          "bhd-01631": "No s'ha pogut actualitzar l'usuari",
+          "bhd-01632": "No s’ha pogut analitzar l’ID de l'usuari",
+          "bhd-01640": "no s'ha trobat l'usuari",
+          "bhd-01641": "No s'ha trobat el testimoni d'autenticació de l'usuari",
+          "bhd-01642": "No s'ha pogut canviar l'organització activa",
+          "bhd-01643": "No s'ha pogut revocar el testimoni d'autenticació de l'usuari",
+          "bhd-01644": "No s'ha pogut obtenir el testimoni d'autenticació de l'usuari",
+          "bhd-01645": "No es pot revocar el testimoni d'autenticació d'usuari actiu",
+          "bhd-01701": "dades de sol·licitud incorrectes en crear un usuari nou",
+          "bhd-01702": "dades de sol·licitud incorrectes mentre es revoca el testimoni d'autenticació per a l'usuari",
+          "bhd-01703": "dades de sol·licitud incorrectes mentre s'establien permisos per a l'usuari",
+          "bhd-01704": "dades de sol·licitud incorrectes en establir la contrasenya per a l'usuari",
+          "bhd-01705": "Falta la contrasenya o és massa curta",
+          "bhd-01706": "L'id no és vàlid",
+          "bhd-01707": "No podeu tancar la sessió vós mateix",
+          "bhd-01708": "no es pot eliminar l'últim administrador de Grafana",
+          "bhd-01709": "No s'ha trobat l'usuari",
+          "bhd-01710": "No està permès restablir la contrasenya quan el formulari d'inici de sessió està desactivat",
+          "bhd-01711": "No es pot canviar el rol d'administrador de Grafana per a un usuari sincronitzat externament",
+          "bhd-01712": "No s'ha pogut autoritzar la configuració",
+          "bhd-01713": "L'usuari té un inici de sessió o correu electrònic en conflicte amb un altre usuari. Contacteu amb l'administrador del servidor",
+          "bhd-01714": "No s'han pogut obtenir les estadístiques d'administració de la base de dades",
+          "bhd-01715": "No s'han pogut obtenir les estadístiques anònimes de la base de dades",
+          "bhd-01716": "No s'han pogut tornar a xifrar les claus de dades",
+          "bhd-01717": "No s'han pogut rotar les claus de dades",
+          "bhd-01718": "no s'ha pogut crear l'usuari",
+          "bhd-01719": "No s'ha pogut llegir l'usuari de la base de dades",
+          "bhd-01720": "Error d’actualització de la contrasenya d’usuari",
+          "bhd-01721": "Error d’actualització dels permisos d’usuari",
+          "bhd-01722": "No s'ha pogut eliminar l'usuari",
+          "bhd-01723": "No s'ha pogut desactivar l'usuari extern",
+          "bhd-01724": "No s'ha pogut desactivar l'usuari",
+          "bhd-01725": "No s'ha pogut habilitar l'usuari extern",
+          "bhd-01726": "No s'ha pogut habilitar l'usuari",
+          "bhd-01727": "No s'ha pogut obtenir l'usuari",
+          "bhd-01728": "No s'han pogut obtenir els testimonis d'autenticació de l'usuari",
+          "bhd-01729": "No s'ha pogut tancar la sessió de l'usuari",
+          "bhd-01730": "La contrasenya d'usuari s'ha actualitzat, però no es poden revocar les sessions d'usuari",
+          "bhd-01740": "No s'han pogut tornar a xifrar els secrets",
+          "bhd-01741": "No s'han pogut actualitzar les quotes de l'organització",
+          "bhd-01742": "No s'ha pogut revertir els secrets",
+          "bhd-01746": "No s'ha pogut tornar a carregar la configuració dels connectors",
+          "bhd-01757": "S'ha superat el límit màxim de claus",
+          "bhd-01758": "L’espai de noms HCG no està configurat per a aquest tenant",
+          "bhd-01759": "No s'ha pogut crear la sol·licitud HCG",
+          "bhd-01760": "No s'ha pogut connectar al servidor HCG",
+          "bhd-01761": "No s'ha pogut llegir la resposta HCG",
+          "bhd-01762": "Resposta no vàlida del servei HCG"
+        },
+        "success": {
+          "bhd-00001": "Camps modificats correctament",
+          "bhd-00002": "El camp o els camps s'han eliminat correctament",
+          "bhd-00003": "S'ha creat correctament un nou camp",
+          "bhd-00101": "Preferències actualitzades",
+          "bhd-00224": "Carpeta eliminada",
+          "bhd-00225": "Permisos de la carpeta actualitzats",
+          "bhd-00329": "Permisos del tauler de control actualitzats",
+          "bhd-00330": "els canvis s’han transmès al receptor de GitOps",
+          "bhd-00413": "L'element de la biblioteca s'ha eliminat",
+          "bhd-00511": "S'ha eliminat la instantània. Pot trigar fins a una hora a eliminar-se de les memòries cau de les CDN.",
+          "bhd-00607": "Connectat",
+          "bhd-00749": "S'ha actualitzat l'organització",
+          "bhd-00750": "S'ha actualitzat l'adreça",
+          "bhd-00751": "S'ha afegit l'usuari a l'organització",
+          "bhd-00752": "S'ha actualitzat l'usuari de l'organització",
+          "bhd-00753": "Quota de l'organització actualitzada",
+          "bhd-00754": "Usuari eliminat",
+          "bhd-00755": "S'ha eliminat l'organització",
+          "bhd-00756": "S'ha creat l'organització",
+          "bhd-00757": "Invitació revocada",
+          "bhd-00758": "Configuració actualitzada",
+          "bhd-00759": "La configuració està configurada per defecte",
+          "bhd-00760": "Usuari eliminat de l'organització",
+          "bhd-00810": "Permisos actualitzats",
+          "bhd-00811": "Permís actualitzat",
+          "bhd-00812": "Permís eliminat",
+          "bhd-00933": "Font de dades afegida",
+          "bhd-00934": "Font de dades actualitzada",
+          "bhd-00935": "Font de dades eliminada",
+          "bhd-00948": "Correlació creada",
+          "bhd-00949": "Correlació eliminada",
+          "bhd-00950": "Correlació actualitzada",
+          "bhd-01010": "Consulta eliminada",
+          "bhd-01118": "Configuració del connector actualitzada",
+          "bhd-01220": "Anotació afegida",
+          "bhd-01221": "Anotació actualitzada",
+          "bhd-01222": "Anotació corregida",
+          "bhd-01223": "S’ha afegit una anotació de Graphite",
+          "bhd-01224": "Anotació eliminada",
+          "bhd-01353": "Encara no s'ha implementat",
+          "bhd-01354": "Dades personalitzades eliminades",
+          "bhd-01355": "D’acord",
+          "bhd-01356": "Accés autoritzat",
+          "bhd-01357": "Permisos actualitzats",
+          "bhd-01358": "S'ha afegit l'assignació de rols d'usuari.",
+          "bhd-01359": "S'ha eliminat l'assignació de rol d'usuari per a tots els rols.",
+          "bhd-01361": "Rol d'equip afegit.",
+          "bhd-01362": "Rol d'equip eliminat.",
+          "bhd-01363": "Configuració regional actualitzada correctament",
+          "bhd-01371": "S’ha creat el rol correctament",
+          "bhd-01372": "S'ha actualitzat el rol correctament",
+          "bhd-01373": "S'ha eliminat el rol correctament",
+          "bhd-01374": "S’ha actualitzat el rol d'usuari correctament.",
+          "bhd-01375": "S’ha actualitzat el rol de l'equip correctament.",
+          "bhd-01553": "L'informe s’ha creat correctament",
+          "bhd-01554": "L'informe s'ha actualitzat correctament",
+          "bhd-01555": "S'ha eliminat correctament l'informe",
+          "bhd-01556": "S'han eliminat correctament els informes",
+          "bhd-01557": "S'ha eliminat correctament l'usuari dels informes.",
+          "bhd-01558": "La configuració de l'FTP s'ha desat correctament",
+          "bhd-01559": "La configuració de l'FTP s'ha actualitzat correctament.",
+          "bhd-01560": "FTP configurat per defecte",
+          "bhd-01561": "La configuració de l'FTP s'ha eliminat correctament",
+          "bhd-01562": "Els horaris d'informes s'han suprimit/desactivat correctament.",
+          "bhd-01563": "L'informe s'habilitat correctament",
+          "bhd-01564": "Els informes s'han habilitat correctament",
+          "bhd-01565": "L'informe s'ha desactivat correctament",
+          "bhd-01566": "Els informes s'han desactivat correctament",
+          "bhd-01567": "La marca de l'informe s'ha actualitzat correctament.",
+          "bhd-01568": "La marca de l'informe està configurada per defecte.",
+          "bhd-01569": "Actualitzat.",
+          "bhd-01570": "Eliminat.",
+          "bhd-01571": "S'ha executat correctament",
+          "bhd-01633": "S'ha modificat l'organització activa",
+          "bhd-01634": "Tauler de control destacat!",
+          "bhd-01635": "Tauler de control no destacat",
+          "bhd-01636": "Contrasenya d'usuari canviada",
+          "bhd-01637": "Conjunt d'indicadors d'ajuda",
+          "bhd-01638": "Usuari actualitzat",
+          "bhd-01639": "S'ha enviat el correu electrònic per a la verificació",
+          "bhd-01646": "Testimoni d'autenticació d'usuari revocat",
+          "bhd-01731": "Contrasenya d'usuari actualitzada",
+          "bhd-01732": "S'han actualitzat els permisos d'usuari",
+          "bhd-01733": "Usuari eliminat",
+          "bhd-01734": "Usuari desactivat",
+          "bhd-01735": "Usuari activat",
+          "bhd-01736": "L'usuari ha tancat la sessió",
+          "bhd-01737": "S'ha creat l'usuari",
+          "bhd-01748": "Quota de l'organització actualitzada",
+          "bhd-01753": "S'ha recarregat la configuració dels taulers de control",
+          "bhd-01754": "S'ha recarregat la configuració dels connectors",
+          "bhd-01755": "S'ha recarregat la configuració de les fonts de dades",
+          "bhd-01756": "S'ha recarregat la configuració de les alertes"
+        }
+      },
+      "notifications": {
+        "dashboard": {
+          "imported": "Tauler de control importat",
+          "panel-not-found": "No s’ha trobat el panell",
+          "restored": "S'ha restaurat el tauler de control",
+          "restored-failed": "La restauració del tauler de control ha fallat",
+          "restored-version": "S'ha restaurat des de la versió {{version}}",
+          "restored-version-failed": "No s'ha pogut restaurar des de la versió {{restoredversion}}"
+        },
+        "error": {
+          "error-text": "Error",
+          "failed-validation": "La validació ha fallat",
+          "generate-link": "S'ha produït un error en generar l'enllaç abreujat",
+          "http-error": "Error HTTP {{msg}}",
+          "unknown-error": "Error desconegut"
+        },
+        "folder": {
+          "created": "S'ha creat la carpeta",
+          "failed-creation": "No s'ha pogut crear la carpeta"
+        },
+        "settings": {
+          "saved": "Configuració desada",
+          "saved-failed": "No s'han pogut desar les configuracions"
+        },
+        "success": {
+          "copied-link": "L'enllaç abreujat s'ha copiat al porta-retalls",
+          "success-text": "Correcte"
+        }
+      },
+      "org-custom-config": {
+        "community": "Comunitat",
+        "documentation": "Documentació",
+        "errors": {
+          "query-type-mandatory": "Cal que s'activi almenys un tipus de consulta"
+        },
+        "support": "Suport",
+        "video": "Vídeo"
+      },
+      "panel": {
+        "bmc-video": {
+          "enter-video": "Introdueix vídeo incrustat",
+          "invalid-url": "No és una URL vàlida",
+          "url": "URL del vídeo"
+        },
+        "bmc-welcome": {
+          "communities": "Comunitats",
+          "community-description": "Descripció de la comunitat",
+          "default-community-description": "Connecta. Comparteix. Descobreix. Participeu en debats amb companys i experts sobre productes i solucions de BMC.",
+          "default-documentation-description": "Reviseu la documentació del producte per entendre totes les funcions d'informes i com utilitzar-les.",
+          "default-video-description": "Vegeu vídeos tutorials, resums i demostracions sobre els productes i solucions de BMC al canal de YouTube de BMC.",
+          "documentation": "Documentació",
+          "documentation-description": "Descripció de la documentació",
+          "logo-title": "Logotip de BMC Helix",
+          "video-description": "Descripció del vídeo",
+          "videos": "Vídeo"
+        }
+      },
+      "playlist": {
+        "empty": "La llista de reproducció està buida. Afegeix taulers de control a sota.",
+        "items-changed_one": "Els elements de la llista de reproducció han canviat. Ara hi ha {{count}} tauler de control a la llista de reproducció.",
+        "items-changed_other": "Els elements de la llista de reproducció han canviat. Ara hi ha {{count}} taulers de control al llistat de reproducció."
+      },
+      "query": {
+        "query-name-label": "Nom de la consulta:"
+      },
+      "rbac": {
+        "common": {
+          "all": "Tot",
+          "assigned": "Assignat",
+          "menu": "Menú",
+          "name": "Nom"
+        },
+        "permissions": {
+          "admin": {
+            "datasource-manage": "Gestiona les fonts de dades",
+            "datasource-manage-desc": "pot gestionar fonts de dades",
+            "reports-manage": "Gestiona el programador d'informes",
+            "reports-manage-desc": "pot gestionar tots els informes",
+            "title": "Administració"
+          },
+          "calc-fields": {
+            "create-desc": "pot crear o actualitzar els camps calculats",
+            "view-desc": "pot veure camps calculats"
+          },
+          "common": {
+            "create": "Crea",
+            "view": "Vista"
+          },
+          "dashboards": {
+            "create-desc": "pot crear taulers de control",
+            "download-desc": "es pot descarregar el tauler de control com a pdf/xlsx/csv",
+            "view-desc": "pot veure els panells permesos"
+          },
+          "datasource": {
+            "explore": "Explore",
+            "explore-desc": "es pot utilitzar el mode d'exploració per a les fonts de dades"
+          },
+          "datasources": {
+            "title": "Fonts de dades"
+          },
+          "drawer-title": "{{name}} - Permisos",
+          "folders": {
+            "create-desc": "pot crear carpetes",
+            "title": "Carpetes",
+            "view-desc": "pot veure les carpetes permeses"
+          },
+          "insightfinder": {
+            "access": "Accés",
+            "access-desc-tooltip": "pot accedir a insight finder",
+            "dashboards-create": "Crea taulers de control",
+            "dashboards-create-desc": "pot crear taulers de control a través de l'insight finder",
+            "deep-analysis-access": "Anàlisi profunda",
+            "deep-analysis-access-desc": "Motor de detecció d'anomalies i causes arrel basat en IA. Cal configurar l'Anàlisi profunda  amb la versió 26.3.00 o superior d'HelixGPT Agent Studio",
+            "title": "Insight Finder"
+          },
+          "reports": {
+            "access": "Accés",
+            "access-desc": "pot veure i crear informes",
+            "history-read": "Veure historial",
+            "history-read-desc": "pot veure la secció d'historial d'informes",
+            "recipients-dash-access": "Destinataris dinàmics",
+            "recipients-dash-access-desc": "Es poden afegir destinataris dinàmicament des del tauler de control a la programació",
+            "settings-read": "Veure la configuració",
+            "settings-read-desc": "pot veure la configuració d'informes",
+            "title": "Informes"
+          },
+          "servicemanagement-querytypes": {
+            "sql": "SQL",
+            "sql-desc": "pot editar la consulta SQL",
+            "title": "Tipus de consultes de gestió del servei"
+          },
+          "subtitle": "Llista de permisos"
+        },
+        "roles": {
+          "actions": "Accions",
+          "create": "Crea",
+          "custom": "Personalitzada",
+          "delete": "Elimina el rol",
+          "delete-confirmation": "Segur que voleu eliminar aquest rol?",
+          "delete-role": "Elimina el rol",
+          "description": "Descripció",
+          "edit": "Editar rol",
+          "manage-permissions": "Gestiona els permisos",
+          "manage-teams": "Gestiona els equips",
+          "manage-users": "Gestiona els usuaris",
+          "name-required": "El nom del rol és obligatori",
+          "new": "Nou rol",
+          "search": "Cerca rols",
+          "system": "Sistema",
+          "update": "Actualitza"
+        },
+        "teams": {
+          "assigned-count_one": "{{count}} equip assignat",
+          "assigned-count_other": "{{count}} equips assignats",
+          "drawer-title": "{{name}} - Equips",
+          "none-assigned": "No hi ha equips assignats",
+          "none-found": "No s'han trobat equips",
+          "search": "Cerca el nom de l'equip"
+        },
+        "users": {
+          "assigned-count_one": "{{count}} usuari assignat",
+          "assigned-count_other": "{{count}} usuaris assignats",
+          "drawer-title": "{{roleName}} - Usuaris",
+          "email": "Correu electrònic",
+          "login": "Inici de sessió",
+          "none-assigned": "No hi ha usuaris assignats",
+          "none-found": "No s'han trobat usuaris"
+        }
+      },
+      "rms": {
+        "description": "Reporting Metadata Studio és una aplicació per a Windows basada en Pentaho Metadata Editor. S'utilitza per crear vistes personalitzades o modificar una còpia d'una vista predeterminada. Per obtenir més informació, consulteu la documentació en línia.",
+        "download": {
+          "error": "No es pot descarregar"
+        },
+        "headers": {
+          "env-details": "Detalls de l'entorn"
+        }
+      },
+      "search": {
+        "comfirm-export": "Voleu exportar el(s) tauler(s) de control seleccionat(s) {{dashCount}}?",
+        "export": "Exporta",
+        "export-status": "Estat de l'exportació"
+      },
+      "share-modal": {
+        "loading": "S'està carregant",
+        "theme-picker": {
+          "current-theme": "Tema actual",
+          "dark-theme": "Tema fosc",
+          "light-theme": "Tema clar"
+        }
+      },
+      "shared-preferences": {
+        "datetime-format": {
+          "description": "Això canviarà el format d'hora predeterminat utilitzat als taulers, panells i informes.",
+          "label": "Format de data i hora"
+        },
+        "fields": {
+          "apply-admins": "Aplica-ho als administradors",
+          "enabled-query-types": "Gestiona els tipus de consultes de gestió de serveis",
+          "query-type-label": "Tipus de consulta",
+          "query-type-placeholder": "Tria el tipus de consulta"
+        },
+        "query-type": {
+          "form": "Formulari",
+          "sql": "SQL",
+          "vqb": "Constructor visual de consultes"
+        }
+      },
+      "tag-filter": {
+        "remove-tag": "Elimina l'etiqueta {{label}}"
+      },
+      "toggle-feature": {
+        "manage-features": "Gestiona les funcions del tauler de control"
+      },
+      "transformers": {
+        "adv-functions": {
+          "against-field": "En relació amb el nom del camp",
+          "alias": "Àlies",
+          "field-name": "Nom de camp",
+          "function-name": "Nom de la funció",
+          "percentage": "Percentatge",
+          "percentile-placeholder": "valor percentil",
+          "percentile-value": "Valor percentil",
+          "previous-row": "Fila anterior",
+          "previous-row-placeholder": "Fila anterior",
+          "rank-placeholder": "Rang",
+          "rank-value": "Valor de classificació"
+        },
+        "dynamic-fields": {
+          "add-aria": "Afegeix un camp per sanejar",
+          "add-button": "Afegir camp",
+          "field-label": "Camp",
+          "format-as": "Format el camp dinàmic com a",
+          "remove-aria": "Elimina el transformador de tipus de camp del formatador de camps dinàmics"
+        },
+        "sanitize": {
+          "add-aria": "Afegeix un camp per sanejar",
+          "add-button": "Afegir camp",
+          "field-label": "Camp",
+          "remove-aria": "Elimina el transformador de tipus de camp de sanejament"
+        }
+      },
+      "variables": {
+        "more-values": "... Més valors",
+        "optimize": {
+          "close-search-panel": "Tanca",
+          "deselect-all": "Desmarcar-ho tot",
+          "loading": "S’està carregant...",
+          "no-domain-selected": "No s'ha seleccionat cap domini",
+          "no-items": "No hi ha elements",
+          "remove-item": "Elimina l’article",
+          "search": "Cerca",
+          "selected": "seleccionades",
+          "selected-domains": "Dominis seleccionats",
+          "type-to-search": "Escriviu per a la cerca"
+        },
+        "query-editor": {
+          "continue": "Continua",
+          "enable-editor": "Activa l'editor de consultes",
+          "enable-variable-caching": "Activa la memòria cau de variables",
+          "modal-close-confirmation": "Es perdrà la consulta actual. Vols continuar?",
+          "modal-close-title": "Canvis no desats",
+          "query-text": "Consulta",
+          "service-management-note": "Nota: . Aplicable només al tipus de consulta de gestió de serveis.",
+          "variable-caching": {
+            "dependant-error": "No es permet l'emmagatzematge en memòria cau per a variables dependents de l'interval de temps",
+            "modal-close-title": "Emmagatzematge en memòria cau de variables",
+            "modal-disable-confirmation": "Voleu desactivar l'emmagatzematge en memòria cau per a la variable?",
+            "modal-enable-additional-text-1": "La memòria cau de la variable s'esborrarà per a tots els usuaris si editeu la consulta",
+            "modal-enable-confirmation": "Voleu habilitar la memòria cau per a la variable?",
+            "service-management-error": "La memòria cau només és compatible amb consultes de la gestió de serveis",
+            "time-dependant-warning": "No està permès emmagatzemar en memòria cau variables que depenen del temps."
+          }
+        },
+        "refresh-aria": "Actualitza {{name}}",
+        "refresh-tooltip": "Actualitza aquesta variable",
+        "refresh-variable-aria": "Actualitza {{name}}",
+        "variable-caching": {
+          "cache-delete-success": "La memòria cau s'ha eliminat correctament per a la variable {{variableName}}"
+        }
+      },
+      "welcome": {
+        "dashboards": "Taulers de control"
+      }
+    },
+    "bmcgrafana": {
+      "command-palette": {
+        "search-box": {
+          "aria-label": "Cerca o salta a..."
+        }
+      },
+      "dashboard": {
+        "panel-copied": "Panell copiat. Feu clic a la icona **Afegeix panell** per enganxar.",
+        "picker": {
+          "no-options-message": "No s'ha trobat cap tauler de control",
+          "placeholder": "Selecciona el tauler de control"
+        },
+        "remove-panel": {
+          "confirm-button-text": "Eliminar"
+        }
+      },
+      "dashboard-import": {
+        "datasource-validation": "Cal una font de dades",
+        "name-validation-text": "Cal el nom",
+        "needs-value": "necessita un valor",
+        "select-view": "Selecciona una vista",
+        "view-selection-tooltip": "No canvieu la vista preseleccionada",
+        "view-selection-validation": "Cal seleccionar una vista"
+      },
+      "dashboard-scene": {
+        "dashboard-preview-banner": {
+          "not-yet-saved": "El valor no es desa a la base de dades de BCM Helix Dashboards"
+        },
+        "help-wizard": {
+          "troubleshooting-request-help": "Per sol·licitar ajuda per a la resolució de problemes, envieu una instantània d'aquest panell a l'assistència tècnica de BCM Helix Dashboards. La instantània conté dades de resposta a consultes i configuracions del panell."
+        },
+        "save-provisioned-dashboard-form": {
+          "cannot-be-saved": "Aquest tauler de control no es pot desar des de la UI de BCM Helix Dashboards perquè s'ha proporcionat des d'una altra font. Copieu el JSON o deseu-lo en un fitxer a continuació; després podreu actualitzar el vostre tauler de control a la font d’aprovisionament."
+        }
+      },
+      "dashboards": {
+        "edit-panel": {
+          "actual": "Real",
+          "actual-description": "Fes que tingui la mateixa mida que al tauler de control",
+          "axis": {
+            "grid-lines": {
+              "auto-text": "Auto"
+            }
+          },
+          "discard": "Descarta",
+          "fill": "Emplenar",
+          "fill-description": "Utilitza tot l'espai disponible",
+          "panel-options": {
+            "link-editor": {
+              "url-placeholder": "http://your-grafana.com/d/000000010/annotations"
+            }
+          },
+          "query": {
+            "empty-query-edit-warning": "No es permet un nom de consulta buit",
+            "query-already-exist-warning": "El nom de la consulta ja existeix",
+            "query-options": {
+              "min-interval-placeholder": "Sense límit"
+            }
+          }
+        },
+        "save-dashboard": {
+          "error": "S'ha produït un error en desar el tauler de control",
+          "errors": {
+            "dash-folder-same-name": "El nom del tauler no pot ser el mateix que el nom de la carpeta",
+            "dash-name-invalid": "El nom del tauler de control no és vàlid"
+          }
+        },
+        "settings": {
+          "annotation": {
+            "edit-form": {
+              "new-annotation": "Nova anotació"
+            }
+          },
+          "links": {
+            "description-edit-link": "Editeu un enllaç específic del vostre tauler de control",
+            "description-new-link": "Crea un nou enllaç al teu tauler de control",
+            "title-edit-link": "Edita l’enllaç",
+            "title-new-link": "Nou enllaç"
+          },
+          "variables": {
+            "editor": {
+              "exlude-variable": "Exclou la variable",
+              "exlude-variable-desc": "Seleccioneu per excloure la variable de la consulta",
+              "select-variable-type": {
+                "ad-hoc-filters": {
+                  "name": "Filtres ad hoc"
+                },
+                "constant": {
+                  "description": "Definiu una variable constant oculta, útil per a prefixos mètrics en panells que voleu compartir.",
+                  "name": "Constant"
+                },
+                "custom": {
+                  "name": "Personalitzada"
+                },
+                "data-source": {
+                  "description": "Us permet canviar dinàmicament la font de dades per a diversos panells.",
+                  "name": "Font de dades"
+                },
+                "interval": {
+                  "name": "Interval"
+                },
+                "query": {
+                  "name": "Consulta"
+                },
+                "textbox": {
+                  "description": "Defineix una variable de tipus quadre de text, on els usuaris poden introduir qualsevol cadena de text",
+                  "name": "Quadre de text"
+                }
+              },
+              "types": {
+                "ad-hoc": {
+                  "data-source-placeholder": "Selecciona la font de dades"
+                },
+                "date-range": {
+                  "title": "Selecciona l’interval de temps"
+                },
+                "query": {
+                  "refresh-options": {
+                    "on-dash-load": "En carregar el tauler de control",
+                    "on-time-change": "En el canvi de l'interval de temps"
+                  }
+                }
+              }
+            }
+          },
+          "versions": {
+            "loading-msgs": {
+              "changes": "S'estan obtenint els canvis…",
+              "history-list": "S'està obtenint la llista de l'historial...",
+              "more-entries": "S'estan recuperant més entrades…"
+            }
+          }
+        }
+      },
+      "datesource": {
+        "configuration": {
+          "sort-asc": "Ordena de la A a la Z",
+          "sort-desc": "Ordena de la Z a la A"
+        }
+      },
+      "explore": {
+        "no-data": "No hi ha cap dada",
+        "query-added-announcement": "Nova fila de consulta afegida. {{queryCount}}",
+        "rich-history-settings-tab": {
+          "alert-info": "BCM Helix Dashboards mantindrà les entrades fins a {{optionLabel}}. Les entrades destacades no s'eliminaran."
+        },
+        "to-dashboard": {
+          "panel-to-dashboard": "Afegeix un panell al tauler de control",
+          "to-existing-dashboard-title": "Afegeix un panell al tauler de control existent",
+          "to-new-dashboard-title": "Afegeix un panell al nou tauler de control"
+        }
+      },
+      "file-drop-zone": {
+        "accepted-file-types-prefix": "Tipus de fitxers acceptats",
+        "file-invalid-type-prefix": "El tipus de fitxer ha de ser un de",
+        "max-file-size": "Mida màxima del fitxer"
+      },
+      "grafana-data": {
+        "timezone": {
+          "browser-time": "Hora del navegador",
+          "coord-universal-time": "Horari universal coordinat",
+          "local-browser-time": "Hora local del navegador"
+        },
+        "valueFormats": {
+          "categories": {
+            "misc": {
+              "formats": {
+                "european": "Format europeu (obsolet)"
+              }
+            }
+          }
+        }
+      },
+      "grafana-ui": {
+        "date-time-pickers": {
+          "time-range-input-text": "Selecciona un interval d'hores"
+        },
+        "fieldValidationMessage": {
+          "warning": "Advertència"
+        },
+        "file-dropzone": {
+          "bulk-limit-error": "Selecciona només fins a {{maxFiles}} taulers de control"
+        },
+        "icon": {
+          "information": "informació"
+        },
+        "inlineLabel": {
+          "info": "Informació"
+        },
+        "table": {
+          "filter-placeholder": "Filtra valors"
+        },
+        "week-start-picker": {
+          "weekStarts-label-browser": "Navegador"
+        }
+      },
+      "import": {
+        "view-label": "Vista: {{index}}"
+      },
+      "library-panels": {
+        "delete": {
+          "cannot-delete-text": "Aquest panell de la biblioteca no es pot eliminar perquè està connectat a {{message}} tauler(s) de control. Elimineu el panell de biblioteca dels taulers de control que es detallen a continuació i torneu-ho a provar."
+        },
+        "modal": {
+          "select-aria-label": "Comenceu a escriure per cercar taulers de control"
+        }
+      },
+      "manage-dashboards": {
+        "specify-constant": "Especifica una constant de cadena"
+      },
+      "nav": {
+        "config-general": {
+          "subtitle": "Gestiona les preferències i configuracions predeterminades a través de BCM Helix Dashboards"
+        }
+      },
+      "notifications": {
+        "empty-state": {
+          "description": "Les notificacions que heu rebut apareixeran aquí",
+          "title": "Ja ho teniu tot al dia!"
+        },
+        "live": {
+          "dismissed": {
+            "multiple_one": "{{count}} notificació descartada",
+            "multiple_other": "{{count}} notificacions descartades",
+            "single": "1 notificació descartada"
+          }
+        },
+        "stored-notifications": {
+          "select-all": "Selecciona totes les notificacions"
+        }
+      },
+      "options-ui": {
+        "registry": {
+          "standard-field-condigs": {
+            "category-data-links": "Enllaços de dades"
+          }
+        }
+      },
+      "page-loader": {
+        "text": "S'està carregant"
+      },
+      "panel-message": {
+        "refresh-dashboard": "Actualitza el tauler de control per obtenir dades"
+      },
+      "playlist": {
+        "create-playlist": {
+          "error": "No s'ha pogut crear la llista de reproducció",
+          "success": "S'ha creat la llista de reproducció"
+        },
+        "delete-playlist": {
+          "error": "No s'ha pogut eliminar la llista de reproducció",
+          "success": "S'ha eliminat la llista de reproducció"
+        },
+        "update-playlist": {
+          "error": "No s'ha pogut actualitzar la llista de reproducció",
+          "success": "S'ha actualitzat la llista de reproducció"
+        }
+      },
+      "plugins": {
+        "browse": {
+          "subtitle": "{{value}} Amplia l'experiència d'Helix Dashboards amb connectors de panells i aplicacions. Per trobar més fonts de dades, aneu a &lt;3&gt;Connexions&lt;/3&gt;."
+        }
+      },
+      "search-inputs": {
+        "name-type": "Cerca per nom o tipus"
+      },
+      "team-permissions": {
+        "add-member": "Afegeix membre",
+        "no-members-message": "No hi ha membres en aquest equip o no teniu els permisos per especificar els membres actuals."
+      },
+      "users-and-access": {
+        "headers": {
+          "email-text": "Correu electrònic",
+          "last-active-text": "Darrera activitat",
+          "login-text": "Inici de sessió",
+          "members-text": "Membres",
+          "name-text": "Nom",
+          "provisioned-text": "Aprovisionat"
+        },
+        "search-user-placeholder-text": "Cerca usuari per nom d'usuari, correu electrònic o nom"
+      }
+    },
+    "plugins": {
+      "reports": {
+        "history": {
+          "back-button": "Enrere",
+          "bcc-recipient": "Destinataris amb còpia oculta:",
+          "bccrecipeints-title": " - Destinataris amb còpia oculta",
+          "created-by": "Creat per",
+          "dashboard": "Tauler de control",
+          "delete": "Suprimeix",
+          "delete-report": "Elimina l'informe",
+          "delete-report-error": "No teniu permisos per eliminar aquest informe",
+          "disable": "Inhabilita",
+          "download": "Descarrega",
+          "dynamic-recipient": "Destinataris dinàmics:",
+          "dynamicrecipients-title": " - Destinataris dinàmics",
+          "edit": "Editar",
+          "edit-report": "Edita un informe",
+          "edit-report-error": "No teniu permisos per editar aquest informe.",
+          "enable": "Habilita",
+          "extra-info": {
+            "created-at": "Data de creació",
+            "last-run": "Data de la darrera execució",
+            "next-run": "Propera execució a",
+            "updated-at": "Data d'actualització"
+          },
+          "failure-reason": "Motiu de l’última fallada",
+          "fetch-history-error": "No s'ha pogut obtenir l'historial d'informes",
+          "filter": "Filtre",
+          "filter-type": "Filtra l'informe per tipus",
+          "go-to-dashboard": "Vés al tauler de control",
+          "go-to-folder": "Vés a la carpeta",
+          "last-run": "Darrera execució",
+          "learn-more": "Més informació",
+          "no-bccrecipients-found": "No s'han trobat destinataris amb còpia oculta",
+          "no-dynamicrecipients-found": "No s'han trobat destinataris dinàmics",
+          "no-recipients-found": "No s'han trobat destinataris",
+          "no-records": "No hi ha registres registrats encara per a informes executats",
+          "no-report-more-info": "ProTip: podeu veure més informació relacionada amb els horaris dels informes. ",
+          "no-report-splash": "Programeu o executeu un informe per veure dades històriques.",
+          "re-run-now": "Torna a executar ara",
+          "recipeints-title": " - Destinataris",
+          "recipient": "Destinataris:",
+          "report-id": "ID de l'informe",
+          "report-text": "informe",
+          "run-now": "Executa l'informe ara",
+          "run-now-error": "No teniu permís per executar aquest informe",
+          "search": "Cerca",
+          "search-placeholder": "Cerca per nom d'informe",
+          "show-last-10": "Mostra els darrers 10 horaris",
+          "sort": {
+            "asc": "Per ordre alfabètic (A-Z)",
+            "default": "Per defecte A-Z",
+            "desc": "Per ordre alfabètic (Z-A)",
+            "title": "Ordena"
+          },
+          "state": {
+            "failure": "Fracàs",
+            "filter-by": "Filtra els informes per estat",
+            "pending": "Pendent",
+            "success": "Correcte",
+            "title": "Estat"
+          },
+          "status": {
+            "broadcasting_report_via_mail": "Informe de transmissió per correu",
+            "fail": "No apte",
+            "failed": "Ha fallat",
+            "failed_to_broadcast_report": "No s'ha pogut transmetre l'informe",
+            "failed_to_generate_report": "No s'ha pogut generar l'informe",
+            "failed_to_prepare_and_run_job": "No s'ha pogut preparar ni executar la tasca",
+            "mail_skipped_due_to_no_data_in_report": "S'ha omès el correu perquè no hi ha dades a l’informe",
+            "none": "Cap",
+            "reporting_service_started": "S'ha iniciat el servei d'informes",
+            "requesting_impersonation_token_from_ims": "S'està sol·licitant un testimoni d'usurpació d'identitat des d'IMS",
+            "requesting_renderer_to_generate_report": "S'està sol·licitant al renderitzador que generi l'informe",
+            "skipped": "Omesos",
+            "success": "Correcte",
+            "successfully_broadcasted_report": "Informe difós correctament",
+            "successfully_generated_report": "Informe generat correctament",
+            "successfully_prepared_job": "Tasca preparada correctament"
+          },
+          "toggle-permission-error": "No teniu permís per {{action}} aquest informe",
+          "total-bcc-recipients": "Total de destinataris BCC: {{dynamicRecipientsCount}}",
+          "total-failures": "Fracassos totals",
+          "total-recipients": "Total de destinataris: {{totalRecipientsCount}}",
+          "total-runs": "Execucions totals",
+          "view-bccrecipients": "Veure els destinataris en còpia oculta",
+          "view-bccrecipients-error": "No teniu permís per veure els destinataris en còpia oculta",
+          "view-dynamicrecipients": "Visualitza els destinataris dinàmics",
+          "view-dynamicrecipients-error": "No teniu permisos per veure els destinataris dinàmics",
+          "view-recipients": "Veure els destinataris",
+          "view-recipients-error": "No teniu permisos per veure els destinataris"
+        },
+        "manage-ownership": {
+          "current-owner": "Propietari actual:",
+          "default-current-owner": "No assignat",
+          "last-execution": "Darrera execució",
+          "new-onwer-placeholder": "Selecciona un usuari",
+          "new-owner": "Nou propietari:",
+          "new-owner-loading-text": "S’està carregant...",
+          "next-execution": "Propera execució",
+          "schedule-name": "Nom de la programació",
+          "search-placeholder": "Cerca per nom d'informe",
+          "status": "Estat"
+        },
+        "manage-reports": {
+          "basic-settings": {
+            "colon": "Dos puntos",
+            "comma": "Coma",
+            "dashboard-required": "El tauler de control és obligatori.",
+            "dashboard-text": "Tauler de control",
+            "delimiter": "Delimitador",
+            "description": "Descripció",
+            "field-enclosure": "Delimitador de camp",
+            "field-enclosure-default": "Predeterminat",
+            "field-enclosure-double": "Cometes dobles",
+            "ftp-directory": "Directori del servidor FTP",
+            "ftp-directory-required": "El directori del servidor és obligatori.",
+            "ftp-server-required": "Cal seleccionar un servidor FTP",
+            "ftp-servers": "Servidors FTP",
+            "hide-header": "Amaga la capçalera",
+            "newline": "Format de nova línia",
+            "no-ftp-connections": "No s'han trobat connexions FTP",
+            "optional": "Opcional",
+            "pipe": "Barra vertical",
+            "recipient-dashboard-text": "Tauler de control dels destinataris",
+            "report-desc-length": "La descripció és massa llarga.",
+            "report-name": "Nom",
+            "report-name-length": "El nom de l'informe és massa llarg.",
+            "report-name-required": "El nom de l'informe és obligatori.",
+            "report-type": "Tipus d'informe",
+            "schedule-type": "Tipus de programació",
+            "schedule-type-desc": "Trieu on s'enviarà/guardarà l'informe",
+            "schedule-type-email-desc": "L'informe s'enviarà per correu electrònic.",
+            "schedule-type-xls-desc": "Trieu on s'enviarà/guardarà l'informe. Si s'utilitzen panells/files repetits, assegureu-vos que el nombre de panells sigui inferior a {{repeatVariablesLimit}}",
+            "select-dashboard": "Inicieu amb / per cercar taulers de control",
+            "semicolon": "Punt i coma",
+            "title": "Configuració bàsica",
+            "view-dashboard": "(Visualitza el tauler de control)"
+          },
+          "cancel": "Cancel·la",
+          "dashboards-text": "Taulers de control",
+          "date-time": {
+            "month": {
+              "apr": "Abril",
+              "aug": "Agost",
+              "dec": "Desembre",
+              "feb": "Febrer",
+              "jan": "Gener",
+              "jul": "Juliol",
+              "jun": "Juny",
+              "mar": "Març",
+              "may": "Maig",
+              "nov": "Novembre",
+              "oct": "Octubre",
+              "sep": "Setembre"
+            },
+            "weekdays": {
+              "friday": "Divendres",
+              "monday": "Dilluns",
+              "saturday": "Dissabte",
+              "sunday": "Diumenge",
+              "thursday": "Dijous",
+              "tuesday": "Dimarts",
+              "wednesday": "Dimecres"
+            }
+          },
+          "filter-settings": {
+            "dashboard-variables": "Variables del tauler de control",
+            "dashboard-variables-description": "Genera un informe amb les variables del tauler especificades al formulari. Si el filtratge està configurat a \"Predeterminat\", l'informe utilitzarà les variables del tauler de control desades. Si està configurat a personalitzat, utilitzarà les variables del tauler de la sessió actual.",
+            "time-range": "Interval de temps",
+            "time-range-description": "Genera l'informe amb l'interval de temps especificat al formulari. Si l'interval de temps personalitzat és \"Predeterminat\", s'utilitza l'interval de temps dels Taulers de control de l'informe.",
+            "title": "Configuració del filtre",
+            "use-current-variable": "Utilitza les variables actuals",
+            "use-current-variable-description": "Les variables seleccionades recents del tauler de control",
+            "use-default-variable": "Utilitza variables predeterminades",
+            "use-default-variable-description": "Variables predeterminades del tauler de control",
+            "use-saved-variable": "Utilitza variables desades",
+            "use-saved-variable-description": "Les variables que ja estan desades a l'informe"
+          },
+          "frequency": {
+            "daily": "Per dia",
+            "hourly": "Per hora",
+            "hourly-disabled-title": "La freqüència horària no és compatible amb l'explosió dinàmica",
+            "monthly": "Mensual",
+            "weekly": "Setmanal",
+            "yearly": "Anual"
+          },
+          "layout": {
+            "grid": "Quadrícula",
+            "sample": "Simple"
+          },
+          "mail-settings": {
+            "add-bccRecipeint": "Afegeix un nou destinatari de còpia oculta",
+            "add-recipeint": "Afegeix un destinatari nou",
+            "clear-recipient-msg": "Elimina els destinataris estàtics per habilitar la selecció del tauler de control.",
+            "custom-message": "Personalitzar missatge",
+            "custom-message-optional": "(Opcional)",
+            "dynamic-bcc": "Envia com a còpia oculta",
+            "dynamic-bcc-disabled-title": "L'enviament com a còpia oculta no es pot utilitzar amb l'esclat dinàmic",
+            "dynamic-bursting": "Esclat dinàmic",
+            "dynamic-recipient": "Destinataris dinàmics",
+            "email-compress-attachment": "Trieu com es lliuraran els fitxers CSV o XLSX als vostres destinataris. Assegureu-vos que la mida de l'arxiu adjunt no superi els {{emailAttachmentSizeLimit}} MB.",
+            "ftp-compress-attachment": "Voleu comprimir fitxers mentre els pugeu a l'FTP?",
+            "recipient-bcc-dashboard-required": "Cal especificar almenys un destinatari, un destinatari en còpia oculta o destinataris dinàmics.",
+            "recipient-dashboard-required": "Només es permet un tauler amb 1 panell de taula/taula BMC.",
+            "recipient-mode": "Llista de destinataris",
+            "recipient-search": "Escriviu per cercar o afegir un altre destinatari",
+            "recipients": "Destinataris",
+            "Recipients": "Destinataris amb còpia oculta",
+            "remove-dashbaord-msg": "Elimina el tauler de destinataris per afegir destinataris i destinataris en còpia oculta manualment",
+            "remove-recipient-msg": "Elimina el tauler de destinataris per afegir destinataris i destinataris en còpia oculta manualment",
+            "static-recipient": "Destinataris estàtics",
+            "subject": "Assumpte",
+            "subject-options": {
+              "current-date": "Data actual",
+              "description ": "Descripció ",
+              "report-name": "Nom de l'informe ",
+              "startdate": "Data d'inici"
+            },
+            "subject-options-end-date": "Data de finalització",
+            "title": "Configuració del correu",
+            "type-message-placeholder": "Escriviu el missatge aquí...."
+          },
+          "orientations": {
+            "landscape": "Horitzontal",
+            "portrait": "Vertical"
+          },
+          "preview": "Vista prèvia",
+          "save": "Desa",
+          "schedule-settings": {
+            "append-date": "Afegeix la data al nom del fitxer",
+            "append-file": "Afegeix l'hora al nom del fitxer",
+            "at-hours": "A les hores (exemple: 1, 5, 20-23)",
+            "at-minutes": "Al minut (els valors vàlids són 0-59)",
+            "every-hour": "Cada hora",
+            "frequency": "Freqüència",
+            "hours-invalid": "El format d’hora no és vàlid",
+            "hours-range-not-allowed": "Només es permeten valors enters per a les hores quan està habilitat l'esclat dinàmic.",
+            "hours-required": "Cal especificar les hores amb aquesta freqüència",
+            "month-days": "Dies del mes (exemple: 1, 3, 5, 20-27)",
+            "month-days-everyday": "Cada dia del mes",
+            "month-days-invalid": "Format de dies del mes no vàlid",
+            "month-days-required": "Cal especificar els dies del mes amb aquesta freqüència",
+            "months": "Mesos",
+            "months-placeholder": "Cada mes de l'any",
+            "months-required": "Cal especificar els mesos amb aquesta freqüència",
+            "no-empty-reports": "No envieu informes buits",
+            "time-invalid": "El format de l'hora no és vàlid. El format obligatori és \"mm\", i els valors vàlids són del 0 al 59",
+            "timezone": "Fus horari",
+            "title": "Programació",
+            "week-days": "Dies de la setmana",
+            "week-days-required": "Els dies laborables són obligatoris amb aquesta freqüència",
+            "weekdays-placeholder": "Cada dia de la setmana"
+          },
+          "send-test-email": "Envia un correu electrònic de prova",
+          "send-test-email-disabled": "No està permès enviar un correu electrònic de prova quan l'esclat dinàmic està activat",
+          "style-settings": {
+            "layout": "Disposició",
+            "orientation": "Orientació",
+            "pdf-styling": "Estil del PDF",
+            "table-scaling": "Escalat de la taula",
+            "table-scaling-description": "Seleccioneu una opció per ajustar l'amplada de les columnes de la taula."
+          },
+          "table-scaling": {
+            "dynamic": "Dinàmic",
+            "fixed": "Corregit"
+          }
+        },
+        "nav": {
+          "subtitle": "Crea i gestiona informes distribuïts per correu electrònic o FTP",
+          "title": "Informes programats"
+        },
+        "reassign": {
+          "reassign-button": "Reassignar"
+        },
+        "report-list": {
+          "alphabetically-a-z": "Per ordre alfabètic (A-Z)",
+          "alphabetically-z-a": "Per ordre alfabètic (Z-A)",
+          "back-button": "Enrere",
+          "clone-button": "Clona",
+          "delete-modal": {
+            "delete": "Suprimeix",
+            "delete-reports-body": "Aquesta acció eliminarà el següent contingut:",
+            "delete-reports-description": "Informes programats: ",
+            "delete-scheduled-reports": "Elimina els informes programats",
+            "delete-text": "Suprimeix",
+            "deleting-text": "S’està suprimint..."
+          },
+          "disable-modal": {
+            "disable": "Inhabilita",
+            "disable-reports": "Desactiva els informes",
+            "disable-reports-description": "Voleu desactivar els informes seleccionats?"
+          },
+          "enable-modal": {
+            "enable": "Habilita",
+            "enable-reports": "Activa els informes",
+            "enable-reports-description": "Voleu habilitar els informes seleccionats?"
+          },
+          "every-na": "Cada N/A",
+          "filter-report-tooltip": "Filtra l'informe per tipus d'horari",
+          "go-to-folder": "Vés a la carpeta",
+          "history-page": "Història",
+          "last-run-tooltip": "Data de la darrera execució {{lastRun}}",
+          "last-sent": "Últim enviament:",
+          "manageonwership-page": "Gestiona la propietat",
+          "more-info-modal": {
+            "advanced-info": "Informació avançada de l'informe",
+            "created-at": "Data de creació",
+            "created-by": "Creat per",
+            "last-execution": "Darrera execució a",
+            "next-execution": "Propera execució a",
+            "updated-at": "Data d'actualització"
+          },
+          "no-report-found": "No s'han trobat informes",
+          "reassign-modal": {
+            "reassign": "Reassignar",
+            "reassign-description": "Després de la reassignació, els nous horaris es basaran en el permís de dades del nou propietari.",
+            "update-ownership": "Actualitza la propietat"
+          },
+          "report-history-modal": {
+            "download": "Descarrega",
+            "Elapsed-time": "Temps transcorregut",
+            "Info": "Informació",
+            "started-at": "Data d'inici ",
+            "status": "Estat"
+          },
+          "report-page": "Informes",
+          "run-now-modal": {
+            "email-type-description": "Això enviarà un correu electrònic a tots els destinataris configurats en l'informe programat.",
+            "ftp-type-description": "Això carregarà l'informe al servidor FTP configurat.",
+            "run-now": "Executa ara",
+            "success-generation": "L'informe s'ha generat correctament",
+            "title": "N'esteu segurs?"
+          },
+          "schedule-type-placeholder": "Tipus de programació",
+          "scheduled-report-button": "Nou informe programat",
+          "scheduled-type": {
+            "email": "Correu electrònic",
+            "ftp": "FTP"
+          },
+          "search-placeholder": "Cerca per nom d'informe",
+          "settings-page": "Configuració",
+          "status-active": "Activar",
+          "status-inactive": "Inactiu",
+          "update-modal": {
+            "update": "Actualitza",
+            "update-description": "Aquesta acció actualitzarà el vostre informe"
+          },
+          "view-last-scheduled-reports": "Visualitza els darrers 10 informes programats",
+          "view-more-info": "Visualitzar més informació"
+        },
+        "settings": {
+          "acceptable-file-types": "Tipus de fitxers compatibles: imatge/png, imatge/jpg, imatge/jpeg",
+          "custom-input": {
+            "add-button": "Afegir"
+          },
+          "email-security": {
+            "allow-external-internal-users-tooltip": "Permetre usuaris interns i externs.",
+            "allow-internal-users-tooltip": "Permet només usuaris interns.",
+            "domain-already-in-list": "{{value}} ja està a la llista.",
+            "domains-for-external-users": "Dominis permesos per a usuaris externs",
+            "domains-for-external-users-placeholder": "domini.xyz",
+            "domains-for-external-users-tooltip": "Si es deixa la llista buida s'habilitaran tots els dominis per defecte.",
+            "not-valid-domain": "{{value}} no és un domini vàlid.",
+            "only-internal-users": "Només usuaris interns",
+            "title": "Seguretat del correu electrònic"
+          },
+          "ftp": {
+            "actions": "Accions",
+            "cancel-button": "Cancel·la",
+            "connections": {
+              "delete": "Suprimeix",
+              "edit": "Editar",
+              "set-as-default": "Estableix com a predeterminat"
+            },
+            "connections-text": "Connexions FTP",
+            "delete-ftp": "Suprimeix l'FTP",
+            "delete-ftp-body": "Esteu segur que voleu eliminar la configuració de l'FTP?",
+            "delete-ftp-server": "Suprimeix el servidor FTP",
+            "edit-connections": "Edita la connexió a l'FTP",
+            "ftp": "FTP",
+            "new-connection-text": "Nova connexió a l'FTP",
+            "password": "Contrasenya",
+            "password-placeholder": "contrasenya",
+            "port": "Port",
+            "port-placeholder": "port",
+            "protocol": "Protocol",
+            "server": "Servidor",
+            "server-placeholder": "your.ftp.address",
+            "sftp": "SFTP",
+            "submit-button": "Enviar",
+            "user": "Usuari",
+            "user-placeholder": "usuari",
+            "username": "Nom d'usuari"
+          },
+          "report-branding": {
+            "date-time-format": {
+              "custom": "Personalitzada",
+              "description": "Format de data actual: ",
+              "placeholder": "p. ex. DD/MM/AAAA, HH:MM:ss Z z",
+              "title": "Format de data i hora"
+            },
+            "drop-file-here": "Arrossegueu el fitxer aquí",
+            "file-invalid-type-prefix": "El tipus de fitxer ha de ser un de",
+            "file-too-large": "El fitxer és més gran que 128 kB",
+            "footer-text": "Text del peu de pàgina",
+            "footer-text-error": "Text de peu de pàgina no vàlid",
+            "footer-text-url": "URL del text del peu de pàgina",
+            "footer-text-url-error": "URL del text del peu de pàgina no vàlid",
+            "footer-text-url-placeholder": "https://your.website",
+            "logo-url": "URL del logotip de l'empresa",
+            "logo-url-description": "El logotip que es mostra a la capçalera i al peu de pàgina del document.",
+            "logo-url-error": "L'URL del logotip no és vàlid",
+            "logo-url-placeholder": "https://your.website/logo.png",
+            "title": "Marca de l'informe"
+          },
+          "reset-button": "Restablir",
+          "schedule-settings": {
+            "date-format": "Format de data",
+            "date-format-description": "Format de data per al nom del fitxer: "
+          },
+          "submit-button": "Enviar"
+        }
+      },
+      "insight-finder": {
+        "agent-input": {
+          "no-matching-commands": "No hi ha ordres coincidents",
+          "pick-action": "Ordres",
+          "placeholder": "Utilitza / per a accions",
+          "placeholder-after-action": "Descriu la teva sol·licitud…"
+        },
+        "chat": {
+          "clear-input": "Esborra",
+          "configuration-error": {
+            "review-missing-prerequisites": "Reviseu els prerequisits que falten:"
+          },
+          "constants": {
+            "helix-ds-needs-config": "La font de dades de BMC Helix s'ha de configurar a l'apartat de fonts de dades.",
+            "skill-id-needs-config": "Cal configurar l'ID de la funció Insight Finder a la configuració d'Insight Finder."
+          },
+          "copied": "S'ha copiat!",
+          "copy-button": "Copia",
+          "handle-prompt": {
+            "other-recommended-visualizations": "Altres visualitzacions recomanades:",
+            "response-generation-stopped": "La generació de resposta s'ha aturat segons la sol·licitud.",
+            "suggested-questions": "Preguntes suggerides",
+            "unable-to-process-please-refine": "No es pot processar la vostra sol·licitud. Feu la consulta més específica."
+          },
+          "hide-recommendations": "Oculta recomanacions",
+          "message-input": {
+            "ask-a-question": "Fer una pregunta",
+            "continue-update-last-visualisation": "Continua actualitzant la darrera visualització..."
+          },
+          "new-topic": {
+            "new-topic": "Nou tema"
+          },
+          "panel-item": {
+            "export-as-pdf": "Exporta com a PDF",
+            "navigate-to-new-dashboard": "Esteu a punt de sortir d'aquesta pàgina i crear un nou tauler de control. Vols continuar?",
+            "save-panel": "Afegeix-ho al tauler de control",
+            "save-panel-wait": "Afegeix al Tauler de control (esperant)",
+            "view-query": "Veure consulta"
+          },
+          "prompt-message": {
+            "copied": "S'ha copiat!"
+          },
+          "recommended-questions": "Preguntes recomanades",
+          "send": "Enviar",
+          "send-message": {
+            "cant-process-request": "No puc processar la vostra sol·licitud en aquest moment. Torneu-ho a provar més tard.",
+            "unknown-error-for-ds": "S'ha produït un error desconegut per a la font de dades",
+            "unknown-error-for-ds-uid": "S'ha produït un error desconegut per a la font de dades {{dataSourceUid}}"
+          },
+          "show-recommendations": "Mostra recomanacions",
+          "start-new-topic": "Inicia un nou tema",
+          "start-over": {
+            "start-over": "Torna a començar"
+          },
+          "welcome": {
+            "hello": "Hola, {{ usernameNameHelloString }}",
+            "how-can-i-help-you": "En què us podem ajudar?"
+          }
+        },
+        "custom-view": {
+          "alias": "Àlies",
+          "alias-text": "Àlies del formulari",
+          "base-view-selected": "Vista base seleccionada",
+          "category": "Categoria",
+          "change-base-view": "Canvia la vista base",
+          "command-finished": "Acció finalitzada",
+          "data-type": "Tipus de dades",
+          "description": "Descripció",
+          "field-id": "ID de camp",
+          "field-name": "Nom del camp",
+          "fields-showing-count": "{{shown}} de {{total}} camps",
+          "filter-by-field-name-or-id": "Filtra per nom de camp o ID…",
+          "filter-expression-hint": "Expressió de filtre a nivell de fila per a aquest formulari a la vista.",
+          "form-id": "ID",
+          "form-name": "Nom del formulari",
+          "no-attributes-on-form": "Aquest formulari no té atributs.",
+          "no-fields-match-filter": "No hi ha camps que coincideixin amb aquest filtre.",
+          "no-filter-for-form": "No s'ha definit cap filtre per a aquest formulari.",
+          "page-refreshing-soon": "Aquesta pàgina es refrescarà d'aquí a pocs segons.",
+          "tab-fields": "Camps",
+          "tab-filter": "Filtre",
+          "view-published": "Vista publicada correctament."
+        },
+        "dashboard": {
+          "blankDashboard": {
+            "message": "Insight Finder ajuda a generar visualitzacions."
+          },
+          "continue": "Continua",
+          "query-drawer": {
+            "copy-to-clipboard": "Copiar al porta-retalls",
+            "datasource": "Font de dades",
+            "query": "Consulta",
+            "query-type": "Tipus de consulta"
+          },
+          "saved": "Tauler de control desat",
+          "start-over": {
+            "discard-confirmation-text": "Aquesta acció descartarà les visualitzacions i l'historial de xat actuals. Voleu continuar?"
+          },
+          "streaming": {
+            "aiops-query-builder": "S'està redirigint la sol·licitud a Helix AIOps",
+            "analysing-prompt": "Anàlisi de la indicació",
+            "execute-query": "S'està analitzant",
+            "fetching-sources": "S'està obtenint la llista de vistes",
+            "generate-panel": "S'està generant la visualització",
+            "generating-query": "S'està generant una consulta",
+            "generating-visualization": "Generació de visualitzacions",
+            "identifying-source": "S'està identificant la font",
+            "itsm-query-builder": "S'està redirigint la sol·licitud a Helix ITSM",
+            "mapping-prompt-to-view": "Assignació de la indicació a les vistes",
+            "parsing-query": "Anàlisi de la consulta",
+            "processing": "S'està processant",
+            "refining-prompt": "S'està refinant la indicació",
+            "responding": "S'està preparant la resposta",
+            "selecting-sources": "Assignació de la indicació a les vistes",
+            "servicenow-itsm-api-builder": "S'està redirigint la sol·licitud a ServiceNow",
+            "thinking": "S'està processant la sol·licitud",
+            "validating-prompt": "S'està validant la indicació",
+            "validating-scope-of-views": "S'està validant l'abast de les vistes",
+            "vulnops-query-builder": "S'està redirigint la sol·licitud a Helix Vulnerability Resolver",
+            "working-on-the-request": "S'està treballant en la sol·licitud"
+          },
+          "utils": {
+            "discovery": "Descobriment",
+            "events": "Esdeveniments",
+            "failed-to-add-panel": "No s'ha pogut afegir o actualitzar el panell, no s'ha trobat cap font de dades rellevant per a la consulta.",
+            "failed-to-delete-panel": "No s'ha pogut esborrar el panell: El disseny no s'ha trobat.",
+            "helix-api-request": "Sol·licitud d'Helix API",
+            "no-query-found": "No s'ha trobat cap consulta per a aquest panell",
+            "panel-deleted": "El panell s'ha eliminat correctament.",
+            "panel-not-found": "No s’ha trobat el panell.",
+            "remove": "Eliminar",
+            "service-management": "Gestió de Serveis",
+            "service-now": "ServiceNow",
+            "vulnerability": "Vulnerabilitat"
+          }
+        },
+        "disclaimer": {
+          "inaccurate-info": "BMC HelixGPT pot mostrar informació inexacta o ofensiva."
+        },
+        "feedback": {
+          "thumbs-down": "No és útil",
+          "thumbs-up": "Útil",
+          "toggletip": {
+            "cancel": "Cancel·la",
+            "placeholder": "Expliqueu-nos més...",
+            "submit": "Enviar",
+            "submitting": "S'està enviant...",
+            "title": "Per què ho has valorat així?"
+          }
+        },
+        "generate-view": {
+          "generate-view": "Genera una vista",
+          "heading": "Enriqueix la vista",
+          "intro-text": "Genera vistes enriquides a partir de vistes compatibles predefinides.",
+          "select-view": "Selecciona una vista",
+          "skill-id-not-set": "L'ID de l'habilitat de l'Enriquidor de vista no està configurat.",
+          "title": "Genera Vista Enriquida"
+        },
+        "settings": {
+          "enable-streaming": "Activeu l'estríming",
+          "heading": "Configuració d'Insight Finder",
+          "save": "Desa",
+          "skill-id": "ID d'habilitat",
+          "skill-identifier": "Identificador d’habilitat",
+          "skill-needs-config": "Cal configurar l'ID de l'habilitat amb la versió d'HelixGPT Agent Studio {{version}} o superior",
+          "streaming": {
+            "follow-up": "Activa les recomanacions de seguiment",
+            "follow-up-label": "Activa les recomanacions de seguiment després que es generi la visualització"
+          },
+          "streaming-label": "Insight Finder amb l'estríming activat funciona només amb HelixGPT Agent Studio 25.3.00 o superior",
+          "tab-generate-enriched-view-label": "Enriquidor de vista",
+          "tab-insight-finder-label": "Insight Finder",
+          "view-manage-config": "Visualitzeu i gestioneu la configuració d'Insight Finder"
+        },
+        "streaming": {
+          "working-on-the-request": "S'està treballant en la sol·licitud"
+        },
+        "view-enricher-settings": {
+          "heading": "Configuració de l'Enriquidor de vista",
+          "view-manage-config": "Visualitzeu i gestioneu la configuració del vostre Enriquidor de vista"
+        },
+        "views-selector": {
+          "agent-generated-view": "Agent generat",
+          "browse-views": "Navega per les vistes, n'inspecciona les definicions i utilitza l'agent de xat per modificar-les de manera iterativa.",
+          "confirm-delete-view": "",
+          "confirm-switch-view": "",
+          "could-not-delete-view": "No s'ha pogut eliminar la vista",
+          "could-not-get-view-json": "No s'ha pogut obtenir la vista JSON",
+          "couldnt-save-submission": "No s'han pogut desar les vistes seleccionades.",
+          "couldnt-validate-submission": "No s'han pogut validar les vistes seleccionades abans de l'enviament",
+          "custom-view": "Personalitzada",
+          "custom-view-agent": "Agent de Vista Personalitzada",
+          "custom-view-text": "Vista personalitzada",
+          "delete-view": "Elimina la vista",
+          "error-generating-view": "Error: {{errorMessage}}",
+          "error-generating-view-failed": "No s'ha pogut generar la vista enriquida",
+          "error-processing-request": "Error: No s'ha pogut processar la sol·licitud. Torneu-ho a provar.",
+          "failed-to-apply-json-change": "No s'ha pogut aplicar el canvi JSON.",
+          "following-views-not-supported": "Les següents vistes encara no són compatibles per al seu ús a Insight Finder: {{ invalidSelectedViewNames }}. Desmarqueu-los:",
+          "heading": "Configura les vistes",
+          "json-schema-not-valid": "L'esquema JSON no és vàlid",
+          "loading-views": "S'estan carregant vistes...",
+          "no-view-selected": "Tria una vista del menú desplegable superior per personalitzar.",
+          "ootb-and-child-both-views-are-selected": "No es poden seleccionar juntes les vistes del mateix domini {{parentView}} i {{childView}}",
+          "ootb-view": "Per defecte",
+          "select-form-to-explore": "Selecciona un formulari del panell esquerre per explorar-ne els camps i relacions.",
+          "select-view": "Selecciona una vista...",
+          "select-view-to-inspect": "Selecciona una vista de la llista per inspeccionar-ne la definició.",
+          "service-not-initialized": "El Service encara no està inicialitzat. Espereu un moment i torneu-ho a intentar.",
+          "succesfully-saved": "Les vistes s'han desat correctament",
+          "supported": {
+            "following-views-available": "Les següents vistes estan disponibles per a l'ús a Insight Finder",
+            "loading": "S’està carregant...",
+            "no-description": "No hi ha cap descripció",
+            "no-views-available": "No hi ha vistes disponibles per utilitzar a Insight Finder",
+            "select-view": "Selecciona una vista",
+            "submit": "Enviar"
+          },
+          "supported-views": "Vistes compatibles",
+          "switch-view": "Canvia la vista",
+          "unsupported": {
+            "following-views-unavailable": "Les següents vistes no estan disponibles per a l'ús a Insight Finder",
+            "name": "Nom",
+            "no-views-available": "No teniu cap vista no compatible.",
+            "type": "Tipus"
+          },
+          "unsupported-views": "Vistes no compatibles",
+          "untitled": "Sense títol",
+          "view-deleted": "La vista s'ha eliminat correctament.",
+          "view-generated-successfully": "Vista generada correctament amb el nom: {{viewName}}"
+        }
+      }
+    }
+  }

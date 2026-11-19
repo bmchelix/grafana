@@ -5,6 +5,7 @@ import * as React from 'react';
 import { GrafanaTheme2 } from '@grafana/data';
 import { selectors as e2eSelectors } from '@grafana/e2e-selectors';
 
+import { useDirection } from '../../contexts';
 import { useStyles2 } from '../../themes/ThemeContext';
 import { Icon } from '../Icon/Icon';
 
@@ -21,6 +22,7 @@ interface Props {
 
 export function HoverWidget({ menu, title, dragClass, children, offset = -32, onOpenMenu }: Props) {
   const styles = useStyles2(getStyles);
+  const { direction: hoverDir } = useDirection();
   const draggableRef = useRef<HTMLDivElement>(null);
   const selectors = e2eSelectors.components.Panels.Panel.HoverWidget;
   // Capture the pointer to keep the widget visible while dragging
@@ -37,7 +39,13 @@ export function HoverWidget({ menu, title, dragClass, children, offset = -32, on
   }
 
   return (
-    <div className={cx(styles.container, 'show-on-hover')} style={{ top: offset }} data-testid={selectors.container}>
+    <div
+      className={cx(styles.container, 'show-on-hover')}
+      style={{ top: offset }}
+      data-testid={selectors.container}
+      // BMC Change: Hover widget dir follows DirectionContext when nested
+      dir={hoverDir}
+    >
       {dragClass && (
         <div
           className={cx(styles.square, styles.draggable, dragClass)}
@@ -49,6 +57,8 @@ export function HoverWidget({ menu, title, dragClass, children, offset = -32, on
           <Icon name="expand-arrows" className={styles.draggableIcon} />
         </div>
       )}
+      {/* BMC Code: Commented next line */}
+      {/* {!title && <h6 className={cx(styles.untitled, styles.draggable, dragClass)}>Untitled</h6>} */}
       {children}
       {menu && (
         <PanelMenu
