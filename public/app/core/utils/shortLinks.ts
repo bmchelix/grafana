@@ -2,7 +2,7 @@ import memoizeOne from 'memoize-one';
 
 import { AbsoluteTimeRange, LogRowModel, UrlQueryMap } from '@grafana/data';
 import { t } from '@grafana/i18n';
-import { getBackendSrv, config, locationService } from '@grafana/runtime';
+import { config, getBackendSrv, locationService } from '@grafana/runtime';
 import { sceneGraph, SceneTimeRangeLike, VizPanel } from '@grafana/scenes';
 import { shortURLAPIv1alpha1 } from 'app/api/clients/shorturl/v1alpha1';
 import { notifyApp } from 'app/core/actions';
@@ -73,8 +73,11 @@ export const createShortLink = async function (path: string) {
       return await createShortLinkLegacy(path);
     }
   } catch (err) {
-    console.error('Error when creating shortened link: ', err);
-    dispatch(notifyApp(createErrorNotification('Error generating shortened link')));
+    //BMC change
+    console.error('[BHDCode: bhd-00608] - Error when creating shortened link: ', err);
+    dispatch(
+      notifyApp(createErrorNotification(t('bmc.notifications.error.generate-link', 'Error generating shortened link')))
+    );
     throw err; // Re-throw so callers know it failed
   }
 };
@@ -95,15 +98,23 @@ export const createAndCopyShortLink = async (path: string) => {
   try {
     if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
       await navigator.clipboard.write([createShortLinkClipboardItem(path)]);
-      dispatch(notifyApp(createSuccessNotification('Shortened link copied to clipboard')));
+      dispatch(
+        notifyApp(
+          createSuccessNotification(t('bmc.notifications.success.copied-link', 'Shortened link copied to clipboard'))
+        )
+      );
     } else {
       const shortLink = await createShortLink(path);
       copyStringToClipboard(shortLink);
-      dispatch(notifyApp(createSuccessNotification('Shortened link copied to clipboard')));
+      dispatch(
+        notifyApp(
+          createSuccessNotification(t('bmc.notifications.success.copied-link', 'Shortened link copied to clipboard'))
+        )
+      );
     }
   } catch (error) {
     // createShortLink already handles error notifications, just log
-    console.error('Error in createAndCopyShortLink:', error);
+    console.error('[BHDCode: bhd-00608] - Error generating shortened link', error);
   }
 };
 

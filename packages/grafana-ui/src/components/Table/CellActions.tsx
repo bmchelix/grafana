@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import { t } from '@grafana/i18n';
 
+import { useDirection } from '../../contexts';
 import { IconSize } from '../../types/icon';
 import { IconButton } from '../IconButton/IconButton';
 import { Stack } from '../Layout/Stack/Stack';
@@ -30,7 +31,10 @@ export function CellActions({
   onCellFilterAdded,
   setInspectCell,
 }: CellActionProps) {
-  const isRightAligned = getTextAlign(field) === 'flex-end';
+  // BMC Code : RTL Change
+  const { isRtl: rtlMode } = useDirection();
+  const isRightAligned = getTextAlign(field, rtlMode) === 'flex-end';
+  // BMC Code : RTL Change ends here.
   const inspectEnabled = Boolean(field.config.custom?.inspect);
   const commonButtonProps: CommonButtonProps = {
     size: 'sm',

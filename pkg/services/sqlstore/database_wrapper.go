@@ -6,12 +6,14 @@ import (
 	"database/sql/driver"
 	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/gchaincl/sqlhooks"
 	"github.com/go-sql-driver/mysql"
 	"github.com/grafana/grafana/pkg/util/sqlite"
 	"github.com/grafana/grafana/pkg/util/xorm/core"
+	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/lib/pq"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.opentelemetry.io/otel/attribute"
@@ -37,17 +39,50 @@ func init() {
 	prometheus.MustRegister(databaseQueryHistogram)
 }
 
+// BMC code - start - DRJ71-22817
+// PgBouncer transaction mode (FIPS): use pgx driver with simple query protocol.
+const postgresPgxDriverName = migrator.PostgresPgx
+
+// ResolvePostgresDriverType returns the pgx driver name when FIPS is enabled so
+// Grafana sqlstore uses simple query protocol through PgBouncer transaction pools.
+func ResolvePostgresDriverType(dbType string) string {
+	if os.Getenv("FIPS_ENABLED") != "true" {
+		return dbType
+	}
+	if dbType == migrator.Postgres {
+		return postgresPgxDriverName
+	}
+	return dbType
+}
+
+func postgresSQLDriver() driver.Driver {
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		return stdlib.GetDefaultDriver()
+	}
+	return &pq.Driver{}
+}
+
+func sqlDriverForType(dbType string) (driver.Driver, bool) {
+	switch dbType {
+	case migrator.SQLite:
+		return &sqlite.Driver{}, true
+	case migrator.MySQL:
+		return &mysql.MySQLDriver{}, true
+	case migrator.Postgres, postgresPgxDriverName:
+		return postgresSQLDriver(), true
+	default:
+		return nil, false
+	}
+}
+// BMC code - end
+
 // WrapDatabaseDriverWithHooks creates a fake database driver that
 // executes pre and post functions which we use to gather metrics about
 // database queries. It also registers the metrics.
 func WrapDatabaseDriverWithHooks(dbType string, tracer tracing.Tracer) string {
-	drivers := map[string]driver.Driver{
-		migrator.SQLite:   &sqlite.Driver{},
-		migrator.MySQL:    &mysql.MySQLDriver{},
-		migrator.Postgres: &pq.Driver{},
-	}
-
-	d, exist := drivers[dbType]
+	// BMC code - start - DRJ71-22817
+	d, exist := sqlDriverForType(dbType)
+	// BMC code - end
 	if !exist {
 		return dbType
 	}

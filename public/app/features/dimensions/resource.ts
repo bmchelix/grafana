@@ -56,9 +56,11 @@ export function getResourceDimension(
 
   // mode === ResourceDimensionMode.Field case
   const getImageOrIcon = (value: unknown): string => {
-    if (typeof value !== 'string') {
-      return '';
-    }
+    // Helix Code Start: Shifting this condition after getting the new url for displayValue.icon ( DRJ71-24737)
+    // if (typeof value !== 'string') {
+    //   return '';
+    // }
+    // Helix Code End;
 
     let url = value;
     if (field && field.display) {

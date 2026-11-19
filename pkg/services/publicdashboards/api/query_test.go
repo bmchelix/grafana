@@ -171,6 +171,10 @@ func TestAPIQueryPublicDashboard(t *testing.T) {
 
 	setup := func(_ bool) (*web.Mux, *publicdashboards.FakePublicDashboardService) {
 		service := publicdashboards.NewFakePublicDashboardService(t)
+		// BMC Helix code changes start - CVE-2026-42127
+		// TODO: REMOVE BEFORE UPGRADE
+		service.On("FindByAccessToken", mock.Anything, validAccessToken).Return(nil, nil).Maybe()
+		// BMC Helix code changes end - CVE-2026-42127
 		testServer := setupTestServer(t, nil, service, anonymousUser)
 
 		return testServer, service

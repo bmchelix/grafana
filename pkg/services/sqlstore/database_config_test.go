@@ -3,6 +3,7 @@ package sqlstore
 import (
 	"errors"
 	"net/url"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -221,3 +222,45 @@ func TestBuildConnectionStringPostgres(t *testing.T) {
 		})
 	}
 }
+
+// BMC code - start - DRJ71-22817
+func TestBuildConnectionStringPostgresFIPS(t *testing.T) {
+	t.Setenv("FIPS_ENABLED", "true")
+	t.Cleanup(func() {
+		_ = os.Unsetenv("FIPS_ENABLED")
+	})
+
+	dbCfg := &DatabaseConfig{
+		Type:    migrator.Postgres,
+		User:    "grafana",
+		Pwd:     "password",
+		Host:    "127.0.0.1:5432",
+		Name:    "grafana_test",
+		SslMode: "disable",
+	}
+
+	err := dbCfg.buildConnectionString(&setting.Cfg{}, nil)
+	require.NoError(t, err)
+	assert.Contains(t, dbCfg.ConnectionString, "default_query_exec_mode=simple_protocol")
+	assert.NotContains(t, dbCfg.ConnectionString, "prefer_simple_protocol")
+}
+// BMC code - end
+
+// BMC code - start - DRJ71-22817
+func TestResolvePostgresDriverType(t *testing.T) {
+	t.Run("non-FIPS keeps postgres", func(t *testing.T) {
+		t.Setenv("FIPS_ENABLED", "false")
+		assert.Equal(t, migrator.Postgres, ResolvePostgresDriverType(migrator.Postgres))
+	})
+
+	t.Run("FIPS uses pgx", func(t *testing.T) {
+		t.Setenv("FIPS_ENABLED", "true")
+		assert.Equal(t, postgresPgxDriverName, ResolvePostgresDriverType(migrator.Postgres))
+	})
+
+	t.Run("other drivers unchanged", func(t *testing.T) {
+		t.Setenv("FIPS_ENABLED", "true")
+		assert.Equal(t, migrator.MySQL, ResolvePostgresDriverType(migrator.MySQL))
+	})
+}
+// BMC code - end

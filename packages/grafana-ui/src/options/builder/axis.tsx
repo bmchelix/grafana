@@ -125,7 +125,6 @@ const LOG_DISTRIBUTION_OPTIONS: Array<SelectableValue<number>> = [
     value: 10,
   },
 ];
-
 /**
  * @internal
  */

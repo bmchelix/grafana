@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 
 import { GrafanaTheme2, NavModelItem } from '@grafana/data';
 import { Components } from '@grafana/e2e-selectors';
+// BMC Code: Next line
 import { t } from '@grafana/i18n';
 import { ScopesContextValue } from '@grafana/runtime';
 import { Icon, Stack, ToolbarButton, useStyles2 } from '@grafana/ui';
@@ -10,8 +11,10 @@ import { config } from 'app/core/config';
 import { MEGA_MENU_TOGGLE_ID } from 'app/core/constants';
 import { useGrafana } from 'app/core/context/GrafanaContext';
 import { contextSrv } from 'app/core/core';
+import useInsightFinderHook from 'app/core/hooks/useInsightFinderHook';
 import { useMediaQueryMinWidth } from 'app/core/hooks/useMediaQueryMinWidth';
 import { HOME_NAV_ID } from 'app/core/reducers/navModel';
+import { ElevatedAccessTopBarButton } from 'app/features/ds-elevation/ElevatedAccessTopBarButton';
 import { useSelector } from 'app/types/store';
 
 import { Branding } from '../../Branding/Branding';
@@ -61,6 +64,9 @@ export const SingleTopBar = memo(function SingleTopBar({
   const unifiedHistoryEnabled = config.featureToggles.unifiedHistory;
   const isSmallScreen = !useMediaQueryMinWidth('sm');
 
+  // BMC code - next line
+  const { InsightFinderComponent } = useInsightFinderHook();
+
   return (
     <>
       <div className={styles.layout}>
@@ -90,6 +96,11 @@ export const SingleTopBar = memo(function SingleTopBar({
           data-testid={!showToolbarLevel ? Components.NavToolbar.container : undefined}
           minWidth={{ xs: 'unset', lg: 0 }}
         >
+          {/* BMC code - start*/}
+          <ElevatedAccessTopBarButton />
+          <InsightFinderComponent />
+          {/* BMC code - end*/}
+
           <TopSearchBarCommandPaletteTrigger />
           {unifiedHistoryEnabled && !isSmallScreen && <HistoryContainer />}
           {!isSmallScreen && <QuickAdd />}

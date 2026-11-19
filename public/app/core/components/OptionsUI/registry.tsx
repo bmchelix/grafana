@@ -1,38 +1,37 @@
 import { BooleanFieldSettings } from '@react-awesome-query-builder/ui';
 
 import {
+  Action,
+  booleanOverrideProcessor,
+  DataLink,
+  DataLinksFieldConfigSettings,
+  dataLinksOverrideProcessor,
+  displayNameOverrideProcessor,
+  FieldColor,
+  FieldColorConfigSettings,
   FieldConfigPropertyItem,
+  FieldNamePickerConfigSettings,
   FieldType,
+  identityOverrideProcessor,
+  NumberFieldConfigSettings,
+  numberOverrideProcessor,
   standardEditorsRegistry,
   StandardEditorsRegistryItem,
+  StatsPickerConfigSettings,
+  StringFieldConfigSettings,
+  stringOverrideProcessor,
   ThresholdsConfig,
   ThresholdsFieldConfigSettings,
   ThresholdsMode,
   thresholdsOverrideProcessor,
+  TimeZone,
   ValueMapping,
   ValueMappingFieldConfigSettings,
   valueMappingsOverrideProcessor,
-  DataLink,
-  dataLinksOverrideProcessor,
-  NumberFieldConfigSettings,
-  numberOverrideProcessor,
-  StringFieldConfigSettings,
-  stringOverrideProcessor,
-  identityOverrideProcessor,
-  TimeZone,
-  FieldColor,
-  FieldColorConfigSettings,
-  StatsPickerConfigSettings,
-  displayNameOverrideProcessor,
-  FieldNamePickerConfigSettings,
-  booleanOverrideProcessor,
-  Action,
-  DataLinksFieldConfigSettings,
 } from '@grafana/data';
-import { actionsOverrideProcessor } from '@grafana/data/internal';
 import { t } from '@grafana/i18n';
 import { FieldConfig } from '@grafana/schema';
-import { RadioButtonGroup, TimeZonePicker, Switch } from '@grafana/ui';
+import { RadioButtonGroup, Switch, TimeZonePicker } from '@grafana/ui';
 import { FieldNamePicker } from '@grafana/ui/internal';
 import { ThresholdsValueEditor } from 'app/features/dimensions/editors/ThresholdsEditor/thresholds';
 import { ValueMappingsEditor } from 'app/features/dimensions/editors/ValueMappingsEditor/ValueMappingsEditor';
@@ -281,6 +280,22 @@ export const getAllStandardFieldConfigs = () => {
     category,
   };
 
+  // BMC Change: starts
+  // DRJ71 - : Added boolean switch to apply european format
+  const europeanFormat: FieldConfigPropertyItem<FieldConfig, boolean, BooleanFieldSettings> = {
+    id: 'europeanFormat',
+    path: 'europeanFormat',
+    name: 'European Format',
+    description: 'Show number in european format',
+    editor: standardEditorsRegistry.get('boolean').editor,
+    override: standardEditorsRegistry.get('boolean').editor,
+    process: booleanOverrideProcessor,
+
+    shouldApply: (field) => field.type === FieldType.number,
+    category,
+  };
+  // BMC Change: ends
+
   const min: FieldConfigPropertyItem<FieldConfig, number, NumberFieldConfigSettings> = {
     id: 'min',
     path: 'min',
@@ -363,10 +378,16 @@ export const getAllStandardFieldConfigs = () => {
     category,
   };
 
+  // BMC Change: Renamed to Data links only
+  // const dataLinksCategory = t(
+  //   'options-ui.registry.standard-field-condigs.category-data-links',
+  //   'Data links and actions'
+  // );
   const dataLinksCategory = t(
-    'options-ui.registry.standard-field-condigs.category-data-links',
-    'Data links and actions'
+    'bmcgrafana.options-ui.registry.standard-field-condigs.category-data-links',
+    'Data links'
   );
+  // BMC Change Ends
 
   const links: FieldConfigPropertyItem<FieldConfig, DataLink[], DataLinksFieldConfigSettings> = {
     id: 'links',
@@ -383,21 +404,23 @@ export const getAllStandardFieldConfigs = () => {
     getItemsCount: (value) => (value ? value.length : 0),
   };
 
-  const actions: FieldConfigPropertyItem<FieldConfig, Action[], DataLinksFieldConfigSettings> = {
-    id: 'actions',
-    path: 'actions',
-    name: t('options-ui.registry.standard-field-configs.name-actions', 'Actions'),
-    editor: standardEditorsRegistry.get('actions').editor,
-    override: standardEditorsRegistry.get('actions').editor,
-    process: actionsOverrideProcessor,
-    settings: {
-      showOneClick: false,
-    },
-    shouldApply: () => true,
-    category: [dataLinksCategory],
-    getItemsCount: (value) => (value ? value.length : 0),
-    hideFromDefaults: true,
-  };
+  // BMC Change Starts: Commented out actions as it is not used in BMC Helix Dashboards
+  // const actions: FieldConfigPropertyItem<FieldConfig, Action[], DataLinksFieldConfigSettings> = {
+  //   id: 'actions',
+  //   path: 'actions',
+  //   name: t('options-ui.registry.standard-field-configs.name-actions', 'Actions'),
+  //   editor: standardEditorsRegistry.get('actions').editor,
+  //   override: standardEditorsRegistry.get('actions').editor,
+  //   process: actionsOverrideProcessor,
+  //   settings: {
+  //     showOneClick: false,
+  //   },
+  //   shouldApply: () => true,
+  //   category: [dataLinksCategory],
+  //   getItemsCount: (value) => (value ? value.length : 0),
+  //   hideFromDefaults: true,
+  // };
+  // BMC Change Ends
 
   const color: FieldConfigPropertyItem<FieldConfig, FieldColor | undefined, FieldColorConfigSettings> = {
     id: 'color',
@@ -476,9 +499,12 @@ export const getAllStandardFieldConfigs = () => {
     color,
     noValue,
     links,
-    actions,
+    // actions,
     mappings,
     thresholds,
     filterable,
+    // BMC Change: starts
+    europeanFormat,
+    // BMC Change: ends
   ];
 };

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"os"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -166,6 +167,13 @@ func NewInstanceSettings(cfg *setting.Cfg, logger log.Logger) datasource.Instanc
 			return nil, fmt.Errorf("error reading settings: %w", err)
 		}
 
+		if os.Getenv("FIPS_ENABLED") == "true" {
+			if jsonData.Encrypt != "true" {
+				logger.Warn("FIPS mode: overriding MSSQL encrypt setting to 'true' (was %q)", jsonData.Encrypt)
+				jsonData.Encrypt = "true"
+			}
+		}
+
 		database := jsonData.Database
 		if database == "" {
 			database = settings.Database
@@ -292,6 +300,13 @@ func generateConnectionString(dsInfo sqleng.DataSourceInfo, azureManagedIdentity
 	if addr.Port != "0" {
 		connStr += fmt.Sprintf("port=%s;", addr.Port)
 	}
+	// BMC code - FIPS: reject unencrypted connections and enforce server certificate verification
+	if os.Getenv("FIPS_ENABLED") == "true" {
+		if encrypt == "disable" {
+			return "", fmt.Errorf("FIPS 140-3: MSSQL encrypt=disable is not permitted; encryption must be enabled")
+		}
+	}
+
 	switch encrypt {
 	case "true":
 		connStr += fmt.Sprintf("encrypt=%s;TrustServerCertificate=%t;", encrypt, tlsSkipVerify)

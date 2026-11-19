@@ -194,6 +194,13 @@ func (dbCfg *DatabaseConfig) buildConnectionString(cfg *setting.Cfg, features fe
 			cnnstr += fmt.Sprintf(" password=%s", dbCfg.Pwd)
 		}
 
+		// BMC code - start - DRJ71-22817
+		// PgBouncer transaction mode (FIPS deployments): pgx simple query protocol.
+		if os.Getenv("FIPS_ENABLED") == "true" && !hasQueryParam(dbCfg.UrlQueryParams, "default_query_exec_mode") {
+			cnnstr += " default_query_exec_mode=simple_protocol"
+		}
+		// BMC code - end
+
 		cnnstr += buildExtraConnectionString(' ', dbCfg.UrlQueryParams)
 	case migrator.SQLite:
 		// special case for tests
@@ -219,6 +226,16 @@ func (dbCfg *DatabaseConfig) buildConnectionString(cfg *setting.Cfg, features fe
 
 	return nil
 }
+
+// BMC code - start - DRJ71-22817
+func hasQueryParam(urlQueryParams map[string][]string, key string) bool {
+	if urlQueryParams == nil {
+		return false
+	}
+	_, ok := urlQueryParams[key]
+	return ok
+}
+// BMC code - end
 
 func buildExtraConnectionString(sep rune, urlQueryParams map[string][]string) string {
 	if urlQueryParams == nil {

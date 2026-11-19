@@ -29,6 +29,7 @@ import (
 	"github.com/grafana/grafana/pkg/infra/tracing"
 	"github.com/grafana/grafana/pkg/registry/apis/iam/legacy"
 	"github.com/grafana/grafana/pkg/services/accesscontrol"
+	acdatabase "github.com/grafana/grafana/pkg/services/accesscontrol/database"
 	"github.com/grafana/grafana/pkg/services/apiserver"
 	"github.com/grafana/grafana/pkg/services/authz/rbac"
 	"github.com/grafana/grafana/pkg/services/authz/rbac/store"
@@ -90,6 +91,8 @@ func ProvideAuthZClient(
 		return rbacClient, err
 	default:
 		sql := legacysql.NewDatabaseProvider(db)
+		// BMC code - next line
+		acStore := acdatabase.ProvideService(db)
 
 		rbacSettings := rbac.Settings{CacheTTL: authCfg.cacheTTL}
 		if cfg != nil {
@@ -108,6 +111,8 @@ func ProvideAuthZClient(
 				store.NewStaticPermissionStore(acService),
 				store.NewSQLPermissionStore(sql, tracer),
 			),
+			// BMC code - next line
+			acStore,
 			log.New("authz-grpc-server"),
 			tracer,
 			reg,
@@ -280,6 +285,8 @@ func RegisterRBACAuthZService(
 		folderStore,
 		legacy.NewLegacySQLStores(db),
 		store.NewSQLPermissionStore(db, tracer),
+		// BMC code - next line
+		nil,
 		log.New("authz-grpc-server"),
 		tracer,
 		reg,

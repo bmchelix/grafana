@@ -2,6 +2,7 @@ import { css, cx } from '@emotion/css';
 import * as React from 'react';
 
 import { IconName } from '@grafana/data';
+import { t } from '@grafana/i18n';
 
 import { useStyles2 } from '../../themes/ThemeContext';
 import { ButtonVariant } from '../Button/Button';
@@ -61,7 +62,8 @@ export const ConfirmModal = ({
   confirmText,
   confirmVariant = 'destructive',
   confirmationText,
-  dismissText = 'Cancel',
+  // BMC Change: Next line
+  dismissText = t('bmc.common.cancel', 'Cancel'),
   dismissVariant = 'secondary',
   alternativeText,
   modalClass,

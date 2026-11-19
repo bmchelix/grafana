@@ -89,6 +89,14 @@ func GetDefaultBuildHandlerChainFunc(builders []APIGroupBuilder, reg prometheus.
 		// filters.WithRequester needs to be after the K8s chain because it depends on the K8s user in context
 		handler = filters.WithRequester(handler)
 
+		// BMC code: run dashboard BMC audit + cache filter (delete / create / update) when any builder provides it
+		for _, b := range builders {
+			if provider, ok := b.(DashboardBMCAuditFilterProvider); ok {
+				handler = provider.GetDashboardBMCAuditFilter()(handler)
+				break
+			}
+		}
+
 		// Call DefaultBuildHandlerChain on the main entrypoint http.Handler
 		// See https://github.com/kubernetes/apiserver/blob/v0.28.0/pkg/server/config.go#L906
 		// DefaultBuildHandlerChain provides many things, notably CORS, HSTS, cache-control, authz and latency tracking

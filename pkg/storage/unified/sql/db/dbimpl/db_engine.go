@@ -4,15 +4,19 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/grafana/grafana/pkg/util/xorm"
-
 	"github.com/grafana/grafana/pkg/services/sqlstore"
+	"github.com/grafana/grafana/pkg/services/sqlstore/migrator"
+	"github.com/grafana/grafana/pkg/util/xorm"
 )
 
 func getEngine(config *sqlstore.DatabaseConfig) (*xorm.Engine, error) {
-	switch config.Type {
-	case dbTypeMySQL, dbTypePostgres, dbTypeSQLite:
-		engine, err := xorm.NewEngine(config.Type, config.ConnectionString)
+	// BMC code - start - DRJ71-22817
+	dbType := sqlstore.ResolvePostgresDriverType(config.Type)
+	// BMC code - end
+	switch dbType {
+	// BMC code - DRJ71-22817
+	case dbTypeMySQL, dbTypePostgres, migrator.PostgresPgx, dbTypeSQLite:
+		engine, err := xorm.NewEngine(dbType, config.ConnectionString)
 		if err != nil {
 			return nil, fmt.Errorf("open database: %w", err)
 		}
@@ -23,6 +27,6 @@ func getEngine(config *sqlstore.DatabaseConfig) (*xorm.Engine, error) {
 
 		return engine, nil
 	default:
-		return nil, fmt.Errorf("unsupported database type: %s", config.Type)
+		return nil, fmt.Errorf("unsupported database type: %s", dbType)
 	}
 }

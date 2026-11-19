@@ -26,6 +26,9 @@ class UnthemedValueContainer<Option, isMulti extends boolean, Group extends Grou
     if (
       this.ref.current &&
       this.props.selectProps.autoWidth &&
+      // BMC Change: Add check for maxVisibleValues
+      // Cherry picked from Grafana PR https://github.com/grafana/grafana/pull/113913
+      !this.props.selectProps.maxVisibleValues &&
       !isEqual(prevProps.selectProps.value, this.props.selectProps.value)
     ) {
       // Reset in order to measure the new width

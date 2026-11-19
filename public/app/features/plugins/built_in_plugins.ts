@@ -73,6 +73,11 @@ const nodeGraph = async () =>
 const radialBar = async () =>
   await import(/* webpackChunkName: "radialBarPanel" */ 'app/plugins/panel/radialbar/module');
 
+// BMC Change: Added new imports for BMC Video and Welcome Banner
+const bmcVideoPanel = async () => await import(/* webpackChunkName: "bmcvideo" */ 'app/plugins/panel/bmcvideo/module');
+const bmcwelcomeBanner = async () =>
+  await import(/* webpackChunkName: "bmcwelcome" */ 'app/plugins/panel/bmcwelcome/module');
+
 const builtInPlugins: Record<string, System.Module | (() => Promise<System.Module>)> = {
   // datasources
   'core:plugin/cloudwatch': cloudwatchPlugin,
@@ -116,6 +121,10 @@ const builtInPlugins: Record<string, System.Module | (() => Promise<System.Modul
   'core:plugin/nodeGraph': nodeGraph,
   'core:plugin/histogram': histogramPanel,
   'core:plugin/radialbar': radialBar,
+  // BMC code
+  'core:plugin/bmcwelcome': bmcwelcomeBanner,
+  'core:plugin/bmcvideo': bmcVideoPanel,
+  // End
 };
 
 export default builtInPlugins;

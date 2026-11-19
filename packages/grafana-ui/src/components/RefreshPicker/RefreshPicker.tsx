@@ -115,7 +115,8 @@ export class RefreshPicker extends PureComponent<Props> {
           onClick={onRefresh}
           variant={variant}
           icon={isLoading ? 'spinner' : 'sync'}
-          style={width ? { width } : undefined}
+          // BMC Change: To have dynamic width for non small time picker
+          style={width ? { width: text ? 'auto' : width } : undefined}
           data-testid={selectors.components.RefreshPicker.runButtonV2}
         >
           {text}
@@ -133,6 +134,9 @@ export class RefreshPicker extends PureComponent<Props> {
             data-testid={selectors.components.RefreshPicker.intervalButtonV2}
             aria-label={ariaLabel}
             tooltip={tooltipAutoRefresh}
+            //BMC Accessibility Change: Added aria-haspopup
+            aria-haspopup="menu"
+            //BMC Accessibility Change End
           />
         )}
       </ButtonGroup>

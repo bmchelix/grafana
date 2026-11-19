@@ -48,7 +48,10 @@ func (c *defaultContactPointProvisioner) Provision(ctx context.Context,
 				for _, fetchedCP := range cpsCache[contactPointsConfig.OrgID] {
 					if fetchedCP.UID == contactPoint.UID {
 						err := c.contactPointService.UpdateContactPoint(ctx,
-							contactPointsConfig.OrgID, contactPoint, models.ProvenanceFile)
+							contactPointsConfig.OrgID,
+							provisionerUser(contactPointsConfig.OrgID),
+							contactPoint,
+							models.ProvenanceFile)
 						if err != nil {
 							return err
 						}

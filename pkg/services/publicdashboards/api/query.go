@@ -57,6 +57,17 @@ func (api *Api) QueryPublicDashboard(c *contextmodel.ReqContext) response.Respon
 		return response.Err(ErrInvalidAccessToken.Errorf("QueryPublicDashboard: invalid access token"))
 	}
 
+	// BMC Helix code changes start - CVE-2026-42127
+	// TODO: REMOVE BEFORE UPGRADE
+	// Validate token exists, then cap query body before Bind.
+	_, err := api.PublicDashboardService.FindByAccessToken(c.Req.Context(), accessToken)
+	if err != nil {
+		return response.Err(err)
+	}
+
+	c.Req.Body = http.MaxBytesReader(c.Resp, c.Req.Body, maxQueryBodySize)
+	// BMC Helix code changes end - CVE-2026-42127
+
 	panelId, err := strconv.ParseInt(web.Params(c.Req)[":panelId"], 10, 64)
 	if err != nil {
 		return response.Err(ErrInvalidPanelId.Errorf("QueryPublicDashboard: error parsing panelId %v", err))

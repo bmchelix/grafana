@@ -2,10 +2,11 @@ import { useContext, useEffect, useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom-v5-compat';
 
 import { PageLayoutType } from '@grafana/data';
-import { ScopesContext } from '@grafana/runtime';
+import { config, ScopesContext } from '@grafana/runtime';
 import { SceneComponentProps } from '@grafana/scenes';
 import { Page } from 'app/core/components/Page/Page';
 import { getNavModel } from 'app/core/selectors/navModel';
+import { KeySelectorProvider } from 'app/features/keySelector/KeySelector';
 import { useSelector } from 'app/types/store';
 
 import { DashboardEditPaneSplitter } from '../edit-pane/DashboardEditPaneSplitter';
@@ -13,8 +14,10 @@ import { DashboardEditPaneSplitter } from '../edit-pane/DashboardEditPaneSplitte
 import { DashboardScene } from './DashboardScene';
 import { PanelSearchLayout } from './PanelSearchLayout';
 import { SoloPanelContextProvider, useDefineSoloPanelContext } from './SoloPanelContext';
+import { StrictRtlPreviewInteractionGate } from './new-toolbar/actions/StrictRtlPreviewInteractionGate';
 
 export function DashboardSceneRenderer({ model }: SceneComponentProps<DashboardScene>) {
+  // BMC code: added uid
   const {
     controls,
     overlay,
@@ -26,6 +29,7 @@ export function DashboardSceneRenderer({ model }: SceneComponentProps<DashboardS
     panelsPerRow,
     isEditing,
     layoutOrchestrator,
+    uid,
   } = model.useState();
   const { type } = useParams();
   const location = useLocation();
@@ -97,9 +101,16 @@ export function DashboardSceneRenderer({ model }: SceneComponentProps<DashboardS
 
   return (
     <>
+      {/* BMC Code: Strict RTL preview interaction gate */}
+      {config.featureToggles.rtlSupport === true && <StrictRtlPreviewInteractionGate />}
       {layoutOrchestrator && <layoutOrchestrator.Component model={layoutOrchestrator} />}
       <Page navModel={navModel} pageNav={pageNav} layout={PageLayoutType.Custom}>
-        {editPanel && <editPanel.Component model={editPanel} />}
+        {editPanel && (
+          // BMC Change: Inline to wrap key selector
+          <KeySelectorProvider keys={model.getDashCurrentLocales()!} resourceUid={uid!}>
+            <editPanel.Component model={editPanel} />
+          </KeySelectorProvider>
+        )}
         {!editPanel && (
           <DashboardEditPaneSplitter
             dashboard={model}

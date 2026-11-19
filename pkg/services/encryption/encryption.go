@@ -7,11 +7,16 @@ import (
 )
 
 const (
-	SaltLength = 8
+	FIPSSaltLength = 16 // BMC code changes
 
 	AesCfb = "aes-cfb"
 	AesGcm = "aes-gcm"
 )
+
+// BMC code changes start - move salt length from const to var
+var SaltLength = 8
+
+// BMC code changes - end
 
 // Internal must not be used for general purpose encryption.
 // This service is used as an internal component for envelope encryption

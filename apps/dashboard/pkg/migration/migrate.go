@@ -9,8 +9,8 @@ import (
 )
 
 // Initialize provides the migrator singleton with required dependencies and builds the map of migrations.
-func Initialize(dsInfoProvider schemaversion.DataSourceInfoProvider) {
-	migratorInstance.init(dsInfoProvider)
+func Initialize(dsIndexProvider schemaversion.DataSourceIndexProvider) {
+	migratorInstance.init(dsIndexProvider)
 }
 
 // ResetForTesting resets the migrator singleton for testing purposes.
@@ -41,9 +41,9 @@ type migrator struct {
 	migrations map[int]schemaversion.SchemaVersionMigrationFunc
 }
 
-func (m *migrator) init(dsInfoProvider schemaversion.DataSourceInfoProvider) {
+func (m *migrator) init(dsIndexProvider schemaversion.DataSourceIndexProvider) {
 	initOnce.Do(func() {
-		m.migrations = schemaversion.GetMigrations(dsInfoProvider)
+		m.migrations = schemaversion.GetMigrations(dsIndexProvider)
 		close(m.ready)
 	})
 }

@@ -5,6 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	// BMC Helix code changes start - DRJ71-31320
+	// TODO: REMOVE BEFORE UPGRADE
+	// CVE-2026-42129: Grafana 12.3.7 Loki CallResource path-traversal patch.
+	neturl "net/url"
+	"path"
+	// BMC Helix code changes end - DRJ71-31320
 	"regexp"
 	"strings"
 	"sync"
@@ -127,6 +133,19 @@ func callResource(ctx context.Context, req *backend.CallResourceRequest, sender 
 	url := req.URL
 
 	lokiURL := fmt.Sprintf("/loki/api/v1/%s", url)
+
+	// BMC Helix code changes start - DRJ71-31320
+	// TODO: REMOVE BEFORE UPGRADE
+	// Cherry-pick of Grafana 12.3.7 / dd5dc51: reject paths that escape /loki/api/v1/.
+	// neturl.Parse decodes percent-encoded segments so this catches both raw and encoded "../".
+	parsed, perr := neturl.Parse(lokiURL)
+	if perr != nil {
+		return sender.Send(&backend.CallResourceResponse{Status: http.StatusBadRequest})
+	}
+	if cleaned := path.Clean(parsed.Path); cleaned != "/loki/api/v1" && !strings.HasPrefix(cleaned, "/loki/api/v1/") {
+		return sender.Send(&backend.CallResourceResponse{Status: http.StatusBadRequest})
+	}
+	// BMC Helix code changes end - DRJ71-31320
 
 	ctx, span := tracer.Start(ctx, "datasource.loki.CallResource", trace.WithAttributes(
 		attribute.String("url", lokiURL),

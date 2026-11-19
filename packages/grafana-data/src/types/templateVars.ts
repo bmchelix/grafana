@@ -1,6 +1,7 @@
 import { LoadingState } from './data';
 import { MetricFindValue } from './datasource';
 import { DataSourceRef } from './query';
+import { TimeRange } from './time';
 
 export type VariableType = TypedVariableModel['type'];
 
@@ -23,6 +24,10 @@ export type TypedVariableModel =
   | UserVariableModel
   | OrgVariableModel
   | DashboardVariableModel
+  // BMC code
+  | DatePickerVariableModel
+  | OptimizeVariableModel
+  // BMC code end
   | SnapshotVariableModel
   | SwitchVariableModel;
 
@@ -30,6 +35,10 @@ export enum VariableRefresh {
   never, // removed from the UI
   onDashboardLoad,
   onTimeRangeChanged,
+  // BMC code change - DRJ71-14389
+  // Not shown on UI, added to support logic for handling internally
+  onRefreshButtonClick,
+  // BMC code ends
 }
 
 export enum VariableSort {
@@ -120,6 +129,9 @@ export interface QueryVariableModel extends VariableWithMultiSupport {
   refresh: VariableRefresh;
   staticOptions?: VariableOption[];
   staticOptionsOrder?: 'before' | 'after' | 'sorted';
+  // BMC code starts - For caching variable responses
+  bmcVarCache?: boolean;
+  // BMC code ends
 }
 
 export interface TextBoxVariableModel extends VariableWithOptions {
@@ -136,6 +148,8 @@ export interface SwitchVariableModel extends VariableWithOptions {
 }
 
 export interface VariableWithMultiSupport extends VariableWithOptions {
+  // BMC change next inline
+  discardForAll?: boolean;
   multi: boolean;
   includeAll: boolean;
   allValue?: string | null;
@@ -169,6 +183,8 @@ export interface UserProps {
   id: number;
   email?: string;
   toString: () => string;
+  // BMC Change: Next line
+  loginId?: string;
 }
 
 export interface UserVariableModel extends SystemVariable<UserProps> {}
@@ -192,9 +208,39 @@ export interface BaseVariableModel {
   error: any | null;
   description: string | null;
   usedInRepeat?: boolean;
+  // BMC code starts - DRJ71-14389 - vishaln
+  /**
+   * BMC feature description - DRJ71-14389
+   * We have designed this feature to be set at the dashboard level.
+   * However, we are implementing it at the variable level. We will update this field of each variable in the dashboard, based on the dashboard level setting.
+   * This setting should not be exposed to the user on the UI, unless a new feature to allow variable level lazy laoding has been decided.
+   * Adding this field allows us to control it on a per variable level, and we can also avoid passing the dashboard.loadOnDemand value through 50 levels of functions
+   */
+  useDefaultValues?: boolean;
+  // BMC code ends
 }
 
 export interface SnapshotVariableModel extends VariableWithOptions {
   type: 'snapshot';
   query: string;
 }
+
+// BMC code starts
+export interface DatePickerVariableModel extends VariableWithOptions {
+  type: 'datepicker';
+  originalQuery: TimeRange | null;
+}
+
+export interface Domain {
+  id: string;
+  name: string;
+  value: string;
+}
+
+export interface OptimizeVariableModel extends VariableWithOptions {
+  type: 'optimizepicker';
+  originalQuery: Domain[] | null;
+  filterondescendant?: any;
+  definition?: string;
+}
+// Bmc code ends

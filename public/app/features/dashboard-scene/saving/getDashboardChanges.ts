@@ -16,6 +16,8 @@ import { DashboardDataDTO, DashboardDTO } from 'app/types/dashboard';
 import { validateFiltersOrigin } from '../serialization/sceneVariablesSetToVariables';
 import { jsonDiff } from '../settings/version-history/utils';
 
+import { normalizeDashboardForDiff } from './normalizeDashboardForDiff';
+
 export function get(obj: any, keys: string[]) {
   try {
     let val = obj;
@@ -115,7 +117,10 @@ export function getRawDashboardChanges(
     changedSaveModel.refresh = initialSaveModel.refresh;
   }
 
-  const diff = jsonDiff(initialSaveModel, changedSaveModel);
+  // BMC Changes: call normalizeDashboardForDiff with the initial and changed dashboard values.
+  // Normalize both sides so auto-injected panel defaults (empty fieldConfig /
+  // empty title) don't show up as spurious changes. See normalizeDashboardForDiff.
+  const diff = jsonDiff(normalizeDashboardForDiff(initialSaveModel), normalizeDashboardForDiff(changedSaveModel));
   const diffCount = Object.values(diff).reduce((acc, cur) => acc + cur.length, 0);
 
   return {

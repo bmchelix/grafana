@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/grafana/grafana/pkg/api/pluginproxy"
 	"github.com/grafana/grafana/pkg/infra/db"
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/services/accesscontrol"
@@ -155,17 +156,17 @@ func (ss *sqlStore) Update(ctx context.Context, cmd *org.UpdateOrgCommand) error
 }
 
 func isOrgNameTaken(name string, existingId int64, sess *db.Session) (bool, error) {
-	// check if org name is taken
-	var org org.Org
-	exists, err := sess.Where("name=?", name).Get(&org)
-
-	if err != nil {
-		return false, nil
-	}
-
-	if exists && existingId != org.ID {
-		return true, nil
-	}
+	// BMC inline change: Ignore name check on org
+	// var org org.Org
+	// exists, err := sess.Where("name=?", name).Get(&org)
+	//
+	// if err != nil {
+	// 	return false, nil
+	// }
+	//
+	// if exists && existingId != org.ID {
+	// 	return true, nil
+	// }
 
 	return false, nil
 }
@@ -202,6 +203,12 @@ func (ss *sqlStore) Delete(ctx context.Context, cmd *org.DeleteOrgCommand) error
 		}
 
 		deletes := []string{
+			// BMC Change: Starts
+			"DELETE FROM user_bhd_role where org_id = ?",
+			"DELETE FROM team_bhd_role where org_id = ?",
+			"DELETE FROM bhd_role_permission where org_id = ?",
+			"DELETE FROM bhd_role where org_id = ?",
+			// BMC Change: Ends
 			"DELETE FROM star WHERE org_id = ?",
 			"DELETE FROM playlist_item WHERE playlist_id IN (SELECT id FROM playlist WHERE org_id = ?)",
 			"DELETE FROM playlist WHERE org_id = ?",
@@ -302,6 +309,9 @@ func (ss *sqlStore) Search(ctx context.Context, query *org.SearchOrgsQuery) ([]*
 // CreateWithMember creates an organization with a certain name and a certain user as member.
 func (ss *sqlStore) CreateWithMember(ctx context.Context, cmd *org.CreateOrgCommand) (*org.Org, error) {
 	orga := org.Org{
+		// BMC code - next line
+		// Abhishek_04292021, changes to support tenantid as org id with 7.5.4 upgrade.
+		ID:      cmd.ID,
 		Name:    cmd.Name,
 		Created: time.Now(),
 		Updated: time.Now(),
@@ -653,7 +663,11 @@ func (ss *sqlStore) GetByName(ctx context.Context, query *org.GetOrgByNameQuery)
 }
 
 func (ss *sqlStore) RemoveOrgUser(ctx context.Context, cmd *org.RemoveOrgUserCommand) error {
-	return ss.db.WithTransactionalDbSession(ctx, func(sess *db.Session) error {
+	// True when this delete removed the ELT row for the user.
+	// We invalidate cache after commit.
+	var shouldInvalidateEltCache bool
+
+	err := ss.db.WithTransactionalDbSession(ctx, func(sess *db.Session) error {
 		// check if user exists
 		var usr user.User
 		if exists, err := sess.ID(cmd.UserID).Where(ss.notServiceAccountFilter()).Get(&usr); err != nil {
@@ -684,6 +698,18 @@ func (ss *sqlStore) RemoveOrgUser(ctx context.Context, cmd *org.RemoveOrgUserCom
 				return err
 			}
 		}
+
+		//BMC Code - start - delete ELT row for this user, if present.
+		//TODO: add audit when ELT is disabled by user deletion.
+		//rowsAffected > 0 means this user was configured for ELT.
+		eltResult, eltErr := sess.Exec("DELETE FROM elevated_access WHERE tenant_id=? and user_id = ?", cmd.OrgID, cmd.UserID)
+		if eltErr != nil {
+			return eltErr
+		}
+		if rowsAffected, raErr := eltResult.RowsAffected(); raErr == nil && rowsAffected > 0 {
+			shouldInvalidateEltCache = true
+		}
+		//BMC Code - end
 
 		// validate that after delete, there is at least one user with admin role in org
 		if err := validateOneAdminLeftInOrg(cmd.OrgID, sess); err != nil {
@@ -731,9 +757,18 @@ func (ss *sqlStore) RemoveOrgUser(ctx context.Context, cmd *org.RemoveOrgUserCom
 				return err
 			}
 		}
-
 		return nil
 	})
+	if err != nil {
+		return err
+	}
+
+	//BMC Code-start- delete elt cache after commit, only when the removed user was the ELT owner
+	if shouldInvalidateEltCache {
+		pluginproxy.DeleteEltCache(cmd.OrgID)
+	}
+	//BMC Code-end- delete elt cache on user deletion
+	return nil
 }
 
 func (ss *sqlStore) deleteUserInTransaction(sess *db.Session, cmd *user.DeleteUserCommand) error {

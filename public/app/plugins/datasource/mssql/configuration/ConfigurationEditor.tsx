@@ -29,6 +29,7 @@ import {
   Switch,
 } from '@grafana/ui';
 
+import { HCGUrlDropdown } from '../../hcg/HCGUrlDropdown';
 import { AzureAuthSettings } from '../azureauth/AzureAuthSettings';
 import {
   MSSQLAuthenticationType,
@@ -50,6 +51,13 @@ export const ConfigurationEditor = (props: DataSourcePluginOptionsEditorProps<Ms
   const styles = useStyles2(getStyles);
   const jsonData = dsSettings.jsonData;
   const azureAuthIsSupported = config.azureAuthEnabled;
+  //Helix change: starts
+  const isGrafanaAdmin = config.bootData.user.isGrafanaAdmin;
+  const isExternalDSUrlDropdownEnabled = config.isExternalDSUrlDropdownEnabled === true;
+  if (!isGrafanaAdmin) {
+    dsSettings.url = '********';
+  }
+  //Helix change: ends
 
   const azureAuthSettings: AzureAuthConfigType = {
     azureAuthIsSupported,
@@ -64,6 +72,14 @@ export const ConfigurationEditor = (props: DataSourcePluginOptionsEditorProps<Ms
     return (event: SyntheticEvent<HTMLInputElement>) => {
       onOptionsChange({ ...dsSettings, ...{ [property]: event.currentTarget.value } });
     };
+  };
+
+  // BMC HCG: Handler for URL selection from dropdown
+  const handleUrlChange = (url: string) => {
+    onOptionsChange({
+      ...dsSettings,
+      url: url,
+    });
   };
 
   const onSkipTLSVerifyChanged = (event: SyntheticEvent<HTMLInputElement>) => {
@@ -150,23 +166,37 @@ export const ConfigurationEditor = (props: DataSourcePluginOptionsEditorProps<Ms
         </Trans>
       </Alert>
       <Divider />
+      {/* Helix change: starts */}
       <ConfigSection title={t('configuration.configuration-editor.title-connection', 'Connection')}>
-        <Field
-          label={t('configuration.configuration-editor.title-host', 'Host')}
-          required
-          invalid={!dsSettings.url}
-          error={t('configuration.configuration-editor.required-host', 'Host is required')}
-        >
-          <Input
-            width={LONG_WIDTH}
-            name="host"
-            type="text"
-            value={dsSettings.url || ''}
-            // eslint-disable-next-line @grafana/i18n/no-untranslated-strings
-            placeholder="localhost:1433"
-            onChange={onDSOptionChanged('url')}
+        {isExternalDSUrlDropdownEnabled ? (
+          <HCGUrlDropdown
+            resourceType="mssql"
+            value={dsSettings.url}
+            onChange={handleUrlChange}
+            disabled={!isGrafanaAdmin}
+            label={t('configuration.configuration-editor.title-host', 'Host')}
+            showSection={false}
           />
-        </Field>
+        ) : (
+          <Field
+            label={t('configuration.configuration-editor.title-host', 'Host')}
+            required
+            invalid={!dsSettings.url}
+            error={t('configuration.configuration-editor.required-host', 'Host is required')}
+          >
+            <Input
+              width={LONG_WIDTH}
+              name="host"
+              type="text"
+              value={dsSettings.url || ''}
+              // eslint-disable-next-line @grafana/i18n/no-untranslated-strings
+              placeholder="localhost:1433"
+              onChange={onDSOptionChanged('url')}
+              readOnly={!isGrafanaAdmin}
+            />
+          </Field>
+        )}
+        {/* Helix change: ends */}
         <Field
           label={t('configuration.configuration-editor.title-database', 'Database')}
           required

@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/lib/pq"
 
 	"github.com/grafana/grafana/pkg/util/xorm"
@@ -190,6 +191,16 @@ func (db *PostgresDialect) isThisError(err error, errcode string) bool {
 		}
 	}
 
+	// BMC code - start - DRJ71-22817
+	// DB errors may be *pq.Error (lib/pq) or *pgconn.PgError (pgx/PgBouncer).
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		if pgErr.Code == errcode {
+			return true
+		}
+	}
+	// BMC code - end
+
 	return false
 }
 
@@ -198,6 +209,14 @@ func (db *PostgresDialect) ErrorMessage(err error) string {
 	if errors.As(err, &driverErr) {
 		return driverErr.Message
 	}
+
+	// BMC code - start - DRJ71-22817
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		return pgErr.Message
+	}
+	// BMC code - end
+
 	return ""
 }
 

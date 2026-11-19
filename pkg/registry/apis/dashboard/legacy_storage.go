@@ -2,6 +2,7 @@ package dashboard
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/prometheus/client_golang/prometheus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -11,9 +12,14 @@ import (
 	"k8s.io/apiserver/pkg/registry/rest"
 
 	"github.com/grafana/authlib/types"
+	"github.com/grafana/grafana/pkg/api/bmc/external"
+	"github.com/grafana/grafana/pkg/api/bmc/localization"
+	"github.com/grafana/grafana/pkg/apimachinery/identity"
 	"github.com/grafana/grafana/pkg/apimachinery/utils"
 	grafanaregistry "github.com/grafana/grafana/pkg/apiserver/registry/generic"
 	grafanarest "github.com/grafana/grafana/pkg/apiserver/rest"
+	"github.com/grafana/grafana/pkg/components/simplejson"
+	"github.com/grafana/grafana/pkg/infra/db"
 	"github.com/grafana/grafana/pkg/registry/apis/dashboard/legacy"
 	gapiutil "github.com/grafana/grafana/pkg/services/apiserver/utils"
 	"github.com/grafana/grafana/pkg/services/dashboards"
@@ -24,6 +30,8 @@ import (
 type DashboardStorage struct {
 	Access           legacy.DashboardAccess
 	DashboardService dashboards.DashboardService
+	// BMC code: added SQLStore
+	SQLStore db.DB
 }
 
 func (s *DashboardStorage) NewStore(dash utils.ResourceInfo, scheme *runtime.Scheme, defaultOptsGetter generic.RESTOptionsGetter, reg prometheus.Registerer, permissions dashboards.PermissionsRegistrationService, ac types.AccessClient) (grafanarest.Storage, error) {
@@ -54,12 +62,16 @@ func (s *DashboardStorage) NewStore(dash utils.ResourceInfo, scheme *runtime.Sch
 	return &storeWrapper{
 		Store:            store,
 		DashboardService: s.DashboardService,
+		// BMC code: added SQLStore
+		SQLStore: s.SQLStore,
 	}, err
 }
 
 type storeWrapper struct {
 	*registry.Store
 	DashboardService dashboards.DashboardService
+	// BMC code: added SQLStore
+	SQLStore db.DB
 }
 
 // Create will create the dashboard using legacy storage and make sure the internal ID is set on the return object
@@ -92,6 +104,8 @@ func (s *storeWrapper) Create(ctx context.Context, obj runtime.Object, createVal
 		return obj, metaErr
 	}
 
+	// BMC code: next line
+	s.runLocalizationHook(ctx, obj)
 	return obj, nil
 }
 
@@ -107,5 +121,47 @@ func (s *storeWrapper) Update(ctx context.Context, name string, objInfo rest.Upd
 			meta.SetDeprecatedInternalID(access.DashboardID) //nolint:staticcheck
 		}
 	}
+	// BMC code: start
+	if err == nil {
+		s.runLocalizationHook(ctx, obj)
+	}
+	// BMC code: end
 	return obj, created, err
+}
+
+// BMC code: next method
+// runLocalizationHook runs localization.UpdateLocalesJSON when FeatureFlagBHDLocalization is enabled.
+func (s *storeWrapper) runLocalizationHook(ctx context.Context, obj runtime.Object) {
+	if s.SQLStore == nil {
+		return
+	}
+	user, reqErr := identity.GetRequester(ctx)
+	if reqErr != nil || user == nil {
+		return
+	}
+	if !external.FeatureFlagBHDLocalization.EnabledForOrg(user.GetOrgID(), user.GetIsGrafanaAdmin()) {
+		return
+	}
+	accessor, err := utils.MetaAccessor(obj)
+	if err != nil {
+		return
+	}
+	spec, err := accessor.GetSpec()
+	if err != nil {
+		return
+	}
+	specData, err := json.Marshal(spec)
+	if err != nil {
+		return
+	}
+	dash, err := simplejson.NewJson(specData)
+	if err != nil {
+		return
+	}
+	localesJson := localization.ExtractLocalesFromJSON(dash)
+	if len(localesJson.Locales) == 0 {
+		return
+	}
+	query := localization.Query{OrgID: user.GetOrgID(), ResourceUID: accessor.GetName()}
+	localization.UpdateLocalesJSON(ctx, s.SQLStore.WithTransactionalDbSession, query, localesJson)
 }

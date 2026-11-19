@@ -31,6 +31,7 @@ import {
   TableCellDisplayMode,
 } from '@grafana/schema';
 
+import { isRtl } from '../../utils/rtl';
 import { getTextColorForAlphaBackground } from '../../utils/colors';
 
 import { ActionsCell } from './ActionsCell';
@@ -55,10 +56,13 @@ import {
 
 export const EXPANDER_WIDTH = 50;
 
-export function getTextAlign(field?: Field): Property.JustifyContent {
+export function getTextAlign(field?: Field, rtlMode?: boolean): Property.JustifyContent {
   if (!field) {
     return 'flex-start';
   }
+
+  // BMC Code : RTL Change
+  const useRtl = rtlMode ?? isRtl();
 
   if (field.config.custom) {
     const custom: TableFieldOptions = field.config.custom;
@@ -73,7 +77,8 @@ export function getTextAlign(field?: Field): Property.JustifyContent {
     }
   }
 
-  if (field.type === FieldType.number) {
+  // BMC Change: Handle numeric column for rtl
+  if (field.type === FieldType.number && !useRtl) {
     return 'flex-end';
   }
 
@@ -86,7 +91,8 @@ export function getColumns(
   columnMinWidth: number,
   expander: boolean,
   footerValues?: FooterItem[],
-  isCountRowsSet?: boolean
+  isCountRowsSet?: boolean,
+  rtlMode?: boolean
 ): GrafanaTableColumn[] {
   const columns: GrafanaTableColumn[] = [];
   let fieldCountWithoutWidth = 0;
@@ -154,7 +160,7 @@ export function getColumns(
       width: fieldTableOptions.width,
       minWidth: fieldTableOptions.minWidth ?? columnMinWidth,
       filter: memoize(filterByValue(field)),
-      justifyContent: getTextAlign(field),
+      justifyContent: getTextAlign(field, rtlMode),
       Footer: getFooterValue(fieldIndex, footerValues, isCountRowsSet),
     });
   }

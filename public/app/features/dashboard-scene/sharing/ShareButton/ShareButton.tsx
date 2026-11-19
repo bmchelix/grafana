@@ -1,18 +1,18 @@
 import { css } from '@emotion/css';
 import { useCallback, useState } from 'react';
-import { useAsyncFn } from 'react-use';
+// import { useAsyncFn } from 'react-use';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { selectors as e2eSelectors } from '@grafana/e2e-selectors';
 import { Trans, t } from '@grafana/i18n';
 import { VizPanel } from '@grafana/scenes';
-import { Button, ButtonGroup, Dropdown, useStyles2 } from '@grafana/ui';
+import { Button, ButtonGroup, Dropdown, Icon, useStyles2 } from '@grafana/ui';
 
 import { DashboardScene } from '../../scene/DashboardScene';
 import { DashboardInteractions } from '../../utils/interactions';
 
 import ShareMenu from './ShareMenu';
-import { buildShareUrl } from './utils';
+// import { buildShareUrl } from './utils';
 
 const newShareButtonSelector = e2eSelectors.pages.Dashboard.DashNav.newShareButton;
 
@@ -20,10 +20,11 @@ export default function ShareButton({ dashboard, panel }: { dashboard: Dashboard
   const styles = useStyles2(getStyles);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [_, buildUrl] = useAsyncFn(async () => {
-    DashboardInteractions.toolbarShareClick();
-    await buildShareUrl(dashboard, panel);
-  }, [dashboard, panel]);
+  // BMC Change: Commented out below hook
+  // const [_, buildUrl] = useAsyncFn(async () => {
+  //   DashboardInteractions.toolbarShareClick();
+  //   await buildShareUrl(dashboard, panel);
+  // }, [dashboard, panel]);
 
   const onMenuClick = useCallback((isOpen: boolean) => {
     if (isOpen) {
@@ -37,21 +38,27 @@ export default function ShareButton({ dashboard, panel }: { dashboard: Dashboard
 
   return (
     <ButtonGroup data-testid={newShareButtonSelector.container} className={styles.container}>
-      <Button
+      {/* BMC Change: Commented out below button */}
+      {/* <Button
         data-testid={newShareButtonSelector.shareLink}
         size="sm"
         tooltip={t('share-dashboard.share-button-tooltip', 'Copy link')}
         onClick={buildUrl}
       >
         <Trans i18nKey="share-dashboard.share-button">Share</Trans>
-      </Button>
+      </Button> */}
       <Dropdown overlay={MenuActions} placement="bottom-end" onVisibleChange={onMenuClick}>
         <Button
           aria-label={t('dashboard-scene.share-button.aria-label-sharedropdownmenu', 'Toggle share menu')}
           data-testid={newShareButtonSelector.arrowMenu}
           size="sm"
-          icon={isOpen ? 'angle-up' : 'angle-down'}
-        />
+          // icon={isOpen ? 'angle-up' : 'angle-down'}
+        >
+          {/* BMC Change: Added button child with icon */}
+          <Trans i18nKey="share-dashboard.share-button">Share</Trans>
+          <Icon name={isOpen ? 'angle-up' : 'angle-down'} size="sm" />
+          {/* BMC Change: end */}
+        </Button>
       </Dropdown>
     </ButtonGroup>
   );

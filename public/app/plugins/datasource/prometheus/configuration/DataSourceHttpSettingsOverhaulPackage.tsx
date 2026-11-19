@@ -1,11 +1,14 @@
 import { ReactElement, useState } from 'react';
 import * as React from 'react';
 
-import { Auth, ConnectionSettings, convertLegacyAuthProps, AuthMethod } from '@grafana/plugin-ui';
+import { Auth, convertLegacyAuthProps, AuthMethod, ConnectionSettings } from '@grafana/plugin-ui';
 import { docsTip, overhaulStyles } from '@grafana/prometheus';
+import { config } from '@grafana/runtime';
 import { Alert, SecureSocksProxySettings, useTheme2 } from '@grafana/ui';
 // NEED TO EXPORT THIS FROM GRAFANA/UI FOR EXTERNAL DS
 import { AzureAuthSettings } from '@grafana/ui/internal';
+
+import { HCGUrlDropdown } from '../../hcg/HCGUrlDropdown';
 
 import { AzurePromDataSourceSettings } from './AzureCredentialsConfig';
 
@@ -52,7 +55,21 @@ export const DataSourcehttpSettingsOverhaul = (props: Props) => {
   const [sigV4Selected, setSigV4Selected] = useState<boolean>(options.jsonData.sigV4Auth || false);
 
   const sigV4Id = 'custom-sigV4Id';
-
+  // bmc code: starts
+  const isGrafanaAdmin = config.bootData.user.isGrafanaAdmin;
+  const isExternalDSUrlDropdownEnabled = config.isExternalDSUrlDropdownEnabled === true;
+  if (!isGrafanaAdmin) {
+    options.url = '********';
+  }
+  // bmc code: end
+  // BMC HCG: Handler for URL selection from dropdown
+  const handleUrlChange = (url: string) => {
+    onOptionsChange({
+      ...options,
+      url: url,
+    });
+  };
+ //end
   const sigV4Option: CustomMethod = {
     id: sigV4Id,
     label: 'SigV4 auth',
@@ -100,7 +117,7 @@ export const DataSourcehttpSettingsOverhaul = (props: Props) => {
 
     return newAuthProps.selectedMethod;
   }
-
+  
   // Do we need this switch anymore? Update the language.
   let urlTooltip;
   switch (options.access) {
@@ -127,13 +144,24 @@ export const DataSourcehttpSettingsOverhaul = (props: Props) => {
 
   return (
     <>
-      <ConnectionSettings
-        urlPlaceholder="http://localhost:9090"
-        config={options}
-        onChange={onOptionsChange}
-        urlLabel="Prometheus server URL"
-        urlTooltip={urlTooltip}
-      />
+         {/* bmc code change */}
+      {isExternalDSUrlDropdownEnabled ? (
+        <HCGUrlDropdown
+          resourceType="prometheus"
+          value={options.url}
+          onChange={handleUrlChange}
+          disabled={!isGrafanaAdmin}
+        />
+      ) : (
+        <ConnectionSettings
+          urlPlaceholder="http://localhost:9090"
+          config={{ ...options, readOnly: !isGrafanaAdmin }}
+          onChange={onOptionsChange}
+          urlLabel="Server URL"           
+          urlTooltip={urlTooltip}
+        />
+      )}
+      {/* end */}
       <hr className={`${styles.hrTopSpace} ${styles.hrBottomSpace}`} />
       {sigV4Selected && (
         <Alert title="Deprecation Notice" severity="warning">

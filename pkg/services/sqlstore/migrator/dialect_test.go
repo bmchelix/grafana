@@ -6,6 +6,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// BMC code - start - DRJ71-22817
+func TestNewDialectPostgresPgx(t *testing.T) {
+	for _, driverName := range []string{PostgresPgx, PostgresPgx + "WithHooks"} {
+		t.Run(driverName, func(t *testing.T) {
+			d := NewDialect(driverName)
+			require.NotNil(t, d)
+			require.Equal(t, Postgres, d.DriverName())
+		})
+	}
+}
+// BMC code - end
+
 func TestInsertQuery(t *testing.T) {
 	tests := []struct {
 		name                  string

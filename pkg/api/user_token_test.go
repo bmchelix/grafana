@@ -8,6 +8,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/grafana/grafana/pkg/web/webtest"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -21,7 +23,6 @@ import (
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/services/user/usertest"
 	"github.com/grafana/grafana/pkg/setting"
-	"github.com/grafana/grafana/pkg/web/webtest"
 )
 
 func TestUserTokenAPIEndpoint(t *testing.T) {
